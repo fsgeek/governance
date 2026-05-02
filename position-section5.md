@@ -1,12 +1,14 @@
 # Section 5: Architectural Primitive Categories
 
-*Status: first-pass draft. Property-level only. Implementation-level material gets marked [QUARRY: PAPER 2] where it appears, for migration to the architecture-specification paper. Will be reworked.*
+*Status: first-pass draft. Property-level only. Implementation-level material gets marked [QUARRY: PAPER 2] where it appears, for migration to the architecture-specification paper. Framing addition staged in opening paragraph to make explicit that the four primitives are silence-breaking instruments rather than metric-improvement instruments. Will be reworked.*
 
 *Citations needed: existing literature on event-sourced architectures, immutable ledger systems where appropriate, Rudin 2019 on intrinsic interpretability, Anthropic / interpretability research on internal model observation, software engineering literature on contemporaneous logging vs. retrospective documentation.*
 
 ---
 
 The empty-chair frame produces interpretive structure (Section 2), a structural taxonomy of AI applications (Section 3), and diagnostic techniques that operationalize the frame as design discipline and examination methodology (Section 4). This section names the architectural primitive categories that empty-chair representation requires. The treatment is at the property level: each primitive is described by what it must do, not by how it must be implemented. Implementation specification is the work of follow-on papers, and we mark places where the discussion is at risk of crossing into implementation territory so that the property-level claims remain the substance of this section.
+
+A framing note before the primitives are developed. The four primitives below are *silence-breaking instruments*, not improvements to existing metrics. Read through a Goodhart lens — "the controls became targets, so we need better controls" — they appear underwhelming, because Goodhart-shaped readings expect the fix to be at the metric layer. The frame's diagnosis (Section 4) is that the failure mode is silence-manufacture: the architecture suppresses access to ground truth and produces a substitute artifact that occupies the rhetorical position evidence should occupy. The fix has to live at the silence layer — making the suppressed ground truth contemporaneously inspectable, traversable, and characterized honestly. Each primitive corresponds to a specific class of silence the architecture currently produces, and the primitive's value is in breaking it. We mark this here because readers approaching the section without the frame's diagnostic structure are likely to mis-read the primitives as competing implementations of better controls, and the mis-reading produces frustrated assessments of adequacy that the structural argument does not warrant.
 
 The primitives are not exhaustive. They are the categories the diagnostic techniques in Section 4 require. An honest AI governance system for community banking will likely require additional primitives we have not identified; the four named here are the categories we can argue for from the frame's structural commitments alone.
 
