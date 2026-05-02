@@ -1,3 +1,50 @@
+% =====================================================================
+% Section label naming convention (kebab-case, parent prefix per level).
+% Cross-references use \ref{sec:...}; update this map when sections move.
+%
+%   Section 1  Opening Movement                          sec:opening
+%   Section 2  The Frame as Method                       sec:frame-as-method
+%     2.1  Two kinds of absence                          sec:frame-as-method:two-kinds-of-absence
+%     2.2  The empty chairs in BSA/AML monitoring        sec:frame-as-method:bsa-aml-empty-chairs
+%     2.3  Walking three controls through the frame     sec:frame-as-method:walking-three-controls
+%     2.4  What the frame produced                       sec:frame-as-method:what-the-frame-produced
+%   Section 3  Verification Regimes as Taxonomic Move    sec:verification-regimes
+%     3.1  The structural line                           sec:verification-regimes:structural-line
+%     3.2  Adverse action notices as the canonical case  sec:verification-regimes:adverse-action-notices
+%     3.3  The taxonomic move                            sec:verification-regimes:taxonomic-move
+%     3.4  What the categoricals foreclose, and not      sec:verification-regimes:foreclosures
+%     3.5  A turn: pricing as produced-absence case      sec:verification-regimes:pricing-turn
+%     3.6  The taxonomic move, summarized                sec:verification-regimes:summary
+%   Section 4  Diagnostic Techniques                     sec:diagnostics
+%     4.1  Silence-manufacture as structural pattern     sec:diagnostics:silence-manufacture
+%       4.1.1  Definition                                sec:diagnostics:silence-manufacture:definition
+%       4.1.2  Relationship to Goodhart's law            sec:diagnostics:silence-manufacture:goodhart
+%       4.1.3  Mapping the three earned positions        sec:diagnostics:silence-manufacture:mapping-positions
+%       4.1.4  What silence-manufacture predicts         sec:diagnostics:silence-manufacture:predictions
+%     4.2  Three diagnostic techniques                   sec:diagnostics:three-techniques
+%       4.2.1  Technique 1: Empty-chair enumeration      sec:diagnostics:enumeration
+%       4.2.2  Technique 2: Pages missing from ledger    sec:diagnostics:pages-missing
+%       4.2.3  Technique 3: Produced-silence pair        sec:diagnostics:question-pair
+%     4.3  Techniques as compounding design constraints  sec:diagnostics:compounding
+%     4.4  Examination as consequence                    sec:diagnostics:examination
+%     4.5  Implications for primitive selection          sec:diagnostics:primitive-implications
+%   Section 5  Architectural Primitive Categories        sec:primitives
+%     5.1  Primitive 1: Tamper-evident temporal capture  sec:primitives:temporal-capture
+%     5.2  Primitive 2: Evidence binding                 sec:primitives:evidence-binding
+%     5.3  Primitive 3: Confidence characterization      sec:primitives:confidence-characterization
+%     5.4  Primitive 4: Structural drift typology        sec:primitives:drift-typology
+%     5.5  What this section does not include            sec:primitives:exclusions
+%     5.6  What the four primitives compound to          sec:primitives:compound
+%   Section 6  Honest Uncertainties                      sec:uncertainties
+%     6.1  Uncertainties about the frame                 sec:uncertainties:frame
+%     6.2  Uncertainties about the categoricals          sec:uncertainties:categoricals
+%     6.3  Uncertainties about the diagnostic techniques sec:uncertainties:diagnostics
+%     6.4  Uncertainties about the architectural primitives sec:uncertainties:primitives
+%     6.5  The meta-uncertainty: theory of effect        sec:uncertainties:meta
+%     6.6  What this section earns                       sec:uncertainties:summary
+%   Section 7  Conclusion                                sec:implications
+% =====================================================================
+
 \documentclass[11pt]{article}
 
 \usepackage[T1]{fontenc}
@@ -42,7 +89,7 @@ The Financial Services AI Risk Management Framework, released by the US Treasury
 
 We develop the empty-chair frame at three levels. We argue that AI applications in regulated decision contexts divide into structurally distinct categories distinguished by whether a verification regime is available for their outputs, and that two categorical positions follow: post-hoc explanation is structurally inadequate as a verification regime in adversarial contexts, and human oversight of AI-generated decisions is not a verification regime when the human reviews explanations rather than reasoning. We propose three diagnostic techniques --- empty-chair enumeration, pages missing from the ledger, and a produced-silence question pair --- that operationalize the frame as architectural design discipline and examination methodology. We propose four categories of architectural primitive that empty-chair representation requires: tamper-evident temporal capture, evidence binding, three-dimensional confidence characterization, and structural drift typology.
 
-Across these arguments, a unifying pattern emerges: the architectures the FS~AI~RMF was written to govern fail not because their controls are corrupted versions of correct measurements but because their controls are produced to occupy the rhetorical space of accountability while the underlying processes are architecturally suppressed. The frame's contribution is an analytical and architectural vocabulary for surfacing this distinction, with implications for examination practice, architectural design, and the regulatory direction of FS~AI~RMF operationalization.
+Across these arguments, a unifying pattern emerges: the architectures the FS~AI~RMF was written to govern fail not because their controls are corrupted versions of correct measurements but because their controls are produced to occupy the rhetorical space of accountability while the underlying processes are architecturally suppressed. The frame's contribution is an analytical and architectural vocabulary for surfacing this distinction, with implications for examination practice, architectural design, and the regulatory direction of FS~AI~RMF operationalization. This is the first paper in a planned sequence; companion papers treat architectural specification at implementation level and examination methodology in their respective registers.
 \end{abstract}
 
 \input{section1}

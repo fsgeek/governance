@@ -27,57 +27,58 @@
 }
 
 % VERIFIED --- planning doc citation status; central to position 2
-@article{bordt2022,
-  author       = {Bordt, Sebastian and Finck, Mich{\`e}le and Raidl, Eric and von Luxburg, Ulrike},
-  title        = {Post-Hoc Explanations Fail to Achieve their Purpose in Adversarial Contexts},
-  journal      = {arXiv preprint arXiv:2201.10295},
-  year         = {2022},
-  eprint       = {2201.10295},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.LG},
-  url          = {https://arxiv.org/abs/2201.10295},
-}
+@inproceedings{bordt2022,
+   series={FAccT '22},
+   title={Post-Hoc Explanations Fail to Achieve their Purpose in Adversarial Contexts},
+   url={http://dx.doi.org/10.1145/3531146.3533153},
+   DOI={10.1145/3531146.3533153},
+   booktitle={2022 ACM Conference on Fairness Accountability and Transparency},
+   publisher={ACM},
+   author={Bordt, Sebastian and Finck, Michèle and Raidl, Eric and von Luxburg, Ulrike},
+   year={2022},
+   month={June},
+   pages={891--905},
+   collection={FAccT '22} }
 
 % VERIFIED --- planning doc citation status; trilemma framing
 @article{evite2026,
-  author       = {Evite and Svetlova and Bucur},
-  title        = {Trade-offs in Financial AI},
+  author       = {Evite, Patricia Marcella and Svetlova, Ekaterina and Bucur, Doina},
+  title        = {Trade-offs in Financial AI: Explainability in a Trilemma with Accuracy and Compliance},
   journal      = {arXiv preprint arXiv:2602.01368},
   year         = {2026},
   eprint       = {2602.01368},
   archivePrefix = {arXiv},
-  primaryClass = {cs.CY},
-  url          = {https://arxiv.org/abs/2602.01368},
-  note         = {VERIFY: full author given names; full title; primary class}
+  primaryClass = {cs.HC},
+  url          = {https://arxiv.org/abs/2602.01368}
 }
 
-% VERIFIED --- FDIC 2024 press release on 2023 National Survey of Unbanked and
-% Underbanked Households. Section 2 empirical anchor (4.2\% / 14.2\% / disparities).
+% VERIFIED --- FDIC November 12, 2024 press release announcing 2023 National
+% Survey of Unbanked and Underbanked Households results. Section 2 empirical
+% anchor (4.2\% unbanked / 14.2\% underbanked / demographic disparities). Date
+% and URL verified against fdic.gov; PR number not visible on the press-release
+% page itself.
 @misc{fdic2024,
   author       = {{Federal Deposit Insurance Corporation}},
-  title        = {{FDIC} National Survey of Unbanked and Underbanked Households},
+  title        = {{FDIC} National Survey of Unbanked and Underbanked Households, 2023},
   year         = {2024},
-  month        = {10},
+  month        = {11},
+  day          = {12},
   howpublished = {Press release},
-  note         = {Reports 2023 survey data; VERIFY exact release date and URL},
-  url          = {https://www.fdic.gov/analysis/household-survey/}
+  url          = {https://www.fdic.gov/news/press-releases/2024/fdic-survey-finds-96-percent-us-households-were-banked-2023}
 }
 
-% TODO --- Goodhart's law canonical citation; common references include Goodhart's
-% 1975 paper "Problems of Monetary Management" (Reserve Bank of Australia
-% conference) or the formulation popularized in later work. Confirm preferred
-% canonical citation form before submission.
-@incollection{goodhart1975,
-  author       = {Goodhart, Charles A. E.},
-  title        = {Problems of Monetary Management: The {U.K.} Experience},
-  booktitle    = {Papers in Monetary Economics},
-  publisher    = {Reserve Bank of Australia},
-  year         = {1975},
-  note         = {TODO: confirm canonical citation form for Goodhart's law origin}
+% VERIFIED --- Tony via Google Scholar
+@incollection{goodhart1984problems,
+  title={Problems of monetary management: the UK experience},
+  author={Goodhart, Charles AE},
+  booktitle={Monetary theory and practice: The UK experience},
+  pages={91--121},
+  year={1984},
+  publisher={Springer}
 }
 
-% LIKELY --- Anthropic alignment research; widely-cited paper on chain-of-thought
-% faithfulness. Confirm exact title and arxiv ID before submission.
+% VERIFIED --- Anthropic alignment research; widely-cited paper on chain-of-thought
+% faithfulness. Author list, title, and arXiv ID verified against arxiv.org.
 @article{lanham2023,
   author       = {Lanham, Tamera and Chen, Anna and Radhakrishnan, Ansh and Steiner, Benoit and Denison, Carson and Hernandez, Danny and Li, Dustin and Durmus, Esin and Hubinger, Evan and Kernion, Jackson and others},
   title        = {Measuring Faithfulness in Chain-of-Thought Reasoning},
@@ -86,12 +87,11 @@
   eprint       = {2307.13702},
   archivePrefix = {arXiv},
   primaryClass = {cs.AI},
-  url          = {https://arxiv.org/abs/2307.13702},
-  note         = {LIKELY: confirm full author list, title, and arxiv ID}
+  url          = {https://arxiv.org/abs/2307.13702}
 }
 
-% TODO --- Nisbett \& Wilson 1977 on introspection limits; classic psychology
-% reference. Status note in Section 2 for reviewer self-report literature claim.
+% VERIFIED --- Nisbett \& Wilson 1977 on introspection limits; classic
+% psychology reference cited in Section 2 for reviewer self-report claim.
 @article{nisbett1977,
   author       = {Nisbett, Richard E. and Wilson, Timothy DeCamp},
   title        = {Telling More Than We Can Know: Verbal Reports on Mental Processes},
@@ -99,35 +99,34 @@
   volume       = {84},
   number       = {3},
   pages        = {231--259},
-  year         = {1977},
-  note         = {TODO: confirm volume/issue/pages}
+  year         = {1977}
 }
 
 % VERIFIED --- planning doc citation status; counterposition for honest engagement
 @article{oh2024,
   author       = {Oh, Nick},
-  title        = {[In Defense of Post-Hoc Explanations]},
+  title        = {In Defence of Post-hoc Explainability},
   journal      = {arXiv preprint arXiv:2412.17883},
   year         = {2024},
   eprint       = {2412.17883},
   archivePrefix = {arXiv},
-  primaryClass = {cs.AI},
-  url          = {https://arxiv.org/abs/2412.17883},
-  note         = {VERIFY: full title (current placeholder is paraphrastic)}
+  primaryClass = {cs.LG},
+  url          = {https://arxiv.org/abs/2412.17883}
 }
 
-% TODO --- Perez et al. on RLHF reward hacking / discovering language model
+% VERIFIED --- TM via Google Scholar.
+% Perez et al. on RLHF reward hacking / discovering language model
 % behaviors. Section 4 mapping for position 3.
 @article{perez2022,
-  author       = {Perez, Ethan and others},
-  title        = {Discovering Language Model Behaviors with Model-Written Evaluations},
-  journal      = {arXiv preprint},
-  year         = {2022},
-  note         = {TODO: confirm full author list, title, year, and arxiv ID}
+  title={Discovering language model behaviors with model-written evaluations},
+  author={Perez, Ethan and Ringer, Sam and Lukosiute, Kamile and Nguyen, Karina and Chen, Edwin and Heiner, Scott and Pettit, Craig and Olsson, Catherine and Kundu, Sandipan and Kadavath, Saurav and others},
+  booktitle={Findings of the association for computational linguistics: ACL 2023},
+  pages={13387--13434},
+  year={2023}
 }
 
-% LIKELY --- Rudin 2019 Nature Machine Intelligence; canonical "stop explaining
-% black-box models" paper. Section 1 and Section 3 citation.
+% VERIFIED --- Rudin 2019 Nature Machine Intelligence; canonical "stop
+% explaining black-box models" paper. Section 1 and Section 3 citation.
 @article{rudin2019,
   author       = {Rudin, Cynthia},
   title        = {Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead},
@@ -136,40 +135,41 @@
   number       = {5},
   pages        = {206--215},
   year         = {2019},
-  doi          = {10.1038/s42256-019-0048-x},
-  note         = {LIKELY: confirm volume/issue/pages and DOI}
+  doi          = {10.1038/s42256-019-0048-x}
 }
 
-% TODO --- Sharma et al. on sycophancy. Section 4 mapping for position 3.
+% VERIFIED --- TM via Google Scholar.
+% Sharma et al. on sycophancy. Section 4 mapping for position 3.
 % Anthropic paper, widely cited.
 @article{sharma2023,
-  author       = {Sharma, Mrinank and others},
-  title        = {Towards Understanding Sycophancy in Language Models},
-  journal      = {arXiv preprint},
-  year         = {2023},
-  note         = {TODO: confirm full author list, title, year, and arxiv ID}
+  title={Towards understanding sycophancy in language models},
+  author={Sharma, Mrinank and Tong, Meg and Korbak, Tomasz and Duvenaud, David and Askell, Amanda and Bowman, Samuel R and Cheng, Newton and Durmus, Esin and Hatfield-Dodds, Zac and Johnston, Scott R and others},
+  journal={arXiv preprint arXiv:2310.13548},
+  year={2023}
 }
 
-% LIKELY --- Slack et al. 2020 "Fooling LIME and SHAP" or related; Section 1
-% citation for explanation-method manipulation.
+% VERIFIED --- TM via Google Scholar.
+% Slack et al. on adversarial attacks. Section 4 mapping for position 3.
+% Author list, title, and arXiv ID verified against arxiv.org.
 @inproceedings{slack2020,
-  author       = {Slack, Dylan and Hilgard, Sophie and Jia, Emily and Singh, Sameer and Lakkaraju, Himabindu},
-  title        = {Fooling {LIME} and {SHAP}: Adversarial Attacks on Post Hoc Explanation Methods},
-  booktitle    = {Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society (AIES)},
-  year         = {2020},
-  note         = {LIKELY: confirm exact venue and pagination}
+  title={Fooling lime and shap: Adversarial attacks on post hoc explanation methods},
+  author={Slack, Dylan and Hilgard, Sophie and Jia, Emily and Singh, Sameer and Lakkaraju, Himabindu},
+  booktitle={Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society},
+  pages={180--186},
+  year={2020}
 }
 
-% TODO --- Strathern 1997 on audit culture; common Goodhart-adjacent citation.
+% VERIFIED --- TM via Google Scholar.
+% Strathern 1997 on audit culture; common Goodhart-adjacent citation.
 @article{strathern1997,
-  author       = {Strathern, Marilyn},
-  title        = {`Improving Ratings': Audit in the {British} University System},
-  journal      = {European Review},
-  volume       = {5},
-  number       = {3},
-  pages        = {305--321},
-  year         = {1997},
-  note         = {TODO: confirm volume/issue/pages and exact title format}
+  title={`Improving ratings': audit in the British University system},
+  author={Strathern, Marilyn},
+  journal={European review},
+  volume={5},
+  number={3},
+  pages={305--321},
+  year={1997},
+  publisher={Cambridge University Press}
 }
 
 % VERIFIED --- planning doc citation status; April 2026 model-risk guidance memo
@@ -183,8 +183,8 @@
   note         = {VERIFIED: April 17, 2026 revised guidance, \$30B threshold, GenAI exclusion, promised RFI. Confirm exact memo title and URL.}
 }
 
-% LIKELY --- Turpin et al. 2023 "Language Models Don't Always Say What They Think";
-% widely cited in interpretability work.
+% VERIFIED --- Turpin et al. 2023; widely cited in interpretability work.
+% Author list, title, and arXiv ID verified against arxiv.org.
 @article{turpin2023,
   author       = {Turpin, Miles and Michael, Julian and Perez, Ethan and Bowman, Samuel R.},
   title        = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
@@ -193,25 +193,123 @@
   eprint       = {2305.04388},
   archivePrefix = {arXiv},
   primaryClass = {cs.CL},
-  url          = {https://arxiv.org/abs/2305.04388},
-  note         = {LIKELY: confirm full author list, title, and arxiv ID}
+  url          = {https://arxiv.org/abs/2305.04388}
 }
 
 % VERIFIED --- planning doc citation status; partition-counterpart to Cato in Section 7
 @misc{unbankedamerica,
-  author       = {{Unbanked America}},
+  author       = {{HR\&A Advisors, Inc.}},
   title        = {Atlas of Financial Inclusion},
   howpublished = {\url{https://unbankedamerica.org}},
-  note         = {VERIFY: organizational author name; access date}
+  urldate      = {2026-05-02}
 }
 
-% VERIFIED --- planning doc citation status; CIGI Paper 296
+% VERIFIED --- TM via Google Scholar.
+% CIGI Paper 296
 @techreport{witzel2024,
-  author       = {Witzel, Morgen and Gonnet, Aurelia and Snider, Susan},
-  title        = {Challenging Post-Hoc Explanations in {AI} Governance},
-  type         = {CIGI Paper},
-  number       = {296},
-  institution  = {Centre for International Governance Innovation},
+  title={Explainable AI policy: It is time to challenge post hoc explanations},
+  author={Witzel, Mardi and Gonnet, Gast{\'o}n H and Snider, Tim},
+  year={2024},
+  institution={CIGI Papers}
+}
+
+% VERIFIED --- TM via web review.
+@misc{treasuryFSAIRMFRelease2026,
+  author       = {{U.S. Department of the Treasury}},
+  title        = {Treasury Releases Two New Resources to Guide AI Use in the Financial Sector},
+  year         = {2026},
+  month        = feb,
+  day          = {19},
+  howpublished = {\url{https://home.treasury.gov/news/press-releases/sb0401}},
+  note         = {Press release announcing the AI Lexicon and Financial Services AI Risk Management Framework}
+}
+
+% VERFIED --- TM downloaded from FFIEC website; merged manual generated from the FFIEC online manual modules. Central reference for Section 3 and Section 4.
+@manual{ffiecBSAAMLManual,
+  author       = {{Federal Financial Institutions Examination Council}},
+  title        = {Bank Secrecy Act/Anti-Money Laundering Examination Manual},
+  year         = {2020},
+  organization = {Federal Financial Institutions Examination Council},
+  url          = {https://bsaaml.ffiec.gov/manual},
+  note         = {Merged manual generated from the FFIEC online manual modules}
+}
+
+% VERIFIED --- TM via web review; April 2023 Treasury press release announcing the 2023 De-risking Strategy, which is the central policy anchor for Section 5. Date and URL verified against home.treasury.gov; PR number not visible on the press-release page itself.
+@misc{treasuryDeRisking2023,
+  author       = {{U.S. Department of the Treasury}},
+  title        = {2023 De-risking Strategy},
+  year         = {2023},
+  month        = apr,
+  day          = {10},
+  howpublished = {\url{https://home.treasury.gov/news/press-releases/jy1438}},
+  note         = {Announced April 25, 2023; issued pursuant to the Anti-Money Laundering Act of 2020}
+}
+
+% VERIFIED --- TM via web review; Regulations
+@misc{regB1002_9,
+  author       = {{Consumer Financial Protection Bureau}},
+  title        = {12 CFR § 1002.9 — Notifications (Regulation B)},
   year         = {2024},
-  note         = {VERIFY: exact title, year, author given names, URL}
+  howpublished = {\url{https://www.consumerfinance.gov/rules-policy/regulations/1002/9/}},
+  note         = {Implements the Equal Credit Opportunity Act adverse action notice requirements}
+}
+
+% VERIFIED --- TM via web review; circular on adverse action notice requirements for complex algorithmic credit decisions.
+@misc{cfpbCircular2022_03,
+  author       = {{Consumer Financial Protection Bureau}},
+  title        = {Consumer Financial Protection Circular 2022-03: Adverse Action Notification Requirements in Connection with Credit Decisions Based on Complex Algorithms},
+  year         = {2022},
+  month        = may,
+  day          = {26},
+  howpublished = {\url{https://files.consumerfinance.gov/f/documents/cfpb_2022-03_circular_2022-05.pdf}},
+  note         = {Policy statement on ECOA and Regulation B adverse action notice requirements for complex algorithmic credit decisions}
+}
+
+% VERIFIED --- TM via web review; Regulations
+@misc{regZ1026,
+  author       = {{Consumer Financial Protection Bureau}},
+  title        = {12 CFR Part 1026 — Truth in Lending (Regulation Z)},
+  year         = {2026},
+  howpublished = {\url{https://www.consumerfinance.gov/rules-policy/regulations/1026/}},
+  note         = {Implements the Truth in Lending Act and establishes standardized disclosure requirements for consumer credit}
+}
+
+% VERIFIED --- TM via web review; supervisory guidance on model risk management for banking organizations.
+@misc{sr11_7,
+  author       = {{Board of Governors of the Federal Reserve System and Office of the Comptroller of the Currency}},
+  title        = {Supervisory Guidance on Model Risk Management (SR 11-7)},
+  year         = {2011},
+  month        = apr,
+  day          = {4},
+  howpublished = {\url{https://www.federalreserve.gov/boarddocs/srletters/2011/sr1107a1.pdf}},
+  note         = {Attachment to Federal Reserve SR Letter 11-7 and OCC Bulletin 2011-12}
+}
+
+% VERFIFIED --- TM Via web review. Note that this replaces SR 11-7
+@misc{sr26_2,
+  author       = {{Board of Governors of the Federal Reserve System}},
+  title        = {SR 26-2: Revised Guidance on Model Risk Management},
+  year         = {2026},
+  month        = apr,
+  day          = {17},
+  howpublished = {\url{https://www.federalreserve.gov/supervisionreg/srletters/SR2602.pdf}},
+  note         = {Issued with the OCC and FDIC; supersedes SR 11-7 and SR 21-8}
+}
+
+% VERIFIED -- TM via web review.
+@misc{usc31_5318g2,
+  author       = {{United States Congress}},
+  title        = {31 U.S.C. § 5318(g)(2) — Confidentiality of Suspicious Activity Reports},
+  year         = {2024},
+  howpublished = {\url{https://www.govinfo.gov/app/details/USCODE-2024-title31/USCODE-2024-title31-subtitleIV-chap53-subchapII-sec5318}},
+  note         = {Prohibits disclosure of SAR filings or information revealing their existence}
+}
+
+% VERIFIED --- TM via web review; summary of FCRA adverse action notice requirements under 15 U.S.C. § 1681m.
+@misc{fcraAdverseAction,
+  author       = {{Federal Trade Commission}},
+  title        = {Using Consumer Reports for Credit Decisions: What to Know About Adverse Action and Risk-Based Pricing Notices},
+  year         = {2026},
+  howpublished = {\url{https://www.ftc.gov/system/files/ftc_gov/pdf/fcra-march-2026.pdf}},
+  note         = {Summary of Fair Credit Reporting Act adverse action requirements under 15 U.S.C. § 1681m}
 }
