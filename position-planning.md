@@ -30,7 +30,7 @@ Target length: 20-30 pages tech-report format.
 
 **Section 3.** Verification regimes as taxonomic move. AI uses categorized by verification-regime availability rather than risk-tier. Earns positions 2 and 3. *Drafted: lending primary with underwriting turn near the end. Both standalone alternatives also preserved (position-section3-lending.md, position-section3-underwriting.md, position-section3-comparison.md) in case the integrated version needs disassembly.*
 
-**Section 4.** Diagnostic techniques. *Pages missing from the ledger.* Empty-chair enumeration, pages-missing, produced-silence question pair as the three techniques. Architect-primary register, with examination-time application as turn near the end. Examiner-primary alternatives preserved as Paper 3 material. Frame becomes operational here. *Three-version drafting: position-section4-architect.md (selected), position-section4-examiner.md (Paper 3 material), position-section4-comparison.md, plus position-conclusion-examiner-test.md (rigor test that determined architectural register; also Paper 3 material). Integrated version pending. **Pending integration must promote silence-manufacture to organizing concept of the section** — this is where the unification gets concentrated development per placement decision (not distributed across sections). The three diagnostic techniques are silence-breaking instruments against silence-manufactured artifacts; naming the pattern here is what makes Sections 5–7's recommendations cohere rather than read as a list. See "Silence-manufacture" section below for full development.*
+**Section 4.** Diagnostic techniques. *Pages missing from the ledger.* Empty-chair enumeration, pages-missing, produced-silence question pair as the three techniques. Architect-primary register, with examination-time application as turn near the end. Examiner-primary alternatives preserved as Paper 3 material. Frame becomes operational here. *Three-version drafting: position-section4-architect.md (selected as input draft), position-section4-examiner.md (Paper 3 material), position-section4-comparison.md, plus position-conclusion-examiner-test.md (rigor test that determined architectural register; also Paper 3 material). **Integrated version drafted at position-section4.md** (silence-manufacture promoted to organizing concept; dedicated subsection with definition, dual-of-Goodhart pointer, mapping to three earned positions with cross-domain ML alignment empirical confirmation, three predictions); subject to revision pass after rikuy review.*
 
 **Section 5.** Architectural primitive categories. Property-level only, not implementation specs. Quarry section — material accumulates, then most of it moves to Paper 2 (architecture document). Sections 4 and 5 may merge during drafting if the diagnostic and the primitive collapse cleanly. *Pending light revision: opening framing should explicitly name the four primitives as silence-breaking instruments rather than metric-improvement instruments. The content already does this; the framing should make it explicit so readers don't read the primitives through a Goodhart lens.*
 
@@ -217,10 +217,38 @@ This paper is Paper 1 in what now appears to be a three-paper structure rather t
 
 The current Paper 1 conclusion gestures at "follow-on work for implementation specification" in the singular. With Papers 3 and 4 now distinguished, the gesture should reflect downstream work as plural. Not a Paper 1 revision needed now; track for revision pass after body sections drafted.
 
+## LaTeX migration (2026-05-01)
+
+**The LaTeX is now canonical; the markdown files are working artifacts preserved for reference but no longer the source of truth.** A subsequent drafting session that wants to edit prose should edit `section*.tex`, not `position-section*.md`. The markdown will not be updated to match the LaTeX.
+
+Files produced during migration:
+- `paper.tex` — main file with preamble, abstract (from `position-abstract.md`), `\input` of seven section files, bibliography
+- `section1.tex` through `section7.tex`
+- `references.bib` with `% VERIFIED` / `% LIKELY` / `% TODO` confidence markers per entry; Tony will verify all entries before submission
+- `.gitignore` extended to ignore LaTeX build artifacts
+
+Build: `latexmk -pdf paper.tex`. First-pass build confirmed clean (31 pages, no warnings, no undefined citations).
+
+Conventions established during migration:
+- `\needcite` macro renders as bold **[CITATION NEEDED]**; replaces inline `[citation needed]` markers (four instances in Section~2)
+- `\quarry` macro renders as bold **[QUARRY: PAPER 2]**; replaces inline `[QUARRY: PAPER 2]` paragraph markers (four instances in Section~5)
+- Cross-section references use literal `Section~N` (non-breaking space + numeral), not `\ref{}`. Switching to `\ref{}` is a one-pass change if a future revision wants automatic numbering.
+- `\textcite` for in-narrative citations (renders "Author (Year)"), `\parencite` for parenthetical (renders "(Author Year)").
+
+One small editorial change made during migration: Section~4's `(Cato 2026 reports that 35 of 8,361 ...)` parenthetical was restructured to em-dashes around the phrase, because the biblatex citation key for PA 1009 resolves to "Anthony 2026" (Anthony is the actual author; Cato is the publisher), and the conclusion already used "(Anthony 2026)" form. Restructuring to em-dashes avoids nested parens. Three characters of structural punctuation, no semantic change.
+
+## Open structural questions deferred to future sessions
+
+Surfaced during the LaTeX migration tonal pass; not surgery candidates for the immediate next session, but worth catching before rikuy review:
+
+1. **Section~1 formalizes only two categoricals; Sections~4 and~7 refer to three earned positions.** Section~1's "Two categorical positions follow from the frame" lists post-hoc explanation (Position~2) and human oversight (Position~3) explicitly, while treating governance-vs-theater (Position~1) as the section's overall framing claim rather than a parallel categorical. Section~4's silence-manufacture mapping and Section~7's callback both treat all three as parallel earned positions. Either Section~1 needs a sentence promoting governance-vs-theater to explicit-categorical status, or Sections~4/7 need a sentence acknowledging that Position~1 is the framing claim rather than parallel to Positions~2 and~3. Not a contradiction; an inconsistency in how the categoricals are formalized.
+
+2. **Section~4 walks the categorical mapping in order 2~→~3~→~1 (model-output, accountability, institutional); Section~7's callback uses 1~→~2~→~3 (canonical numbering).** Both orderings are defensible — Section~4's has narrow-to-broad pedagogical logic, Section~7's matches the canonical numbering. Aligning would be a substantial restructure of the Section~4 mapping subsection. Left for rikuy or Reviewer~\#2 to flag if it actually matters.
+
 ## Operational notes
 
 - Multi-pass approach: this is one of multiple sessions. Important things will reappear if missed.
-- Per-section files rather than one growing document. Current files: position-opening.md, position-conclusion.md, position-section2.md, position-section2-unrevised.md, position-section3.md, position-section3-lending.md, position-section3-underwriting.md, position-section3-comparison.md, position-section4-architect.md, position-section4-examiner.md (Paper 3 material), position-section4-comparison.md, position-conclusion-examiner-test.md (Paper 3 material), position-planning.md.
+- Per-section files rather than one growing document. Current files: position-opening.md, position-conclusion.md, position-section2.md, position-section2-unrevised.md, position-section3.md, position-section3-lending.md, position-section3-underwriting.md, position-section3-comparison.md, position-section4.md (integrated), position-section4-architect.md (input draft preserved), position-section4-examiner.md (Paper 3 material), position-section4-comparison.md, position-conclusion-examiner-test.md (Paper 3 material), position-section5.md, position-section6.md, position-planning.md.
 - For sections where the frame's value may be non-uniform across worked examples, comparative drafting (two versions plus comparison artifact) is the default rather than the exception. The comparison artifact's value is in preserving genuine non-uniformity rather than collapsing it to a recommendation. Sections 4 and 5 likely benefit from this approach.
 - References folder (references/) holds source documents: PA 1009.pdf (Cato 2026). Add OCC December 2025 review when accessible.
 - After body sections drafted, full citation pass.
@@ -232,7 +260,7 @@ The current Paper 1 conclusion gestures at "follow-on work for implementation sp
 These are tracked here so a subsequent drafting session can pick them up without losing the structural decisions:
 
 1. **Section 1**: light foreshadowing of silence-manufacture using silence-breaking language; do not name the pattern as load-bearing here. *Partial — opening foreshadowing addition staged.*
-2. **Section 4 integration**: promote silence-manufacture to organizing concept of the section. The three diagnostic techniques are silence-breaking instruments against silence-manufactured artifacts. Develop the dual-of-Goodhart relationship as a pointer (not load-bearing). Map the three categoricals onto silence-manufacture instances with empirical confirmation from ML alignment (chain-of-thought unfaithfulness, sycophancy, benchmark gaming). *Pending; integrated version of Section 4 not yet drafted.*
+2. **Section 4 integration**: promote silence-manufacture to organizing concept of the section. The three diagnostic techniques are silence-breaking instruments against silence-manufactured artifacts. Develop the dual-of-Goodhart relationship as a pointer (not load-bearing). Map the three categoricals onto silence-manufacture instances with empirical confirmation from ML alignment (chain-of-thought unfaithfulness, sycophancy, benchmark gaming). *First-pass integrated draft complete at position-section4.md. Dedicated subsection "Silence-manufacture as the underlying structural pattern" with definition, Goodhart-dual relationship as pointer, mapping to three earned positions with cross-domain ML alignment empirical signatures, and three predictions (reform-failure; partitioned-literatures; political-discourse-distortion). Per drafting decision: Section 4 makes the three predictions; Section 7 demonstrates partitioned-literatures with the de-banking discourse as canonical example. Subject to revision pass after rikuy review.*
 3. **Section 7 conclusion revision**: callback to silence-manufacture; closing move on partitioned-literatures using the de-banking discourse as canonical real-time example; closing line about architecting deliberately. *Partial — conclusion partitioned-literatures addition staged.*
 4. **Section 2 BSA/AML walk-through extension**: extend the worked example to follow the SAR → high-risk → closure → ChexSystems escalation; integrate FDIC and Cato empirical anchors; flag which controls are silence-manufacture cases. *Pending.*
 5. **Section 5 framing tweak**: opening sentences should explicitly name the four primitives as silence-breaking instruments rather than metric-improvement instruments. The content already does this; the framing should make it explicit. *Pending.*

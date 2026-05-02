@@ -1,0 +1,58 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{csquotes}
+\usepackage[backend=biber,style=authoryear,maxcitenames=2,giveninits=true,uniquename=false]{biblatex}
+\addbibresource{references.bib}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue,
+  pdftitle={Architectures of Absence: AI Governance under the FS AI RMF},
+  pdfauthor={Tony Mason}
+}
+
+% Tracking macro: visible flag in PDF for citation gaps still to fill.
+% Search the source for \needcite to find each spot before submission.
+\newcommand{\needcite}{\textbf{[CITATION NEEDED]}}
+
+% Tracking macro: marks paragraphs of implementation detail that belong in
+% Paper 2 (the architecture-specification paper) rather than this position
+% paper. Visible in the rendered PDF; search the source for \quarry to find
+% paragraphs slated for migration.
+\newcommand{\quarry}{\textbf{[QUARRY: PAPER 2]}}
+
+\title{Architectures of Absence:\\AI Governance under the FS~AI~RMF}
+\author{Tony Mason\\
+  \texttt{fsgeek@gatech.edu}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+The Financial Services AI Risk Management Framework, released by the US Treasury in February 2026, specifies 230 control objectives spanning governance, data, model development, validation, monitoring, third-party risk, and consumer protection. Read as a checklist, the framework is operationally daunting and conceptually opaque; community banks below the primary applicability thresholds face an unresolved question about what commensurate compliance means for their context. We argue that the framework has an underlying coherence --- empty-chair representation --- that makes both interpretation and operationalization tractable: nearly every control objective can be understood as protecting the interests of a party who is not in the room when an AI system makes or supports a financial decision.
+
+We develop the empty-chair frame at three levels. We argue that AI applications in regulated decision contexts divide into structurally distinct categories distinguished by whether a verification regime is available for their outputs, and that two categorical positions follow: post-hoc explanation is structurally inadequate as a verification regime in adversarial contexts, and human oversight of AI-generated decisions is not a verification regime when the human reviews explanations rather than reasoning. We propose three diagnostic techniques --- empty-chair enumeration, pages missing from the ledger, and a produced-silence question pair --- that operationalize the frame as architectural design discipline and examination methodology. We propose four categories of architectural primitive that empty-chair representation requires: tamper-evident temporal capture, evidence binding, three-dimensional confidence characterization, and structural drift typology.
+
+Across these arguments, a unifying pattern emerges: the architectures the FS~AI~RMF was written to govern fail not because their controls are corrupted versions of correct measurements but because their controls are produced to occupy the rhetorical space of accountability while the underlying processes are architecturally suppressed. The frame's contribution is an analytical and architectural vocabulary for surfacing this distinction, with implications for examination practice, architectural design, and the regulatory direction of FS~AI~RMF operationalization.
+\end{abstract}
+
+\input{section1}
+\input{section2}
+\input{section3}
+\input{section4}
+\input{section5}
+\input{section6}
+\input{section7}
+
+\printbibliography
+
+\end{document}

@@ -1,0 +1,217 @@
+% References for "Architectures of Absence: AI Governance under the FS AI RMF"
+%
+% Each entry is annotated with one of three markers in a leading comment:
+%   VERIFIED  --- confirmed real per planning doc citation status; bibliographic
+%                 fields drawn from the planning doc and should be spot-checked
+%                 but are not load-bearing guesses.
+%   LIKELY    --- canonical reference where I have high confidence in the
+%                 bibliographic data, but you should confirm the arxiv ID,
+%                 venue, and exact title before submission.
+%   TODO      --- entry skeleton; the citation key is in use but the
+%                 bibliographic fields are placeholders. Source before
+%                 submission.
+%
+% Sorted by citation key for ease of editing.
+
+% VERIFIED --- planning doc citation status, file at references/PA 1009.pdf
+@techreport{anthony2026,
+  author       = {Anthony, Nicholas},
+  title        = {Understanding Debanking},
+  type         = {Policy Analysis},
+  number       = {1009},
+  institution  = {Cato Institute},
+  year         = {2026},
+  month        = {1},
+  url          = {https://www.cato.org/policy-analysis/understanding-debanking},
+  urldate      = {2026-05-01},
+}
+
+% VERIFIED --- planning doc citation status; central to position 2
+@article{bordt2022,
+  author       = {Bordt, Sebastian and Finck, Mich{\`e}le and Raidl, Eric and von Luxburg, Ulrike},
+  title        = {Post-Hoc Explanations Fail to Achieve their Purpose in Adversarial Contexts},
+  journal      = {arXiv preprint arXiv:2201.10295},
+  year         = {2022},
+  eprint       = {2201.10295},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.LG},
+  url          = {https://arxiv.org/abs/2201.10295},
+}
+
+% VERIFIED --- planning doc citation status; trilemma framing
+@article{evite2026,
+  author       = {Evite and Svetlova and Bucur},
+  title        = {Trade-offs in Financial AI},
+  journal      = {arXiv preprint arXiv:2602.01368},
+  year         = {2026},
+  eprint       = {2602.01368},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CY},
+  url          = {https://arxiv.org/abs/2602.01368},
+  note         = {VERIFY: full author given names; full title; primary class}
+}
+
+% VERIFIED --- FDIC 2024 press release on 2023 National Survey of Unbanked and
+% Underbanked Households. Section 2 empirical anchor (4.2\% / 14.2\% / disparities).
+@misc{fdic2024,
+  author       = {{Federal Deposit Insurance Corporation}},
+  title        = {{FDIC} National Survey of Unbanked and Underbanked Households},
+  year         = {2024},
+  month        = {10},
+  howpublished = {Press release},
+  note         = {Reports 2023 survey data; VERIFY exact release date and URL},
+  url          = {https://www.fdic.gov/analysis/household-survey/}
+}
+
+% TODO --- Goodhart's law canonical citation; common references include Goodhart's
+% 1975 paper "Problems of Monetary Management" (Reserve Bank of Australia
+% conference) or the formulation popularized in later work. Confirm preferred
+% canonical citation form before submission.
+@incollection{goodhart1975,
+  author       = {Goodhart, Charles A. E.},
+  title        = {Problems of Monetary Management: The {U.K.} Experience},
+  booktitle    = {Papers in Monetary Economics},
+  publisher    = {Reserve Bank of Australia},
+  year         = {1975},
+  note         = {TODO: confirm canonical citation form for Goodhart's law origin}
+}
+
+% LIKELY --- Anthropic alignment research; widely-cited paper on chain-of-thought
+% faithfulness. Confirm exact title and arxiv ID before submission.
+@article{lanham2023,
+  author       = {Lanham, Tamera and Chen, Anna and Radhakrishnan, Ansh and Steiner, Benoit and Denison, Carson and Hernandez, Danny and Li, Dustin and Durmus, Esin and Hubinger, Evan and Kernion, Jackson and others},
+  title        = {Measuring Faithfulness in Chain-of-Thought Reasoning},
+  journal      = {arXiv preprint arXiv:2307.13702},
+  year         = {2023},
+  eprint       = {2307.13702},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  url          = {https://arxiv.org/abs/2307.13702},
+  note         = {LIKELY: confirm full author list, title, and arxiv ID}
+}
+
+% TODO --- Nisbett \& Wilson 1977 on introspection limits; classic psychology
+% reference. Status note in Section 2 for reviewer self-report literature claim.
+@article{nisbett1977,
+  author       = {Nisbett, Richard E. and Wilson, Timothy DeCamp},
+  title        = {Telling More Than We Can Know: Verbal Reports on Mental Processes},
+  journal      = {Psychological Review},
+  volume       = {84},
+  number       = {3},
+  pages        = {231--259},
+  year         = {1977},
+  note         = {TODO: confirm volume/issue/pages}
+}
+
+% VERIFIED --- planning doc citation status; counterposition for honest engagement
+@article{oh2024,
+  author       = {Oh, Nick},
+  title        = {[In Defense of Post-Hoc Explanations]},
+  journal      = {arXiv preprint arXiv:2412.17883},
+  year         = {2024},
+  eprint       = {2412.17883},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.AI},
+  url          = {https://arxiv.org/abs/2412.17883},
+  note         = {VERIFY: full title (current placeholder is paraphrastic)}
+}
+
+% TODO --- Perez et al. on RLHF reward hacking / discovering language model
+% behaviors. Section 4 mapping for position 3.
+@article{perez2022,
+  author       = {Perez, Ethan and others},
+  title        = {Discovering Language Model Behaviors with Model-Written Evaluations},
+  journal      = {arXiv preprint},
+  year         = {2022},
+  note         = {TODO: confirm full author list, title, year, and arxiv ID}
+}
+
+% LIKELY --- Rudin 2019 Nature Machine Intelligence; canonical "stop explaining
+% black-box models" paper. Section 1 and Section 3 citation.
+@article{rudin2019,
+  author       = {Rudin, Cynthia},
+  title        = {Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead},
+  journal      = {Nature Machine Intelligence},
+  volume       = {1},
+  number       = {5},
+  pages        = {206--215},
+  year         = {2019},
+  doi          = {10.1038/s42256-019-0048-x},
+  note         = {LIKELY: confirm volume/issue/pages and DOI}
+}
+
+% TODO --- Sharma et al. on sycophancy. Section 4 mapping for position 3.
+% Anthropic paper, widely cited.
+@article{sharma2023,
+  author       = {Sharma, Mrinank and others},
+  title        = {Towards Understanding Sycophancy in Language Models},
+  journal      = {arXiv preprint},
+  year         = {2023},
+  note         = {TODO: confirm full author list, title, year, and arxiv ID}
+}
+
+% LIKELY --- Slack et al. 2020 "Fooling LIME and SHAP" or related; Section 1
+% citation for explanation-method manipulation.
+@inproceedings{slack2020,
+  author       = {Slack, Dylan and Hilgard, Sophie and Jia, Emily and Singh, Sameer and Lakkaraju, Himabindu},
+  title        = {Fooling {LIME} and {SHAP}: Adversarial Attacks on Post Hoc Explanation Methods},
+  booktitle    = {Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society (AIES)},
+  year         = {2020},
+  note         = {LIKELY: confirm exact venue and pagination}
+}
+
+% TODO --- Strathern 1997 on audit culture; common Goodhart-adjacent citation.
+@article{strathern1997,
+  author       = {Strathern, Marilyn},
+  title        = {`Improving Ratings': Audit in the {British} University System},
+  journal      = {European Review},
+  volume       = {5},
+  number       = {3},
+  pages        = {305--321},
+  year         = {1997},
+  note         = {TODO: confirm volume/issue/pages and exact title format}
+}
+
+% VERIFIED --- planning doc citation status; April 2026 model-risk guidance memo
+@misc{sullcrom2026,
+  author       = {{Sullivan \& Cromwell LLP}},
+  title        = {Revised Model Risk Management Guidance Memorandum},
+  year         = {2026},
+  month        = {4},
+  day          = {17},
+  howpublished = {Client memorandum},
+  note         = {VERIFIED: April 17, 2026 revised guidance, \$30B threshold, GenAI exclusion, promised RFI. Confirm exact memo title and URL.}
+}
+
+% LIKELY --- Turpin et al. 2023 "Language Models Don't Always Say What They Think";
+% widely cited in interpretability work.
+@article{turpin2023,
+  author       = {Turpin, Miles and Michael, Julian and Perez, Ethan and Bowman, Samuel R.},
+  title        = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
+  journal      = {arXiv preprint arXiv:2305.04388},
+  year         = {2023},
+  eprint       = {2305.04388},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL},
+  url          = {https://arxiv.org/abs/2305.04388},
+  note         = {LIKELY: confirm full author list, title, and arxiv ID}
+}
+
+% VERIFIED --- planning doc citation status; partition-counterpart to Cato in Section 7
+@misc{unbankedamerica,
+  author       = {{Unbanked America}},
+  title        = {Atlas of Financial Inclusion},
+  howpublished = {\url{https://unbankedamerica.org}},
+  note         = {VERIFY: organizational author name; access date}
+}
+
+% VERIFIED --- planning doc citation status; CIGI Paper 296
+@techreport{witzel2024,
+  author       = {Witzel, Morgen and Gonnet, Aurelia and Snider, Susan},
+  title        = {Challenging Post-Hoc Explanations in {AI} Governance},
+  type         = {CIGI Paper},
+  number       = {296},
+  institution  = {Centre for International Governance Innovation},
+  year         = {2024},
+  note         = {VERIFY: exact title, year, author given names, URL}
+}
