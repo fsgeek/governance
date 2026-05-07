@@ -68,8 +68,15 @@ def generate_boundary_cases(
     vintage : vintage tag attached to each synthetic case (matches the real
               dataset's vintage; we are extending the same vintage's
               hypothetical population, not generating cross-vintage data).
-    seed : RNG seed for reproducibility.
+    seed : RNG seed for reproducibility. Note: results are reproducible
+           only when `real` has the same column order across calls; the
+           per-column loop consumes RNG state in column order.
     """
+    if real.empty:
+        raise ValueError(
+            "generate_boundary_cases: real DataFrame is empty; "
+            "cannot estimate marginals with no rows."
+        )
     rng = np.random.default_rng(seed)
     feature_cols = [c for c in real.columns if c != "label"]
     samples = {}

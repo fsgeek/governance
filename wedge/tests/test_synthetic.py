@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-import numpy as np
+import pandas as pd
 
 from wedge.collectors.synthetic import generate_boundary_cases
 from wedge.tests.fixtures import tiny_separable_dataset
@@ -46,3 +46,13 @@ def test_generate_reproducible_with_seed():
     a = [c.features for c in syn_a]
     b = [c.features for c in syn_b]
     assert a == b
+
+
+def test_generate_raises_on_empty_dataframe():
+    empty = pd.DataFrame(columns=["fico_proxy", "dti_proxy"])
+    try:
+        generate_boundary_cases(empty, n=5, vintage="2015Q3", seed=0)
+    except ValueError as e:
+        assert "empty" in str(e).lower()
+        return
+    raise AssertionError("expected ValueError for empty real DataFrame")
