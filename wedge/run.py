@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import uuid
 from pathlib import Path
 
 import pandas as pd
@@ -48,8 +49,7 @@ def _now_iso() -> str:
 
 
 def _to_case_real(row, vintage, feature_cols) -> Case:
-    import uuid
-    features = {col: row[col] for col in feature_cols}
+    features = {col: (None if pd.isna(row[col]) else row[col]) for col in feature_cols}
     return Case(
         case_id=str(uuid.uuid4()),
         origin="real",
@@ -99,7 +99,6 @@ def main() -> int:
         df, test_size=0.30, random_state=args.seed, stratify=df["label"]
     )
     X_train, y_train = train_df[feature_cols], train_df["label"]
-    X_eval, y_eval = eval_df[feature_cols], eval_df["label"]
 
     # 3. Build R(ε).
     cfg = SweepConfig(
