@@ -27,8 +27,11 @@ from wedge.types import Case
 
 # Features for which we extend the lower tail (more risk-shaped values
 # downward). For other features we sample from the real marginal directly.
-RISK_FEATURES_LOWER_EXTENSION = ("fico_proxy",)
-RISK_FEATURES_UPPER_EXTENSION = ("dti_proxy",)
+# Both fixture names (fico_proxy, dti_proxy) and real LendingClub column
+# names (fico_range_low, dti) are included so the extension fires on both
+# test data and real LC data without any caller-side configuration.
+RISK_FEATURES_LOWER_EXTENSION = ("fico_proxy", "fico_range_low")
+RISK_FEATURES_UPPER_EXTENSION = ("dti_proxy", "dti")
 DEFAULT_LOWER_EXTENSION_PCT = 0.10  # extend by 10% of feature range below real min
 DEFAULT_UPPER_EXTENSION_PCT = 0.10  # extend by 10% above real max
 
@@ -56,10 +59,12 @@ def generate_boundary_cases(
     seed: int = 0,
     lower_extension_pct: float = DEFAULT_LOWER_EXTENSION_PCT,
     upper_extension_pct: float = DEFAULT_UPPER_EXTENSION_PCT,
+    lower_extension_features: tuple[str, ...] = RISK_FEATURES_LOWER_EXTENSION,
+    upper_extension_features: tuple[str, ...] = RISK_FEATURES_UPPER_EXTENSION,
 ) -> list[Case]:
     """Generate `n` synthetic cases calibrated to real's marginals, extending
-    the lower tail of RISK_FEATURES_LOWER_EXTENSION and the upper tail of
-    RISK_FEATURES_UPPER_EXTENSION.
+    the lower tail of lower_extension_features and the upper tail of
+    upper_extension_features.
 
     Parameters
     ----------
@@ -71,6 +76,16 @@ def generate_boundary_cases(
     seed : RNG seed for reproducibility. Note: results are reproducible
            only when `real` has the same column order across calls; the
            per-column loop consumes RNG state in column order.
+    lower_extension_pct : fraction of the feature range to extend below
+           the real-data minimum for columns listed in lower_extension_features.
+    upper_extension_pct : fraction of the feature range to extend above
+           the real-data maximum for columns listed in upper_extension_features.
+    lower_extension_features : columns to extend into the lower tail. Defaults
+           to RISK_FEATURES_LOWER_EXTENSION, which covers both the test fixture
+           name ('fico_proxy') and the real LC schema name ('fico_range_low').
+    upper_extension_features : columns to extend into the upper tail. Defaults
+           to RISK_FEATURES_UPPER_EXTENSION, which covers both the test fixture
+           name ('dti_proxy') and the real LC schema name ('dti').
     """
     if real.empty:
         raise ValueError(
@@ -82,8 +97,8 @@ def generate_boundary_cases(
     samples = {}
     for col in feature_cols:
         real_col = real[col].astype(float)
-        lower_pct = lower_extension_pct if col in RISK_FEATURES_LOWER_EXTENSION else 0.0
-        upper_pct = upper_extension_pct if col in RISK_FEATURES_UPPER_EXTENSION else 0.0
+        lower_pct = lower_extension_pct if col in lower_extension_features else 0.0
+        upper_pct = upper_extension_pct if col in upper_extension_features else 0.0
         samples[col] = _extended_uniform(
             rng,
             n,

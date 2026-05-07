@@ -100,11 +100,25 @@ def main() -> int:
     )
     X_train, y_train = train_df[feature_cols], train_df["label"]
 
+    # Build feature subsets that always retain the must-include features
+    # (FICO and DTI per spec §5: "operationally non-optional in any
+    # realistic underwriting model") and vary the optional ones to give the
+    # diversity-selection algorithm a third axis with non-zero range.
+    must_include = [c for c in ("fico_range_low", "dti") if c in feature_cols]
+    optional = [c for c in feature_cols if c not in must_include]
+
+    # Subsets: full, drop-each-optional-one-at-a-time. If there are no
+    # optional features, fall back to (full,).
+    subsets: list[tuple[str, ...]] = [tuple(feature_cols)]
+    for drop in optional:
+        subsets.append(tuple(c for c in feature_cols if c != drop))
+    feature_subsets = tuple(subsets)
+
     # 3. Build R(ε).
     cfg = SweepConfig(
         max_depths=(4, 6, 8, 10, 12),
         min_samples_leafs=(25, 50, 100, 200, 400),
-        feature_subsets=(tuple(feature_cols),),
+        feature_subsets=feature_subsets,
         random_state=args.seed,
         holdout_fraction=0.30,
     )
@@ -137,12 +151,13 @@ def main() -> int:
         random_seed=args.seed,
         members=[
             {
-                "model_id": m.model_id,
-                "max_depth": m.tree.max_depth,
-                "min_samples_leaf": m.tree.min_samples_leaf,
-                "feature_subset": list(m.feature_subset),
+                "model_id": f.model_id,
+                "max_depth": f.tree.max_depth,
+                "min_samples_leaf": f.tree.min_samples_leaf,
+                "feature_subset": list(f.feature_subset),
+                "holdout_auc": m.holdout_auc,
             }
-            for m in fitted
+            for f, m in zip(fitted, members)
         ],
         notes=f"vintage={args.vintage} term={args.term} epsilon={args.epsilon}",
     )

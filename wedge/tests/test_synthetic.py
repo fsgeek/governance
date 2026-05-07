@@ -56,3 +56,19 @@ def test_generate_raises_on_empty_dataframe():
         assert "empty" in str(e).lower()
         return
     raise AssertionError("expected ValueError for empty real DataFrame")
+
+
+def test_generate_extends_into_lower_real_lc_fico_range_low():
+    """The default lower-extension list must include the real LC column name
+    'fico_range_low' so that running on real LC data actually extends, not
+    silently degrades to plain marginal sampling."""
+    real = pd.DataFrame({
+        "fico_range_low": [620, 650, 700, 750, 780],
+        "dti": [10, 15, 20, 25, 30],
+        "annual_inc": [40000, 50000, 60000, 70000, 80000],
+        "emp_length": [1, 3, 5, 7, 10],
+    })
+    real_min = real["fico_range_low"].min()
+    syn = generate_boundary_cases(real, n=200, vintage="2015Q3", seed=0)
+    below = sum(1 for c in syn if c.features["fico_range_low"] < real_min)
+    assert below > 0, "default lower extension should fire for real LC column 'fico_range_low'"
