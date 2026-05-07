@@ -14,3 +14,4 @@
 *.synctex.gz
 *.toc
 draft-*.pdf
+__pycache__/
