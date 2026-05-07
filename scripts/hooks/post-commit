@@ -4,6 +4,12 @@ set -e
 GIT_ROOT=$(git rev-parse --show-toplevel)
 OTS="$GIT_ROOT/.venv/bin/ots"
 
+# Guard: don't stamp OTS commits (--no-verify skips pre-commit but not post-commit)
+COMMIT_MSG=$(git log -1 --format="%s")
+if [[ "$COMMIT_MSG" == ots:* ]]; then
+    exit 0
+fi
+
 if [ ! -x "$OTS" ]; then
     echo "ots: client not found at $GIT_ROOT/.venv/bin/ots, skipping timestamp" >&2
     exit 0
