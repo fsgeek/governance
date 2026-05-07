@@ -7,12 +7,24 @@ per-component factor support drawn from each model's intrinsic structure.
 Synthetic cases carry origin="synthetic" and a synthetic_role tag per
 the May-6 synthetic/real-data taxonomy. They do not carry labels (no
 realized outcome) and the analysis layer must never elide the origin tag.
+
+Mutability: Case and PerModelOutput are intentionally mutable because
+the wedge's pipeline assembles per_model outputs incrementally. Producers
+build then hand off; downstream consumers (metrics, output) must not
+mutate after assembly. FactorSupportEntry is frozen because it is a
+pure value object passed through unchanged.
+
+Wire-format note on `label`: the schema requires the `label` key to be
+present in serialized form for both real (int) and synthetic (null)
+cases. from_dict uses .get() and tolerates a missing key as None, which
+collapses the distinction between an absent key and an explicit null.
+Producers must always emit the key.
 """
 
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from typing import Any, Optional
 
 
