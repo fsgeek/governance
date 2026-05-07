@@ -1,0 +1,116 @@
+"""LendingClub real-data collector.
+
+Loads LendingClub historical loan-level data, filters to a single quarterly
+vintage and term, derives the binary terminal-outcome label, and emits Case
+objects with origin="real". Excludes loans without a terminal outcome
+(Current, Late, In Grace Period) and any loan whose observation window
+doesn't extend to loan_term + 6 months.
+
+See docs/superpowers/specs/2026-05-07-rashomon-prototype-wedge-design.md
+section 4.1 for design rationale (single-vintage scope, terminal-outcome
+restriction, conditional-on-approval acknowledgment).
+"""
+
+from __future__ import annotations
+
+import uuid
+from pathlib import Path
+
+import pandas as pd
+
+from wedge.types import Case
+
+
+TERMINAL_STATUSES = {"Fully Paid", "Charged Off"}
+PAID = "Fully Paid"
+CHARGED_OFF = "Charged Off"
+
+# Origination-time features used by the wedge. Excludes any post-origination
+# feature (payment history etc.) — those would leak.
+ORIGINATION_FEATURE_COLS = [
+    "fico_range_low",
+    "dti",
+    "annual_inc",
+    "emp_length",
+]
+
+
+_QUARTER_MONTHS = {
+    "Q1": {"Jan", "Feb", "Mar"},
+    "Q2": {"Apr", "May", "Jun"},
+    "Q3": {"Jul", "Aug", "Sep"},
+    "Q4": {"Oct", "Nov", "Dec"},
+}
+
+
+def _parse_vintage(vintage: str) -> tuple[str, set[str]]:
+    """Parse a vintage string like '2015Q3' into (year, set_of_month_abbrs)."""
+    if len(vintage) != 6 or vintage[4] != "Q":
+        raise ValueError(f"vintage must look like '2015Q3', got {vintage!r}")
+    year, quarter_key = vintage[:4], vintage[4:]
+    if quarter_key not in _QUARTER_MONTHS:
+        raise ValueError(f"unknown quarter {quarter_key!r}")
+    return year, _QUARTER_MONTHS[quarter_key]
+
+
+def filter_to_vintage(df: pd.DataFrame, *, vintage: str, term: str) -> pd.DataFrame:
+    """Keep rows whose issue_d falls in the named quarter, term matches, and
+    loan_status is terminal (Fully Paid / Charged Off)."""
+    year, months = _parse_vintage(vintage)
+    issue_d = df["issue_d"].astype(str).str.strip()
+    issue_month = issue_d.str.slice(0, 3)
+    issue_year = issue_d.str.slice(-4)
+    term_norm = df["term"].astype(str).str.strip()
+    status = df["loan_status"].astype(str).str.strip()
+    mask = (
+        issue_month.isin(months)
+        & (issue_year == year)
+        & (term_norm == term)
+        & status.isin(TERMINAL_STATUSES)
+    )
+    return df.loc[mask].reset_index(drop=True)
+
+
+def derive_label(loan_status: pd.Series) -> pd.Series:
+    """Map terminal loan_status to binary label: charged_off=1, paid=0."""
+    return (loan_status.astype(str).str.strip() == CHARGED_OFF).astype(int)
+
+
+def load_cases(
+    csv_path: Path | str,
+    *,
+    vintage: str,
+    term: str,
+    feature_cols: list[str] | None = None,
+) -> list[Case]:
+    """Load LendingClub data from a CSV and emit Case objects for the vintage.
+
+    Parameters
+    ----------
+    csv_path : path to LendingClub CSV (Kaggle mirror or original platform export).
+    vintage  : e.g. "2015Q3". See _parse_vintage.
+    term     : e.g. "36 months". Must exactly match the CSV's `term` field
+               (LendingClub publishes this with a leading space; both " 36 months"
+               and "36 months" are handled by the strip in filter_to_vintage).
+    feature_cols : columns to retain as origination features. Defaults to
+                   ORIGINATION_FEATURE_COLS.
+    """
+    feature_cols = feature_cols or ORIGINATION_FEATURE_COLS
+    df = pd.read_csv(csv_path)
+    df = filter_to_vintage(df, vintage=vintage, term=term)
+    df["label"] = derive_label(df["loan_status"])
+    cases: list[Case] = []
+    for _, row in df.iterrows():
+        features = {col: row[col] for col in feature_cols if col in df.columns}
+        cases.append(
+            Case(
+                case_id=str(uuid.uuid4()),
+                origin="real",
+                synthetic_role=None,
+                vintage=vintage,
+                features=features,
+                label=int(row["label"]),
+                per_model=[],
+            )
+        )
+    return cases
