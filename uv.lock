@@ -68,9 +68,13 @@ dependencies = [
     { name = "opentimestamps-client" },
     { name = "pandas" },
     { name = "pymupdf" },
-    { name = "pytest" },
     { name = "python-docx" },
     { name = "scikit-learn" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
 ]
 
 [package.metadata]
@@ -80,10 +84,12 @@ requires-dist = [
     { name = "opentimestamps-client", specifier = ">=0.7.2" },
     { name = "pandas", specifier = ">=2.0" },
     { name = "pymupdf", specifier = ">=1.27.2.3" },
-    { name = "pytest", specifier = ">=8.0" },
     { name = "python-docx", specifier = ">=1.2.0" },
     { name = "scikit-learn", specifier = ">=1.5" },
 ]
+
+[package.metadata.requires-dev]
+dev = [{ name = "pytest", specifier = ">=8.0" }]
 
 [[package]]
 name = "iniconfig"

@@ -12,5 +12,10 @@ dependencies = [
     "pandas>=2.0",
     "scikit-learn>=1.5",
     "numpy>=1.26",
-    "pytest>=8.0",
 ]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["wedge/tests"]
