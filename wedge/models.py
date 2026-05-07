@@ -4,9 +4,11 @@ Each CartModel wraps a fitted sklearn DecisionTreeClassifier and adds:
 
   - per-case (T, F) emission from leaf class proportions
   - identification of the leaf the case lands in
-  - the decision path the case took
   - the feature subset the model was fit on (so that downstream attribution
     can restrict its analysis to the model's features)
+
+Decision-path walking and per-component attribution live in wedge.attribution,
+not on CartModel itself.
 
 For a binary classification leaf with class proportions (p_paid, p_charged):
   T = p_paid       (confidence in grant)
