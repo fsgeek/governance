@@ -48,6 +48,10 @@ def _parse_vintage(vintage: str) -> tuple[str, set[str]]:
     if len(vintage) != 6 or vintage[4] != "Q":
         raise ValueError(f"vintage must look like '2015Q3', got {vintage!r}")
     year, quarter_key = vintage[:4], vintage[4:]
+    try:
+        int(year)
+    except ValueError:
+        raise ValueError(f"vintage year {year!r} is not a valid integer in {vintage!r}")
     if quarter_key not in _QUARTER_MONTHS:
         raise ValueError(f"unknown quarter {quarter_key!r}")
     return year, _QUARTER_MONTHS[quarter_key]
@@ -56,6 +60,13 @@ def _parse_vintage(vintage: str) -> tuple[str, set[str]]:
 def filter_to_vintage(df: pd.DataFrame, *, vintage: str, term: str) -> pd.DataFrame:
     """Keep rows whose issue_d falls in the named quarter, term matches, and
     loan_status is terminal (Fully Paid / Charged Off)."""
+    required = {"issue_d", "term", "loan_status"}
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(
+            f"CSV is missing required columns: {sorted(missing)!r}. "
+            f"Found {len(df.columns)} columns; first 10: {list(df.columns[:10])}"
+        )
     year, months = _parse_vintage(vintage)
     issue_d = df["issue_d"].astype(str).str.strip()
     issue_month = issue_d.str.slice(0, 3)
@@ -96,21 +107,24 @@ def load_cases(
                    ORIGINATION_FEATURE_COLS.
     """
     feature_cols = feature_cols or ORIGINATION_FEATURE_COLS
-    df = pd.read_csv(csv_path)
+    required_cols = {"issue_d", "term", "loan_status"}
+    needed_cols = required_cols | set(feature_cols)
+    df = pd.read_csv(csv_path, usecols=lambda c: c in needed_cols, low_memory=False)
     df = filter_to_vintage(df, vintage=vintage, term=term)
     df["label"] = derive_label(df["loan_status"])
-    cases: list[Case] = []
-    for _, row in df.iterrows():
-        features = {col: row[col] for col in feature_cols if col in df.columns}
-        cases.append(
-            Case(
-                case_id=str(uuid.uuid4()),
-                origin="real",
-                synthetic_role=None,
-                vintage=vintage,
-                features=features,
-                label=int(row["label"]),
-                per_model=[],
-            )
+    feature_cols_present = [c for c in feature_cols if c in df.columns]
+    records = df[feature_cols_present].to_dict("records")
+    labels = df["label"].tolist()
+    cases = [
+        Case(
+            case_id=str(uuid.uuid4()),
+            origin="real",
+            synthetic_role=None,
+            vintage=vintage,
+            features={k: (None if pd.isna(v) else v) for k, v in rec.items()},
+            label=int(lbl),
+            per_model=[],
         )
+        for rec, lbl in zip(records, labels)
+    ]
     return cases
