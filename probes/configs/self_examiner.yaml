@@ -1,0 +1,28 @@
+project:
+  name: FS AI RMF - self_examiner
+document:
+  format: latex
+  path: /home/tony/projects/governance
+  preferred_order:
+  - section1.tex
+  - section2.tex
+  - section3.tex
+  - section4.tex
+  - section5.tex
+  - section6.tex
+  - section7.tex
+venue:
+  name: arXiv preprint
+  type: position paper / tech report
+  description: researcher-to-regulator position paper on FS AI RMF
+models:
+  default: openai/gpt-oss-120b
+  temperature: 0.3
+judges:
+- adversarial:
+    personas:
+    - self_examiner
+    persona_search_dirs:
+    - /home/tony/projects/governance/probes/personas
+output:
+  directory: /home/tony/projects/governance/probes/reviews/self_examiner

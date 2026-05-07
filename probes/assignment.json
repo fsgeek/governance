@@ -1,0 +1,40 @@
+{
+  "seed": 20260506,
+  "generated_at": "2026-05-07T00:20:47.432832+00:00",
+  "models_pool": [
+    "anthropic/claude-haiku-4.5",
+    "moonshotai/kimi-k2.6",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "x-ai/grok-4.3",
+    "xiaomi/mimo-v2.5-pro",
+    "z-ai/glm-5.1",
+    "deepseek/deepseek-v4-pro",
+    "mistralai/mistral-large-2512",
+    "openai/gpt-oss-120b",
+    "qwen/qwen3.6-plus"
+  ],
+  "models_unused": [
+    "deepseek/deepseek-v4-pro",
+    "qwen/qwen3.6-plus"
+  ],
+  "personas": [
+    "examiner",
+    "vendor",
+    "compliance_officer",
+    "civil_rights_attorney",
+    "technical_reviewer",
+    "frame_skeptic",
+    "sympathetic_regulator",
+    "self_examiner"
+  ],
+  "assignment": {
+    "examiner": "nvidia/nemotron-3-super-120b-a12b:free",
+    "vendor": "anthropic/claude-haiku-4.5",
+    "compliance_officer": "mistralai/mistral-large-2512",
+    "civil_rights_attorney": "moonshotai/kimi-k2.6",
+    "technical_reviewer": "xiaomi/mimo-v2.5-pro",
+    "frame_skeptic": "x-ai/grok-4.3",
+    "sympathetic_regulator": "z-ai/glm-5.1",
+    "self_examiner": "openai/gpt-oss-120b"
+  }
+}

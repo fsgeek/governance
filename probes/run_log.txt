@@ -1,0 +1,409 @@
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+    RETRY 1/1: empty response...
+  Examiner: Bank Supervisor: 0 findings (F=0, M=0, m=0)
+
+  Findings: 0 (F=0, M=0, m=0)
+  Tokens: 0+0, Latency: 120321ms
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 0 (F=0, M=0, m=0)
+Total tokens: 0
+  adversarial: OK, 0 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/examiner/review_20260507_002047.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Vendor: Articulate Advocate: 8 findings (F=1, M=5, m=2)
+
+  Findings: 8 (F=1, M=5, m=2)
+  Tokens: 25008+3570, Latency: 37934ms
+
+  FATAL [PER-VN-001] Opening Movement
+    The paper conflates post-hoc explanation methods applied to black-box models with all explanation-based verification regimes. The strongest vendor position is not that post-hoc Shapley values are fait...
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 8 (F=1, M=5, m=2)
+Total tokens: 28,578
+  adversarial: OK, 8 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/vendor/review_20260507_002451.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Compliance Officer: Community Bank: 8 findings (F=1, M=4, m=3)
+
+  Findings: 8 (F=1, M=4, m=3)
+  Tokens: 23356+2422, Latency: 60369ms
+
+  FATAL [PER-CO-001] Section 4: Diagnostic Techniques, Technique 1: Empty-chair enumeration as design pre-condition
+    This claim assumes I have the luxury of starting from a blank sheet. In reality, my AI systems are vendor-built (loan origination, fraud detection, deposit pricing). I cannot enumerate empty chairs fo...
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 8 (F=1, M=4, m=3)
+Total tokens: 25,778
+  adversarial: OK, 8 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/compliance_officer/review_20260507_002529.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  ERROR [Civil Rights Attorney]: object of type 'NoneType' has no len()
+  FAILED: None
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 0 (F=0, M=0, m=0)
+Total tokens: 0
+  adversarial: FAILED, 0 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/civil_rights_attorney/review_20260507_002630.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  ERROR [Technical Reviewer: ML/AI Researcher]: object of type 'NoneType' has no len()
+  FAILED: None
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 0 (F=0, M=0, m=0)
+Total tokens: 0
+  adversarial: FAILED, 0 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/technical_reviewer/review_20260507_004138.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Frame Skeptic: Internal Coherence: 6 findings (F=2, M=3, m=1)
+
+  Findings: 6 (F=2, M=3, m=1)
+  Tokens: 22588+4023, Latency: 65292ms
+
+  FATAL [PER-FS-001] Diagnostic Techniques
+    The paper defines silence-manufacture as one structural pattern (suppress access to ground truth, then produce a substitute artifact read as evidence) and maps it onto three instances: post-hoc explan...
+
+  FATAL [PER-FS-002] The Frame as Method; Verification Regimes as Taxonomic Move
+    The paper traces silence-manufacture across BSA/AML (appeal-cost suppression of false-positive customers and marginalized populations), adverse-action notices (post-hoc explanation failing to bind to ...
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 6 (F=2, M=3, m=1)
+Total tokens: 26,611
+  adversarial: OK, 6 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/frame_skeptic/review_20260507_005441.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Sympathetic Regulator: Generative Critic: 7 findings (F=1, M=5, m=1)
+
+  Findings: 7 (F=1, M=5, m=1)
+  Tokens: 23069+6646, Latency: 120638ms
+
+  FATAL [PER-SR-001] Section 4, opening paragraph
+    Silence-manufacture is the paper's load-bearing unifier—the concept that makes three separate critiques 'cohere into a structural argument rather than a list of related concerns.' But the paper provid...
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 7 (F=1, M=5, m=1)
+Total tokens: 29,715
+  adversarial: OK, 7 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/sympathetic_regulator/review_20260507_005547.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Self-Examiner: Reflexive Diagnostic: 6 findings (F=1, M=3, m=2)
+
+  Findings: 6 (F=1, M=3, m=2)
+  Tokens: 23082+1961, Latency: 51640ms
+
+  FATAL [PER-SE-003] Opening Movement (final paragraph)
+    The manuscript never names or reflects on its own verification regime—the fact that it is a position paper posted on arXiv, subject to informal community review, and not a peer‑reviewed journal articl...
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 6 (F=1, M=3, m=2)
+Total tokens: 25,043
+  adversarial: OK, 6 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/self_examiner/review_20260507_005748.jsonl
+Assignment written to /home/tony/projects/governance/probes/assignment.json
+Seed: 20260506
+  * examiner                  -> nvidia/nemotron-3-super-120b-a12b:free
+  * vendor                    -> anthropic/claude-haiku-4.5
+  * compliance_officer        -> mistralai/mistral-large-2512
+  * civil_rights_attorney     -> moonshotai/kimi-k2.6
+  * technical_reviewer        -> xiaomi/mimo-v2.5-pro
+  * frame_skeptic             -> x-ai/grok-4.3
+  * sympathetic_regulator     -> z-ai/glm-5.1
+  * self_examiner             -> openai/gpt-oss-120b
+Unused models: ['deepseek/deepseek-v4-pro', 'qwen/qwen3.6-plus']
+
+>>> examiner (nvidia/nemotron-3-super-120b-a12b:free)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/examiner.yaml review
+
+>>> vendor (anthropic/claude-haiku-4.5)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/vendor.yaml review
+
+>>> compliance_officer (mistralai/mistral-large-2512)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/compliance_officer.yaml review
+
+>>> civil_rights_attorney (moonshotai/kimi-k2.6)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/civil_rights_attorney.yaml review
+
+>>> technical_reviewer (xiaomi/mimo-v2.5-pro)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/technical_reviewer.yaml review
+
+>>> frame_skeptic (x-ai/grok-4.3)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/frame_skeptic.yaml review
+
+>>> sympathetic_regulator (z-ai/glm-5.1)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/sympathetic_regulator.yaml review
+
+>>> self_examiner (openai/gpt-oss-120b)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/self_examiner.yaml review
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Examiner: Bank Supervisor: 7 findings (F=2, M=3, m=2)
+
+  Findings: 7 (F=2, M=3, m=2)
+  Tokens: 22806+4760, Latency: 98206ms
+
+  FATAL [PER-EX-001] Section 1: Opening Movement
+    The phrase 'threshold for primary applicability' belongs to SR 26-2 / OCC Bulletin 2026-13 (joint supervisory guidance on model risk management), which applies a $30 billion asset threshold. The FS AI...
+
+  FATAL [PER-EX-002] Section 1: Opening Movement
+    The FS AI RMF is a voluntary industry framework, not a regulation. Calling it a 'regulation' misrepresents its legal status. An examiner would not treat it as a binding rule; they examine against appl...
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 7 (F=2, M=3, m=2)
+Total tokens: 27,566
+  adversarial: OK, 7 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/examiner/review_20260507_010012.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Civil Rights Attorney: 5 findings (F=1, M=3, m=1)
+
+  Findings: 5 (F=1, M=3, m=1)
+  Tokens: 23490+6693, Latency: 130620ms
+
+  FATAL [PER-CR-004] Section 2: The Frame as Method
+    The paper critiques the FS AI RMF for failing to name protected interests, yet ignores the framework’s actual structural distribution: only 7 of 230 Control Objectives (3.0%) are tagged 'Fair,' while ...
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 5 (F=1, M=3, m=1)
+Total tokens: 30,183
+  adversarial: OK, 5 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/civil_rights_attorney/review_20260507_010151.jsonl
+Loading document: /home/tony/projects/governance
+  Title: Architectures of Absence:\ Governance under the FS AI RMF
+  Format: latex
+  Sections: 7
+    1. Opening Movement (1245 words)
+    2. The Frame as Method (2579 words)
+    3. Verification Regimes as Taxonomic Move (2435 words)
+    4. Diagnostic Techniques (3720 words)
+    5. Architectural Primitive Categories (2859 words)
+    6. Honest Uncertainties (3074 words)
+    7. Conclusion (1038 words)
+  Total: 16950 words
+
+============================================================
+Running judge: adversarial
+============================================================
+  Technical Reviewer: ML/AI Researcher: 10 findings (F=0, M=9, m=1)
+
+  Findings: 10 (F=0, M=9, m=1)
+  Tokens: 24990+4710, Latency: 46660ms
+
+============================================================
+REVIEW PIPELINE SUMMARY
+============================================================
+
+Judges run: 1
+Total findings: 10 (F=0, M=9, m=1)
+Total tokens: 29,700
+  adversarial: OK, 10 findings
+
+Results written to: /home/tony/projects/governance/probes/reviews/technical_reviewer/review_20260507_010401.jsonl
+
+>>> examiner (deepseek/deepseek-v4-pro)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/examiner.yaml review
+
+>>> civil_rights_attorney (qwen/qwen3.6-plus)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/civil_rights_attorney.yaml review
+
+>>> technical_reviewer (anthropic/claude-haiku-4.5)
+    /home/tony/projects/rikuy/.venv/bin/paper-review -c /home/tony/projects/governance/probes/configs/technical_reviewer.yaml review

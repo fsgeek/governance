@@ -1,0 +1,88 @@
+% V1.5 draft — for sequential review before commit to section5.tex / section6.tex
+%
+% Scope (per handoff_post_review.md, item 1):
+%   IN:  Rashomon search matches paths not just verdicts; connection to Rudin
+%        (stronger than "use interpretable models" — keep models out of the
+%        decision, capture interpretable substance directly, derive models from
+%        the corpus); path-faithful = institutional reasoning encoded in corpus;
+%        brief acknowledgment that this generates a verification regime that
+%        survives Rudin.
+%   OUT: drift-taxonomy mapping with locus-distinctness; counterfactual replay
+%        as regulatory instrument (full development); M&A as scale-invariant
+%        use case (full development); full synthetic/real data taxonomy;
+%        validation methodology open questions; Anthropic FS agent naming.
+%
+% Two artifacts:
+%   1. New §5 closing subsection — sec:primitives:compound-produces — appended
+%      after current §5 closing "What the four primitives compound to". Replaces
+%      that subsection's role as the section's structural conclusion. The current
+%      §5.6 stays as the diagnostic-supporting argument; the new §5.7 names what
+%      the compound architecture produces beyond the diagnostics.
+%   2. New §6 paragraph — appended to "Uncertainties about the architectural
+%      primitives" — naming what V1.5 does not resolve.
+%
+% Pairs with a small Primitive 2 tightening (Move 3): promote the "underlying
+% reasoning, not post-hoc reconstruction" claim from end-of-subsection caveat
+% to load-bearing claim of the primitive. Edit sketched at end of this file.
+
+% =============================================================================
+% Artifact 1 — New §5.7 (append to section5.tex after current §5.6)
+% =============================================================================
+
+\subsection{What the compound architecture produces}
+\label{sec:primitives:compound-produces}
+
+The four primitives, operating together, produce something the position paper has not yet named: a captured reasoning \emph{corpus}, structurally distinct from the documentation regime current vendor architectures generate. Tamper-evident temporal capture ensures the corpus reflects what was reasoned at the moment of decision rather than a reconstruction. Evidence binding ensures the reasoning's underlying material is preserved alongside the reasoning itself, traversable in both directions. Three-dimensional confidence characterization ensures the institution's epistemic state is captured honestly, including the indeterminacy that confidence-only architectures collapse. Structural drift typology ensures the corpus's relation to current conditions is itself characterized, so that what the corpus says about the institution's practice can be read against the conditions under which the practice occurred. The corpus is what the empty chair can later inspect.
+
+A captured corpus changes what interpretable modeling can do. \textcite{rudin2019} argues that for high-stakes decisions, the Rashomon set --- the set of models within $\varepsilon$ of optimal loss --- typically contains an interpretable model, and that one should be selected directly rather than producing post-hoc explanations of an opaque one. The argument as stated operates on outcome data: models are searched for fit to verdicts. A reasoning corpus collected through the four primitives carries more than verdicts. It carries the consultation patterns, the relational weightings between considerations, and the references to institutional precedent that the institution's officers actually used. The Rashomon set computed against this richer signal searches for models matching reasoning paths, not just decisions. The interpretability criterion sharpens correspondingly: a model whose internal structure mirrors how the institution's officers actually reason is interpretable in a structurally meaningful sense, because its operations correspond to the operations a human officer performs on the same case. Post-hoc explanation is not required; the model's structure is what an explanation would have attempted to reconstruct.
+
+This is a structural strengthening of Rudin's position rather than a methodological refinement of it. The original prescription --- use interpretable models for the decision --- accepts that AI is making the decision and constrains how. The compound architecture proposes a different placement: keep models out of the decision and capture the interpretable substance directly, which is the contemporaneous human reasoning. Models derived from the corpus subsequently handle pattern recognition over the corpus itself, where the substance the empty chair needs to inspect is the corpus, not the model's output. The AI's role becomes pattern recognition over decisions humans made, rather than recommendation generation that humans then sign. (Whether path-faithful models derived from the corpus could themselves handle routine decisions under continuing attestation --- a strengthening of V1's categoricals against AI-as-decision-maker --- is a question the compound architecture makes available but the position paper does not take up.) The structural inadequacy of post-hoc explanation in adversarial contexts (Section~\ref{sec:opening}) does not arise here because no post-hoc explanation is required: the captured reasoning is itself what an explanation would attempt to reconstruct.
+
+What the compound architecture enables, beyond the diagnostic techniques of Section~\ref{sec:diagnostics}, is a class of verification-regime instruments unavailable to architectures that decide rather than capture. Backtesting against the real corpus answers the institution's question of whether its governance is commensurate with its practice not by argument but by demonstration: here is the distribution of cases under current standards, derived from the institution's own reasoning. Counterfactual replay --- applying modified rules to the historical corpus --- answers the impact question for proposed rule changes by computing rather than projecting. Structural-change analysis --- whose prototype application is institutional combination, where the joint Rashomon set of two captured systems (the intersection of the two institutions' individual sets, under the definition appropriate to integration analysis) is itself a well-defined object --- answers the integration question for mergers, expansions, and divestitures by computing what the combined institutional reasoning would have to be to fit both corpora simultaneously. Each instrument is a verification-regime affordance the empty chair can rely on. Each is something the prevailing vendor architecture, which generates documentation about a model that decides, structurally cannot offer.
+
+The architectural role this implies is captured by a single distinction: the architecture mirrors institutional reasoning rather than prescribing it. The vendor's role is to build the capture infrastructure; the institution owns its captured reasoning and bears the liability that follows from acting on its captured practice. This is the structural alternative to vendor-prescribes-and-institution-conforms, and it dissolves a class of vendor-liability and institutional-conformance tensions current architectures create --- not by addressing them but by exiting the paradigm in which they are coherent questions. The empty chair the compound architecture serves at this level is the institution itself, whose actual reasoning practice --- structurally absent from its own self-description under documentation regimes that record post-hoc justification --- becomes inspectable as a consequence of the capture.
+
+\quarry{} Implementation choices include the representation of reasoning paths (sequence, graph, latent trajectory, hybrid), the corpus growth dynamics under continuing capture, the model derivation pipeline (search procedure, interpretability criteria, validation discipline), and federation arrangements where multiple institutions contribute model-level analysis to anonymized meta-corpora without exposing institution-level decision detail. These tradeoffs are the substantive work of Paper~2 and of pilot deployments. The property-level claim is that an architecture satisfying the four primitives produces a corpus from which interpretable models can be derived; whether the implementation is operationally tractable for community banks under cost constraints is the empirical question the structural argument hands forward.
+
+The honest uncertainty marked here, picked up in Section~\ref{sec:uncertainties}: path representation is an open structural problem. The Rashomon set is well-defined only relative to a representation of the paths it ranges over, and the captured reasoning's representation depends on the institution knowing what its own reasoning looks like at sufficient resolution to author the representation. Frameworks like the FS~AI~RMF do not currently structure that self-knowledge; the deployability of the compound architecture depends on the institution developing the capacity to author its representation. This is a deployability constraint and a research subproblem the position paper marks but does not resolve.
+
+% =============================================================================
+% Artifact 2 — New §6 paragraph (append to "Uncertainties about the
+% architectural primitives", after the three existing paragraphs in that
+% subsection)
+% =============================================================================
+
+\textbf{The compound architecture's deployability rests on representational capacity the paper does not establish.} Section~\ref{sec:primitives:compound-produces} argues that the four primitives produce a captured reasoning corpus from which interpretable models can be derived, and that the Rashomon set computed against the corpus matches reasoning paths rather than verdicts alone. The argument depends on the corpus being a faithful representation of institutional reasoning, which in turn depends on the institution knowing what its own reasoning looks like at a resolution sufficient to author such a representation. Frameworks like the FS~AI~RMF do not currently structure the institutional self-knowledge the authorship requires; whether community banks can develop the capacity to characterize their reasoning at corpus-level resolution is empirical and unresolved. The deployability of the compound architecture is structural in the same sense as the four primitives: argued from the frame's commitments, not demonstrated from operational pilots. The empirical question is the work of Paper~2 and of subsequent deployment validation.
+
+% =============================================================================
+% Move 3 — Primitive 2 (Evidence Binding) tightening
+% =============================================================================
+%
+% Current section5.tex Primitive 2 ends with the "underlying reasoning vs.
+% post-hoc reconstruction" point as a structural concern. The compound-produces
+% subsection above relies on this point as load-bearing: the Rashomon-from-
+% corpus argument requires that the captured reasoning be reasoning, not
+% reconstruction. The point should be promoted from end-of-subsection caveat
+% to the primitive's substantive content.
+%
+% Proposed edit (sketch — to be applied to section5.tex Primitive 2 at commit
+% time, not in this draft file):
+%
+%   - Move the current final paragraph of Primitive 2 (beginning "A specific
+%     structural concern: evidence binding interacts with post-hoc explanation
+%     methods...") to immediately after the "two components" paragraph, before
+%     the empty-chair-served paragraph.
+%   - Strengthen its opening: replace "A specific structural concern" with
+%     something like "The primitive's substantive purpose, which a literal
+%     reading of the property would miss".
+%   - Add one sentence at the end of that paragraph that names the consequence:
+%     evidence binding to the underlying reasoning, not to a post-hoc
+%     reconstruction, is what makes the compound architecture's downstream
+%     instruments (Section~\ref{sec:primitives:compound-produces}) available;
+%     a system that satisfies the literal primitive while binding reconstruction
+%     instead of reasoning is satisfying form without function and forecloses
+%     the verification-regime instruments the four primitives compound to.
+%
+% This is a small surgical edit (~3 sentence changes plus a paragraph move)
+% that strengthens the foundation §5.7 stands on. Apply at the same commit
+% as §5.7 and §6 paragraph.
