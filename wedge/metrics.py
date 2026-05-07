@@ -22,6 +22,9 @@ def is_outcome_agreer(
 ) -> bool:
     if len(per_model) < 2:
         return False
+    # Ties (T == F) are mapped to "deny"; this is degenerate for empirically
+    # fitted CART trees because leaf class proportions are integers / leaf
+    # count and exact equality requires symmetric leaf occupancy.
     directions = {("grant" if p.T > p.F else "deny") for p in per_model}
     if len(directions) != 1:
         return False
@@ -44,6 +47,13 @@ def pairwise_factor_support_overlap(
 
     Jaccard is computed over the *feature names* in the support (weights are
     ignored at this layer; weight-aware overlap is iteration 2).
+
+    Sentinel: when fewer than 2 models are provided, returns (0.0, 0.0). This
+    value is *indistinguishable* from a real "all pairs disjoint" overlap of
+    (0.0, 0.0). Callers that need to distinguish must guard on
+    ``len(per_model) >= 2`` themselves; in this wedge pipeline only
+    outcome-agreers (which by definition require >= 2 models) feed into the
+    inspection notebook, so the ambiguity is contained.
     """
     if len(per_model) < 2:
         return 0.0, 0.0
