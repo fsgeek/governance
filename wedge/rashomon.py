@@ -50,11 +50,11 @@ def hyperparameter_sweep(
     results: list[SweepResult] = []
     for depth in config.max_depths:
         for leaf_min in config.min_samples_leafs:
-            for subset in config.feature_subsets:
+            for si, subset in enumerate(config.feature_subsets):
                 model = fit_model(
                     X_fit,
                     y_fit,
-                    model_id=f"sweep_d{depth}_l{leaf_min}_s{hash(subset) & 0xFFFF}",
+                    model_id=f"sweep_d{depth}_l{leaf_min}_s{si}",
                     max_depth=depth,
                     min_samples_leaf=leaf_min,
                     feature_subset=subset,
@@ -81,22 +81,37 @@ def select_diverse_members(
     """Greedy farthest-point selection in spec space.
 
     Encodes each spec as a numeric vector (max_depth, min_samples_leaf,
-    len(feature_subset)) and picks members iteratively: start with the
-    highest-AUC candidate, then repeatedly add the candidate maximizing
-    minimum L2 distance to already-selected specs. Ties broken by AUC.
+    len(feature_subset)). Each dimension is rescaled by its observed range
+    across the candidate pool so that no axis dominates. Picks members
+    iteratively: start with the highest-AUC candidate, then repeatedly
+    add the candidate maximizing minimum L2 distance (in normalized space)
+    to already-selected specs. Ties broken by AUC.
     """
     if n <= 0 or not sweep_results:
         return []
     candidates = sorted(sweep_results, key=lambda r: r.holdout_auc, reverse=True)
-    selected = [candidates[0]]
-    remaining = candidates[1:]
+
+    # Compute per-dimension scale factors from the candidate pool so that
+    # no axis (e.g. min_samples_leaf with span 400) dominates over another
+    # (e.g. max_depth with span 8).
+    raw = np.array(
+        [
+            [r.spec.max_depth, r.spec.min_samples_leaf, len(r.spec.feature_subset)]
+            for r in candidates
+        ],
+        dtype=float,
+    )
+    spans = raw.max(axis=0) - raw.min(axis=0)
+    spans = np.where(spans > 0, spans, 1.0)  # avoid divide-by-zero
 
     def _vec(r: SweepResult) -> np.ndarray:
         return np.array(
             [r.spec.max_depth, r.spec.min_samples_leaf, len(r.spec.feature_subset)],
             dtype=float,
-        )
+        ) / spans
 
+    selected = [candidates[0]]
+    remaining = candidates[1:]
     while len(selected) < n and remaining:
         best_idx = None
         best_score = -1.0
