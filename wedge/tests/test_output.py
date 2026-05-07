@@ -23,7 +23,7 @@ def _case(case_id, label=0):
 def test_write_run_creates_jsonl_and_meta(tmp_path):
     cases = [_case("a"), _case("b", label=1)]
     meta = RunMetadata(
-        run_id="2026-05-07T12:00:00Z",
+        run_id="2026-05-07T12-00-00Z",
         vintage="2015Q3",
         epsilon=0.02,
         random_seed=0,
@@ -43,7 +43,7 @@ def test_write_run_creates_jsonl_and_meta(tmp_path):
     assert {p["case_id"] for p in parsed} == {"a", "b"}
     # Meta sidecar carries the run metadata.
     meta_payload = json.loads(out_meta.read_text())
-    assert meta_payload["run_id"] == "2026-05-07T12:00:00Z"
+    assert meta_payload["run_id"] == "2026-05-07T12-00-00Z"
     assert meta_payload["vintage"] == "2015Q3"
     assert meta_payload["epsilon"] == 0.02
 

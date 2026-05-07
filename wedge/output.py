@@ -42,4 +42,5 @@ def write_run(
             f.write("\n")
     with meta_path.open("w", encoding="utf-8") as f:
         json.dump(meta.to_dict(), f, indent=2)
+        f.write("\n")
     return jsonl_path, meta_path
