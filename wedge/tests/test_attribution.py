@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import pandas as pd
-
 from wedge.attribution import (
     extract_factor_support,
     walk_path,

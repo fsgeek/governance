@@ -73,6 +73,10 @@ def _node_info_gain(tree, node_id: int) -> float:
 
 def walk_path(model: CartModel, case_features: dict[str, Any]) -> list[dict[str, Any]]:
     """Walk root-to-leaf for one case, returning a list of split-decision dicts."""
+    if model.classes_ != (0, 1):
+        raise ValueError(
+            f"attribution requires CartModel.classes_ == (0, 1); got {model.classes_!r}"
+        )
     feature_names = list(model.feature_subset)
     x = np.asarray([case_features[f] for f in feature_names], dtype=float).reshape(1, -1)
     tree = model.tree.tree_
