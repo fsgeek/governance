@@ -3,7 +3,7 @@
 **Author:** Tony Mason / wamason.com LLC
 **Date:** May 6, 2026
 **Status:** Working research note — not for distribution
-**Origin:** Synthesis emerging from analysis following Anthropic's May 5, 2026 financial services agent announcement, building on the Titan Governance Architecture (April 2026) but extending in directions that warrant independent documentation.
+**Origin:** Synthesis emerging from analysis following Anthropic's May 5, 2026 financial services agent announcement, building on the Olorin Governance Architecture (April 2026) but extending in directions that warrant independent documentation.
 
 ---
 
@@ -13,7 +13,7 @@ On May 5, 2026, Anthropic released ten financial services agent templates — pi
 
 - The "AI in compliance theater" failure mode now has a named, productized instance. The KYC screener, in particular, has Claude assigning risk ratings, applying rules, and producing structured outputs that humans review and approve. The audit trail is the AI's chain-of-thought, which is itself a generated artifact rather than a faithful trace of the computation that produced the output.
 - Rudin's 2019 critique of post-hoc explanation for high-stakes decisions has a sharper LLM-era reading: with separate explanation models (SHAP, LIME), the explanation can at least in principle be measured against the underlying model's behavior. With chain-of-thought from the same model that produced the decision, the "explanation" is just another forward pass.
-- The Titan governance architecture, framed as community-bank specific, is structurally a general theory of regulatory governance for AI-mediated decisions in audited contexts. The community-bank framing is a marketing wrapper.
+- The Olorin governance architecture, framed as community-bank specific, is structurally a general theory of regulatory governance for AI-mediated decisions in audited contexts. The community-bank framing is a marketing wrapper.
 
 This note documents a synthesis that goes further than the governance architecture as written: the architecture is not only a defensive substrate (keeping AI out of where it doesn't belong) but a *generative* substrate (producing the conditions under which AI can be deployed in high-stakes regulated decisions in a way Rudin would endorse).
 
@@ -106,13 +106,13 @@ Each drift type now has a clearly delineated data source and methodology. The sy
 
 ## 8. Open Questions
 
-- **IP attribution.** Which elements of this synthesis pre-existed the Titan engagement and which emerged within it. The Rashomon-set methodology is Rudin's. The reasoning-trace capture is from the wamason.com governance architecture (April 2026). The Rashomon-from-reasoning-traces synthesis itself was articulated on May 6, 2026, in conversation following the Anthropic announcement. The M&A scaling application was articulated in the same conversation. Where these fall under "Pre-existing wamason.com LLC IP licensed to Titan on a non-exclusive basis" versus "All work product belongs to Titan" is a question for the engagement letter and possibly for a clarifying email.
+- **IP attribution.** Which elements of this synthesis pre-existed the Olorin engagement and which emerged within it. The Rashomon-set methodology is Rudin's. The reasoning-trace capture is from the wamason.com governance architecture (April 2026). The Rashomon-from-reasoning-traces synthesis itself was articulated on May 6, 2026, in conversation following the Anthropic announcement. The M&A scaling application was articulated in the same conversation. Where these fall under "Pre-existing wamason.com LLC IP licensed to Olorin on a non-exclusive basis" versus "All work product belongs to Olorin" is a question for the engagement letter and possibly for a clarifying email.
 
 - **Validation methodology.** What empirical tests demonstrate that derived models are matching reasoning paths and not just verdicts. Candidate tests: held-out reasoning-path prediction; ablation of consultation-pattern features; comparison against verdict-only-trained baselines on cases where the same verdict could have arisen from different paths.
 
 - **Synthetic-distribution validation for hypothetical-scenario modeling.** Independent measures for evaluating whether synthetic distributions faithfully model hypothesized conditions — particularly for M&A integration analysis, where the "hypothesized institution" is a structured combination of two real institutions.
 
-- **Regulatory acceptance.** Examiner readiness for counterfactual evidence as compliance posture. Pilot conversation with the OCC, possibly via Titan's existing relationship, to test the framing.
+- **Regulatory acceptance.** Examiner readiness for counterfactual evidence as compliance posture. Pilot conversation with the OCC, possibly via Olorin's existing relationship, to test the framing.
 
 - **Vendor positioning.** How this methodology positions against Anthropic's general-purpose financial services agents (KYC screener, statement auditor) and analogous offerings as they emerge. The structural argument — generic vendor model vs. institution-specific Rashomon-derived model — is sharp, but adoption depends on whether the market sees the difference.
 

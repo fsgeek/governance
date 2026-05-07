@@ -98,7 +98,7 @@ closure.
 **IP positioning is settled.** The publication itself is the resolution:
 incorporating the synthesis into the position paper and posting to arXiv
 establishes the synthesis as pre-existing wamason.com IP via timestamp.
-Titan retains practical license to use; ownership stays with the author
+Olorin retains practical license to use; ownership stays with the author
 by virtue of public disclosure. The action settles the engagement-letter
 ambiguity.
 
@@ -181,7 +181,7 @@ sets.
    Reference-grounding > disclaim-filtering generalizes beyond this
    review.
 2. **IP via publication.** The arXiv timestamp settles the synthesis
-   IP question. Titan retains practical license; wamason.com retains
+   IP question. Olorin retains practical license; wamason.com retains
    ownership by virtue of public disclosure. Engagement-letter
    clarification is now relationship-respectful but not legally required.
 3. **Paper-revision drafting permission.** Tony explicitly invited

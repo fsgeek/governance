@@ -6,7 +6,7 @@
 
 ## 1. The seam: retrieval and explanation as one layer
 
-The Titan proposal treated context-and-memory and explainability as two distinct scope items. Worked through, they aren't separable.
+The Olorin proposal treated context-and-memory and explainability as two distinct scope items. Worked through, they aren't separable.
 
 Retrieval is structurally a commitment to relevance: at decision time, the system asserts *these are the inputs that should bear on this decision*. Explanation is structurally a recovery of contribution: after decision, the system identifies which inputs materially affected the output. For honest explanation to be possible, every contributing input must have been retrieved — which means explanation is a subset of retrieval, and the gap between them is informative.
 
@@ -191,7 +191,7 @@ Tier-relative loss serves double duty: it is the posterior-update signal (§2) a
 
 **Regulated-domain novelty profile.** Methodology that does not match what examiners are familiar with creates friction during validation, even when it is better. Worth being thoughtful about whether the work positions as *this is a new methodology you should adopt* or *this is a refinement of methods you already know*. The second sells in regulated environments and the first does not, even when the first is more accurate.
 
-**IP hygiene.** This synthesis was developed in conversation today, building on prior reasoning-trace and Rashomon-set work. It precedes any Titan engagement start. Worth documenting the timeline of when the synthesis was articulated, particularly given the LOI's pre-existing IP provisions and Titan's separate IP clause for engagement work product.
+**IP hygiene.** This synthesis was developed in conversation today, building on prior reasoning-trace and Rashomon-set work. It precedes any Olorin engagement start. Worth documenting the timeline of when the synthesis was articulated, particularly given the LOI's pre-existing IP provisions and Olorin's separate IP clause for engagement work product.
 
 ---
 
