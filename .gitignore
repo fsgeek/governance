@@ -15,3 +15,4 @@
 *.toc
 draft-*.pdf
 __pycache__/
+data/
