@@ -37,6 +37,7 @@ from wedge.collectors.lendingclub import (
     ORIGINATION_FEATURE_COLS,
     derive_label,
     filter_to_vintage,
+    normalize_emp_length,
 )
 from wedge.collectors.synthetic import generate_boundary_cases
 from wedge.output import RunMetadata, write_run
@@ -92,6 +93,8 @@ def main() -> int:
     df = pd.read_csv(args.csv)
     df = filter_to_vintage(df, vintage=args.vintage, term=args.term)
     df["label"] = derive_label(df["loan_status"])
+    if "emp_length" in df.columns:
+        df["emp_length"] = normalize_emp_length(df["emp_length"])
     feature_cols = [c for c in ORIGINATION_FEATURE_COLS if c in df.columns]
 
     # 2. Train/eval split.

@@ -87,6 +87,26 @@ def derive_label(loan_status: pd.Series) -> pd.Series:
     return (loan_status.astype(str).str.strip() == CHARGED_OFF).astype(int)
 
 
+_EMP_LENGTH_MAP = {
+    "< 1 year": 0.0,
+    "1 year": 1.0,
+    "2 years": 2.0,
+    "3 years": 3.0,
+    "4 years": 4.0,
+    "5 years": 5.0,
+    "6 years": 6.0,
+    "7 years": 7.0,
+    "8 years": 8.0,
+    "9 years": 9.0,
+    "10+ years": 10.0,
+}
+
+
+def normalize_emp_length(s: pd.Series) -> pd.Series:
+    """Map LC emp_length strings to floats; unrecognized values -> NaN."""
+    return s.astype(str).str.strip().map(_EMP_LENGTH_MAP)
+
+
 def load_cases(
     csv_path: Path | str,
     *,
