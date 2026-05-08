@@ -40,6 +40,7 @@ from wedge.collectors.lendingclub import (
     normalize_emp_length,
 )
 from wedge.collectors.synthetic import generate_boundary_cases
+from wedge.indeterminacy import LeafStatistics, compute_local_density
 from wedge.output import RunMetadata, write_run
 from wedge.rashomon import SweepConfig, build_rashomon_set, refit_members
 from wedge.types import Case, PerModelOutput
@@ -62,9 +63,14 @@ def _to_case_real(row, vintage, feature_cols) -> Case:
     )
 
 
-def _emit_per_model(model, case_features, top_k):
+def _emit_per_model(model, case_features, top_k, leaf_stats=None):
     e = model.emit_for_case(case_features)
     fst, fsf = extract_factor_support(model, case_features, top_k=top_k)
+    indeterminacy = []
+    if leaf_stats is not None:
+        indeterminacy.append(
+            compute_local_density(case_features, e["leaf_id"], leaf_stats)
+        )
     return PerModelOutput(
         model_id=model.model_id,
         T=e["T"],
@@ -73,6 +79,7 @@ def _emit_per_model(model, case_features, top_k):
         factor_support_F=fsf,
         path=[],  # spec §11 keeps path optional in jsonl; populating it is iteration 2
         leaf=e["leaf"],
+        indeterminacy=indeterminacy,
     )
 
 
@@ -130,6 +137,12 @@ def main() -> int:
     )
     fitted = refit_members(X_train, y_train, members=members, random_state=args.seed)
 
+    # Per-model leaf statistics for the local_density I species (computed once
+    # on the full training set, queried per case).
+    leaf_stats_by_model = {
+        m.model_id: LeafStatistics.fit(m, X_train) for m in fitted
+    }
+
     # 4. Build eval cases (real + synthetic).
     real_cases: list[Case] = []
     for _, row in eval_df.iterrows():
@@ -144,7 +157,14 @@ def main() -> int:
     # 5. Emit per-model outputs for every eval case.
     for case in [*real_cases, *synthetic_cases]:
         for model in fitted:
-            case.per_model.append(_emit_per_model(model, case.features, args.top_k))
+            case.per_model.append(
+                _emit_per_model(
+                    model,
+                    case.features,
+                    args.top_k,
+                    leaf_stats=leaf_stats_by_model[model.model_id],
+                )
+            )
 
     # 6. Write run.
     meta = RunMetadata(

@@ -43,9 +43,48 @@ class FactorSupportEntry:
         return cls(feature=d["feature"], weight=d["weight"])
 
 
+@dataclass(frozen=True)
+class IndeterminacyComponent:
+    """One species' contribution to the I dimension for one case.
+
+    Per the 2026-05-08 indeterminacy operationalization memo, I is a vector
+    over species rather than a scalar. Each species emits one
+    IndeterminacyComponent per case (or per (model, case) for model-dependent
+    species like local_density).
+    """
+
+    species: str  # e.g. "local_density", "multivariate_coherence", "ioannidis", "retrospective"
+    score: float
+    factor_support: list[FactorSupportEntry] = field(default_factory=list)
+    direction: Optional[str] = None  # species-specific (e.g. "atypical" for local_density)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "species": self.species,
+            "score": self.score,
+            "factor_support": [e.to_dict() for e in self.factor_support],
+            "direction": self.direction,
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict[str, Any]) -> "IndeterminacyComponent":
+        return cls(
+            species=d["species"],
+            score=d["score"],
+            factor_support=[FactorSupportEntry.from_dict(e) for e in d.get("factor_support", [])],
+            direction=d.get("direction"),
+        )
+
+
 @dataclass
 class PerModelOutput:
-    """One model's emission for one case."""
+    """One model's emission for one case.
+
+    The `indeterminacy` field carries model-dependent I species (those that
+    depend on which leaf the case lands in for this model — currently
+    local_density). Model-independent species live on Case.case_indeterminacy
+    instead and are not duplicated here.
+    """
 
     model_id: str
     T: float
@@ -54,6 +93,7 @@ class PerModelOutput:
     factor_support_F: list[FactorSupportEntry]
     path: list[str]
     leaf: str
+    indeterminacy: list[IndeterminacyComponent] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -64,6 +104,7 @@ class PerModelOutput:
             "factor_support_F": [e.to_dict() for e in self.factor_support_F],
             "path": list(self.path),
             "leaf": self.leaf,
+            "indeterminacy": [c.to_dict() for c in self.indeterminacy],
         }
 
     @classmethod
@@ -76,12 +117,19 @@ class PerModelOutput:
             factor_support_F=[FactorSupportEntry.from_dict(e) for e in d["factor_support_F"]],
             path=list(d["path"]),
             leaf=d["leaf"],
+            indeterminacy=[IndeterminacyComponent.from_dict(c) for c in d.get("indeterminacy", [])],
         )
 
 
 @dataclass
 class Case:
-    """One origination-time feature vector plus per-model emissions."""
+    """One origination-time feature vector plus per-model emissions.
+
+    The `case_indeterminacy` field carries model-independent I species
+    computed once per case (multivariate_coherence, ioannidis, retrospective).
+    Model-dependent species (local_density) live on PerModelOutput.indeterminacy
+    instead.
+    """
 
     case_id: str
     origin: str  # "real" | "synthetic"
@@ -90,6 +138,7 @@ class Case:
     features: dict[str, Any]
     label: Optional[int]  # None for synthetic
     per_model: list[PerModelOutput] = field(default_factory=list)
+    case_indeterminacy: list[IndeterminacyComponent] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -100,6 +149,7 @@ class Case:
             "features": dict(self.features),
             "label": self.label,
             "per_model": [pmo.to_dict() for pmo in self.per_model],
+            "case_indeterminacy": [c.to_dict() for c in self.case_indeterminacy],
         }
 
     @classmethod
@@ -112,6 +162,7 @@ class Case:
             features=dict(d["features"]),
             label=d.get("label"),
             per_model=[PerModelOutput.from_dict(p) for p in d.get("per_model", [])],
+            case_indeterminacy=[IndeterminacyComponent.from_dict(c) for c in d.get("case_indeterminacy", [])],
         )
 
 
