@@ -17,6 +17,17 @@ Model-dependent species attach to PerModelOutput.indeterminacy. Model-independen
 species attach to Case.case_indeterminacy.
 """
 
+from wedge.indeterminacy.ioannidis import (
+    compute_battery as compute_ioannidis_battery,
+    compute_round_numbers,
+    compute_threshold_hugging,
+)
 from wedge.indeterminacy.local_density import LeafStatistics, compute_local_density
 
-__all__ = ["LeafStatistics", "compute_local_density"]
+__all__ = [
+    "LeafStatistics",
+    "compute_local_density",
+    "compute_ioannidis_battery",
+    "compute_round_numbers",
+    "compute_threshold_hugging",
+]

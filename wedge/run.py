@@ -40,7 +40,11 @@ from wedge.collectors.lendingclub import (
     normalize_emp_length,
 )
 from wedge.collectors.synthetic import generate_boundary_cases
-from wedge.indeterminacy import LeafStatistics, compute_local_density
+from wedge.indeterminacy import (
+    LeafStatistics,
+    compute_ioannidis_battery,
+    compute_local_density,
+)
 from wedge.output import RunMetadata, write_run
 from wedge.rashomon import SweepConfig, build_rashomon_set, refit_members
 from wedge.types import Case, PerModelOutput
@@ -154,7 +158,13 @@ def main() -> int:
         seed=args.seed + 7,
     )
 
-    # 5. Emit per-model outputs for every eval case.
+    # 5a. Compute case-level (model-independent) I species for every eval case.
+    #     Ioannidis battery only at this iteration; multivariate_coherence
+    #     and retrospective species deferred per the 2026-05-08 memo.
+    for case in [*real_cases, *synthetic_cases]:
+        case.case_indeterminacy.extend(compute_ioannidis_battery(case.features))
+
+    # 5b. Emit per-model outputs (T, F, factor support, model-dependent I).
     for case in [*real_cases, *synthetic_cases]:
         for model in fitted:
             case.per_model.append(
