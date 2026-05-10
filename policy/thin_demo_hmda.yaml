@@ -1,0 +1,162 @@
+# Thin demonstration policy graph for HMDA mortgage decisions.
+#
+# Status: ILLUSTRATIVE. This is a synthetic demonstration graph drafted to
+# show the policy-constrained Rashomon mechanism. It is not the policy of
+# any specific institution. Real deployment requires elicitation with the
+# client bank. Public underwriting conventions (FHA, conventional QM rules,
+# CFPB ATR/QM standard) inform the thresholds; specific values are
+# illustrative.
+#
+# Audience: this file is read by humans (auditors, regulators, bankers) AND
+# by the constraint encoder that restricts the Rashomon model class. The
+# co-identification is the point: the artifact a regulator audits is the
+# same artifact that constrains the models.
+
+name: thin_demo_hmda_mortgage
+version: 0.1
+status: illustrative-demonstration
+description: |
+  Thin demonstration policy graph for first-lien residential mortgage
+  decisions on HMDA-style features. Designed to exhibit the policy-
+  constrained Rashomon construction mechanism, not to replicate any
+  specific institution's underwriting policy.
+
+# -----------------------------------------------------------------------------
+# Top-level constraints derived from the graph. The constraint encoder
+# emits these as restrictions on the Rashomon model class.
+# -----------------------------------------------------------------------------
+
+constraints:
+
+  # Monotonicity constraints. Direction of effect on grant probability.
+  monotonicity:
+    - feature: fico_range_low
+      direction: positive
+      rationale: Higher FICO never increases decline probability.
+    - feature: dti
+      direction: negative
+      rationale: Higher DTI never decreases decline probability.
+    - feature: ltv
+      direction: negative
+      rationale: Higher LTV never decreases decline probability.
+
+  # Features that must appear in every model's factor support. Models in
+  # R(ε) that do not split on these features are excluded.
+  mandatory_features:
+    - fico_range_low
+    - dti
+    - annual_inc
+
+  # Features that no model in R(ε) may split on. (Empty for thin demo;
+  # real policy graphs would list protected-class proxies and other
+  # excluded variables.)
+  prohibited_features: []
+
+  # Operating regime where the policy graph applies. Out-of-regime cases
+  # route to manual_review rather than being scored.
+  applicable_regime:
+    loan_purpose: [purchase, refinance]
+    occupancy: owner_occupied
+    lien_position: first
+
+# -----------------------------------------------------------------------------
+# Decision graph. Nodes are evaluated in declared order along the entry
+# path; on_fail / on_above / on_below edges branch.
+# -----------------------------------------------------------------------------
+
+nodes:
+
+  - id: entry
+    type: entry
+    next: regime_check
+
+  - id: regime_check
+    type: gate
+    predicate: case is in applicable_regime
+    on_pass: income_verification
+    on_fail: manual_review
+    rationale: Out-of-regime cases (investor properties, second liens,
+      unusual loan purposes) are not scoped by this thin demo.
+
+  - id: income_verification
+    type: gate
+    predicate: annual_inc is documented
+    on_pass: fico_floor
+    on_fail: manual_review
+    rationale: Stated-income cases require human underwriting under
+      post-2014 ATR/QM rules.
+
+  - id: fico_floor
+    type: threshold
+    feature: fico_range_low
+    operator: ">="
+    threshold: 620
+    on_pass: dti_ceiling
+    on_fail: decline
+    rationale: Conventional minimum FICO floor. FHA programs accept
+      lower; this thin demo treats sub-620 as decline for simplicity.
+
+  - id: dti_ceiling
+    type: threshold
+    feature: dti
+    operator: "<="
+    threshold: 43
+    on_pass: emp_tenure
+    on_fail: manual_review
+    rationale: ATR/QM standard DTI ceiling. Above 43 requires
+      compensating factors and human review.
+
+  - id: emp_tenure
+    type: threshold
+    feature: emp_length
+    operator: ">="
+    threshold: 2
+    on_pass: ltv_check
+    on_fail: manual_review
+    rationale: Standard two-year employment tenure threshold; shorter
+      tenure requires offset documentation.
+
+  - id: ltv_check
+    type: threshold
+    feature: ltv
+    operator: "<="
+    threshold: 95
+    on_pass: standard_grant
+    on_fail: manual_review
+    rationale: Above 95% LTV requires PMI and additional review.
+
+  - id: standard_grant
+    type: leaf
+    decision: grant
+    rationale: All standard-path conditions satisfied; eligible for
+      automated approval at standard pricing tier.
+
+  - id: manual_review
+    type: leaf
+    decision: human_review
+    rationale: Case requires human underwriter judgment. Cases reaching
+      this leaf carry an explicit policy-node trace identifying which
+      condition routed them here.
+
+  - id: decline
+    type: leaf
+    decision: deny
+    rationale: Case fails a hard policy floor (currently FICO < 620 in
+      this thin demo).
+
+# -----------------------------------------------------------------------------
+# Pricing layer. Decoupled from the decision graph: the Rashomon-routed
+# decision yields {grant, human_review, deny}; pricing applies separately
+# to grants. Documented as an explicit policy artifact rather than an
+# emergent model output.
+# -----------------------------------------------------------------------------
+
+pricing:
+  applies_to: [grant]
+  schedule: external_pricing_table
+  notes: |
+    Pricing is intentionally not a decision-graph output. Risk-adjusted
+    interest rates are produced by a documented pricing schedule applied
+    to the grant decision and a risk score; the schedule is itself a
+    governance artifact subject to fair-lending review. This separation
+    is load-bearing for the methodology.

@@ -1,0 +1,67 @@
+{
+  "run_id": "2026-05-08T15-45-14Z",
+  "vintage": "2015Q3",
+  "epsilon": 0.02,
+  "random_seed": 0,
+  "members": [
+    {
+      "model_id": "tree_1",
+      "max_depth": 6,
+      "min_samples_leaf": 400,
+      "feature_subset": [
+        "fico_range_low",
+        "dti",
+        "annual_inc",
+        "emp_length"
+      ],
+      "holdout_auc": 0.6224900607826931
+    },
+    {
+      "model_id": "tree_2",
+      "max_depth": 12,
+      "min_samples_leaf": 100,
+      "feature_subset": [
+        "fico_range_low",
+        "dti",
+        "emp_length"
+      ],
+      "holdout_auc": 0.604354749336836
+    },
+    {
+      "model_id": "tree_3",
+      "max_depth": 4,
+      "min_samples_leaf": 200,
+      "feature_subset": [
+        "fico_range_low",
+        "dti",
+        "emp_length"
+      ],
+      "holdout_auc": 0.6194998836459817
+    },
+    {
+      "model_id": "tree_4",
+      "max_depth": 4,
+      "min_samples_leaf": 25,
+      "feature_subset": [
+        "fico_range_low",
+        "dti",
+        "annual_inc",
+        "emp_length"
+      ],
+      "holdout_auc": 0.6164771354596307
+    },
+    {
+      "model_id": "tree_5",
+      "max_depth": 12,
+      "min_samples_leaf": 200,
+      "feature_subset": [
+        "fico_range_low",
+        "dti",
+        "annual_inc",
+        "emp_length"
+      ],
+      "holdout_auc": 0.6070598456697529
+    }
+  ],
+  "notes": "vintage=2015Q3 term=36 months epsilon=0.02"
+}

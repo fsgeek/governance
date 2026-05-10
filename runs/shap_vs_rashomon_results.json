@@ -1,0 +1,113 @@
+{
+  "2014Q3": {
+    "vintage": "2014Q3",
+    "n_eval": 12179,
+    "base_rate": 0.13629645270270271,
+    "t_silent_all_n": 14,
+    "f_silent_all_n": 340,
+    "criteria": {
+      "magnitude": {
+        "n": 1218,
+        "rate": 0.10000821085474998,
+        "charge_off": 0.12479474548440066,
+        "jaccard_t_silent_all": 0.0,
+        "jaccard_f_silent_all": 0.0
+      },
+      "concentration": {
+        "n": 1218,
+        "rate": 0.10000821085474998,
+        "charge_off": 0.15270935960591134,
+        "jaccard_t_silent_all": 0.0024410089503661514,
+        "jaccard_f_silent_all": 0.0012853470437017994
+      },
+      "instability": {
+        "n": 3198,
+        "rate": 0.26258313490434354,
+        "charge_off": 0.13821138211382114,
+        "jaccard_t_silent_all": 0.0003114294612270321,
+        "jaccard_f_silent_all": 0.029386092522548736
+      },
+      "baseline_dominance": {
+        "n": 11749,
+        "rate": 0.9646933245750883,
+        "charge_off": 0.13728827985360456,
+        "jaccard_t_silent_all": 0.0011915907736828667,
+        "jaccard_f_silent_all": 0.0267538644470868
+      }
+    }
+  },
+  "2015Q3": {
+    "vintage": "2015Q3",
+    "n_eval": 22071,
+    "base_rate": 0.14577831287867019,
+    "t_silent_all_n": 0,
+    "f_silent_all_n": 0,
+    "criteria": {
+      "magnitude": {
+        "n": 2208,
+        "rate": 0.10004077749082506,
+        "charge_off": 0.14175724637681159,
+        "jaccard_t_silent_all": 0.0,
+        "jaccard_f_silent_all": 0.0
+      },
+      "concentration": {
+        "n": 2208,
+        "rate": 0.10004077749082506,
+        "charge_off": 0.16032608695652173,
+        "jaccard_t_silent_all": 0.0,
+        "jaccard_f_silent_all": 0.0
+      },
+      "instability": {
+        "n": 3504,
+        "rate": 0.15876036427891804,
+        "charge_off": 0.14126712328767124,
+        "jaccard_t_silent_all": 0.0,
+        "jaccard_f_silent_all": 0.0
+      },
+      "baseline_dominance": {
+        "n": 22033,
+        "rate": 0.9982782837207195,
+        "charge_off": 0.14587210093949984,
+        "jaccard_t_silent_all": 0.0,
+        "jaccard_f_silent_all": 0.0
+      }
+    }
+  },
+  "2015Q4": {
+    "vintage": "2015Q4",
+    "n_eval": 26601,
+    "base_rate": 0.14817619385190436,
+    "t_silent_all_n": 154,
+    "f_silent_all_n": 162,
+    "criteria": {
+      "magnitude": {
+        "n": 2661,
+        "rate": 0.10003383331453705,
+        "charge_off": 0.1503194287861706,
+        "jaccard_t_silent_all": 0.0,
+        "jaccard_f_silent_all": 0.0
+      },
+      "concentration": {
+        "n": 2661,
+        "rate": 0.10003383331453705,
+        "charge_off": 0.16798196166854565,
+        "jaccard_t_silent_all": 0.0082378223495702,
+        "jaccard_f_silent_all": 0.0
+      },
+      "instability": {
+        "n": 4070,
+        "rate": 0.15300176685087027,
+        "charge_off": 0.14692874692874694,
+        "jaccard_t_silent_all": 0.002849002849002849,
+        "jaccard_f_silent_all": 0.0030812988859919414
+      },
+      "baseline_dominance": {
+        "n": 26457,
+        "rate": 0.9945866696740724,
+        "charge_off": 0.14790036663264922,
+        "jaccard_t_silent_all": 0.005516720196485925,
+        "jaccard_f_silent_all": 0.006123143213516272
+      }
+    }
+  }
+}
