@@ -32,6 +32,7 @@ from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
+from policy.encoder import load_policy
 from wedge.attribution import extract_factor_support
 from wedge.collectors.lendingclub import (
     ORIGINATION_FEATURE_COLS,
@@ -105,6 +106,15 @@ def main() -> int:
     p.add_argument("--synthetic-n", type=int, default=200)
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--output-dir", type=Path, default=Path("runs"))
+    p.add_argument(
+        "--policy",
+        type=Path,
+        default=None,
+        help="Path to a policy-graph YAML (e.g. policy/thin_demo_hmda.yaml). "
+        "When provided, evaluate_policy gates the sweep against mandatory/prohibited "
+        "features and a post-fit split-use check (spec §2.7 OD-9b / OD-12). "
+        "When omitted, the sweep runs unconstrained.",
+    )
     args = p.parse_args()
 
     # 1. Load real data.
@@ -137,8 +147,6 @@ def main() -> int:
 
     # 3. Build R(ε) via the three-phase pipeline (spec §2.7 OD-9b / OD-12):
     #    sweep -> evaluate_policy -> filter_to_epsilon -> select_diverse_members.
-    #    V1 wedge runs without a policy gate (policy_constraints=None); the
-    #    machinery is wired and audit-ready for V1.1 policy-bearing runs.
     cfg = SweepConfig(
         max_depths=(4, 6, 8, 10, 12),
         min_samples_leafs=(25, 50, 100, 200, 400),
@@ -146,11 +154,32 @@ def main() -> int:
         random_state=args.seed,
         holdout_fraction=0.30,
     )
+    policy_constraints = load_policy(args.policy) if args.policy else None
     sweep = hyperparameter_sweep(X_train, y_train, config=cfg)
-    admissible_set = evaluate_policy(sweep, policy_constraints=None)
+    admissible_set = evaluate_policy(sweep, policy_constraints=policy_constraints)
     epsilon_set = filter_to_epsilon(admissible_set, epsilon=args.epsilon)
     members = select_diverse_members(epsilon_set.within_epsilon, n=args.n_members)
     fitted = refit_members(X_train, y_train, members=members, random_state=args.seed)
+
+    # Audit trail: print the three-phase summary so a human running the wedge
+    # sees policy exclusions and ε-band attrition immediately.
+    print(
+        f"sweep: {admissible_set.total_swept} combos | "
+        f"policy-admissible: {len(admissible_set.admissible)} | "
+        f"policy-excluded: {len(admissible_set.excluded)}"
+    )
+    if admissible_set.excluded:
+        from collections import Counter
+        reason_labels = Counter(
+            er.reason.split(":")[0] for er in admissible_set.excluded
+        )
+        for label, count in sorted(reason_labels.items()):
+            print(f"  excluded ({label}): {count}")
+    print(
+        f"ε-band ε={args.epsilon} vs admissible_best={epsilon_set.global_best_auc:.4f}: "
+        f"within={len(epsilon_set.within_epsilon)} | out={len(epsilon_set.out_of_epsilon)} | "
+        f"selected={len(members)}"
+    )
 
     # Per-model leaf statistics for the local_density I species (computed once
     # on the full training set, queried per case).
