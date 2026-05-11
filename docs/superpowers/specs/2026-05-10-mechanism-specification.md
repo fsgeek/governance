@@ -415,3 +415,62 @@ This property is the load-bearing piece for Section 6: the standard-of-care argu
 - The feature-engineering details for S in production deployment (bank-specific; the deployment plan, not the spec, decides).
 - The specific cadence at which S is retrained as new outcomes accumulate (operational concern; the spec specifies *when retraining is permitted* — at policy revision boundaries and at declared periodic intervals — but not the interval itself).
 - The interaction between S and policy revision (when policy revises, the substrate for S shifts; this is non-trivial and is partially deferred to OD-10's substrate-axis work in V1.1).
+
+---
+
+## 6. Category 1 vs Category 2 detection criteria
+
+### 6.1 The distinction (Tony's framing, canonical)
+
+The retrospective failure taxonomy distinguishes two categories of post-decision failure that look similar from the loan-officer's chair but are structurally different and call for different governance responses:
+
+- **Category 1 (inherent lending risk).** Factors that could not be foreseen at the time the decision was made. The evidence available at origination was weighted appropriately; circumstances subsequently shifted in ways no information available at decision time could have predicted. Health events, macroeconomic shocks, household-level events outside the data record. Category 1 is *tragic in the classical sense* — not preventable by better reasoning. The bank's defense is stable: "we could not have known."
+
+- **Category 2 (informational under-weighting).** Factors that emerge from retrospective analysis of the entire dataset — not just from the individual decision's explanation — that could have reduced bank risk if appropriately weighted. The signal was in the data at decision time; the chosen model's analytical apparatus failed to capture it. Category 2 is *epistemic, not tragic*. The bank's defense is unstable: the data was there, the methodology that would have caught it was available (or becoming available), and the choice of analytical apparatus that missed it is the bank's choice.
+
+The portfolio-level vs decision-level cut is the load-bearing line. Per-case post-hoc attribution (SHAP, LIME) explains *the decision*; it cannot diagnose *the dataset-level pattern* that distinguishes Cat 2 from Cat 1. That distinction is what Section 5's retrospective-trajectory species makes operational, and it is what Section 6's detection criterion formalizes.
+
+### 6.2 The formal detection criterion (OD-6)
+
+A case x is detected as **Category 2** when, under retrospective-trajectory set revision (§5.4):
+
+1. The original R_T(ε_T) and R_F(ε_F) gave a particular prediction on x (call it the *original verdict*), and the realized outcome differed from the original verdict.
+2. The revised R_T'(ε_T) ∪ R_F'(ε_F) — the union of the surprise-weighted revised sets — contains models that would have predicted the realized outcome on x.
+3. The structural feature distinguishing R_T'(ε_T) \ R_T(ε_T) (the new entrants under surprise-weighted loss) from R_T(ε_T) \ R_T'(ε_T) (the original models that exited) is *expressible* — there exists a feature weighting, a feature interaction, or a decision-region pattern that characterizes the new-entrant models and was systematically under-represented in the original models.
+
+A case x is detected as **Category 1** when conditions 1 holds but condition 2 or 3 fails — i.e., even under surprise-weighted revision, no admissible model would have predicted the realized outcome, or the new-entrant models are not structurally distinguishable from the originals in any expressible way (the revision is statistical noise, not signal).
+
+A case x is detected as **ambiguous** when condition 2 holds but condition 3 is unclear (revised-set entrants exist but their structural distinguishing feature is unstable across cross-validation folds or under sensitivity to (w_T, w_F, ε) perturbation). Ambiguous cases are reported as both-likelihoods, not forced to a binary.
+
+### 6.3 Boundary cases and reporting discipline
+
+The formal criterion produces three categories — Cat 1, Cat 2, ambiguous — not a binary. The reporting discipline V1 specifies:
+
+- **Per-case classification with confidence.** Each retrospectively-analyzed case carries a tuple (Cat 1 likelihood, Cat 2 likelihood, ambiguous flag, structural-distinguishing-feature description if Cat 2). The likelihoods are derived from the cross-validation stability and the (w, ε) sensitivity reporting (§3.6 mandate).
+- **No forced binarization.** Reports may aggregate over Cat 2 likelihood thresholds for population summaries ("X% of post-default cases are likely Cat 2 at threshold 0.5") but the per-case record is always the tuple.
+- **Boundary movement is governance-visible, not silent.** When a case transitions from ambiguous to Cat 2 (or back) under V1.1 revisions (refined surprise model, new vintages, etc.), the transition is logged in the construction manifest. The classification is a function of the data available at evaluation time, not a permanent label.
+
+### 6.4 The standard-of-care argument
+
+The Cat 1 / Cat 2 boundary moves with available methodology. A failure that is correctly classified as Cat 1 in 2024 (no analytical apparatus then could have caught it) may be reclassified as Cat 2 in 2026 if a methodology demonstrates routine detection of that failure class. This boundary movement has regulatory implications: a methodology that detects Cat 2 failures is implicitly an argument about where the standard-of-care boundary should sit.
+
+That argument is *only credible* if the detection methodology has the adversarial-robustness property (§5.6). Without it, "the boundary should move because we can detect this" is self-promoting rhetoric — any vendor with a new attribution method could make the same claim. With it, the argument is structural: the methodology survives gaming because gaming it produces the evidence it is designed to detect. The standard-of-care argument and the adversarial-robustness property are inseparable.
+
+Concretely: the regulator-facing translation of this spec should foreground the Cat 1 / Cat 2 distinction *paired with* the adversarial-robustness property, not the boundary-movement claim in isolation. The framing is a *structural observation about how Cat boundaries shift as detection methodologies become available, conditioned on those methodologies being adversarially robust*. The boundary movement is the leverage; the robustness is what licenses the leverage.
+
+### 6.5 What SHAP and per-model attribution methods structurally cannot do
+
+A per-model attribution method (SHAP, LIME, integrated gradients) applied to a deployed model can explain that model's per-case decisions. It cannot:
+
+1. **Detect dataset-level patterns.** Cat 2 is a dataset-level pattern (per Tony's framing). Per-case attribution is by construction per-case; aggregating per-case explanations does not produce dataset-level inference.
+2. **Compare against counterfactual model choices.** Cat 2 detection requires asking "what would an equally-good model that weighted X differently have predicted?" The per-model method evaluates the model that was chosen; counterfactual model evaluation is outside its scope.
+3. **Carry adversarial robustness.** Per-model attributions can be gamed at training time (regularize attributions to look reasonable; suppress feature importance on sensitive variables). The gaming produces a model that still attributes reasonably on the surface but has not changed its underlying behavior. Retrospective-trajectory cannot be gamed this way because S operates on outcome data after decisions land, not on attributions before.
+
+A SHAP-on-ensemble extension can approximate prediction-side trajectory by computing attribution variance across a manually-constructed ensemble of models — but the ensemble is not policy-derived, the cost regimes are not separately declared, the revision mechanism (§5.4) is absent, and the adversarial-robustness property does not transfer because SHAP-on-ensemble still operates on attribution-side artifacts, not on outcome-data feedback. The structural distinction from §3.7 carries forward to Cat 2: per-model methods cannot natively produce the governance-relevant Cat 2 signal regardless of how many models they are run on.
+
+### 6.6 What this section does *not* specify
+
+- The exact threshold separating ambiguous from Cat 2 (this is a calibration choice; V1 names it as a construction-manifest parameter and a sensitivity-reporting target, not a fixed value).
+- The structural-distinguishing-feature description format (V1 names that one is required; the format — feature weight delta, decision-region difference, interaction term, etc. — is operational detail deferred to the implementation plan).
+- The regulator-facing translation of Cat 1 / Cat 2 vocabulary into examination-procedure language (downstream artifact, not contents of this spec).
+- The interaction with substrate-axis (OD-10): Cat 2 detection on HMDA-decisions substrate is detecting "past underwriters under-weighted X under cost variation"; Cat 2 on LC-outcomes substrate is detecting "models under-weighted X relative to realized outcomes." These are different governance claims and the substrate-axis V1.1 work bears directly on which claim each reported Cat 2 detection is making.
