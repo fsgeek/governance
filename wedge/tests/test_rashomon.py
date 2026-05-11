@@ -9,14 +9,17 @@ from __future__ import annotations
 import pytest
 
 from policy.encoder import PolicyConstraints
+from wedge.losses import deny_emphasis_loss, grant_emphasis_loss
 from wedge.rashomon import (
     EpsilonAdmissibleSet,
     ExclusionRecord,
     HyperparameterSpec,
     PolicyAdmissibleSet,
     SweepConfig,
+    build_dual_set,
     evaluate_policy,
     filter_to_epsilon,
+    filter_to_epsilon_under_loss,
     hyperparameter_sweep,
     select_diverse_members,
 )
@@ -67,6 +70,178 @@ def test_hyperparameter_sweep_retains_fitted_tree():
         assert r.fitted_tree is not None
         # sklearn DecisionTreeClassifier exposes tree_.feature post-fit.
         assert hasattr(r.fitted_tree, "tree_")
+
+
+def test_hyperparameter_sweep_retains_holdout_predictions():
+    """SweepResult must retain holdout_y_true and holdout_y_pred so dual-set
+    construction can evaluate cost-asymmetric losses without re-fitting."""
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(3,),
+        min_samples_leafs=(5,),
+        feature_subsets=(tuple(FEATURE_COLS),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    results = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    for r in results:
+        assert r.holdout_y_true is not None
+        assert r.holdout_y_pred is not None
+        assert r.holdout_y_true.shape == r.holdout_y_pred.shape
+        # Holdout fraction was 0.3 over 100 rows; pandas train_test_split with
+        # stratify rounds, but shape should be in a plausible range.
+        assert 20 <= r.holdout_y_true.shape[0] <= 40
+    # All SweepResults from one sweep share the same holdout split.
+    import numpy as np
+    first_y_true = results[0].holdout_y_true
+    for r in results[1:]:
+        assert np.array_equal(r.holdout_y_true, first_y_true)
+
+
+# ---------------------------------------------------------------------------
+# filter_to_epsilon_under_loss — Phase 3 under cost-asymmetric losses (§3.2/§3.3)
+# ---------------------------------------------------------------------------
+
+
+def test_filter_to_epsilon_under_loss_uses_grant_emphasis():
+    """L_T-based ε-band: members are within ε of the L_T-minimal admissible model."""
+    from functools import partial
+
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(3, 5, 7),
+        min_samples_leafs=(5, 10, 20),
+        feature_subsets=(tuple(FEATURE_COLS),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    sweep = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    admissible = evaluate_policy(sweep, policy_constraints=None)
+    loss_fn = partial(grant_emphasis_loss, w_T=1.5)
+    result = filter_to_epsilon_under_loss(
+        admissible, loss_fn=loss_fn, loss_label="L_T(w_T=1.5)", epsilon=2.0
+    )
+    assert isinstance(result, EpsilonAdmissibleSet)
+    assert result.score_label == "L_T(w_T=1.5)"
+    # The best L_T value among admissible members:
+    losses = [loss_fn(sr.holdout_y_true, sr.holdout_y_pred) for sr in admissible.admissible]
+    best_loss = min(losses)
+    assert result.global_best_value == pytest.approx(best_loss)
+    # Within-ε members all satisfy: loss - best_loss <= ε.
+    for sr in result.within_epsilon:
+        sr_loss = loss_fn(sr.holdout_y_true, sr.holdout_y_pred)
+        assert sr_loss - best_loss <= 2.0 + 1e-9
+
+
+def test_filter_to_epsilon_under_loss_uses_deny_emphasis():
+    from functools import partial
+
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(3, 5, 7),
+        min_samples_leafs=(5, 10, 20),
+        feature_subsets=(tuple(FEATURE_COLS),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    sweep = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    admissible = evaluate_policy(sweep, policy_constraints=None)
+    loss_fn = partial(deny_emphasis_loss, w_F=1.5)
+    result = filter_to_epsilon_under_loss(
+        admissible, loss_fn=loss_fn, loss_label="L_F(w_F=1.5)", epsilon=2.0
+    )
+    assert result.score_label == "L_F(w_F=1.5)"
+    losses = [loss_fn(sr.holdout_y_true, sr.holdout_y_pred) for sr in admissible.admissible]
+    best_loss = min(losses)
+    assert result.global_best_value == pytest.approx(best_loss)
+
+
+def test_filter_to_epsilon_under_loss_empty_admissible_returns_empty():
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(1,),
+        min_samples_leafs=(5,),
+        feature_subsets=(("fico_proxy",),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    sweep = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    policy = _trivial_policy(mandatory=("dti_proxy",))
+    admissible = evaluate_policy(sweep, policy_constraints=policy)
+    assert len(admissible.admissible) == 0
+
+    from functools import partial
+    result = filter_to_epsilon_under_loss(
+        admissible,
+        loss_fn=partial(grant_emphasis_loss, w_T=1.5),
+        loss_label="L_T(w_T=1.5)",
+        epsilon=2.0,
+    )
+    assert result.within_epsilon == []
+    assert result.out_of_epsilon == []
+
+
+# ---------------------------------------------------------------------------
+# build_dual_set — R_T(ε_T) and R_F(ε_F) per spec §3.2 / §3.3
+# ---------------------------------------------------------------------------
+
+
+def test_build_dual_set_returns_two_epsilon_admissible_sets():
+    """Dual-set construction yields R_T (grant-emphasis) and R_F (deny-emphasis),
+    both filtered by policy admissibility and their respective ε-bands."""
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(3, 5, 7),
+        min_samples_leafs=(5, 10, 20),
+        feature_subsets=(tuple(FEATURE_COLS),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    sweep = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    admissible = evaluate_policy(sweep, policy_constraints=None)
+    R_T, R_F = build_dual_set(
+        admissible, epsilon_T=2.0, epsilon_F=2.0, w_T=1.5, w_F=1.5
+    )
+    assert isinstance(R_T, EpsilonAdmissibleSet)
+    assert isinstance(R_F, EpsilonAdmissibleSet)
+    assert R_T.score_label.startswith("L_T")
+    assert R_F.score_label.startswith("L_F")
+    assert len(R_T.within_epsilon) > 0
+    assert len(R_F.within_epsilon) > 0
+
+
+def test_build_dual_set_loss_values_distinguish_admissible_models():
+    """For build_dual_set to be meaningful, L_T and L_F must produce different
+    rankings on at least some admissible models. Whether R_T and R_F end up
+    with literally different membership is data-dependent (small fixtures with
+    integer-grained losses often tie); the algorithmic property we can assert
+    is that the per-model L_T and L_F values differ for at least one admissible
+    model whose predictions are imperfect."""
+    from functools import partial
+
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(3, 5, 7),
+        min_samples_leafs=(5, 10, 20),
+        feature_subsets=(tuple(FEATURE_COLS),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    sweep = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    admissible = evaluate_policy(sweep, policy_constraints=None)
+    L_T = partial(grant_emphasis_loss, w_T=5.0)
+    L_F = partial(deny_emphasis_loss, w_F=5.0)
+    differences = [
+        L_T(sr.holdout_y_true, sr.holdout_y_pred)
+        - L_F(sr.holdout_y_true, sr.holdout_y_pred)
+        for sr in admissible.admissible
+    ]
+    # At least one model has L_T != L_F (i.e. its missed-grant count differs
+    # from its missed-deny count).
+    assert any(abs(d) > 1e-9 for d in differences), (
+        "All admissible models have L_T == L_F; cost-asymmetric losses cannot "
+        "distinguish them. Check loss implementation or use a larger fixture."
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -185,7 +360,8 @@ def test_filter_to_epsilon_partitions_admissible_set():
     result = filter_to_epsilon(policy_set, epsilon=0.05)
     assert isinstance(result, EpsilonAdmissibleSet)
     expected_best = max(sr.holdout_auc for sr in policy_set.admissible)
-    assert result.global_best_auc == pytest.approx(expected_best)
+    assert result.global_best_value == pytest.approx(expected_best)
+    assert result.score_label == "auc"
     assert result.epsilon == pytest.approx(0.05)
     for sr in result.within_epsilon:
         assert expected_best - sr.holdout_auc <= 0.05 + 1e-9
@@ -218,7 +394,7 @@ def test_filter_to_epsilon_measures_against_admissible_best_not_global_best():
         pytest.skip("fixture coincidentally excluded all models; rerun with different seed")
     eps_result = filter_to_epsilon(policy_set, epsilon=0.05)
     admissible_best = max(sr.holdout_auc for sr in policy_set.admissible)
-    assert eps_result.global_best_auc == pytest.approx(admissible_best)
+    assert eps_result.global_best_value == pytest.approx(admissible_best)
 
 
 def test_filter_to_epsilon_empty_admissible_set_returns_empty():
@@ -284,7 +460,7 @@ def test_three_phase_pipeline_produces_admissible_within_epsilon_members():
     members = select_diverse_members(eps_set.within_epsilon, n=3)
     assert 1 <= len(members) <= 3
     for m in members:
-        assert eps_set.global_best_auc - m.holdout_auc <= 0.10 + 1e-9
+        assert eps_set.global_best_value - m.holdout_auc <= 0.10 + 1e-9
 
 
 def test_refit_members_returns_one_cartmodel_per_member_with_correct_ids():

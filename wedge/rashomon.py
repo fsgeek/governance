@@ -1,12 +1,13 @@
-"""Three-phase R(ε) construction: sweep → policy evaluation → ε-filter → selection.
+"""Three-phase R(ε) construction with single and dual-set variants.
 
 Pipeline per spec §3 (set construction) and §2.7 OD-9b/OD-12 (mandatory-feature
 enforcement):
 
   1. hyperparameter_sweep(X, y, config)
         Fit a sweep of single-CART hyperparameter combinations on a hold-out
-        from the train set. Each SweepResult retains its fitted tree so later
-        stages can inspect the used-feature set.
+        from the train set. Each SweepResult retains its fitted tree (for the
+        post-fit policy gate) AND its holdout_y_true / holdout_y_pred arrays
+        (so cost-asymmetric losses can be evaluated without re-fitting).
 
   2. evaluate_policy(sweep_results, policy_constraints)
         Partition swept results into a PolicyAdmissibleSet:
@@ -14,14 +15,19 @@ enforcement):
           - excluded:   ExclusionRecord per failure with a structured reason
         With policy_constraints=None, all results are admissible.
 
-  3. filter_to_epsilon(policy_admissible_set, epsilon)
-        Within the admissible set, partition by holdout-AUC distance from the
-        admissible best:
-          - within_epsilon: AUC within ε of admissible_best (the R(ε) candidates)
-          - out_of_epsilon: admissible but suboptimal
-        Note: ε is measured against the best AUC among admissible models, not
-        against the global sweep best. The unconstrained case behaves identically
-        because all results are admissible.
+  3a. filter_to_epsilon(policy_admissible_set, epsilon)
+        Single-set ε-filter under holdout AUC (higher = better). The R(ε) of
+        spec §1, before the dual-set generalization.
+
+  3b. filter_to_epsilon_under_loss(admissible_set, *, loss_fn, loss_label, epsilon)
+        Loss-based ε-filter (lower = better). Used by build_dual_set to
+        construct R_T and R_F under cost-asymmetric losses L_T and L_F
+        (spec §3.2 / §3.3).
+
+  3c. build_dual_set(admissible_set, *, epsilon_T, epsilon_F, w_T, w_F)
+        Dual-set construction: returns (R_T, R_F) as a pair of
+        EpsilonAdmissibleSet objects under L_T (grant-emphasis) and L_F
+        (deny-emphasis) respectively.
 
   4. select_diverse_members(within_epsilon_results, n)
         Farthest-point selection in spec space; picks n members for diversity.
@@ -35,7 +41,8 @@ near-optimality (gradational), which is distinct from diversity selection.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Optional
+from functools import partial
+from typing import Callable, Optional
 
 import numpy as np
 import pandas as pd
@@ -44,6 +51,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
 from policy.encoder import PolicyConstraints
+from wedge.losses import deny_emphasis_loss, grant_emphasis_loss
 from wedge.models import CartModel, fit_model
 
 
@@ -62,11 +70,20 @@ class SweepResult:
     (policy evaluation, post-fit inspection) can read `tree_.feature` without
     re-fitting. The wedge re-fits selected members on the full training set
     in `refit_members`; the sweep's tree is for inspection only.
+
+    `holdout_y_true` and `holdout_y_pred` retain the model's holdout-set
+    predictions and true labels so cost-asymmetric losses (L_T, L_F) can be
+    evaluated for dual-set construction without re-fitting. Each SweepResult
+    from a given sweep carries the same `holdout_y_true` (the shared
+    train_test_split outcome); this is redundant across the list but keeps
+    the API surface flat.
     """
 
     spec: HyperparameterSpec
     holdout_auc: float
     fitted_tree: Optional[DecisionTreeClassifier] = None
+    holdout_y_true: Optional[np.ndarray] = None
+    holdout_y_pred: Optional[np.ndarray] = None
 
 
 @dataclass
@@ -108,19 +125,28 @@ class PolicyAdmissibleSet:
 
 @dataclass(frozen=True)
 class EpsilonAdmissibleSet:
-    """Output of phase 3 (filter_to_epsilon).
+    """Output of phase 3 (filter_to_epsilon or filter_to_epsilon_under_loss).
 
-    `within_epsilon` is the R(ε) candidate set: admissible models with
-    holdout_auc within `epsilon` of `global_best_auc`. `global_best_auc` is the
-    best AUC among admissible models (not among all swept results). When the
-    admissible set is empty, `global_best_auc` is NaN and both partitions are
-    empty.
+    `within_epsilon` is the R(ε) candidate set: admissible models within
+    `epsilon` of `global_best_value` under the score function indicated by
+    `score_label`.
+
+    Score conventions:
+      - "auc"           : `global_best_value` is the max AUC among admissible
+                          models; within-ε means `best - sr.holdout_auc ≤ ε`.
+      - "L_T(...)"      : `global_best_value` is the min L_T loss; within-ε
+                          means `sr.loss - best ≤ ε`.
+      - "L_F(...)"      : analogous to L_T.
+
+    When the admissible set is empty, `global_best_value` is NaN and both
+    partitions are empty.
     """
 
     within_epsilon: list[SweepResult]
     out_of_epsilon: list[SweepResult]
-    global_best_auc: float
+    global_best_value: float
     epsilon: float
+    score_label: str
 
 
 # ---------------------------------------------------------------------------
@@ -152,6 +178,8 @@ def hyperparameter_sweep(
                 )
                 proba = model.predict_proba(X_holdout)[:, list(model.classes_).index(1)]
                 auc = float(roc_auc_score(y_holdout, proba))
+                y_pred = model.predict(X_holdout)
+                y_true = np.asarray(y_holdout)
                 results.append(
                     SweepResult(
                         spec=HyperparameterSpec(
@@ -161,6 +189,8 @@ def hyperparameter_sweep(
                         ),
                         holdout_auc=auc,
                         fitted_tree=model.tree,
+                        holdout_y_true=y_true,
+                        holdout_y_pred=y_pred,
                     )
                 )
     return results
@@ -297,20 +327,20 @@ def filter_to_epsilon(
     *,
     epsilon: float,
 ) -> EpsilonAdmissibleSet:
-    """Phase 3: partition the admissible set by AUC distance from the admissible
-    best.
+    """Phase 3a (single-set, AUC): partition the admissible set by holdout-AUC
+    distance from the admissible best (higher AUC = better).
 
-    `epsilon` is the tolerance: a model is in `within_epsilon` iff its
-    holdout_auc is within `epsilon` of `global_best_auc` (the admissible-best
-    AUC). When the admissible set is empty, both partitions are empty and
-    `global_best_auc` is NaN.
+    A model is in `within_epsilon` iff `admissible_best - sr.holdout_auc ≤ ε`.
+    When the admissible set is empty, both partitions are empty and
+    `global_best_value` is NaN.
     """
     if not admissible_set.admissible:
         return EpsilonAdmissibleSet(
             within_epsilon=[],
             out_of_epsilon=[],
-            global_best_auc=float("nan"),
+            global_best_value=float("nan"),
             epsilon=epsilon,
+            score_label="auc",
         )
 
     best = max(sr.holdout_auc for sr in admissible_set.admissible)
@@ -325,9 +355,102 @@ def filter_to_epsilon(
     return EpsilonAdmissibleSet(
         within_epsilon=within,
         out_of_epsilon=out,
-        global_best_auc=best,
+        global_best_value=best,
         epsilon=epsilon,
+        score_label="auc",
     )
+
+
+def filter_to_epsilon_under_loss(
+    admissible_set: PolicyAdmissibleSet,
+    *,
+    loss_fn: Callable[[np.ndarray, np.ndarray], float],
+    loss_label: str,
+    epsilon: float,
+) -> EpsilonAdmissibleSet:
+    """Phase 3b (loss-based): partition the admissible set by `loss_fn` distance
+    from the admissible best (lower loss = better).
+
+    `loss_fn(y_true, y_pred) -> float` is evaluated on each admissible model's
+    stored holdout predictions. A model is in `within_epsilon` iff
+    `sr.loss - admissible_best ≤ ε`.
+
+    Used by `build_dual_set` to construct R_T and R_F under cost-asymmetric
+    losses (spec §3.2 / §3.3). Requires that SweepResults have
+    `holdout_y_true` and `holdout_y_pred` populated (default for results from
+    `hyperparameter_sweep`).
+    """
+    if not admissible_set.admissible:
+        return EpsilonAdmissibleSet(
+            within_epsilon=[],
+            out_of_epsilon=[],
+            global_best_value=float("nan"),
+            epsilon=epsilon,
+            score_label=loss_label,
+        )
+
+    # Score each admissible model under the loss; surface missing holdout data
+    # eagerly rather than silently NaN-ing.
+    scored: list[tuple[SweepResult, float]] = []
+    for sr in admissible_set.admissible:
+        if sr.holdout_y_true is None or sr.holdout_y_pred is None:
+            raise ValueError(
+                "filter_to_epsilon_under_loss requires SweepResult.holdout_y_true "
+                "and holdout_y_pred to be populated. Did hyperparameter_sweep run "
+                "successfully?"
+            )
+        scored.append((sr, float(loss_fn(sr.holdout_y_true, sr.holdout_y_pred))))
+
+    best = min(s for _, s in scored)
+    tol = epsilon + 1e-9
+    within: list[SweepResult] = []
+    out: list[SweepResult] = []
+    for sr, s in scored:
+        if s - best <= tol:
+            within.append(sr)
+        else:
+            out.append(sr)
+    return EpsilonAdmissibleSet(
+        within_epsilon=within,
+        out_of_epsilon=out,
+        global_best_value=best,
+        epsilon=epsilon,
+        score_label=loss_label,
+    )
+
+
+def build_dual_set(
+    admissible_set: PolicyAdmissibleSet,
+    *,
+    epsilon_T: float,
+    epsilon_F: float,
+    w_T: float = 1.5,
+    w_F: float = 1.5,
+) -> tuple[EpsilonAdmissibleSet, EpsilonAdmissibleSet]:
+    """Phase 3c: construct (R_T(ε_T), R_F(ε_F)) per spec §3.2 / §3.3.
+
+    R_T = ε-band of policy-admissible models under L_T (grant-emphasis loss
+          weighting missed grants by `w_T`).
+    R_F = ε-band of policy-admissible models under L_F (deny-emphasis loss
+          weighting missed denies by `w_F`).
+
+    Both are returned as `EpsilonAdmissibleSet` objects with `score_label`
+    set to a parameterized loss identifier (e.g. ``"L_T(w_T=1.5)"``) so the
+    construction manifest (§3.6) can record which loss produced each set.
+    """
+    R_T = filter_to_epsilon_under_loss(
+        admissible_set,
+        loss_fn=partial(grant_emphasis_loss, w_T=w_T),
+        loss_label=f"L_T(w_T={w_T})",
+        epsilon=epsilon_T,
+    )
+    R_F = filter_to_epsilon_under_loss(
+        admissible_set,
+        loss_fn=partial(deny_emphasis_loss, w_F=w_F),
+        loss_label=f"L_F(w_F={w_F})",
+        epsilon=epsilon_F,
+    )
+    return R_T, R_F
 
 
 # ---------------------------------------------------------------------------
