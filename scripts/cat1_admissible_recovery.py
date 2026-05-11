@@ -35,17 +35,15 @@ from wedge.rashomon import SweepConfig, evaluate_policy, hyperparameter_sweep
 
 
 CSV_PATH = Path("data/accepted_2007_to_2018Q4.csv")
-JSONL_PATH = Path("runs/2026-05-11T20-25-56Z-target-c.jsonl")
 POLICY_PATH = Path("policy/thin_demo_hmda.yaml")
-TARGET_VINTAGE = "2015Q4"
 TERM = "36 months"
 SEED = 0
 
 
-def _load_target() -> tuple[pd.DataFrame, list[str]]:
+def _load_target(vintage: str) -> tuple[pd.DataFrame, list[str]]:
     """Reproduce the orchestration's V_2 load identically."""
     raw = pd.read_csv(CSV_PATH, low_memory=False)
-    df = filter_to_vintage(raw, vintage=TARGET_VINTAGE, term=TERM)
+    df = filter_to_vintage(raw, vintage=vintage, term=TERM)
     df = df.copy()  # de-fragment to avoid PerformanceWarning churn
     df["label"] = derive_label(df["loan_status"])
     if "emp_length" in df.columns:
@@ -55,11 +53,11 @@ def _load_target() -> tuple[pd.DataFrame, list[str]]:
     return df, feature_cols
 
 
-def _load_cat1(feature_cols: list[str]) -> tuple[pd.DataFrame, pd.Series]:
+def _load_cat1(jsonl_path: Path, feature_cols: list[str]) -> tuple[pd.DataFrame, pd.Series]:
     """Read Cat 1 records from the run's jsonl."""
     feats = []
     labels = []
-    with JSONL_PATH.open() as fh:
+    with jsonl_path.open() as fh:
         for line in fh:
             r = json.loads(line)
             if r["classification"]["category"] == "Cat 1":
@@ -73,8 +71,26 @@ def _load_cat1(feature_cols: list[str]) -> tuple[pd.DataFrame, pd.Series]:
 
 
 def main() -> None:
-    target_df, feature_cols = _load_target()
-    print(f"V_2 rows: {len(target_df)}; features: {feature_cols}")
+    import argparse
+
+    ap = argparse.ArgumentParser(
+        description="Per-admissible-model Cat 1 recovery test for a dual-set run."
+    )
+    ap.add_argument(
+        "--vintage",
+        default="2015Q4",
+        help="Target vintage to reload (must match the run's target)",
+    )
+    ap.add_argument(
+        "--jsonl",
+        type=Path,
+        default=Path("runs/2026-05-11T20-25-56Z-target-c.jsonl"),
+        help="Path to the run's per-case jsonl",
+    )
+    args = ap.parse_args()
+
+    target_df, feature_cols = _load_target(args.vintage)
+    print(f"target vintage: {args.vintage}; rows: {len(target_df)}; features: {feature_cols}")
 
     # Same outer split (seed=0, test_size=0.30, stratify=label).
     train_df, _ = train_test_split(
@@ -121,7 +137,7 @@ def main() -> None:
         )
         refits.append((sr, m))
 
-    cat1_X, cat1_y = _load_cat1(feature_cols)
+    cat1_X, cat1_y = _load_cat1(args.jsonl, feature_cols)
     n_cat1 = len(cat1_y)
     print(f"Cat 1 cases loaded: {n_cat1}")
     print(f"Cat 1 realized label distribution: {Counter(cat1_y.tolist())}")

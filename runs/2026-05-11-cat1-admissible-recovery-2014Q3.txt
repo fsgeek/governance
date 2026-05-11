@@ -1,0 +1,28 @@
+target vintage: 2014Q3; rows: 40595; features: ['fico_range_low', 'dti', 'annual_inc', 'emp_length']
+outer-train: 28416 rows (24543 grants, 3873 denies)
+swept 75 combos; admissible 50; excluded 25
+Cat 1 cases loaded: 1660
+Cat 1 realized label distribution: Counter({0: 1660})
+
+Top 10 admissible by Cat 1 deny-fraction (== accuracy here):
+  d=12 leaf=  25 subset_size=4 auc=0.5968 cat1_deny=0.0133 (22/1660) subset=fico_range_low,dti,annual_inc,emp_length
+  d=10 leaf=  25 subset_size=4 auc=0.6043 cat1_deny=0.0090 (15/1660) subset=fico_range_low,dti,annual_inc,emp_length
+  d=10 leaf=  25 subset_size=3 auc=0.5986 cat1_deny=0.0084 (14/1660) subset=fico_range_low,dti,annual_inc
+  d=12 leaf=  25 subset_size=3 auc=0.5917 cat1_deny=0.0084 (14/1660) subset=fico_range_low,dti,annual_inc
+  d= 8 leaf=  25 subset_size=4 auc=0.6145 cat1_deny=0.0066 (11/1660) subset=fico_range_low,dti,annual_inc,emp_length
+  d= 6 leaf=  25 subset_size=4 auc=0.6269 cat1_deny=0.0060 (10/1660) subset=fico_range_low,dti,annual_inc,emp_length
+  d= 6 leaf=  25 subset_size=3 auc=0.6251 cat1_deny=0.0060 (10/1660) subset=fico_range_low,dti,annual_inc
+  d= 8 leaf=  25 subset_size=3 auc=0.6104 cat1_deny=0.0060 (10/1660) subset=fico_range_low,dti,annual_inc
+  d= 4 leaf=  25 subset_size=4 auc=0.6303 cat1_deny=0.0000 (0/1660) subset=fico_range_low,dti,annual_inc,emp_length
+  d= 4 leaf=  25 subset_size=3 auc=0.6305 cat1_deny=0.0000 (0/1660) subset=fico_range_low,dti,annual_inc
+
+Bottom 5 admissible by Cat 1 deny-fraction:
+  d=12 leaf= 100 subset_size=3 auc=0.6064 cat1_deny=0.0000 (0/1660)
+  d=12 leaf= 200 subset_size=4 auc=0.6230 cat1_deny=0.0000 (0/1660)
+  d=12 leaf= 200 subset_size=3 auc=0.6207 cat1_deny=0.0000 (0/1660)
+  d=12 leaf= 400 subset_size=4 auc=0.6335 cat1_deny=0.0000 (0/1660)
+  d=12 leaf= 400 subset_size=3 auc=0.6366 cat1_deny=0.0000 (0/1660)
+
+max admissible Cat 1 accuracy: 0.0133
+mean admissible Cat 1 accuracy: 0.0013
+models with any deny prediction on Cat 1: 8 / 50
