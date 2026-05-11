@@ -533,3 +533,95 @@ Honest framing of what the validation targets above can and cannot conclude:
 - The adversarial-robustness property (§5.6) is *inherited from the prior memo and reasoned about in §6.4*; it is not empirically demonstrated by May 23. Empirical demonstration of adversarial robustness is a long-horizon validation that no realistic prototype timeline supports; the property's load-bearing role is structural, not empirically established by this spec.
 
 The disciplined framing of the May 23 deliverable is: *the mechanism is instantiated, the artifacts are produced, the construction is auditable, and at least one Cat 2 case is worked end-to-end*. That is sufficient for the Olorin engagement and for Paper 1's empirical anchors; it is insufficient as a complete validation of the V1 spec's claims. The post-May-23 work is named in §7.3 and the V1.1 register so the gap is auditable rather than hidden.
+
+---
+
+## 8. Open decisions register
+
+OD entries carry stable numeric IDs (OD-N). New ODs append; existing IDs do not renumber when entries are added or resolved. Each entry: **Resolution state** (resolved / deferred with default / deferred without default), **Where** (spec section or external artifact carrying the resolution), **Considerations** (what would drive a different choice; conditions for re-opening).
+
+**OD-1: Codification richness.** Hybrid NL+structured, decision-graph predicate enforcement, soft constraints.
+- *Resolution:* Deferred with default. V1 supports the current structured-YAML form produced by `policy/encoder.py`; the three alternatives are explicitly out of scope.
+- *Where:* §2.6.
+- *Considerations:* Bank-side deployment may surface demand for richer policy expressivity (especially decision-graph predicates if the cliff signal proves under-discriminating). Re-open if V1 validation reveals expressivity gaps.
+
+**OD-2: Set construction algorithm.** Sample-and-filter, constrained optimization, multi-start.
+- *Resolution:* Deferred with default. V1 contract specifies input/output/invariants (§3.2, §3.3); implementation may choose. The wedge's existing hyperparameter sweep + ε filter is the V1 default implementation.
+- *Where:* §3.2 invariants; implementation detail deferred to wedge extension plan.
+- *Considerations:* Computational performance at scale may force a different algorithm (multi-start optimization for richer hypothesis classes). Re-open at scale-up.
+
+**OD-3: Asymmetric ε between R_T and R_F.**
+- *Resolution:* Deferred with default. V1 commits to symmetric ε_T = ε_F. Asymmetric named as architecturally permitted, ECOA adverse-action framework as the canonical regulatory rationale.
+- *Where:* §3.5.
+- *Considerations:* Bank-policy declaration of asymmetric tolerance triggers re-open; the asymmetry must be declared in the policy YAML and reflected in the construction manifest.
+
+**OD-4: I operationalization — per-instance vs population, prediction vs attribution.**
+- *Resolution:* Deferred with default. V1 emits per-instance I_pred (prediction-side, predicted-probability difference) plus population summaries in the construction manifest. I_attr (attribution-side) is named architecturally permitted; metric choice deferred to V1.1.
+- *Where:* §4.2, §4.3.
+- *Considerations:* If I_pred proves unstable under (w, ε) perturbation, I_attr may carry signal I_pred misses. Re-open under sensitivity-reporting findings (OD-15).
+
+**OD-5: Retrospective trajectory statistical test.**
+- *Resolution:* Deferred with default. V1 default is permutation test, 5% holdout-accuracy improvement on surprise-elevated cases, p < 0.05 across 1000 shuffles.
+- *Where:* §5.5.
+- *Considerations:* If the default proves under- or over-sensitive in practice, alternatives (Bayesian posterior, cross-validation stability, surprise-model resampling) are V1.1 candidates.
+
+**OD-6: Cat 1 vs Cat 2 formal criterion.**
+- *Resolution:* Resolved. Three-condition criterion in §6.2; ambiguous as third class; per-case tuple reporting.
+- *Where:* §6.2, §6.3.
+- *Considerations:* The boundary threshold separating ambiguous from Cat 2 is a construction-manifest parameter and a sensitivity-reporting target (§3.6) — fixed value is not specified.
+
+**OD-7: Scope boundaries (May 23 exclusions).**
+- *Resolution:* Resolved. Explicit out-of-scope list in §7.3.
+- *Where:* §7.3.
+- *Considerations:* Out-of-scope items become in-scope for post-May-23 plans; the register here is the May 23 boundary specifically.
+
+**OD-8: Prototype empirical demonstration targets.**
+- *Resolution:* Resolved. Targets A (dual-set), B (Cat 2), C (integration) in §7.2 with explicit acceptance criteria.
+- *Where:* §7.2.
+- *Considerations:* Targets are bounded to instantiation, not generalization. Generalization claims require post-May-23 work.
+
+**OD-9: Label-polarity convention and mandatory-feature enforcement.** Resides inline in §2.7. Subdivided into OD-9a and OD-9b.
+- *OD-9a (label polarity):* Deferred with default. V1 default is sign-flip adapter at the construction boundary; V1.1 target is collector standardization (OD-13).
+- *OD-9b (mandatory-feature enforcement):* Deferred with default. V1 default is the weaker "available to the model" claim; V1.1 target is post-fit split-use check (OD-12).
+- *Where:* §2.7.
+
+**OD-10: Heckman / training-data validity + substrate-axis surfacing.**
+- *Resolution:* Deferred. V1 omits explicit substrate-axis treatment; V1.1 adds §2.5 distinguishing HMDA-decisions (descriptive vs aspirational policy) from LC-outcomes substrates, each producing different governance interpretations of inter-set disagreement.
+- *Where:* Spec §2 currently silent on this; flagged in §6.6 and §7.4. V1.1 target.
+- *Considerations:* HMDA pitch overclaim risk until V1.1 lands. Plan Task 11 Step 3.
+
+**OD-11: §3.1 motivation reframing.**
+- *Resolution:* Deferred with caveat. V1 reads I_pred as boundary-sensitivity-under-cost-variation (direct from construction). Evidential-conflict reading is queued for V1.1 and explicitly requires the constrained-hypothesis-space tightening argument plus §3.6 sensitivity reporting.
+- *Where:* §3.1 sharpening block; §4.2 caveat. V1.1 target.
+- *Considerations:* Coupled to OD-15 — single argument across two surfaces. Plan Task 11 Step 4.
+
+**OD-12: OD-9b flip to post-fit split-use check.**
+- *Resolution:* Deferred to V1.1 with target. V1.1 flips the V1 default to the post-fit check; reserves "weaken the claim" as fallback only if R(ε) emptiness becomes governance-problematic.
+- *Where:* §2.7 OD-9b. V1.1 target.
+- *Considerations:* Plan Task 11 Step 2.
+
+**OD-13: Collector standardization with adapter as transition.**
+- *Resolution:* Deferred to V1.1 with target date 2026-05-18. Standardize `derive_label` in both collectors to `label=1 ⇔ grant`; re-interpret published findings in the new convention; remove adapter requirement after code lands.
+- *Where:* §2.7 OD-9a. V1.1 target.
+- *Considerations:* Plan Task 11 Step 1. Empirical structure is preserved across the convention flip; only interpretive labels change.
+
+**OD-14: Novelty positioning — three-tier cut.**
+- *Resolution:* Deferred to V1.1. §1.1 reframes contribution as tier 1 (cost-asymmetric training, standard), tier 2 (dual Rashomon under asymmetric cost, combination-novel), tier 3 (policy-artifact-as-model-class-constraint with invalidation semantics, novel-in-mechanism, load-bearing methodological claim).
+- *Where:* §1.1 currently uses an earlier framing. V1.1 target.
+- *Considerations:* Plan Task 11 Step 5. Can run post-May-23 since it does not affect deliverable substance, only positioning.
+
+**OD-15: Construction-manifest sensitivity requirements.**
+- *Resolution:* Deferred to V1.1. V1.1 specifies required perturbation reporting on (w_T, w_F, ε_T, ε_F, H) at ±50% with stated robustness threshold for claim persistence.
+- *Where:* §3.6 currently mandates manifest existence; V1.1 adds sensitivity-reporting requirements.
+- *Considerations:* Plan Task 11 Step 4 (coupled with OD-11). Without this, §3.1's evidential-conflict reading floats and §6.3's per-case likelihood derivation lacks the sensitivity inputs it requires.
+
+### 8.1 Resolution-state summary
+
+| State | OD IDs | Count |
+|---|---|---|
+| Resolved | OD-6, OD-7, OD-8 | 3 |
+| Deferred with default | OD-1, OD-2, OD-3, OD-4, OD-5, OD-9a, OD-9b | 7 |
+| Deferred to V1.1 with target | OD-10, OD-11, OD-12, OD-13, OD-14, OD-15 | 6 |
+| Deferred without default | (none) | 0 |
+
+The absence of "deferred without default" is intentional. Every open decision in V1 either has a working V1 commitment or a V1.1 plan; nothing is left unspecified. The deferral itself is a specification act with default and rationale recorded.
