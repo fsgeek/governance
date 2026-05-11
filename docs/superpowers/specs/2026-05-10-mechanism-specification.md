@@ -474,3 +474,62 @@ A SHAP-on-ensemble extension can approximate prediction-side trajectory by compu
 - The structural-distinguishing-feature description format (V1 names that one is required; the format — feature weight delta, decision-region difference, interaction term, etc. — is operational detail deferred to the implementation plan).
 - The regulator-facing translation of Cat 1 / Cat 2 vocabulary into examination-procedure language (downstream artifact, not contents of this spec).
 - The interaction with substrate-axis (OD-10): Cat 2 detection on HMDA-decisions substrate is detecting "past underwriters under-weighted X under cost variation"; Cat 2 on LC-outcomes substrate is detecting "models under-weighted X relative to realized outcomes." These are different governance claims and the substrate-axis V1.1 work bears directly on which claim each reported Cat 2 detection is making.
+
+---
+
+## 7. Prototype validation targets for May 23
+
+### 7.1 What is already validated (prior evidence in hand)
+
+The wedge has produced empirical evidence that bears on this spec's V1 claims, prior to the spec being written:
+
+- **SHAP non-inferiority falsification** (`2026-05-09-shap-vs-rashomon-result-note.md`). Pre-registered, OTS-stamped. Four SHAP-silence criteria fail to recover Rashomon T-silent-all on LendingClub V₁/V₂_alt/V₂; per-case Jaccard 0.000–0.008; T-silent-all charge-off 0.292 vs base 0.148 (2× elevation); no SHAP criterion reproduces the U-shaped regime signature. Falsification arm of the cliff/structural-distinctiveness claim landed. *Caveat* (per cross-instance review 2026-05-11): the SHAP-instability vs Rashomon-silence anti-correlation under regime shift is a buried sub-finding deserving an amendment to the result note.
+- **Cliff structure across three vintages** (`2026-05-09-cliff-and-constraint-saturation-synthesis.md`). Whole-class attribution-failure as a set-level signal; regime rotation (F-empty in V₁ pre-tightening, T-empty in V₂ post-tightening, regime-symmetric 1.74×/1.75× I-mean ratio); within-cohort hard-but-coherent vs hard-and-atypical decomposition.
+- **I-stability prediction falsification** (`2026-05-09-i-stability-falsification-findings-note.md`). Tony's contrarian prediction that I would be more stable than T/F was falsified decisively (I CV 7–9× T CV across three vintages). This falsification operates under the *single-R(ε)* construction; its transfer to dual-set R_T/R_F is not yet tested and is itself a V1.1 validation target.
+
+Combined, these establish the wedge's V₁ measurement infrastructure as substrate for the spec's V1 claims. They do *not* validate the spec's two new contributions (dual-set construction; Cat 1/Cat 2 detection) — those are May 23 targets.
+
+### 7.2 New validation targets for May 23
+
+V1's two new contributions each require at least one empirical demonstration before the May 23 deliverable. The targets are bounded; "validate" here means "produce evidence the contribution is operationally instantiable and produces governance-relevant outputs on at least one substrate," not "validate across all substrates and regimes."
+
+**Target A: Dual-set construction demonstration.**
+- Build R_T(ε_T) and R_F(ε_F) on a single LendingClub vintage (V₂ = 2015Q4 recommended for continuity with prior findings) under the V1 default L_T / L_F with w_T = w_F = 1.5 (illustrative, declared in construction manifest).
+- Emit per-case I_pred(x) per §4.2.
+- Demonstrate that R_T(ε_T) ≠ R_F(ε_F) on a nontrivial fraction of in-regime cases — i.e., the two sets are not degenerate copies of each other.
+- Report disagreement-rate distribution alongside the existing single-R(ε) cliff structure for comparison.
+- Acceptance: ≥ 1% of in-regime cases show I_pred above an a-priori-declared threshold, with the threshold itself declared in the construction manifest.
+
+**Target B: Cat 2 detection demonstration.**
+- Use the same V₂ vintage. Train the surprise model S on a later vintage's completed outcomes (LC-evaluation proxy per §5.3 — recommended source: 2016Q1–2016Q4 originations with completed terminal observations through end of available LC data).
+- Apply S to V₂ origination features; identify cases with |surprise| above a stated threshold.
+- Construct R_T'(ε_T) and R_F'(ε_F) under the surprise-weighted loss L_T' / L_F' per §5.4.
+- Identify at least one case x such that: original R_T/R_F predicted one outcome on x, the realized LC outcome differed, and a model in R_T'(ε_T) \ R_T(ε_T) predicts the realized outcome with an expressible structural-distinguishing feature.
+- Acceptance: at least one such case identified with the structural-distinguishing feature articulated in text. *Statistical significance is not required at this scale*; the May 23 target is demonstration of the mechanism, not population-level validation. Population-level validation is post-May-23.
+
+**Target C (combined): integration story.**
+- A single end-to-end run on V₂ produces: the construction manifest (per §3.6); the in-regime case dataset with per-case I_pred (per §4.2); the set-revision manifest (per §5.4); and at least one Cat 2 case worked through with its tuple (likelihoods, ambiguous flag, structural-distinguishing feature) per §6.3.
+- Acceptance: the run executes end-to-end and produces all four artifacts; the artifacts are auditable in the sense that a third reader can reconstruct the construction parameters from the manifest and re-execute.
+
+### 7.3 Explicit out-of-scope items for May 23
+
+The deliverable's bounded scope. These items are *not* required for May 23 and *are* required for downstream artifacts; staging them as out-of-scope is part of the spec's scope discipline:
+
+- **Regulator-facing document translation.** The Cat 1 / Cat 2 vocabulary, the construction-manifest declarations, and the standard-of-care framing all require translation into examination-procedure language for the regulator-document. That translation is a downstream artifact, not contents of the May 23 prototype.
+- **Paper 2 (architecture) prose.** This spec is the architectural source for Paper 2; the paper itself is downstream.
+- **HMDA cross-validation.** Per OD-10 (V1.1), HMDA and LC are different substrates with different governance interpretations. Demonstrating Targets A–C on LC is sufficient for May 23; the HMDA companion validation is post-May-23.
+- **Fannie Mae generalization.** Pre-registered in `2026-05-09-shap-vs-rashomon-result-note.md` §8 as a followup. Cross-asset-class + cross-regime test of whether the per-case-non-overlap and U-shape-non-recovery results survive. Post-May-23.
+- **Multi-policy M&A sweep.** The strategic argument (memory: `project_strategic_argument.md`) names retrospective multi-policy comparison as a load-bearing use case for mid-tier-bank deployment. Operationalizing it requires multi-policy construction support, which is a downstream capability and not part of V1 set construction.
+- **V1.1 OD-10..15 resolutions.** Each is a deliberate deferral with rationale; collectively they are post-May-23 work *except* OD-12 (post-fit split-use check) and OD-13 (collector standardization), which are flagged in the plan's Task 11 as required by May 23.
+- **Production deployment-grade infrastructure.** The May 23 prototype validates the spec's mechanism; it does not produce production-grade deployment. Performance characteristics, monitoring, on-call runbooks, etc. are out of scope.
+
+### 7.4 What May 23 validation does *not* establish
+
+Honest framing of what the validation targets above can and cannot conclude:
+
+- Targets A–C demonstrate *instantiability* on one substrate (LendingClub) under one policy graph (thin demo). They do *not* establish that the mechanism generalizes across substrates, policies, or regimes. Generalization claims require the post-May-23 work named in §7.3.
+- A successful Target B demonstration (≥1 Cat 2 case found) does *not* establish Cat 2 *prevalence* or that Cat 2 detection works at production-relevant rates. Prevalence is a population-level claim that requires more cases and the substrate-axis V1.1 work.
+- The construction manifest (§3.6) is *declared* in the run outputs but its *sensitivity reporting* requirement (OD-15) is V1.1 work. May 23 demonstrates the manifest exists with the V1 fields; load-bearing sensitivity reporting is V1.1.
+- The adversarial-robustness property (§5.6) is *inherited from the prior memo and reasoned about in §6.4*; it is not empirically demonstrated by May 23. Empirical demonstration of adversarial robustness is a long-horizon validation that no realistic prototype timeline supports; the property's load-bearing role is structural, not empirically established by this spec.
+
+The disciplined framing of the May 23 deliverable is: *the mechanism is instantiated, the artifacts are produced, the construction is auditable, and at least one Cat 2 case is worked end-to-end*. That is sufficient for the Olorin engagement and for Paper 1's empirical anchors; it is insufficient as a complete validation of the V1 spec's claims. The post-May-23 work is named in §7.3 and the V1.1 register so the gap is auditable rather than hidden.
