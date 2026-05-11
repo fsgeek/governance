@@ -1,0 +1,110 @@
+# Thin demonstration policy graph for Fannie Mae first-lien mortgage decisions.
+#
+# Status: ILLUSTRATIVE. Companion to thin_demo_hmda.yaml; adapts the feature
+# space to the Fannie Mae public dataset, which exposes FICO, DTI, LTV, and
+# loan term but does NOT release applicant income. This means the
+# annual_inc-bearing nodes from the HMDA thin demo are unavailable here; the
+# FM policy uses LTV in place of income verification as the third structural
+# axis.
+#
+# Same audience contract as the HMDA thin demo: human-readable AND
+# machine-encodable; the artifact a regulator audits is the same artifact
+# that constrains the models.
+
+name: thin_demo_fm_mortgage
+version: 0.1
+status: illustrative-demonstration
+description: |
+  Thin demonstration policy graph for first-lien residential mortgage
+  decisions on Fannie Mae acquisition-and-performance data. Mirrors the
+  HMDA thin demo structurally; substitutes LTV for annual_inc since FM
+  data lacks income.
+
+constraints:
+
+  monotonicity:
+    - feature: fico_range_low
+      direction: positive
+      rationale: Higher FICO never increases decline probability.
+    - feature: dti
+      direction: negative
+      rationale: Higher DTI never decreases decline probability.
+    - feature: ltv
+      direction: negative
+      rationale: Higher LTV never decreases decline probability.
+
+  mandatory_features:
+    - fico_range_low
+    - dti
+    - ltv
+
+  prohibited_features: []
+
+  applicable_regime:
+    loan_purpose: [purchase, refinance]
+    occupancy: owner_occupied
+    lien_position: first
+
+nodes:
+
+  - id: entry
+    type: entry
+    next: regime_check
+
+  - id: regime_check
+    type: gate
+    predicate: case is in applicable_regime
+    on_pass: fico_floor
+    on_fail: manual_review
+    rationale: Out-of-regime cases (investor properties, second liens,
+      unusual loan purposes) are not scoped by this thin demo.
+
+  - id: fico_floor
+    type: threshold
+    feature: fico_range_low
+    operator: ">="
+    threshold: 620
+    on_pass: dti_ceiling
+    on_fail: decline
+    rationale: Conventional minimum FICO floor.
+
+  - id: dti_ceiling
+    type: threshold
+    feature: dti
+    operator: "<="
+    threshold: 43
+    on_pass: ltv_check
+    on_fail: manual_review
+    rationale: ATR/QM standard DTI ceiling.
+
+  - id: ltv_check
+    type: threshold
+    feature: ltv
+    operator: "<="
+    threshold: 95
+    on_pass: standard_grant
+    on_fail: manual_review
+    rationale: Above 95% LTV requires PMI and additional review.
+
+  - id: standard_grant
+    type: leaf
+    decision: grant
+    rationale: All standard-path conditions satisfied; eligible for
+      automated approval at standard pricing tier.
+
+  - id: manual_review
+    type: leaf
+    decision: human_review
+    rationale: Case requires human underwriter judgment.
+
+  - id: decline
+    type: leaf
+    decision: deny
+    rationale: Case fails the FICO floor.
+
+pricing:
+  applies_to: [grant]
+  schedule: external_pricing_table
+  notes: |
+    Pricing is intentionally not a decision-graph output. Same
+    separation-of-concerns rationale as the HMDA thin demo.

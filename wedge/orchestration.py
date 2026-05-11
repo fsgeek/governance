@@ -343,6 +343,9 @@ def _load_lc_block(csv_path: Path, *, vintages: list[str], term: str) -> pd.Data
     raw = pd.read_csv(csv_path, low_memory=False)
     parts = [filter_to_vintage(raw, vintage=v, term=term) for v in vintages]
     df = pd.concat(parts, ignore_index=True) if parts else raw.iloc[0:0]
+    # De-fragment before column assignment to silence pandas' high-fragmentation
+    # warning on wide LC frames.
+    df = df.copy()
     df["label"] = derive_label(df["loan_status"])
     if "emp_length" in df.columns:
         df["emp_length"] = normalize_emp_length(df["emp_length"])

@@ -1,0 +1,28 @@
+FM eligible rows: 401276
+outer-train: 140446 rows (grants=139328, denies=1118)
+swept 75; admissible 50; excluded 25
+Cat 1 cases loaded: 479
+Cat 1 realized label distribution: Counter({0: 479})
+
+Top 10 admissible by Cat 1 deny-fraction:
+  d= 4 leaf=  25 subset_size=4 auc=0.7912 cat1_deny=0.0000 (0/479)
+  d= 4 leaf=  25 subset_size=3 auc=0.7912 cat1_deny=0.0000 (0/479)
+  d= 4 leaf=  50 subset_size=4 auc=0.7912 cat1_deny=0.0000 (0/479)
+  d= 4 leaf=  50 subset_size=3 auc=0.7912 cat1_deny=0.0000 (0/479)
+  d= 4 leaf= 100 subset_size=4 auc=0.7936 cat1_deny=0.0000 (0/479)
+  d= 4 leaf= 100 subset_size=3 auc=0.7936 cat1_deny=0.0000 (0/479)
+  d= 4 leaf= 200 subset_size=4 auc=0.7934 cat1_deny=0.0000 (0/479)
+  d= 4 leaf= 200 subset_size=3 auc=0.7934 cat1_deny=0.0000 (0/479)
+  d= 4 leaf= 400 subset_size=4 auc=0.7958 cat1_deny=0.0000 (0/479)
+  d= 4 leaf= 400 subset_size=3 auc=0.7958 cat1_deny=0.0000 (0/479)
+
+Bottom 5 admissible:
+  d=12 leaf= 100 subset_size=3 auc=0.7095 cat1_deny=0.0000
+  d=12 leaf= 200 subset_size=4 auc=0.7374 cat1_deny=0.0000
+  d=12 leaf= 200 subset_size=3 auc=0.7356 cat1_deny=0.0000
+  d=12 leaf= 400 subset_size=4 auc=0.7754 cat1_deny=0.0000
+  d=12 leaf= 400 subset_size=3 auc=0.7708 cat1_deny=0.0000
+
+max admissible Cat 1 accuracy: 0.0000
+mean admissible Cat 1 accuracy: 0.0000
+models with any deny prediction on Cat 1: 0 / 50
