@@ -51,7 +51,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
 from policy.encoder import PolicyConstraints
-from wedge.losses import deny_emphasis_loss, grant_emphasis_loss
+from wedge.losses import (
+    deny_emphasis_loss,
+    deny_emphasis_loss_weighted,
+    grant_emphasis_loss,
+    grant_emphasis_loss_weighted,
+)
 from wedge.models import CartModel, fit_model
 
 
@@ -426,6 +431,7 @@ def build_dual_set(
     epsilon_F: float,
     w_T: float = 1.5,
     w_F: float = 1.5,
+    sample_weights: Optional[np.ndarray] = None,
 ) -> tuple[EpsilonAdmissibleSet, EpsilonAdmissibleSet]:
     """Phase 3c: construct (R_T(ε_T), R_F(ε_F)) per spec §3.2 / §3.3.
 
@@ -434,21 +440,40 @@ def build_dual_set(
     R_F = ε-band of policy-admissible models under L_F (deny-emphasis loss
           weighting missed denies by `w_F`).
 
-    Both are returned as `EpsilonAdmissibleSet` objects with `score_label`
-    set to a parameterized loss identifier (e.g. ``"L_T(w_T=1.5)"``) so the
-    construction manifest (§3.6) can record which loss produced each set.
+    When `sample_weights` is provided (shape must match each SweepResult's
+    `holdout_y_true`), the loss functions become the surprise-weighted
+    variants L_T' and L_F' per spec §5 — set revision under surprise-weighted
+    loss. `score_label` carries a prime marker ("L_T'(...)") to make the
+    distinction visible in audit output.
+
+    Both returned sets are `EpsilonAdmissibleSet` objects with `score_label`
+    set to a parameterized loss identifier so the construction manifest (§3.6)
+    records which loss produced each set.
     """
+    if sample_weights is None:
+        loss_T = partial(grant_emphasis_loss, w_T=w_T)
+        loss_F = partial(deny_emphasis_loss, w_F=w_F)
+        label_T = f"L_T(w_T={w_T})"
+        label_F = f"L_F(w_F={w_F})"
+    else:
+        def loss_T(y, yh):
+            return grant_emphasis_loss_weighted(
+                y, yh, w_T=w_T, sample_weights=sample_weights
+            )
+
+        def loss_F(y, yh):
+            return deny_emphasis_loss_weighted(
+                y, yh, w_F=w_F, sample_weights=sample_weights
+            )
+
+        label_T = f"L_T'(w_T={w_T}, weighted)"
+        label_F = f"L_F'(w_F={w_F}, weighted)"
+
     R_T = filter_to_epsilon_under_loss(
-        admissible_set,
-        loss_fn=partial(grant_emphasis_loss, w_T=w_T),
-        loss_label=f"L_T(w_T={w_T})",
-        epsilon=epsilon_T,
+        admissible_set, loss_fn=loss_T, loss_label=label_T, epsilon=epsilon_T,
     )
     R_F = filter_to_epsilon_under_loss(
-        admissible_set,
-        loss_fn=partial(deny_emphasis_loss, w_F=w_F),
-        loss_label=f"L_F(w_F={w_F})",
-        epsilon=epsilon_F,
+        admissible_set, loss_fn=loss_F, loss_label=label_F, epsilon=epsilon_F,
     )
     return R_T, R_F
 

@@ -210,6 +210,87 @@ def test_build_dual_set_returns_two_epsilon_admissible_sets():
     assert len(R_F.within_epsilon) > 0
 
 
+def test_build_dual_set_revised_under_surprise_weights():
+    """When sample_weights are provided, build_dual_set uses the weighted
+    losses (L_T' / L_F'); score_label carries a prime marker."""
+    import numpy as np
+
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(3, 5, 7),
+        min_samples_leafs=(5, 10, 20),
+        feature_subsets=(tuple(FEATURE_COLS),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    sweep = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    admissible = evaluate_policy(sweep, policy_constraints=None)
+    # All admissible SweepResults share the same holdout_y_true; build a
+    # weight vector of matching shape.
+    holdout_n = admissible.admissible[0].holdout_y_true.shape[0]
+    rng = np.random.default_rng(seed=0)
+    weights = rng.uniform(0.5, 2.0, size=holdout_n)
+
+    R_T_prime, R_F_prime = build_dual_set(
+        admissible,
+        epsilon_T=2.0,
+        epsilon_F=2.0,
+        w_T=1.5,
+        w_F=1.5,
+        sample_weights=weights,
+    )
+    assert R_T_prime.score_label.startswith("L_T'")
+    assert R_F_prime.score_label.startswith("L_F'")
+    assert "weighted" in R_T_prime.score_label
+    assert "weighted" in R_F_prime.score_label
+    assert len(R_T_prime.within_epsilon) > 0
+
+
+def test_build_dual_set_revised_uses_weighted_loss_implementation():
+    """Surprise-weighted L_T' / L_F' produce different per-model loss values
+    than the unweighted variants on any model with non-zero misses. (The best
+    model may have zero misses → both losses are 0; tested at the per-model
+    level rather than at the best-loss level to keep the test fixture-robust.)"""
+    import numpy as np
+
+    from wedge.losses import grant_emphasis_loss, grant_emphasis_loss_weighted
+
+    df = tiny_noisy_dataset(seed=0)
+    cfg = SweepConfig(
+        max_depths=(3, 5, 7),
+        min_samples_leafs=(5, 10, 20),
+        feature_subsets=(tuple(FEATURE_COLS),),
+        random_state=0,
+        holdout_fraction=0.3,
+    )
+    sweep = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    admissible = evaluate_policy(sweep, policy_constraints=None)
+    holdout_n = admissible.admissible[0].holdout_y_true.shape[0]
+    weights = np.ones(holdout_n)
+    weights[: holdout_n // 2] = 5.0
+
+    # Per-model: weighted loss should equal unweighted loss only when the model
+    # has zero misses in the up-weighted region. At least some non-best model
+    # has misses there, so the values must differ for that model.
+    differences = []
+    for sr in admissible.admissible:
+        unweighted = grant_emphasis_loss(sr.holdout_y_true, sr.holdout_y_pred, w_T=1.5)
+        weighted = grant_emphasis_loss_weighted(
+            sr.holdout_y_true, sr.holdout_y_pred, w_T=1.5, sample_weights=weights
+        )
+        differences.append(abs(weighted - unweighted))
+    assert any(d > 1e-9 for d in differences), (
+        "No admissible model has differing weighted vs unweighted L_T; weights "
+        "effectively uniform or losses miscomputed."
+    )
+
+    # And: the build_dual_set wrapper produces a non-empty surprise-weighted set.
+    R_T_prime, _ = build_dual_set(
+        admissible, epsilon_T=2.0, epsilon_F=2.0, sample_weights=weights
+    )
+    assert len(R_T_prime.within_epsilon) > 0
+
+
 def test_build_dual_set_loss_values_distinguish_admissible_models():
     """For build_dual_set to be meaningful, L_T and L_F must produce different
     rankings on at least some admissible models. Whether R_T and R_F end up
