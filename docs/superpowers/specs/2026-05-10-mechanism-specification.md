@@ -34,6 +34,7 @@
 - **2026-05-11:** §7 (May 23 validation targets) landed (commit `cc203aa`).
 - **2026-05-11:** §8 (open decisions register, OD-1..OD-15) landed (commit `028564a`).
 - **2026-05-11:** V1.1 OD-13 resolved — collector label-polarity standardized to grant-as-positive (`label=1 ⇔ grant`). LendingClub, HMDA, and Fannie Mae collectors flipped; structural cascade through `attribution.py` (GRANT_CLASS_IDX), `models.py` (emit_for_case proba mapping), and `fixtures.py` (separable-dataset rule). Construction-boundary adapter from V1 default no longer needed. §2.7 OD-9a annotated with resolution paragraph.
+- **2026-05-11:** V1.1 OD-12 resolved — post-fit mandatory-feature split-use check implemented as one phase of a three-phase R(ε) construction pipeline (`hyperparameter_sweep` → `evaluate_policy` → `filter_to_epsilon` → `select_diverse_members`). `build_rashomon_set` removed; each intermediate set (`PolicyAdmissibleSet`, `EpsilonAdmissibleSet`) is a first-class auditable object carrying the data §3.6's construction manifest emits. ε is measured against the admissible best, not the global sweep best, so near-optimality under a binding policy is honest. §2.7 OD-9b annotated with resolution paragraph.
 - **2026-05-11:** §9 (cross-reference index) landed (commit `320b712`).
 - **2026-05-11:** V1 stabilization — terminology consistency check passed, acceptance criteria verified across all 9 sections, file-size deferral noted. Commit hash filled in by stabilization commit.
 
@@ -196,7 +197,18 @@ Two resolution paths:
 
 The V1 default is the weaker guarantee that matches the current API. The regulator-facing document translation (downstream artifact) must reflect this weaker reading and not over-claim.
 
-Both OD-9a and OD-9b are *implementation debt* — places where the spec is honest about a gap between intent and current code. Future revisions resolve them with a code change plus a spec update; V1 names them so the gap is auditable.
+**Resolution (2026-05-11 via OD-12):** Path 2 (post-fit split-use check) adopted, but as one phase of a broader **three-phase R(ε) construction pipeline** rather than a bolted-on second admissibility pass. The wedge's prior `build_rashomon_set(X, y, config, epsilon, n_members)` is replaced by an explicit composition:
+
+1. `hyperparameter_sweep(X, y, config) -> list[SweepResult]` — fits every (depth, leaf_min, subset) combo on a hold-out; each `SweepResult` retains its fitted tree for downstream inspection.
+2. `evaluate_policy(sweep_results, policy_constraints) -> PolicyAdmissibleSet` — applies two gates: a pre-fit subset gate (mandatory features present, prohibited absent) and a post-fit used-feature gate (every mandatory feature appears in the fitted tree's split set). Each excluded combo is recorded as an `ExclusionRecord` with a structured `reason` field.
+3. `filter_to_epsilon(admissible_set, epsilon) -> EpsilonAdmissibleSet` — partitions the admissible set by AUC distance from the *admissible best* (not the global sweep best). When the policy is binding, near-optimality is measured under the policy.
+4. `select_diverse_members(within_epsilon, n) -> list[SweepResult]` — unchanged farthest-point selection.
+
+Each intermediate set is a first-class object carrying the data §3.6's construction manifest emits: `PolicyAdmissibleSet` carries the exclusion list (the "what was rejected by policy" audit record); `EpsilonAdmissibleSet` carries `global_best_auc` and the within/out partition (the "what was suboptimal vs. selectable" audit record). The decomposition matches the spec's natural seams — admissibility (categorical) vs. near-optimality (gradational) vs. diversity selection — and surfaces audit-relevant intermediates the prior single-function API hid.
+
+This resolves OD-9b without over-claiming: the spec text now says "mandatory means *split on* by the fitted tree" (the strong guarantee from path 2); the regulator-facing document can match that without weakening. With `policy_constraints=None`, the pipeline behaves identically to the prior unconstrained construction (preserving V1 wedge run semantics for non-policy-bearing experiments).
+
+Both OD-9a and OD-9b are *implementation debt* — places where the spec was honest about a gap between intent and current code. OD-13 and OD-12 close the gap; V1.1 spec updates reflect the closure.
 
 ---
 

@@ -46,7 +46,14 @@ from wedge.indeterminacy import (
     compute_local_density,
 )
 from wedge.output import RunMetadata, write_run
-from wedge.rashomon import SweepConfig, build_rashomon_set, refit_members
+from wedge.rashomon import (
+    SweepConfig,
+    evaluate_policy,
+    filter_to_epsilon,
+    hyperparameter_sweep,
+    refit_members,
+    select_diverse_members,
+)
 from wedge.types import Case, PerModelOutput
 
 
@@ -128,7 +135,10 @@ def main() -> int:
         subsets.append(tuple(c for c in feature_cols if c != drop))
     feature_subsets = tuple(subsets)
 
-    # 3. Build R(ε).
+    # 3. Build R(ε) via the three-phase pipeline (spec §2.7 OD-9b / OD-12):
+    #    sweep -> evaluate_policy -> filter_to_epsilon -> select_diverse_members.
+    #    V1 wedge runs without a policy gate (policy_constraints=None); the
+    #    machinery is wired and audit-ready for V1.1 policy-bearing runs.
     cfg = SweepConfig(
         max_depths=(4, 6, 8, 10, 12),
         min_samples_leafs=(25, 50, 100, 200, 400),
@@ -136,9 +146,10 @@ def main() -> int:
         random_state=args.seed,
         holdout_fraction=0.30,
     )
-    members = build_rashomon_set(
-        X_train, y_train, config=cfg, epsilon=args.epsilon, n_members=args.n_members
-    )
+    sweep = hyperparameter_sweep(X_train, y_train, config=cfg)
+    admissible_set = evaluate_policy(sweep, policy_constraints=None)
+    epsilon_set = filter_to_epsilon(admissible_set, epsilon=args.epsilon)
+    members = select_diverse_members(epsilon_set.within_epsilon, n=args.n_members)
     fitted = refit_members(X_train, y_train, members=members, random_state=args.seed)
 
     # Per-model leaf statistics for the local_density I species (computed once
