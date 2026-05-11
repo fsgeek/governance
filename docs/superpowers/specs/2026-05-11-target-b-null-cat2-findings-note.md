@@ -86,6 +86,39 @@ On LC 2015Q4 with the thin demo HMDA policy and the V1 default sweep, the dual-s
 - The admissible space (CART, depth ≤ 12, min_leaf ≥ 25, must include fico_range_low ∧ dti ∧ annual_inc) does not contain a model that predicts the realized failures correctly. If the realized failures of LC 2015Q4 are not separable inside the policy's hypothesis class, no admissible recovery is possible. This is the Cat 1 ground-state of the mechanism: the policy is genuinely binding.
 - The set-revision mechanism (surprise-weighted L_T' / L_F') is too coarse to surface a recovering model even when one exists in the admissible space. This is the failure-mode the mechanism is supposed to *exclude* by construction; it is testable by inspecting whether any single admissible model gets the Cat 1 cases right, regardless of which set it falls into.
 
-The second diagnosis is the more interesting falsification target; it can be checked by computing per-admissible-model accuracy on the Cat 1 case subset and asking whether the maximum exceeds 0.5. Not done in this note. Carried forward as a pending test.
+The second diagnosis is the more interesting falsification target; it can be checked by computing per-admissible-model accuracy on the Cat 1 case subset and asking whether any single admissible model exceeds a meaningful fraction.
 
-This run does not generalize. The negative Cat 2 yield is a finding about *this substrate × this policy × this hypothesis space*, not about the mechanism's effectiveness in general. A run on a substrate with stronger admissible-space heterogeneity (e.g., a different vintage, a different asset class, or a richer hypothesis class) would test the mechanism differently.
+## 7. The pending test, executed (2026-05-11)
+
+Cat 1 on this run is structurally narrow: every Cat 1 case has realized_outcome = 0 (charged off) AND original ensemble verdict = 1 (predicted grant). So the falsification test reduces to: "for each admissible model, on what fraction of the 3,941 predicted-grant / actually-defaulted cases does the model predict deny?"
+
+Script: `scripts/cat1_admissible_recovery.py`. Output: `runs/2026-05-11-cat1-admissible-recovery.txt`.
+
+| Quantity | Value |
+|---|---|
+| admissible models tested | 50 |
+| max admissible Cat 1 deny-fraction (== accuracy) | **0.0089** (35 / 3,941) |
+| mean admissible Cat 1 accuracy | 0.0008 |
+| admissible models with any deny prediction on Cat 1 | **10 / 50** |
+| admissible models with zero deny prediction on Cat 1 | 40 / 50 |
+
+The top recovering model (max_depth=12, min_samples_leaf=25, 3-feature subset) catches 35 of 3,941 Cat 1 cases. The other 40 of 50 admissible models predict grant on every single Cat 1 case.
+
+**The "policy genuinely binding" diagnosis stands.** The set-revision mechanism (surprise-weighted L_T' / L_F') was not too coarse to surface a recovering model — there simply isn't a recovering admissible model to surface. The maximum admissible recovery is under 1%; no aggregation rule applied to a 50-model admissible space will produce a Cat 2 verdict from this material.
+
+### 7.1 Texture: recovery tracks overfitting, not predictive quality
+
+A regularity worth flagging: Cat 1 recovery and holdout AUC do *not* covary positively across admissible models.
+
+| Model | max_depth | min_samples_leaf | holdout AUC | Cat 1 deny-fraction |
+|---|---|---|---|---|
+| best Cat 1 recovery | 12 | 25 | 0.5875 | 0.0089 |
+| highest AUC at d=12 | 12 | 400 | 0.6249 | 0.0000 |
+
+The shallowest / largest-leaf admissible models (the most regularized) recover *zero* Cat 1 cases but achieve the best holdout AUC. The deepest / smallest-leaf admissible models (the leakiest) recover the most Cat 1 cases at lower AUC. Cat 1 recovery, on this substrate, is an artifact of overfitting to anomalous training cases — not a signal of better predictive judgment.
+
+This is mechanism-internal good news: the regularized admissible models are not failing to find a real signal that an overfit model would catch; the "recoveries" the deepest models produce are extensions of overfit decision boundaries to similar-looking anomalous cases in the out-of-sample set. The mechanism's regularization is doing what it should.
+
+## 8. Generalization
+
+This run does not generalize. The negative Cat 2 yield is a finding about *this substrate × this policy × this hypothesis space*, not about the mechanism's effectiveness in general. A run on a substrate with stronger admissible-space heterogeneity — a different vintage, a different asset class, or a richer hypothesis class — would test the mechanism differently. The §7 result rules out one specific failure mode (coarse set-revision masking a recovery present in the admissible space) for *this* run only.

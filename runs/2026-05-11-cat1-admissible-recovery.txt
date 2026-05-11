@@ -1,0 +1,28 @@
+V_2 rows: 88669; features: ['fico_range_low', 'dti', 'annual_inc', 'emp_length']
+outer-train: 62068 rows (52871 grants, 9197 denies)
+swept 75 combos; admissible 50; excluded 25
+Cat 1 cases loaded: 3941
+Cat 1 realized label distribution: Counter({0: 3941})
+
+Top 10 admissible by Cat 1 deny-fraction (== accuracy here):
+  d=12 leaf=  25 subset_size=3 auc=0.5875 cat1_deny=0.0089 (35/3941) subset=fico_range_low,dti,annual_inc
+  d=10 leaf=  25 subset_size=3 auc=0.5981 cat1_deny=0.0081 (32/3941) subset=fico_range_low,dti,annual_inc
+  d=12 leaf=  25 subset_size=4 auc=0.5855 cat1_deny=0.0058 (23/3941) subset=fico_range_low,dti,annual_inc,emp_length
+  d=10 leaf=  25 subset_size=4 auc=0.6005 cat1_deny=0.0053 (21/3941) subset=fico_range_low,dti,annual_inc,emp_length
+  d= 8 leaf=  25 subset_size=3 auc=0.6118 cat1_deny=0.0038 (15/3941) subset=fico_range_low,dti,annual_inc
+  d= 8 leaf=  25 subset_size=4 auc=0.6129 cat1_deny=0.0030 (12/3941) subset=fico_range_low,dti,annual_inc,emp_length
+  d= 6 leaf=  25 subset_size=3 auc=0.6215 cat1_deny=0.0015 (6/3941) subset=fico_range_low,dti,annual_inc
+  d= 8 leaf=  50 subset_size=4 auc=0.6114 cat1_deny=0.0008 (3/3941) subset=fico_range_low,dti,annual_inc,emp_length
+  d=10 leaf=  50 subset_size=4 auc=0.6016 cat1_deny=0.0008 (3/3941) subset=fico_range_low,dti,annual_inc,emp_length
+  d=12 leaf=  50 subset_size=4 auc=0.5942 cat1_deny=0.0008 (3/3941) subset=fico_range_low,dti,annual_inc,emp_length
+
+Bottom 5 admissible by Cat 1 deny-fraction:
+  d=12 leaf= 100 subset_size=3 auc=0.6041 cat1_deny=0.0000 (0/3941)
+  d=12 leaf= 200 subset_size=4 auc=0.6111 cat1_deny=0.0000 (0/3941)
+  d=12 leaf= 200 subset_size=3 auc=0.6126 cat1_deny=0.0000 (0/3941)
+  d=12 leaf= 400 subset_size=4 auc=0.6249 cat1_deny=0.0000 (0/3941)
+  d=12 leaf= 400 subset_size=3 auc=0.6226 cat1_deny=0.0000 (0/3941)
+
+max admissible Cat 1 accuracy: 0.0089
+mean admissible Cat 1 accuracy: 0.0008
+models with any deny prediction on Cat 1: 10 / 50
