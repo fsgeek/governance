@@ -341,3 +341,77 @@ What the dissolution does *not* solve: the §3.1 caveat (boundary-sensitivity vs
 - Per-species computational details for the wedge implementation (those live in the indeterminacy memo §4 and remain authoritative there).
 - How I_pred feeds into Category 1 vs Category 2 detection (Section 6's work; §6 reads I_pred as one input alongside retrospective-trajectory output).
 - The retrospective-trajectory species's full operational definition (Section 5's work).
+
+---
+
+## 5. Retrospective trajectory species — operational definition
+
+### 5.1 Motivation and load-bearing role
+
+The retrospective-trajectory species is named load-bearing by two prior memos for distinct reasons:
+
+- `2026-05-08-indeterminacy-operationalization-memo.md` §3.4 / §7 — load-bearing for the Olorin deployment story. Banks have post-origination lifecycle data; current credit-scoring stacks treat it as model-retraining input or aggregate drift metric. The retrospective-trajectory species structures it as a *per-case I-channel* that is externally examinable.
+- `2026-05-08-adversarial-robustness-and-examinability-memo.md` — load-bearing for the structural defense argument post-publication. Retrospective-trajectory has the property that it *cannot be gamed without producing exactly the evidence it is designed to detect*: a bank that wants to evade the species's signal must produce outcome data that the species would flag. This is the adversarial-robustness property that underwrites Section 6's standard-of-care argument.
+
+Sections 5 below specifies the mechanism for V1; the *property* the memos name (adversarial robustness; per-case lifecycle channel) is inherited from the memos and is not restated here.
+
+### 5.2 The surprise model
+
+Define a *surprise model* S: origination_features → outcome_surprise, trained on completed-observation cases where both origination features and realized outcomes are available.
+
+**outcome_surprise** is a per-case scalar capturing the gap between what origination features predict and what actually happened. V1 canonical default: residual of a calibrated probability model — for a case with origination features x and realized binary outcome y ∈ {paid, defaulted}, surprise(x, y) = y − P̂(default | x) under a baseline model P̂ trained on the same vintage class. Surprise is positive when the case defaulted more than its origination features predicted; negative when it paid better than predicted. The magnitude is the load-bearing quantity for retrospective detection.
+
+**Why a separate model and not direct residuals on R_T / R_F.** Two reasons:
+1. R_T and R_F are constrained to policy-admissible models. The surprise model is *not* policy-constrained — its job is to detect signal the policy-constrained models may have missed. Constraining the surprise model to the same hypothesis space defeats the purpose.
+2. The surprise model can use features the policy-constrained model class excludes (with the asymmetric caveat that *protected-class proxies* must still be excluded from S; surprise modeling is not a back door for prohibited features). The surprise model's feature set is a separate declaration in the construction manifest.
+
+### 5.3 Two surface configurations
+
+The indeterminacy memo §4 distinguished a production version and an LC-evaluation proxy. The V1 spec preserves both:
+
+**Production version (Olorin deployment).** S is trained on the bank's own historical loans with completed terminal observations. Origination_features are the same as those R_T / R_F use; outcome_surprise is computed against the bank's realized outcomes. Per-case surprise scores feed into V1.1's set-revision mechanism (§5.4) and the regulator-facing trajectory report.
+
+**LC-evaluation proxy.** S is trained on later vintages' completed outcomes (e.g., 2016–2017 cohorts) and applied retrospectively to 2014Q3 / 2015Q3 / 2015Q4 origination features. This tests the *architecture* on the LendingClub corpus without claiming production deployment. The proxy is sufficient for May 23 spec validation but is not equivalent to production behavior — the LC corpus has origination-selection structure and a specific population that real-world bank deployment will differ from.
+
+The construction manifest must declare which configuration produced the surprise scores; substrate-axis caveats from OD-10 apply asymmetrically here. LC-evaluation proxy results are not directly transferable to bank deployment without an explicit transferability argument.
+
+### 5.4 The set-revision mechanism
+
+The retrospective-trajectory species feeds back into R_T / R_F membership through a revised loss function. Mechanism:
+
+1. **Original loss.** R_T(ε_T) and R_F(ε_F) are constructed under L_T and L_F respectively (Section 3).
+2. **Surprise-weighted revised loss.** L_T' weights cases by |surprise(x, y)| — cases the surprise model flags get more weight in the loss. L_F' is the symmetric reweighting on the deny side.
+3. **Revised set membership.** A model h previously in R_T(ε_T) may exit R_T(ε_T) under L_T' if it systematically misclassified surprise-elevated cases — i.e., the model was ε_T-optimal on L_T but is not ε_T-optimal on L_T'. Conversely, a model previously *outside* R_T(ε_T) may enter under L_T' if it correctly handled surprise-elevated cases that L_T-optimal models missed.
+
+Set revision is the operational form of *the Rashomon set shifting under retrospective evidence* — the framing Tony introduced in the 2026-05-10 conversation about Category 2 failures. A Category 2 failure (informational under-weighting) shows up as a set-membership shift: models that retrospectively turn out to have weighted the under-weighted signal correctly enter R_T'(ε_T) / R_F'(ε_F); models that under-weighted it exit.
+
+Set revision is *not* hot-swap. It is a separate construction with its own construction manifest, citing the original sets, the surprise model, and the revision parameters. The original R_T / R_F remain as historical artifacts; the revised R_T' / R_F' are new sets with their own audit trail.
+
+### 5.5 Statistical test specifics (OD-5)
+
+V1 default test for whether the retrospective trajectory species has produced a meaningful set shift:
+
+**Test:** is there a model h ∈ R_T'(ε_T) \ R_T(ε_T) — i.e., a model that enters R_T under the surprise-weighted loss but was not in R_T under the original loss — that improves population-level holdout accuracy on surprise-elevated cases (|surprise| above a threshold) by a margin exceeding a stated significance threshold?
+
+**Null hypothesis:** the original L_T-optimal models are also approximately L_T'-optimal on surprise-elevated cases; no set membership shift is warranted.
+
+**Threshold:** V1 default is a 5% holdout-accuracy improvement on surprise-elevated cases at p < 0.05 under permutation testing across 1000 shuffles. The threshold is declared in the construction manifest; banks may legitimately choose more conservative thresholds.
+
+**Alternatives named (not V1 default):** Bayesian posterior on set membership change; cross-validation stability across surprise-model variants; resampling tests on surprise-model robustness. Each is more sophisticated; V1 uses the simpler permutation test and flags the alternatives as V1.1 candidates if the simpler test proves under- or over-sensitive in practice.
+
+### 5.6 Adversarial-robustness property (inherited)
+
+The retrospective-trajectory species's adversarial-robustness property — *cannot be gamed without producing the evidence it is designed to detect* — is specified in the adversarial-robustness memo and inherited here as the underwriting for Section 6's standard-of-care argument. The property holds because:
+
+- Gaming the surprise model requires either suppressing outcome data (which is observable by the regulator with auditing authority) or producing fabricated outcome data (which produces internal inconsistencies the surprise model surfaces against the bank's own historical record).
+- The species is *retrospective* by construction: it operates on outcomes already realized. A bank cannot pre-decide what its loan book's surprise distribution will look like; the data accumulates.
+- The surprise model is *separately constructed* from R_T / R_F: a bank that games R_T / R_F's construction does not thereby game S, because S uses a different feature set (with prohibited features still excluded) and a different (unconstrained) hypothesis space.
+
+This property is the load-bearing piece for Section 6: the standard-of-care argument depends on Cat 2 detection being credibly forward-looking, and forward-looking credibility requires that the detection method survive adversarial knowledge of its own existence. Retrospective-trajectory has that property in a way per-case attribution methods structurally do not.
+
+### 5.7 What this section does *not* specify
+
+- The full mathematical form of the surprise model (V1 default is calibrated probability residual; alternatives like quantile regression, isotonic-calibration residuals, Brier-score decompositions are named in OD-5 but deferred).
+- The feature-engineering details for S in production deployment (bank-specific; the deployment plan, not the spec, decides).
+- The specific cadence at which S is retrained as new outcomes accumulate (operational concern; the spec specifies *when retraining is permitted* — at policy revision boundaries and at declared periodic intervals — but not the interval itself).
+- The interaction between S and policy revision (when policy revises, the substrate for S shifts; this is non-trivial and is partially deferred to OD-10's substrate-axis work in V1.1).
