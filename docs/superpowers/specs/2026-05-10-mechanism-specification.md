@@ -153,3 +153,90 @@ The V1 contract commits to the current `policy/encoder.py` output shape. Three r
 - **Soft constraints.** §2.4. Default position: defer indefinitely unless governance demand surfaces.
 
 Each is an "open" decision in the sense of Section 8's register (OD-1 captures all three sub-decisions). The deferral is itself a specification act: V1 does *not* support them, and the spec records this as an explicit choice with rationale.
+
+---
+
+## 3. Set construction — dual R_T(ε_T) and R_F(ε_F)
+
+### 3.1 Motivation
+
+The wedge's V₁ implementation constructs a single R(ε) of CART models, each emitting T-support and F-support attribution by walking the decision path per case. T and F within a single model are mechanically related: per `2026-05-09-tf-mechanics-and-case-level-empty-support.md` §2, the per-case F = 1 − T identity holds by construction in the wedge's current emission. This is the *F = 1 − T flatness* problem.
+
+The flatness is operationally lossy in two ways:
+
+1. **Conflicting-evidence cases are not representable.** A borrower with strong grant-supportive history *and* strong deny-supportive recent debt-load deterioration has high evidential support on both sides. Under F = 1 − T, the model emits T ∈ [0, 1] and F = 1 − T mechanically; "high T and high F simultaneously" cannot occur. The model's output collapses the two-axis evidential structure onto one axis. This is operationally distinct from the *thin-evidence* case (low T, low F) — the operational distinction is whether the case is *contested* or *uncertain*, and the wedge cannot tell them apart.
+
+2. **The hard-but-coherent vs hard-and-atypical distinction is collapsed within the cliff.** Per `2026-05-09-cliff-and-constraint-saturation-synthesis.md` §7, the V₂ cliff cohort's low-I half (FICO 660 cluster, charge-off 2× population) is *hard but coherent* — constraint-saturated at the policy boundary, internally similar, baseline I-mean. The high-I half is *hard and atypical* — anomalies on top of FICO floor. Probabilistic semantics with F = 1 − T marks both as equivalently silent on T-side attribution; the operationally pivotal distinction is invisible.
+
+The dual-set construction resolves both losses by operationalizing T and F as outputs of *different models trained under different cost regimes*, not as residuals of a single model.
+
+### 3.2 Contract: R_T(ε_T) — the grant-emphasis set
+
+**Definition.** R_T(ε_T) is the set of binary classifiers h: X → {grant, deny} that satisfy all of:
+
+1. **Policy admissibility.** h's factor support satisfies `PolicyConstraints.is_feature_subset_admissible()` (mandatory present, prohibited absent), and h's fit respects `PolicyConstraints.monotonic_cst()` at the declared feature ordering.
+2. **Regime scope.** h is fit on training cases whose applicable-regime check passes; out-of-regime cases are excluded from training and not scored at inference.
+3. **Grant-emphasis ε_T optimality.** h is ε_T-optimal on the grant-emphasis loss L_T over the in-regime training sample. L_T weights grant-side errors more heavily than deny-side errors; the canonical default at V1 is L_T(y, ŷ) = w_T · 1[y=grant, ŷ=deny] + 1[y=deny, ŷ=grant], with w_T chosen so the Bayes-optimal classifier under L_T predicts grant on cases where P(grant | x) ≥ τ_T for a τ_T < 0.5.
+
+**Contract surface.** A set-construction implementation produces R_T(ε_T) given:
+- a `PolicyConstraints` instance (Section 2);
+- a training corpus (in-regime cases with grant/deny labels);
+- a hyperparameter space H (model class, tree depth, leaf size, etc.);
+- a grant-emphasis weight w_T;
+- a tolerance ε_T.
+
+Output: a non-empty set of fitted classifiers, each carrying its hyperparameter signature, its training loss under L_T, and its factor-support trace (the path-walk attribution the wedge already implements).
+
+**Invariants.**
+- Every h ∈ R_T(ε_T) is policy-admissible.
+- For every h, h's L_T training loss is within ε_T of the best policy-admissible loss achievable in H.
+- The set is non-empty iff at least one policy-admissible classifier in H achieves L_T training loss below the best-plus-ε_T threshold. (The empty case is a governance-visible signal that the policy + hypothesis-class combination is too tight; flagged but not silently coerced.)
+
+### 3.3 Contract: R_F(ε_F) — the deny-emphasis set
+
+**Definition.** R_F(ε_F) is the symmetric construction with the loss inverted: L_F weights deny-side errors more heavily. The canonical default at V1 is L_F(y, ŷ) = 1[y=grant, ŷ=deny] + w_F · 1[y=deny, ŷ=grant], with w_F chosen so the Bayes-optimal classifier under L_F predicts deny on cases where P(deny | x) ≥ τ_F for a τ_F < 0.5.
+
+**Contract surface.** Identical to §3.2 with L_F substituted for L_T and ε_F for ε_T.
+
+**Invariants.** Identical to §3.2 with the corresponding substitutions. The empty-R_F case is again a governance-visible signal — flagged, not coerced.
+
+### 3.4 The relationship to single-R(ε) and to T/F within a single model
+
+The single-set wedge R(ε) is approximately the cost-symmetric special case w_T = w_F = 1 (standard binary loss). R_T(ε_T) and R_F(ε_F) under symmetric ε but asymmetric w generalize: they are two policy-constrained Rashomon sets evaluated on *different objectives*. Each set still emits T-support and F-support attribution per the wedge's existing path-walk mechanics; the F = 1 − T identity still holds *within* a given model in either set. What's new is that T (grant-supportive evidence in R_T members) and F (deny-supportive evidence in R_F members) are now produced by *different model populations* and can carry independent information.
+
+Inter-set disagreement (Section 4) is the formal mechanism by which this independence becomes a usable signal. A case where R_T predicts grant with high T-support *and* R_F predicts deny with high F-support is the conflicting-evidence case that single-R(ε) could not represent. A case where both sets agree on prediction (e.g., both predict grant) is *not* conflicting-evidence regardless of within-model T/F values; the two-axis structure is meaningful only when the two sets disagree.
+
+### 3.5 Asymmetric ε — default and rationale (OD-3)
+
+**V1 default: ε_T = ε_F.** Symmetric tolerance is the default both because it minimizes degrees of freedom (one ε to defend rather than two) and because the asymmetric-ε case introduces a governance question (whose decision-set's tolerance is wider?) that should be answered by policy, not by methodology.
+
+**The asymmetric case as regulatory optional.** Regulatory frameworks already encode asymmetric grant/deny risk treatment. The Equal Credit Opportunity Act's adverse-action framework places explicit duties on deny decisions (specific reasons must be furnished; the bank carries the burden of explanation) that do not apply symmetrically to grant decisions. A bank's policy may legitimately declare that its deny-side decision-set tolerance ε_F should be tighter than its grant-side ε_T — i.e., a deny is held to a higher methodological standard than a grant, because the consequences of an unjustified deny carry asymmetric regulatory weight.
+
+When ε_T ≠ ε_F is invoked, the spec requires:
+1. The asymmetry is declared in the policy YAML, not invented at construction time.
+2. The rationale for asymmetry is recorded in the policy's audit trail (the same YAML the regulator reads).
+3. The downstream inter-set disagreement metric (Section 4) accounts for the asymmetry — disagreement weighted by which side carries the tighter tolerance.
+
+V1 implementation supports ε_T = ε_F only; asymmetric ε is named here as architecturally permitted and deferred to a future revision with the explicit rationale that V1 wants to validate the dual-set core claim before adding the asymmetry degree of freedom.
+
+### 3.6 Construction-relativity
+
+R_T(ε_T) and R_F(ε_F) are defined *relative to* the declared construction parameters: the policy graph (Section 2), the hypothesis space H, the training sample, the loss functions L_T and L_F including the cost weights w_T and w_F, and the tolerances ε_T and ε_F. This is the same parameter-relativity any Rashomon-set construction carries (`2026-05-09-cliff-and-constraint-saturation-synthesis.md` §3) and is not a weakness — the construction is *declarable and auditable*, and the declaration is itself the transparency property that distinguishes the methodology from arbitrary-threshold attribution rules.
+
+Two corollaries the spec records explicitly:
+
+- **Reproducibility requires recording the full construction.** A bank's published R_T(ε_T) is only meaningful if it ships with the policy YAML, the hypothesis space declaration, the training sample identification, the loss weights, and the tolerances. Stripping any of these decouples the set from its audit basis. The spec mandates that set construction emit a *construction manifest* alongside the set itself, listing all six parameters with their values.
+
+- **Policy revision invalidates R_T / R_F.** A policy update — even a small constraint change — produces a different `PolicyConstraints` instance and therefore a different R_T(ε_T) and R_F(ε_F). The mechanism does *not* support hot-swapping policy on a pre-built set; revision triggers reconstruction. This is the dynamic-construction property the strategic argument (memory: `project_strategic_argument.md`) treats as a feature, not a bug, because each candidate policy generates its own auditable R_T / R_F under the same machinery.
+
+### 3.7 Structural distinctiveness from per-model attribution methods
+
+Adapted from `2026-05-09-cliff-and-constraint-saturation-synthesis.md` §3 and generalized to dual-set:
+
+> Within a specified construction (policy graph, H, training sample, w_T, w_F, ε_T, ε_F), whole-class attribution-failure on either side is a logical property of R_T(ε_T) or R_F(ε_F) **as sets**, not of any element. Per-model attribution methods (SHAP, LIME, integrated gradients) evaluate elements, not sets. The cliff signal — count of zero supporting factors across all members of R_T or R_F — is therefore structurally inaccessible to per-model methods; only approximable via thresholded aggregation rules over a separately-chosen ensemble, with the threshold introducing arbitrariness the set-level signal does not require.
+
+The dual-set construction adds a second structural distinction beyond the cliff:
+
+> Cases where R_T(ε_T) predicts grant with high T-support and R_F(ε_F) predicts deny with high F-support — *conflicting-evidence cases* — are a property of the *pair of sets*, not of either set individually and not of any single model. A per-model method evaluates one model's attribution and cannot represent the joint structure of two cost-asymmetric set-level objectives disagreeing on the same case. This is type-distinct from "the model's attribution is uncertain" — the uncertain-attribution case is a property of a single model; the conflicting-evidence case is a property of two separately-constructed, separately-validated cost-asymmetric model populations producing incompatible recommendations.
+
+A SHAP-on-ensemble counter (run SHAP on multiple models, look for attribution disagreement) can approximate prediction-side disagreement but cannot produce the *governance-relevant* version: the set definitions are not policy-derived, the cost regimes are not separately declared, and the construction manifest does not exist. The structural advantage of the dual-set construction over SHAP+ensemble is not "we use sets" — it is the policy-constrained set construction plus the cost-asymmetric pair plus the construction manifest. Each is necessary; together they produce an auditable governance artifact that per-model attribution methods cannot natively produce regardless of how many models they are run on.
