@@ -83,3 +83,73 @@ The wedge extension that implements this spec is a downstream plan. The May 23 p
 This is V1. The plan that produced it (`docs/superpowers/plans/2026-05-10-mechanism-specification.md`) anticipates revision as prototype findings surface gaps and regulator-document translation reveals operational fuzziness. Revisions land as dated changelog entries appended to this file. The spec is not forked into V2 unless the consolidation argument itself requires restructuring.
 
 Each section names its own acceptance criterion in the plan; failure to meet a criterion in a later read-through is a bug in the spec, not a feature of revision. Open decisions named in Section 8 are *deferred*, not unspecified — the deferral itself is a specification act, with default and rationale recorded.
+
+---
+
+## 2. Policy representation
+
+### 2.1 The contract
+
+Set construction (Section 3) consumes the *output* of policy encoding, not policy source materials. The contract this spec commits to for V1 is the shape produced by `policy/encoder.py`'s `load_policy()` — a typed `PolicyConstraints` object carrying:
+
+- **`monotonicity_map`**: `feature_name → {-1, +1}` per the sklearn `monotonic_cst` convention. Sign is interpreted relative to `classes_[1]` (the positive class). For binary `{0=deny, 1=grant}` encoding, `+1` means "feature ↑ ⇒ P(grant) does not decrease."
+- **`mandatory_features`**: features every admissible model must split on. A model whose factor support omits a mandatory feature is excluded from R(ε).
+- **`prohibited_features`**: features no admissible model may split on. A model whose factor support includes a prohibited feature is excluded from R(ε).
+- **`applicable_regime`**: a mapping of feature-or-context conditions identifying the cases the policy graph scopes. Out-of-regime cases route to manual review and are not scored by R(ε) (Section 3 specifies how this routing affects set construction).
+- **Provenance fields** (`name`, `version`, `status`): not interpreted by set construction; logged for audit trail.
+
+`policy/thin_demo_hmda.yaml` is the canonical demonstration source for what produces this output. The YAML is the audit artifact — the same artifact a regulator reads is the artifact that constrains the model class. That co-identification is the methodology's transparency property at the policy layer, not a deployment detail.
+
+The `PolicyConstraints` API surface set construction depends on:
+- `monotonic_cst(features: list[str]) → list[int]` — returns the sklearn-compatible monotonicity array aligned to a supplied feature ordering. Raises `PolicyValidationError` if a constrained feature is absent from the list (silent dropping would unenforce the constraint).
+- `is_feature_subset_admissible(subset: tuple[str, ...]) → bool` — the gate the Rashomon hyperparameter sweep uses to skip inadmissible subsets before fitting.
+
+Monotonicity is enforced at fit time via sklearn; mandatory/prohibited are enforced as a pre-fit admissibility gate. These two enforcement modes are not interchangeable — see §2.4.
+
+### 2.2 Decision-space shape: three-way, not binary
+
+Policy decisions are **three-way**: `{grant, human_review, deny}`. The thin demo's decision graph routes cases to `manual_review` whenever a non-pass-non-deny gate is hit (e.g., DTI 43–compensating-factor band, employment tenure < 2 years with potential offset documentation), and these cases are deliberately *not scored* by R(ε). The model class operates on the grant/deny binary; manual-review routing is upstream of the model.
+
+This matters for the dual-set construction (Section 3) because R_T and R_F are sets of *binary* classifiers — they assign T-support or F-support to the grant/deny axis. Manual-review cases are out-of-scope for both R_T and R_F by policy construction, not by model failure. The empty-class cliff signal (per `2026-05-09-cliff-and-constraint-saturation-synthesis.md`) is therefore a property of *scored* cases; cases routed to manual review are categorically absent from both sets and are reported separately in the policy-node trace.
+
+The dual-set inter-set disagreement metric (Section 4) is defined on scored cases only. Manual-review routing is itself a governance signal — *which* cases the policy graph cannot adjudicate — but it is a signal of the policy graph, not of the Rashomon construction. The two signals are reported separately.
+
+### 2.3 The five constraint classes — V1 support status
+
+The `policy/README.md` enumerates five constraint classes; V1 set construction supports the first three plus a partial implementation of the fifth:
+
+| Constraint class | V1 status | Source |
+|---|---|---|
+| 1. Monotonicity | **Supported.** sklearn `monotonic_cst` at fit time. | `PolicyConstraints.monotonicity_map` |
+| 2. Mandatory-feature | **Supported.** Pre-fit admissibility gate. | `PolicyConstraints.mandatory_features` |
+| 3. Prohibited-feature | **Supported.** Pre-fit admissibility gate. | `PolicyConstraints.prohibited_features` |
+| 4. Predicate (decision-region structure) | **Deferred.** Decision graph nodes parsed for routing only; not used to constrain model decision-region shape. See OD-1. | YAML `nodes:` block |
+| 5. Routing (manual_review escape) | **Partial.** Applicable-regime routing supported via `applicable_regime`. Per-node `on_fail: manual_review` routing depends on a decision-graph executor not yet wired into set construction. | YAML `applicable_regime`, `nodes:` `on_fail:` edges |
+
+Classes 4 and 5's deferred portions are on the open-decisions register (OD-1) as "richer codification representation." The May 23 deliverable validates Sections 3–6 against the V1-supported subset; deferred classes are flagged in Section 7 as not-in-scope for the deliverable and not required to validate the dual-set construction's core claim.
+
+### 2.4 Hard vs soft constraints
+
+V1 commits to **hard constraints only**. A model is either in R_T(ε_T) / R_F(ε_F) or it is not; there is no "preferred but allowed" mode. This is consistent with the current encoder (which validates and returns a typed object without weight parameters) and with the audit-artifact framing (a YAML constraint a regulator reads should mean *constraint*, not *preference*).
+
+Soft constraints — penalize-but-allow — are conceptually coherent and would correspond to ε_T / ε_F regions extending into mildly-non-compliant model space with a penalty term in the loss. They are deferred to a future revision and are explicitly out-of-scope for V1. The spec does not preclude them; it simply does not commit to them, because:
+1. The audit-artifact framing breaks down under soft constraints (does a regulator read a soft constraint as "the bank's policy" or "the bank's preference"? The ambiguity is governance-fraught.).
+2. The dual-set construction's structural-distinctiveness argument (Section 3) is cleanest under hard constraints; under soft constraints the set-level cliff signal smears into a gradient.
+3. The current encoder has no soft-constraint syntax. Adding it is non-trivial and out of scope for the May 23 deliverable.
+
+### 2.5 What this spec does *not* require of policy representation
+
+- **Natural-language parsing.** The codification layer that produces `PolicyConstraints` from source materials (policy memos, underwriting manuals, regulatory text) is out of scope. V1 assumes a hand-curated YAML in the schema demonstrated by `thin_demo_hmda.yaml`. NL extraction and richer policy-document ingestion are codification-layer work, downstream of this spec.
+- **Cross-policy coherence checks.** A YAML may declare constraints that conflict with regulatory baseline (e.g., a monotonicity direction inconsistent with ECOA); this spec does not require the encoder to detect such conflicts. Future work.
+- **Versioning and policy drift tracking.** The `version` field is logged but the spec does not specify how policy revisions interact with previously-built R(ε). A bank that revises policy mid-vintage has a governance question this spec does not answer; flagging it as future work.
+- **Multi-policy comparison.** The M&A scenario use case sweeps multiple candidate combined policies. V1 supports one policy per construction; multi-policy sweep is a downstream capability that uses this spec as substrate but is not part of the May 23 deliverable.
+
+### 2.6 Open decision OD-1: codification richness
+
+The V1 contract commits to the current `policy/encoder.py` output shape. Three richer alternatives are deferred and named here so a future revision has a starting frame:
+
+- **Hybrid NL + structured.** A policy document with structured constraint blocks (current YAML) plus natural-language commentary that the codification layer extracts additional constraints from. Default position: defer; richer policy expressivity is a codification-layer problem, not a set-construction problem.
+- **Decision-graph predicate enforcement.** Class 4 above — use the YAML's `nodes:` block to constrain not just admissibility but the decision-region structure each model in R(ε) can express. Default position: defer until V1 validation reveals whether this changes the cliff signal or the inter-set disagreement metric materially.
+- **Soft constraints.** §2.4. Default position: defer indefinitely unless governance demand surfaces.
+
+Each is an "open" decision in the sense of Section 8's register (OD-1 captures all three sub-decisions). The deferral is itself a specification act: V1 does *not* support them, and the spec records this as an explicit choice with rationale.
