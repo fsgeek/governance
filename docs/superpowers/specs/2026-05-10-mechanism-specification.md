@@ -625,3 +625,63 @@ OD entries carry stable numeric IDs (OD-N). New ODs append; existing IDs do not 
 | Deferred without default | (none) | 0 |
 
 The absence of "deferred without default" is intentional. Every open decision in V1 either has a working V1 commitment or a V1.1 plan; nothing is left unspecified. The deferral itself is a specification act with default and rationale recorded.
+
+---
+
+## 9. Cross-reference index
+
+### 9.1 Prior memo → spec sections that cite it
+
+| Prior memo (path under `docs/superpowers/specs/`) | What the memo contributes | Spec sections citing it |
+|---|---|---|
+| `2026-05-07-rashomon-prototype-wedge-design.md` | V₁ measurement methodology; wedge design; (A)–(E) labels for what's deferred | §1.3, §1.4 |
+| `2026-05-08-indeterminacy-operationalization-memo.md` | Four-species I-vector (local-density, multivariate-coherence, Ioannidis-suspicion, retrospective-trajectory); computational definitions in CART/LC terms; pre-registered I-behaviors | §1.3, §4.1, §4.4, §5.1, §5.3 |
+| `2026-05-08-adversarial-robustness-and-examinability-memo.md` | Adversarial-robustness property of retrospective-trajectory (cannot be gamed without producing the evidence it detects) | §1.3, §5.1, §5.6, §6.4 |
+| `2026-05-09-tf-mechanics-and-case-level-empty-support.md` | F = 1 − T mechanical relationship within a single model; case-level empty-support finding | §1.3, §3.1 |
+| `2026-05-09-tf-asymmetry-exploration-note.md` | Empty-support inversion at pair level (case-level extension is in cliff synthesis) | §1.3 (preserved as provenance; superseded by cliff synthesis at case level) |
+| `2026-05-09-cliff-and-constraint-saturation-synthesis.md` | Set-level cliff signal; three-signal decomposition; constraint-saturation mechanism; hard-but-coherent vs hard-and-atypical; structural-distinctiveness argument (§3 of memo) | §1.3, §3.1, §3.6, §3.7, §7.1 |
+| `2026-05-09-methodology-decomposition-retrospective.md` | (A)–(E) slice map and current status; wedge implementation status as of 2026-05-09 | §1.3, §1.4 |
+| `2026-05-09-shap-vs-rashomon-result-note.md` | SHAP non-inferiority falsification empirical result; pre-registered design; result tables for V₁/V₂_alt/V₂ | §1.3, §7.1; instability-anti-correlation amendment queued |
+| `2026-05-09-conversation-residue-capture.md` | Three captured items including I-stability experiment as pending test (corrected by `2026-05-09-i-stability-falsification-findings-note.md`) | §1.3, §1.4 |
+| `2026-05-09-i-stability-falsification-findings-note.md` | I-stability prediction falsification (single-R(ε) construction; I CV 7–9× T CV across three vintages) | §1.4, §7.1 |
+
+### 9.2 Spec section → prior memos cited
+
+| Spec section | Citations |
+|---|---|
+| §1 (scope, status, lineage) | All lineage memos enumerated; this section *is* the citation manifest for the spec |
+| §2 (policy representation) | `policy/encoder.py`, `policy/thin_demo_hmda.yaml`, `policy/README.md` (code/config, not memos) |
+| §3 (dual-set construction) | tf-mechanics (§3.1); cliff synthesis (§3.1, §3.6, §3.7) |
+| §4 (I as inter-set disagreement) | indeterminacy memo (§4.1, §4.4); §3.1 caveat propagated to §4.2 |
+| §5 (retrospective trajectory) | indeterminacy memo §3, §4 (§5.1, §5.3); adversarial-robustness memo (§5.1, §5.6) |
+| §6 (Cat 1 / Cat 2 detection) | adversarial-robustness memo (§6.4); SHAP result note (§6.5 by reference to §7.1) |
+| §7 (May 23 validation targets) | SHAP result note (§7.1); cliff synthesis (§7.1); I-stability falsification (§7.1) |
+| §8 (open decisions register) | All resolved/deferred items reference their spec section; OD-13 references `wedge/collectors/lendingclub.py` and `wedge/collectors/hmda.py` (code) |
+| §9 (this section) | Self-reference |
+
+### 9.3 Code and config references (not memos)
+
+Citations to live code or configuration, as distinct from prose memos. Per the project's CONVENTIONS.md (Rule 1: cite code or canonical contract for normative claims about current behavior), these are the load-bearing citations for §2's and §8's claims about implementation state.
+
+| Path | Cited in | Reason |
+|---|---|---|
+| `policy/encoder.py` (especially `:43` docstring and `:131` `is_feature_subset_admissible`) | §2.1, §2.7 OD-9a/9b | Defines the `PolicyConstraints` contract V1 commits to; the convention conflict with collectors |
+| `policy/thin_demo_hmda.yaml` | §2.1, §2.2 | Canonical demonstration YAML |
+| `policy/README.md` | §2.3 | Five constraint classes; V1 support status |
+| `wedge/collectors/lendingclub.py:85` (`derive_label`) | §2.1, §2.7 OD-9a | Label convention `charged_off ⇔ 1` |
+| `wedge/collectors/hmda.py:145` (`derive_label`) | §2.1, §2.7 OD-9a | Label convention `denied ⇔ 1` |
+
+### 9.4 V1.1 dependency map
+
+For each V1.1 OD, which prior memos and spec sections the V1.1 revision will need to update or extend:
+
+| V1.1 OD | Memos | Spec sections to revise |
+|---|---|---|
+| OD-10 (substrate-axis) | — (new content; no prior memo) | New §2.5; updates to §3.6, §4, §6 cross-references |
+| OD-11 (§3.1 reframing) | cliff synthesis §3 (already cited); tf-mechanics §2 (already cited) | §3.1 sharpening converts to full argument; §4.2 caveat removes |
+| OD-12 (post-fit split-use check) | — | §2.7 OD-9b entry replaces |
+| OD-13 (collector standardization) | — | §2.1, §2.7 OD-9a; updates to §1.3, §1.4 cross-references; *re-interpretation of cliff synthesis and SHAP result note conclusions* |
+| OD-14 (novelty positioning) | adjacent-literature citations (multi-objective ML, cost-sensitive ensembles, Semenova/Rudin variable-importance cloud) — new citations | §1.1 reframes |
+| OD-15 (sensitivity reporting) | — | §3.6 adds requirements; §4.2, §6.3 cross-references update |
+
+The "re-interpretation" note on OD-13 is load-bearing: collector standardization preserves the empirical structure of prior findings but flips the interpretive labels. Cited memos must be revised in lockstep with the spec edit; the V1.1 plan (Task 11 Step 1) accounts for this.
