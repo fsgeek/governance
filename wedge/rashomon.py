@@ -159,15 +159,29 @@ class EpsilonAdmissibleSet:
 # ---------------------------------------------------------------------------
 
 
+def inner_split(
+    X: pd.DataFrame, y: pd.Series, *, config: SweepConfig
+):
+    """Deterministic train/holdout split used by `hyperparameter_sweep`.
+
+    Exposed so callers that need to align downstream computations to the
+    same holdout (e.g. surprise-weight construction for `build_dual_set`)
+    can recover the exact (X_fit, X_holdout, y_fit, y_holdout) tuple
+    without re-implementing the split. Refactor target: any change to
+    sweep's internal split discipline lands here and propagates.
+    """
+    return train_test_split(
+        X, y, test_size=config.holdout_fraction, random_state=config.random_state, stratify=y
+    )
+
+
 def hyperparameter_sweep(
     X: pd.DataFrame, y: pd.Series, *, config: SweepConfig
 ) -> list[SweepResult]:
     """Fit every (max_depth, min_samples_leaf, feature_subset) combination on a
     hold-out and return per-combo SweepResult with the fitted tree retained.
     """
-    X_fit, X_holdout, y_fit, y_holdout = train_test_split(
-        X, y, test_size=config.holdout_fraction, random_state=config.random_state, stratify=y
-    )
+    X_fit, X_holdout, y_fit, y_holdout = inner_split(X, y, config=config)
     results: list[SweepResult] = []
     for depth in config.max_depths:
         for leaf_min in config.min_samples_leafs:

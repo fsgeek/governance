@@ -1,0 +1,39 @@
+{
+  "epsilon_F": 0.05,
+  "epsilon_T": 0.05,
+  "global_best_value_F": 4138.5,
+  "global_best_value_T": 2759.0,
+  "hypothesis_space": "depth-bounded CART under cost-asymmetric loss; feature-subset diversification over optional features",
+  "mandatory_features": [
+    "fico_range_low",
+    "dti",
+    "annual_inc"
+  ],
+  "n_R_F": 40,
+  "n_R_T": 40,
+  "policy_name": "thin_demo_hmda_mortgage",
+  "policy_status": "illustrative-demonstration",
+  "policy_version": "0.1",
+  "prohibited_features": [],
+  "revised_set_summary": {
+    "epsilon_F_prime": 0.05,
+    "epsilon_T_prime": 0.05,
+    "n_R_F_prime": 1,
+    "n_R_T_prime": 40,
+    "score_label_F_prime": "L_F'(w_F=1.5, weighted)",
+    "score_label_T_prime": "L_T'(w_T=1.5, weighted)"
+  },
+  "run_id": "2026-05-11T20-25-56Z",
+  "schema_version": "v1",
+  "score_label_F": "L_F(w_F=1.5)",
+  "score_label_T": "L_T(w_T=1.5)",
+  "surprise_model_id": "GBC_isotonic_cv5_seed0",
+  "surprise_model_training_sample": "lc-2016Q1,2016Q2,2016Q3,2016Q4-36_months",
+  "training_sample_id": "2015Q4",
+  "v1_1_deferred": [
+    "OD-10 substrate-axis",
+    "OD-15 sensitivity reporting"
+  ],
+  "w_F": 1.5,
+  "w_T": 1.5
+}

@@ -21,10 +21,12 @@ flag where the policy-respecting models may have been blind. (Protected-class
 proxies remain excluded from its feature set by data hygiene; the bank's
 policy YAML names these and the data loader enforces.)
 
-V1 default: scikit-learn GradientBoostingClassifier with isotonic calibration
-(CalibratedClassifierCV). The choice is named here, not in code consumer
-sites, so the surprise-model class can be swapped without touching the
-dual-set construction pipeline.
+V1 default: scikit-learn HistGradientBoostingClassifier with isotonic
+calibration (CalibratedClassifierCV). The hist variant is used because real
+LC origination data contains NaN in optional features (e.g. emp_length);
+the histogram-based estimator handles missing values natively. The choice
+is named here, not in code consumer sites, so the surprise-model class
+can be swapped without touching the dual-set construction pipeline.
 """
 
 from __future__ import annotations
@@ -34,7 +36,7 @@ from typing import Union
 import numpy as np
 import pandas as pd
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import HistGradientBoostingClassifier
 
 
 _ArrayLike = Union[float, np.ndarray, pd.Series]
@@ -63,8 +65,8 @@ def train_surprise_model(
     n_estimators, max_depth : passed to GradientBoostingClassifier.
     calibration_cv : K for CalibratedClassifierCV's stratified split.
     """
-    base = GradientBoostingClassifier(
-        n_estimators=n_estimators,
+    base = HistGradientBoostingClassifier(
+        max_iter=n_estimators,
         max_depth=max_depth,
         random_state=random_state,
     )
