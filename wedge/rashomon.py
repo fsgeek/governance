@@ -206,15 +206,23 @@ def hyperparameter_sweep(
 # ---------------------------------------------------------------------------
 
 
-def _used_features(fitted_tree: DecisionTreeClassifier, feature_names: list[str]) -> set[str]:
+def used_features(fitted_tree: DecisionTreeClassifier, feature_names: list[str]) -> set[str]:
     """Return the set of feature names a fitted tree actually splits on.
 
     sklearn's `tree_.feature` is an int array of length `n_nodes`; non-leaf
     nodes carry the feature index used at the split, leaves carry -2 (the
     sentinel `TREE_UNDEFINED`). Index into `feature_names` accordingly.
+
+    Public API: also used by wedge.categories for the structural-distinguishing
+    feature extraction (spec §6.2 condition 3).
     """
     feature_idx = fitted_tree.tree_.feature
     return {feature_names[i] for i in feature_idx if i >= 0}
+
+
+# Backwards-compat alias; some internal call sites may still reference the
+# underscore-prefixed name.
+_used_features = used_features
 
 
 def evaluate_policy(
