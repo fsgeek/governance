@@ -1,9 +1,9 @@
 # Mechanism Specification — Policy-Constrained Dual-Set Rashomon Construction
 
 **Date:** 2026-05-10 (drafting started; sections may carry later dates).
-**Status:** V1 in draft. Intended as the canonical architectural source for the May 23 Olorin deliverable, for Paper 2 (architecture), and for translation into the regulator-facing document. This document is *consolidation plus two extensions*; the consolidation references existing memos rather than restating them, and the two extensions (dual-set construction; Category 1 vs Category 2 formalization) emerged from the 2026-05-10 working conversation and are introduced here for the first time.
-**Section status at time of writing:** Sections 1–3 landed (scope/lineage; policy representation; dual-set construction). Sections 4–9 pending per `docs/superpowers/plans/2026-05-10-mechanism-specification.md`.
-**Will be authoritative for (upon V1 stabilization):** the dual-set R_T(ε_T) / R_F(ε_F) policy-constrained construction (§3, landed); the inter-set framing of indeterminacy I (§4, pending); the Category 1 vs Category 2 retrospective failure detection criterion (§6, pending); the prototype validation targets bounding the May 23 deliverable (§7, pending). Until Sections 4–9 land, claims here that depend on them are *intended* commitments, not current ones.
+**Status:** V1 stabilized 2026-05-11. Canonical architectural source for the May 23 Olorin deliverable, for Paper 2 (architecture), and for translation into the regulator-facing document. This document is *consolidation plus two extensions*; the consolidation references existing memos rather than restating them, and the two extensions (dual-set construction; Category 1 vs Category 2 formalization) emerged from the 2026-05-10 working conversation and are introduced here for the first time. V1.1 revision pass is queued in `docs/superpowers/plans/2026-05-10-mechanism-specification.md` Task 11, addressing OD-10..OD-15 from cross-instance review.
+**Authoritative for:** the dual-set R_T(ε_T) / R_F(ε_F) policy-constrained construction (§3); the inter-set framing of indeterminacy I as I_pred (§4); the retrospective-trajectory species's set-revision mechanism (§5); the Category 1 vs Category 2 retrospective failure detection criterion (§6); the prototype validation targets bounding the May 23 deliverable (§7); the open-decisions register (§8).
+**File size note:** This spec is 687 lines as of V1 stabilization, exceeding the project's 500-line file-size guideline. The size reflects the consolidation function the spec performs; the §9 cross-reference index supports navigation without splitting. Reactive splitting into `docs/superpowers/specs/mechanism-specification/` with section files is permitted under the plan; deferred at V1 stabilization on the judgment that the single-file form is more useful for downstream citation. Re-evaluate if V1.1 revisions push the file past ~900 lines.
 **Defers to prior memos for:** the four-species I-vector content (`2026-05-08-indeterminacy-operationalization-memo.md`); the cliff signal mechanics and constraint-saturation reading (`2026-05-09-cliff-and-constraint-saturation-synthesis.md`); the T/F mechanical relationship within a single model (`2026-05-09-tf-mechanics-and-case-level-empty-support.md`); the SHAP non-inferiority falsification result (`2026-05-09-shap-vs-rashomon-result-note.md`); the (A)–(E) slice map and current status (`2026-05-09-methodology-decomposition-retrospective.md`); the adversarial-robustness argument for retrospective-trajectory (`2026-05-08-adversarial-robustness-and-examinability-memo.md`).
 **Plan:** `docs/superpowers/plans/2026-05-10-mechanism-specification.md`.
 
@@ -21,7 +21,22 @@
 8. Open decisions register
 9. Cross-reference index
 
-Sections after this one are appended as Tasks 2–10 of the plan are executed. The TOC is presented in full at scaffolding time so readers see the intended shape before later sections exist.
+### 0.1 V1 changelog
+
+- **2026-05-10:** V1 draft started; Task 1 scaffolded scope/status/lineage (commit `9866296`).
+- **2026-05-10:** §2 (policy representation) landed (commit `6f90dc6`).
+- **2026-05-10:** §3 (dual-set construction) landed (commit `7024f04`).
+- **2026-05-11:** Spec hygiene fixes from first cross-instance review — label-polarity caveat, mandatory-feature weakening, authoritative-for reframe, I-stability staleness correction (commit `fbfaf8d`).
+- **2026-05-11:** V1.1 revision pass queued from second cross-instance review — OD-10..OD-15 with plan Task 11 (commit `8814b41`).
+- **2026-05-11:** §4 (I as inter-set disagreement) landed (commit `e25e89c`).
+- **2026-05-11:** §5 (retrospective trajectory operationalization) landed (commit `e37bd08`).
+- **2026-05-11:** §6 (Cat 1 / Cat 2 detection) landed (commit `40e1a10`).
+- **2026-05-11:** §7 (May 23 validation targets) landed (commit `cc203aa`).
+- **2026-05-11:** §8 (open decisions register, OD-1..OD-15) landed (commit `028564a`).
+- **2026-05-11:** §9 (cross-reference index) landed (commit `320b712`).
+- **2026-05-11:** V1 stabilization — terminology consistency check passed, acceptance criteria verified across all 9 sections, file-size deferral noted. Commit hash filled in by stabilization commit.
+
+V1.1 entries append below this line as the V1.1 revision pass (plan Task 11) progresses.
 
 ---
 
