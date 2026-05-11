@@ -1,8 +1,9 @@
 # Mechanism Specification — Policy-Constrained Dual-Set Rashomon Construction
 
 **Date:** 2026-05-10 (drafting started; sections may carry later dates).
-**Status:** V1 draft. Intended as the canonical architectural source for the May 23 Olorin deliverable, for Paper 2 (architecture), and for translation into the regulator-facing document. This document is *consolidation plus two extensions*; the consolidation references existing memos rather than restating them, and the two extensions (dual-set construction; Category 1 vs Category 2 formalization) emerged from the 2026-05-10 working conversation and are introduced here for the first time.
-**Authoritative for:** the dual-set R_T(ε_T) / R_F(ε_F) policy-constrained construction; the inter-set framing of indeterminacy I; the Category 1 vs Category 2 retrospective failure detection criterion; the prototype validation targets bounding the May 23 deliverable.
+**Status:** V1 in draft. Intended as the canonical architectural source for the May 23 Olorin deliverable, for Paper 2 (architecture), and for translation into the regulator-facing document. This document is *consolidation plus two extensions*; the consolidation references existing memos rather than restating them, and the two extensions (dual-set construction; Category 1 vs Category 2 formalization) emerged from the 2026-05-10 working conversation and are introduced here for the first time.
+**Section status at time of writing:** Sections 1–3 landed (scope/lineage; policy representation; dual-set construction). Sections 4–9 pending per `docs/superpowers/plans/2026-05-10-mechanism-specification.md`.
+**Will be authoritative for (upon V1 stabilization):** the dual-set R_T(ε_T) / R_F(ε_F) policy-constrained construction (§3, landed); the inter-set framing of indeterminacy I (§4, pending); the Category 1 vs Category 2 retrospective failure detection criterion (§6, pending); the prototype validation targets bounding the May 23 deliverable (§7, pending). Until Sections 4–9 land, claims here that depend on them are *intended* commitments, not current ones.
 **Defers to prior memos for:** the four-species I-vector content (`2026-05-08-indeterminacy-operationalization-memo.md`); the cliff signal mechanics and constraint-saturation reading (`2026-05-09-cliff-and-constraint-saturation-synthesis.md`); the T/F mechanical relationship within a single model (`2026-05-09-tf-mechanics-and-case-level-empty-support.md`); the SHAP non-inferiority falsification result (`2026-05-09-shap-vs-rashomon-result-note.md`); the (A)–(E) slice map and current status (`2026-05-09-methodology-decomposition-retrospective.md`); the adversarial-robustness argument for retrospective-trajectory (`2026-05-08-adversarial-robustness-and-examinability-memo.md`).
 **Plan:** `docs/superpowers/plans/2026-05-10-mechanism-specification.md`.
 
@@ -74,7 +75,7 @@ The wedge (`wedge/`) is the V₁ measurement instantiation of an earlier, single
 
 This spec extends the methodology in two ways the wedge does not currently implement:
 1. **Dual-set construction** (Section 3) — the wedge builds one R(ε); this spec specifies two.
-2. **Per-model I emission for the I-stability test** — flagged in the conversation residue capture's §4 as the most informative untested experiment. Required for operationalizing I as inter-set disagreement at the per-instance level (Section 4 OD-4).
+2. **Per-model I emission for inter-set disagreement under the dual-set construction.** The wedge already emits per-model I for the local_density species (visible in the existing jsonl schema; this corrects the conversation-residue capture's §4 which understated existing capability). The I-stability prediction that motivated per-model emission was tested against single-R(ε) data on 2026-05-09 and *falsified decisively* — I CV is 7–9× T CV across all three vintages (`2026-05-09-i-stability-falsification-findings-note.md`). What remains untested is per-model I emission for the *other three species* (multivariate-coherence, Ioannidis-suspicion, retrospective-trajectory) and per-model I behavior under the dual-set R_T / R_F construction this spec specifies. The local_density falsification under single-R(ε) does not transfer mechanically to the dual-set case; it does invalidate the original contrarian prediction in its single-R(ε) form, and Section 4 OD-4 names the dual-set per-instance operationalization as the still-open question.
 
 The wedge extension that implements this spec is a downstream plan. The May 23 prototype validation targets (Section 7) bound what extension is required for the deliverable and explicitly defer what is not.
 
@@ -92,9 +93,9 @@ Each section names its own acceptance criterion in the plan; failure to meet a c
 
 Set construction (Section 3) consumes the *output* of policy encoding, not policy source materials. The contract this spec commits to for V1 is the shape produced by `policy/encoder.py`'s `load_policy()` — a typed `PolicyConstraints` object carrying:
 
-- **`monotonicity_map`**: `feature_name → {-1, +1}` per the sklearn `monotonic_cst` convention. Sign is interpreted relative to `classes_[1]` (the positive class). For binary `{0=deny, 1=grant}` encoding, `+1` means "feature ↑ ⇒ P(grant) does not decrease."
-- **`mandatory_features`**: features every admissible model must split on. A model whose factor support omits a mandatory feature is excluded from R(ε).
-- **`prohibited_features`**: features no admissible model may split on. A model whose factor support includes a prohibited feature is excluded from R(ε).
+- **`monotonicity_map`**: `feature_name → {-1, +1}` per the sklearn `monotonic_cst` convention. Sign is interpreted relative to `classes_[1]` (the positive class). The `policy/encoder.py` module docstring assumes positive class = grant; the YAML's `direction` field is stated relative to *grant probability* (`direction: positive` = "feature ↑ never decreases P(grant)"). **Caveat: the wedge's current collectors do not match this convention.** `wedge/collectors/lendingclub.py` emits `label=1 ⇔ charged_off` (charged-off as positive class) and `wedge/collectors/hmda.py` emits `label=1 ⇔ denied` (denial as positive class) — both deliberately encoding the *adverse* outcome as positive, consistent with the wedge's fair-lending-review framing. The encoder explicitly warns the caller about this in its module docstring at `policy/encoder.py:43`. See §2.7 (OD-9) for the sign-flip adapter requirement this creates and the deferral rationale.
+- **`mandatory_features`**: features every admissible model's *candidate feature subset* must contain. The encoder API (`is_feature_subset_admissible`) checks subset membership at the pre-fit admissibility gate; it does *not* enforce that the fitted model actually splits on the feature. A feature in the subset can be unused by the fitted tree if no split on it reduces the loss enough to be selected. The V1 contract is therefore "must be available to the model," not "must be split on." A stronger guarantee (post-fit split-use verification) would require an additional check that V1 does not specify; flagged in §2.7 (OD-9) for future-revision consideration.
+- **`prohibited_features`**: features no admissible model's candidate subset may contain. Same pre-fit gate; a feature absent from the subset cannot be split on, so prohibition *is* enforced by the pre-fit check (the asymmetry with mandatory is real — prohibition by exclusion is air-tight, mandate by inclusion is not).
 - **`applicable_regime`**: a mapping of feature-or-context conditions identifying the cases the policy graph scopes. Out-of-regime cases route to manual review and are not scored by R(ε) (Section 3 specifies how this routing affects set construction).
 - **Provenance fields** (`name`, `version`, `status`): not interpreted by set construction; logged for audit trail.
 
@@ -153,6 +154,31 @@ The V1 contract commits to the current `policy/encoder.py` output shape. Three r
 - **Soft constraints.** §2.4. Default position: defer indefinitely unless governance demand surfaces.
 
 Each is an "open" decision in the sense of Section 8's register (OD-1 captures all three sub-decisions). The deferral is itself a specification act: V1 does *not* support them, and the spec records this as an explicit choice with rationale.
+
+### 2.7 Open decision OD-9: label-polarity convention and mandatory-feature enforcement gap
+
+Two distinct issues surfaced during V1 spec review that are recorded here rather than silently coerced.
+
+**OD-9a: Label-polarity convention conflict.** `policy/encoder.py` assumes positive class = grant (YAML `direction` is stated relative to grant probability). `wedge/collectors/lendingclub.py` and `wedge/collectors/hmda.py` emit positive class = adverse outcome (charged_off / denied). The encoder's module docstring warns the caller about this; in current code there is no automatic adapter, so a naive composition would apply monotonicity signs inverted from their intended meaning.
+
+Three resolution paths exist; V1 commits to the first and records the alternatives:
+
+1. **(V1 default) Sign-flip adapter at the policy-to-construction boundary.** Set construction takes a `PolicyConstraints` instance plus an explicit `positive_class_is_grant: bool` parameter; when `False` (the current collector convention), `monotonic_cst()` output is negated before being passed to sklearn. Rationale: smallest change; no code edits required to existing collectors or encoder; the adapter point is the place the convention conflict becomes visible at fit time. Implementation debt: every set-construction call site must remember to pass the parameter correctly.
+2. **Standardize collectors to grant-as-positive.** Edit `derive_label` in both collectors to emit `label=1 ⇔ grant`. Rationale: removes the conflict permanently; aligns the wedge with the encoder's documented assumption. Cost: invalidates the wedge's existing charge-off / deny-side framing, which is the basis for the cliff signal's interpretation (T-silent-all means "no member articulates grant-supportive evidence"; under the flip it would mean "no member articulates adverse-outcome evidence"). The published findings would need re-interpretation. Recorded as the cleanest long-term path that is not free.
+3. **Invert the encoder's sklearn mapping.** Make `direction: positive` in YAML map to sklearn `-1` (consistent with adverse-as-positive in `classes_[1]`). Cost: contradicts the encoder's own module docstring, requires updating every YAML rationale, and the YAML's `direction: positive` becomes counterintuitive (reads as "positive direction toward adverse outcome"). Recorded as available but unattractive.
+
+The V1 default (adapter at the construction boundary) is the lightest move and the easiest to reverse if the bank-side deployment surfaces a preference for one of the alternatives. The choice is explicitly named so future revisions don't silently drift.
+
+**OD-9b: Mandatory-feature enforcement gap.** The current encoder API checks that mandatory features are present in a model's candidate feature subset before fitting; it does not enforce that the fitted model actually splits on them. A feature that's available but unused passes the admissibility gate and ends up in R(ε) without ever appearing in the factor-support trace. For the dual-set construction (Section 3) and inter-set disagreement (Section 4) this is mostly benign — the model is still policy-admissible in the sense the encoder declares, and factor-support attribution will just show the feature is unused — but for a regulator who reads "mandatory feature" as "this feature was considered in the decision," the gap matters.
+
+Two resolution paths:
+
+1. **(V1 default) Weaken the claim.** The spec says "must be available to the model," not "must be split on." Documentation in the regulator-facing document needs to match — mandatory means "the model could have used it," not "the model did use it." This is what the encoder actually enforces; the spec stays honest.
+2. **Add a post-fit split-use check.** Set construction inspects each fitted tree's used-feature set; models that fail to split on a mandatory feature are excluded from R(ε) at a second admissibility pass. Cost: requires a new check the encoder does not currently provide; downstream implication is that R(ε) may be empty more often (the second gate is strictly tighter). Recorded as architecturally sound but deferred to V2 pending governance review of whether the strong guarantee is wanted.
+
+The V1 default is the weaker guarantee that matches the current API. The regulator-facing document translation (downstream artifact) must reflect this weaker reading and not over-claim.
+
+Both OD-9a and OD-9b are *implementation debt* — places where the spec is honest about a gap between intent and current code. Future revisions resolve them with a code change plus a spec update; V1 names them so the gap is auditable.
 
 ---
 
