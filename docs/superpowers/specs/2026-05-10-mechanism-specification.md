@@ -268,3 +268,76 @@ The dual-set construction adds a second structural distinction beyond the cliff:
 > Cases where R_T(ε_T) predicts grant with high T-support and R_F(ε_F) predicts deny with high F-support — *conflicting-evidence cases* — are a property of the *pair of sets*, not of either set individually and not of any single model. A per-model method evaluates one model's attribution and cannot represent the joint structure of two cost-asymmetric set-level objectives disagreeing on the same case. This is type-distinct from "the model's attribution is uncertain" — the uncertain-attribution case is a property of a single model; the conflicting-evidence case is a property of two separately-constructed, separately-validated cost-asymmetric model populations producing incompatible recommendations.
 
 A SHAP-on-ensemble counter (run SHAP on multiple models, look for attribution disagreement) can approximate prediction-side disagreement but cannot produce the *governance-relevant* version: the set definitions are not policy-derived, the cost regimes are not separately declared, and the construction manifest does not exist. The structural advantage of the dual-set construction over SHAP+ensemble is not "we use sets" — it is the policy-constrained set construction plus the cost-asymmetric pair plus the construction manifest. Each is necessary; together they produce an auditable governance artifact that per-model attribution methods cannot natively produce regardless of how many models they are run on.
+
+---
+
+## 4. Indeterminacy I as inter-set disagreement
+
+### 4.1 The reframing
+
+Prior memos specified I as a four-species vector computed *per case* from feature-level signals (`2026-05-08-indeterminacy-operationalization-memo.md` §3): local-density, multivariate-coherence, Ioannidis-suspicion, retrospective-trajectory. Each species is a case-level computation defined relative to the training distribution and (for some species) the model's leaf structure.
+
+The dual-set construction (Section 3) makes a different operational definition of I available: I is *what R_T(ε_T) and R_F(ε_F) disagree about on the case*. The inter-set framing reframes what I is at the load-bearing layer, before the species decomposition:
+
+> **I as inter-set disagreement.** For each case x in the substrate's in-regime scope, I(x) measures the divergence between R_T(ε_T)'s response to x and R_F(ε_F)'s response to x. Higher I(x) means the two cost-asymmetric policy-admissible sets disagree more about x.
+
+This is operationally observable from the sets' outputs alone — no per-species feature computation is required to get a primary I signal. The four species become *diagnostic decomposition* of *why* a case shows high inter-set disagreement; they enrich the signal rather than constitute it.
+
+The reframing does not invalidate the species memo. It places that memo's content one layer down: the species explain the *generators* of inter-set disagreement, where I-as-disagreement is the *measurement*. Section 4.4 below specifies the relationship explicitly.
+
+### 4.2 V1 operational definition (OD-4 default)
+
+V1 commits to a per-case I scalar derived from prediction-side disagreement:
+
+> **I_pred(x) = |E[h_T(x) | h_T ∈ R_T(ε_T)] − E[h_F(x) | h_F ∈ R_F(ε_F)]|**
+
+where each expectation is over the set's members under uniform weighting (or under a declared weighting recorded in the construction manifest). For binary classifiers emitting {grant, deny}, the expectation can be taken on the predicted-probability surface (giving a [0, 1] scalar I_pred per case) or on the hard-label surface (giving a discrete disagreement count). V1 default: predicted-probability difference; alternative discrete-label version named.
+
+**Why this is the V1 default (and what it carries):**
+- *Directly observable* from set outputs; no additional feature computation needed.
+- *Interpretation is direct under boundary-sensitivity reading*: high I_pred means the case sits where reasonable cost-asymmetric admissible models split decisions.
+- *Interpretation under evidential-conflict reading requires §3.1's V1.1 argument*: the constrained-hypothesis-space tightening claim plus §3.6's sensitivity reporting are what license reading I_pred as evidence about *x* rather than about (w_T, w_F) choice. Until V1.1 lands the joint argument, I_pred is best read as boundary-sensitivity-under-cost-variation; the stronger interpretation is queued.
+
+**Attribution-side I.** I_attr(x), defined as some divergence between R_T-aggregated factor-support and R_F-aggregated factor-support on x, is an alternative or supplementary signal. V1 names it as architecturally permitted but does not specify the metric (Jaccard on factor sets, JSD on factor-support distributions, set-cardinality difference each defensible); the choice is deferred to OD-4's V1.1 resolution alongside the per-instance-vs-population question below.
+
+### 4.3 Per-instance vs population-level (OD-4)
+
+I_pred(x) is per-instance. Two derived population-level quantities are useful for governance:
+
+- **Disagreement rate:** the fraction of in-regime cases with I_pred(x) above a threshold. A property of the (policy, substrate, ε, w) combination, not of any case. Reported per construction in the manifest.
+- **Disagreement distribution:** the full distribution of I_pred values across cases, summarized by quantiles. Surfaces tail structure the rate cannot show.
+
+V1 default: emit per-instance I_pred per case (matching the wedge's existing per-case schema), plus the two population summaries in the construction manifest (§3.6). Population-only emission is rejected at V1 because it would discard the case-level identification that governance interrogation needs ("which cases are high-I?" is a governance question; the population summary alone cannot answer it).
+
+### 4.4 The four species as generators of disagreement
+
+The indeterminacy memo's four species remain authoritative for *what each species computes*. The reframing here is *what role each plays under the dual-set construction*:
+
+- **Local-density.** A case unusual in its leaf's typical feature distribution is more likely to produce R_T / R_F disagreement, because the two cost-asymmetric sets fit different decision surfaces and atypical-in-leaf cases land where the surfaces diverge. Local-density per case is therefore a *generator* of I_pred. It can be reported as a separate diagnostic axis (a per-case local-density score alongside the per-case I_pred) but is not a separate dimension of I itself.
+
+- **Multivariate-coherence.** A case violating expected feature correlation structure is also a generator: cost-asymmetric models with different feature emphases react differently to coherence-violating cases. Same status — diagnostic, not constitutive.
+
+- **Ioannidis-suspicion.** A case with provenance pathology (round-number clustering, threshold-hugging, Benford violations) is a generator in a weaker sense: the suspicion battery flags data-quality concerns that may propagate into both R_T and R_F training and produce disagreement that isn't about the case's underlying credit risk at all. Reporting Ioannidis-suspicion alongside I_pred is governance-useful precisely because it tells an examiner *what the disagreement is about* (data pathology vs evidential structure).
+
+- **Retrospective-trajectory.** This species is structurally distinct from the other three. The other three are case-level signals computed from features. Retrospective-trajectory is *longitudinal* — it propagates post-origination outcome surprise back into the construction itself, shifting which models qualify for R_T or R_F under revised loss functions. It is a *set-membership signal*, not a per-case feature signal. Section 5 specifies it as an operational mechanism for set revision under retrospective evidence; it is not measured as a per-case I component in V1.
+
+The decomposition matters: an examiner asking "why is case x high-I?" can be answered by species-level decomposition (high local-density, low multivariate-coherence, no Ioannidis flags, retrospective-trajectory-stable) without conflating the answer with the I measurement itself. The four species enrich the signal; I is still the measurement.
+
+### 4.5 Why the supervisory problem dissolves
+
+The indeterminacy memo §1 noted that I-supervision (training a model that emits I) requires labels for I, which are not naturally available. The dual-set framing dissolves this problem at the measurement layer:
+
+- R_T(ε_T) is trained against grant/deny labels under L_T.
+- R_F(ε_F) is trained against grant/deny labels under L_F.
+- I_pred(x) is *derived* from the two sets' outputs, not learned from a separate I label.
+
+No supervisor produces I labels. The construction is *observable* from set outputs; the per-species diagnostic decomposition is computed from features and (for retrospective-trajectory) from outcome data, neither requiring I-specific supervision.
+
+What the dissolution does *not* solve: the §3.1 caveat (boundary-sensitivity vs evidential-conflict interpretation) and OD-10's substrate-axis question (what I_pred *means* on HMDA-decisions vs LC-outcomes substrates) both bear on how I_pred is *read* by a governance audience. The supervisory problem dissolves at the measurement layer; the interpretation problem remains and is the V1.1 work.
+
+### 4.6 What this section does *not* specify
+
+- The choice of attribution-side I_attr metric (deferred to V1.1; named architecturally permitted in §4.2).
+- Per-species computational details for the wedge implementation (those live in the indeterminacy memo §4 and remain authoritative there).
+- How I_pred feeds into Category 1 vs Category 2 detection (Section 6's work; §6 reads I_pred as one input alongside retrospective-trajectory output).
+- The retrospective-trajectory species's full operational definition (Section 5's work).
