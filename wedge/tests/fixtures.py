@@ -17,7 +17,9 @@ FEATURE_COLS = ["fico_proxy", "dti_proxy", "income_proxy", "history_depth"]
 def tiny_separable_dataset(seed: int = 0) -> pd.DataFrame:
     """100-row dataset where label is determined by a simple rule.
 
-    Rule: label = 1 (charged_off) iff fico_proxy < 650 OR dti_proxy > 30.
+    Rule (grant-as-positive convention; spec §2.7 OD-9a / OD-13):
+        label = 1 (grant) iff fico_proxy >= 650 AND dti_proxy <= 30.
+    Equivalently: label = 0 (deny) iff fico_proxy < 650 OR dti_proxy > 30.
     A CART with depth >= 2 should reconstruct this rule exactly.
     """
     rng = np.random.default_rng(seed)
@@ -28,7 +30,7 @@ def tiny_separable_dataset(seed: int = 0) -> pd.DataFrame:
         "income_proxy": rng.integers(20000, 200000, size=n),
         "history_depth": rng.integers(1, 30, size=n),
     })
-    df["label"] = ((df["fico_proxy"] < 650) | (df["dti_proxy"] > 30)).astype(int)
+    df["label"] = ((df["fico_proxy"] >= 650) & (df["dti_proxy"] <= 30)).astype(int)
     return df
 
 

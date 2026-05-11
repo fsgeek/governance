@@ -2,9 +2,11 @@
 
 Loads Fannie Mae's unified Loan Performance disclosure (113 pipe-delimited
 positional fields per the CRT Glossary, no header), filters to first-lien
-purchase/refi on owner-occupied properties, derives an "ever 90+ days
-delinquent within first 24 months" binary label from the performance rows,
-and emits Case objects with origin="real".
+purchase/refi on owner-occupied properties, derives a binary label
+("ever 90+ days delinquent within first 24 months" maps to label=0,
+the adverse outcome; clean performance maps to label=1, the favorable
+outcome) from the performance rows, and emits Case objects with origin="real".
+Convention is grant-as-positive (label=1 ⇔ grant); see spec §2.7 OD-9a / OD-13.
 
 Schema reference
 ----------------
@@ -182,8 +184,9 @@ def derive_origination_and_label(
     For each loan_id:
       - Take the first reporting row's origination fields (these are
         invariant across the loan's rows).
-      - Compute label = 1 if any of the first `horizon_months` reporting
-        rows shows current_loan_delinquency_status >= 3 (90+ DPD), else 0.
+      - Compute label = 0 if any of the first `horizon_months` reporting
+        rows shows current_loan_delinquency_status >= 3 (90+ DPD); else
+        label = 1. Convention: grant-as-positive (clean = grant = 1).
       - If the loan has fewer than `horizon_months` reporting rows AND
         no terminal zero_balance_code by then, the loan is dropped
         (insufficient observation window for the label).
@@ -212,7 +215,7 @@ def derive_origination_and_label(
         horizon_rows.groupby("loan_id")["delinquency_int"]
         .apply(
             lambda s: int(
-                (s.dropna() >= DELINQUENCY_THRESHOLD_MONTHS).any()
+                not (s.dropna() >= DELINQUENCY_THRESHOLD_MONTHS).any()
             )
         )
     )

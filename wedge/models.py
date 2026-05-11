@@ -10,9 +10,10 @@ Each CartModel wraps a fitted sklearn DecisionTreeClassifier and adds:
 Decision-path walking and per-component attribution live in wedge.attribution,
 not on CartModel itself.
 
-For a binary classification leaf with class proportions (p_paid, p_charged):
-  T = p_paid       (confidence in grant)
-  F = p_charged    (concern; evidence supporting deny)
+For a binary classification leaf with class proportions (p_label0, p_label1),
+under the grant-as-positive convention (label=1 ⇔ grant; spec §2.7 OD-9a / OD-13):
+  T = p_label1     (confidence in grant; p_paid for LC, p_originated for HMDA)
+  F = p_label0     (concern; evidence supporting deny)
 
 These satisfy T + F = 1 by construction in the wedge — see spec §7 for
 why we accept this and what iteration 2's richer emission would do.
@@ -54,12 +55,14 @@ class CartModel:
         ).reshape(1, -1)
         leaf_id = int(self.tree.apply(x)[0])
         proba = self.tree.predict_proba(x)[0]  # in self.classes_ order
-        # classes_ is sorted: 0 (paid) before 1 (charged_off) for our derive_label.
+        # classes_ is sorted: 0 (deny/adverse) before 1 (grant/favorable) under
+        # the grant-as-positive convention. T = P(grant) = proba[label=1 column];
+        # F = P(deny) = proba[label=0 column].
         class_order = list(self.classes_)
         if class_order == [0, 1]:
-            t, f = float(proba[0]), float(proba[1])
-        elif class_order == [1, 0]:
             t, f = float(proba[1]), float(proba[0])
+        elif class_order == [1, 0]:
+            t, f = float(proba[0]), float(proba[1])
         else:
             raise RuntimeError(
                 f"unexpected class order {class_order!r}; wedge assumes binary 0/1"

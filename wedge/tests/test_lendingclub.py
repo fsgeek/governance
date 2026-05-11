@@ -35,10 +35,12 @@ def test_filter_to_vintage_keeps_only_36mo_q3_2015_terminal():
     assert set(filtered["loan_status"]) == {"Charged Off", "Fully Paid"}
 
 
-def test_derive_label_binary():
+def test_derive_label_grant_as_positive():
+    """Fully Paid -> label=1 (grant/favorable); Charged Off -> label=0 (deny/adverse).
+    See spec §2.7 OD-9a / OD-13 for convention rationale."""
     df = pd.DataFrame({"loan_status": ["Charged Off", "Fully Paid"]})
     df["label"] = derive_label(df["loan_status"])
-    assert df["label"].tolist() == [1, 0]
+    assert df["label"].tolist() == [0, 1]
 
 
 def test_load_cases_returns_case_objects(tmp_path):

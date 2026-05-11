@@ -128,9 +128,11 @@ def test_label_ever_90dpd_within_horizon(tmp_path):
     raw = read_raw(p)
     collapsed = derive_origination_and_label(raw, horizon_months=24)
     labels = dict(zip(collapsed["loan_id"], collapsed["label"]))
-    assert labels["CLEAN"] == 0
-    assert labels["BAD"] == 1
-    assert labels["LATE_BAD"] == 0  # delinquency outside horizon doesn't count
+    # Grant-as-positive convention (spec §2.7 OD-9a / OD-13): clean = grant = 1,
+    # 90+ DPD inside horizon = adverse = 0.
+    assert labels["CLEAN"] == 1
+    assert labels["BAD"] == 0
+    assert labels["LATE_BAD"] == 1  # delinquency outside horizon doesn't count
 
 
 def test_short_history_without_terminal_dropped(tmp_path):
@@ -196,10 +198,11 @@ def test_load_fanniemae_returns_case_objects(tmp_path):
         assert c.features["lien_position"] == 1
         # annual_inc deliberately absent: Fannie Mae does not release income.
         assert "annual_inc" not in c.features
-    # Specifically: L1 was 90+ DPD -> label 1; L2 clean -> label 0.
+    # Grant-as-positive convention: L1 was 90+ DPD -> label 0 (adverse);
+    # L2 clean -> label 1 (grant).
     by_fico = {c.features["fico_range_low"]: c.label for c in cases}
-    assert by_fico[700] == 1
-    assert by_fico[780] == 0
+    assert by_fico[700] == 0
+    assert by_fico[780] == 1
 
 
 def test_load_fanniemae_missing_file_raises_with_readme_pointer(tmp_path):

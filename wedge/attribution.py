@@ -30,10 +30,13 @@ from wedge.models import CartModel
 from wedge.types import FactorSupportEntry
 
 
-# Class-index assumption: classes_ == (0, 1) so column 0 is paid (grant-purity)
-# and column 1 is charged_off (deny-purity). CartModel guarantees this in fit_model.
-GRANT_CLASS_IDX = 0
-DENY_CLASS_IDX = 1
+# Class-index assumption: classes_ == (0, 1) so column 0 is the adverse
+# outcome (label=0; deny-purity) and column 1 is the favorable outcome
+# (label=1; grant-purity). Convention is grant-as-positive (label=1 ⇔ grant)
+# per spec §2.7 OD-9a / OD-13; CartModel guarantees the (0, 1) ordering in
+# fit_model because sklearn sorts classes_.
+GRANT_CLASS_IDX = 1
+DENY_CLASS_IDX = 0
 
 
 def _subtree_purity(tree, node_id: int) -> tuple[float, float]:

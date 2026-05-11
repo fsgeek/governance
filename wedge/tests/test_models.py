@@ -53,7 +53,7 @@ def test_emit_T_high_for_low_risk_case():
         feature_subset=tuple(FEATURE_COLS),
         random_state=0,
     )
-    # Low-risk case per the rule: high FICO, low DTI -> label=0 -> T should be high.
+    # Low-risk case per the rule: high FICO, low DTI -> label=1 (grant) -> T should be high.
     low_risk = {"fico_proxy": 750, "dti_proxy": 10, "income_proxy": 100000, "history_depth": 20}
     e = model.emit_for_case(low_risk)
     assert e["T"] > 0.7

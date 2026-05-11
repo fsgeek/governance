@@ -83,8 +83,10 @@ def filter_to_vintage(df: pd.DataFrame, *, vintage: str, term: str) -> pd.DataFr
 
 
 def derive_label(loan_status: pd.Series) -> pd.Series:
-    """Map terminal loan_status to binary label: charged_off=1, paid=0."""
-    return (loan_status.astype(str).str.strip() == CHARGED_OFF).astype(int)
+    """Map terminal loan_status to binary label: paid=1 (grant/favorable),
+    charged_off=0 (deny/adverse). See spec §2.7 OD-9a / OD-13 for the
+    grant-as-positive convention rationale."""
+    return (loan_status.astype(str).str.strip() == PAID).astype(int)
 
 
 _EMP_LENGTH_MAP = {

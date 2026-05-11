@@ -75,10 +75,12 @@ def test_filter_to_regime_raises_on_missing_required_column():
         filter_to_regime(df)
 
 
-def test_derive_label_denied_is_one():
+def test_derive_label_grant_as_positive():
+    """originated (action=1) -> label=1 (grant); denied (action=3) -> label=0 (deny).
+    See spec §2.7 OD-9a / OD-13 for convention rationale."""
     s = pd.Series([1, 3, 1, 3])
     out = derive_label(s)
-    assert out.tolist() == [0, 1, 0, 1]
+    assert out.tolist() == [1, 0, 1, 0]
 
 
 def test_map_features_emits_expected_columns_and_derives_loan_to_income():

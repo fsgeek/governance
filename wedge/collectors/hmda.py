@@ -28,8 +28,9 @@ Schema mapping (HMDA -> wedge feature names):
     loan_term  (months)             -> loan_term_months
 
 Label mapping (action_taken -> label):
-    1 (originated)         -> 0  (grant; analogous to "approve")
-    3 (denied)             -> 1  (deny; the adverse outcome)
+    1 (originated)         -> 1  (grant; the favorable outcome)
+    3 (denied)             -> 0  (deny; the adverse outcome)
+Convention is grant-as-positive (label=1 ⇔ grant). See spec §2.7 OD-9a / OD-13.
 Other action_taken values are excluded (the modified-LAR query already filtered
 to actions 1 and 3, so this is defensive).
 """
@@ -143,13 +144,14 @@ def filter_to_regime(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def derive_label(action_taken: pd.Series) -> pd.Series:
-    """Map HMDA action_taken to binary label: denied=1, originated=0.
+    """Map HMDA action_taken to binary label: originated=1 (grant),
+    denied=0 (deny/adverse).
 
-    Rationale: in the wedge's framing, "1" is the adverse outcome (analogous
-    to charged_off in LendingClub). For lending decisions, denial is the
-    adverse / consequential action that fair-lending review focuses on.
+    Convention: grant-as-positive (label=1 ⇔ grant), matching LendingClub's
+    `derive_label` and the wedge's internal T/F semantics (T = confidence in
+    grant). See spec §2.7 OD-9a / OD-13.
     """
-    return (action_taken.astype(int) == ACTION_DENIED).astype(int)
+    return (action_taken.astype(int) == ACTION_ORIGINATED).astype(int)
 
 
 def map_features(df: pd.DataFrame) -> pd.DataFrame:
