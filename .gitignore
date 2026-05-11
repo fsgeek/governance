@@ -16,3 +16,6 @@
 draft-*.pdf
 __pycache__/
 data/
+.claude-flow/
+.claude/
+CLAUDE.md
