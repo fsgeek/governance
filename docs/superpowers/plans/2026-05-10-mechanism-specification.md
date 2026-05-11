@@ -30,6 +30,22 @@
 7. Scope boundaries — what the spec *excludes* for the May 23 deliverable
 8. Prototype empirical demonstration targets — what evidence the prototype must produce to validate the spec
 
+9. (Added during V1 drafting; resides inline in spec §2.7 — label-polarity adapter and mandatory-feature subset-vs-split-use gap.)
+
+**Open decisions added by 2026-05-11 cross-instance review of §1–§3, queued for V1.1 revision pass (Task 11):**
+
+10. **Heckman / training-data validity + substrate-axis surfacing.** LC labels are `charged_off` conditional on origination (selection bias); HMDA labels are past-underwriter decisions, not ground-truth outcomes. The framework produces *different governance products* on different substrate-policy combinations: HMDA + descriptive policy reads disagreement as past-underwriter inconsistency under cost variation; HMDA + aspirational policy reads disagreement as systematic deviation from declared policy; LC reads disagreement as outcome ambiguity bounded by origination-selection bias. New §2.5 needed, distinct from `applicable_regime` routing. Construction manifest (§3.6) must declare which substrate-policy combination is in scope. V1.1.
+
+11. **§3.1 motivation reframing.** Distinguish cost-asymmetry boundary sensitivity (what the construction operationalizes) from intrinsic evidential conflict (what V1 motivation oversells). Argue that policy-constrained hypothesis spaces tighten the two together. Coupled with OD-15 — the constrained-interpretation argument and the sensitivity reporting are a single argument across two surfaces. V1.1.
+
+12. **OD-9b flip: post-fit split-use check as V1.1 default.** V1's "weaken the claim" default eviscerates the regulator-facing audit claim ("must consider income" should not mean "income was eligible to be split on but the tree may not have used it"). Implementation cost is small: inspect each fitted tree's used-feature set; exclude models failing the check. Reserve the weaker claim as fallback only if R(ε) emptiness rate becomes governance-problematic in practice. V1.1.
+
+13. **OD-9a resolution: collector standardization with adapter as transition.** The label-polarity adapter is a bridging mechanism for the days between V1.1 commit and collector standardization, not a permanent V1 fixture. Standardize `derive_label` in both `wedge/collectors/lendingclub.py` and `wedge/collectors/hmda.py` to emit `label=1 ⇔ grant`. Re-interpret published findings (cliff, regime rotation, SHAP non-inferiority) in the new convention; empirical structure is preserved, only interpretive labels flip. Target: 2026-05-18. Spec §2.7 adapter requirement removed after the code lands. V1.1.
+
+14. **Novelty positioning — three-tier cut.** §1.1 reframes the contribution as three tiers: (tier 1) cost-asymmetric training (standard; cite the long literature); (tier 2) dual Rashomon under asymmetric cost (combination-novel; cite adjacent literature — multi-objective ML, cost-sensitive ensembles, Semenova/Rudin variable-importance cloud); (tier 3) policy-artifact-as-model-class-constraint with invalidation semantics under policy revision (novel-in-mechanism — load-bearing methodological claim, distinct from generic constrained ML by the audit-artifact-as-constraint coupling). V1.1.
+
+15. **Construction-manifest sensitivity requirements (load-bearing, not ornamental).** §3.6 currently mandates the manifest; V1.1 specifies required perturbation reporting: w_T, w_F, ε_T, ε_F at ±50%; H-restricted variants; with a stated robustness threshold above which conclusions are claimed to persist. The declared-completeness-vs-verifiable-properties distinction surfaced in cross-instance review: transparency is performative without sensitivity bounds. Coupled to OD-11 — neither claim works alone. V1.1.
+
 **Revision provisions.** This spec is V1. The plan anticipates revision as prototype findings surface gaps and regulator-doc translation reveals operational fuzziness. Revisions land as dated changelog entries appended to the spec file; the spec is not forked into V2 unless the consolidation argument itself requires restructuring.
 
 ---
@@ -356,6 +372,31 @@ git commit -m "spec: mark mechanism specification as canonical" --allow-empty
 ```
 
 (The `--allow-empty` is for the case where Step 5 has nothing to commit; the commit then documents that the V1 stabilization is the canonical version.)
+
+---
+
+## Task 11: V1.1 substantive revision pass
+
+**Files:**
+- Modify: `docs/superpowers/specs/2026-05-10-mechanism-specification.md` (multiple sections)
+- Modify: `wedge/collectors/lendingclub.py` and `wedge/collectors/hmda.py` (Step 1)
+- Modify: wedge model-fit code (Step 2)
+
+After Tasks 4–10 land V1, execute a V1.1 revision pass addressing OD-10..OD-15. Not a sweep — each OD lives in its own edit with its own commit. Recommended sequence, with rationale:
+
+- [ ] **Step 1: OD-13 (collector standardization).** Code change first; this is implementation, not spec. Standardize `derive_label` in both collectors to emit `label=1 ⇔ grant`. Re-interpret published findings in the new convention. Spec edit removes the §2.7 adapter requirement after the code lands.
+
+- [ ] **Step 2: OD-12 (post-fit split-use check).** Spec edit + wedge code change for the post-fit mandatory-feature check. New §2.7 entry replaces V1's "weaken the claim" default; the encoder API itself may or may not change (the check can live in set-construction code).
+
+- [ ] **Step 3: OD-10 (substrate axis surfacing).** New §2.5 distinguishing HMDA-decisions vs LC-outcomes substrate types and the descriptive-vs-aspirational policy axis. Each combination is a different governance interpretation of inter-set disagreement and the cliff signal. Construction manifest (§3.6) updated to declare substrate-policy combination.
+
+- [ ] **Step 4: OD-11 + OD-15 (joint commit, single argument).** Edit §3.1 to distinguish boundary-sensitivity from evidential-conflict with the constrained-hypothesis-space tightening argument. Edit §3.6 to mandate sensitivity reporting at the level needed to underwrite §3.1's constrained-interpretation argument. Commit jointly — separately each is weaker.
+
+- [ ] **Step 5: OD-14 (novelty positioning).** Edit §1.1 to use the three-tier cut. Place tier 2 citations carefully against adjacent literature; frame tier 3 as the load-bearing methodological claim.
+
+- [ ] **Step 6: V1.1 stabilization commit.** Append a V1.1 changelog entry to the spec listing the OD resolutions and commit. V1 stabilization (Task 10) is retained as the V1 boundary; V1.1 is a separate boundary that supersedes the specific sections it revises.
+
+The plan does not pin dates for V1.1; the May 23 Olorin deliverable is the latest acceptable deadline for Steps 1–4. Step 5 (novelty reframing) can run after May 23 if needed since it does not affect the deliverable's substance, only its positioning.
 
 ---
 

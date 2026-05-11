@@ -196,6 +196,8 @@ The flatness is operationally lossy in two ways:
 
 The dual-set construction resolves both losses by operationalizing T and F as outputs of *different models trained under different cost regimes*, not as residuals of a single model.
 
+**Sharpening from 2026-05-11 cross-instance review (queued for V1.1 — see plan OD-11):** The construction as specified operationalizes *cost-asymmetry boundary sensitivity* — cases sitting near both R_T and R_F decision boundaries under their respective cost regimes. This is correlated with but not identical to *intrinsic evidential conflict in x* (features carrying opposing signals). Under policy-constrained hypothesis spaces the two senses tighten: the policy constraint reduces model degrees of freedom, more tightly coupling loss-landscape boundaries to feature-space evidential structure. But the w_T and w_F values are themselves modeling choices, so the constrained-interpretation argument requires §3.6's manifest sensitivity reporting (perturbation across w, ε, H) to be *load-bearing rather than ornamental*. §3.1 (motivation) and §3.6 (sensitivity reporting) are a single argument across two surfaces; V1.1 owes the explicit version of this coupling. Section 4's I-as-inter-set-disagreement inherits the caveat: the boundary-sensitivity reading is direct from the construction; the evidential-conflict reading requires the constrained-hypothesis-space argument and the sensitivity-reporting evidence together.
+
 ### 3.2 Contract: R_T(ε_T) — the grant-emphasis set
 
 **Definition.** R_T(ε_T) is the set of binary classifiers h: X → {grant, deny} that satisfy all of:
