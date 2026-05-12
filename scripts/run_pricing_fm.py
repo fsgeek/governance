@@ -13,14 +13,19 @@ Cat 2 / Cat 2-extension / Cat 1 (pricing) taxonomy carries over, with
 `policy/thin_demo_fm.yaml`'s named features (fico_range_low, dti, ltv) as
 the policy-expressible set.
 
-This is a *pilot*: only FM 2018Q1 is on disk (one acquisition quarter, one
-rate environment), so it cannot do the cross-regime test — it validates the
-rate-band tier construction and confirms the mechanism scales to FM's size
-(~400k eligible loans, ~0.8% default rate). The cross-regime arm needs
-additional FM quarters.
+Run across a regime-spanning set of FM acquisition quarters (extract each
+from Performance_All.zip first) for the cross-regime arm of the pricing-
+space result. The rate-bands are deciled *within each vintage*, so a band
+index means "this position in this vintage's pricing distribution" — the
+right comparison when the rate level shifts across regimes.
 
 Usage:
-    PYTHONPATH=. python scripts/run_pricing_fm.py --n-bands 10 --output-dir runs
+    PYTHONPATH=. python scripts/run_pricing_fm.py --vintage 2018Q1 --n-bands 10 --output-dir runs
+
+`--vintage YYYYQN` selects `data/fanniemae/{vintage}.csv` (extract it from
+Performance_All.zip first) and tags the output filenames. Running the same
+analysis across a regime-spanning set of vintages is the cross-regime arm
+of the pricing-space result.
 """
 from __future__ import annotations
 
@@ -43,7 +48,7 @@ from wedge.collectors.fanniemae import (
 from wedge.pricing import GradeStratification, classify_grades
 
 
-FM_CSV = Path("data/fanniemae/2018Q1.csv")
+FM_DATA_DIR = Path("data/fanniemae")
 # Features named by policy/thin_demo_fm.yaml (its threshold/mandatory nodes).
 POLICY_FEATURES = {"fico_range_low", "dti", "ltv"}
 # Other numeric origination features available in to_feature_frame's output
@@ -70,7 +75,9 @@ def _rate_band_labels(rate: pd.Series, n_bands: int) -> pd.Series:
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="FM pricing-space pilot.")
+    ap = argparse.ArgumentParser(description="FM pricing-space within-rate-band stratification.")
+    ap.add_argument("--vintage", default="2018Q1",
+                    help="FM acquisition quarter; reads data/fanniemae/{vintage}.csv")
     ap.add_argument("--n-bands", type=int, default=10)
     ap.add_argument("--alpha", type=float, default=0.01)
     ap.add_argument("--min-loans-per-grade", type=int, default=2000)
@@ -78,8 +85,14 @@ def main() -> int:
     ap.add_argument("--output-dir", type=Path, default=Path("runs"))
     args = ap.parse_args()
 
-    print("loading FM 2018Q1 (this takes a few minutes; ~6.8GB / 23M perf rows)...")
-    raw = read_raw(FM_CSV)
+    fm_csv = FM_DATA_DIR / f"{args.vintage}.csv"
+    if not fm_csv.exists():
+        raise FileNotFoundError(
+            f"{fm_csv} not found — extract it first: "
+            f"unzip data/fanniemae/Performance_All.zip {args.vintage}.csv -d data/fanniemae/"
+        )
+    print(f"loading FM {args.vintage} from {fm_csv} (a few minutes; large perf file)...")
+    raw = read_raw(fm_csv)
     collapsed = derive_origination_and_label(raw)
     eligible = filter_eligible(collapsed)
     feats = to_feature_frame(eligible).copy()
@@ -131,14 +144,14 @@ def main() -> int:
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     run_id = _now_iso()
-    jsonl_path = args.output_dir / f"{run_id}-pricing-fm-2018Q1.jsonl"
-    summary_path = args.output_dir / f"{run_id}-pricing-fm-2018Q1-summary.json"
+    jsonl_path = args.output_dir / f"{run_id}-pricing-fm-{args.vintage}.jsonl"
+    summary_path = args.output_dir / f"{run_id}-pricing-fm-{args.vintage}-summary.json"
     with jsonl_path.open("w") as fh:
         for s in strat.splits:
             fh.write(json.dumps(asdict(s)) + "\n")
     summary = {
         "run_id": run_id,
-        "substrate": "FM-2018Q1",
+        "substrate": f"FM-{args.vintage}",
         "n_loans": len(feats),
         "n_rate_bands": int(feats["rate_band"].nunique()),
         "n_bands_requested": args.n_bands,

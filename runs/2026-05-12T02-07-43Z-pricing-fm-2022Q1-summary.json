@@ -1,0 +1,68 @@
+{
+  "alpha": 0.01,
+  "band_classification": {
+    "rb00": "Cat 2 (pricing)",
+    "rb01": "Cat 2 (pricing)",
+    "rb02": "Cat 2 (pricing)",
+    "rb03": "Cat 2 (pricing)",
+    "rb04": "Cat 2 (pricing)",
+    "rb05": "Cat 2 (pricing)",
+    "rb06": "Cat 2 (pricing)",
+    "rb07": "Cat 2 (pricing)",
+    "rb08": "Cat 2 (pricing)",
+    "rb09": "Cat 2 (pricing)"
+  },
+  "band_default_rate": {
+    "rb00": 0.004003917144946759,
+    "rb01": 0.005905321243021717,
+    "rb02": 0.007879427575541864,
+    "rb03": 0.007854010675591494,
+    "rb04": 0.010145110942377458,
+    "rb05": 0.014403066812705367,
+    "rb06": 0.017080061642327733,
+    "rb07": 0.017119050624921094,
+    "rb08": 0.022711882064905976,
+    "rb09": 0.0307548794489093
+  },
+  "band_loan_counts": {
+    "rb00": 80671,
+    "rb01": 92967,
+    "rb02": 40739,
+    "rb03": 81869,
+    "rb04": 94824,
+    "rb05": 73040,
+    "rb06": 54508,
+    "rb07": 79210,
+    "rb08": 38394,
+    "rb09": 69680
+  },
+  "category_counts": {
+    "Cat 2 (pricing)": 10
+  },
+  "default_rate": 0.01296497247493278,
+  "features": [
+    "dti",
+    "fico_range_low",
+    "ltv",
+    "loan_term_months"
+  ],
+  "min_loans_per_grade": 2000,
+  "min_loans_per_side": 500,
+  "n_bands_requested": 10,
+  "n_loans": 705902,
+  "n_rate_bands": 10,
+  "n_significant_splits": 261,
+  "policy_features": [
+    "dti",
+    "fico_range_low",
+    "ltv"
+  ],
+  "run_id": "2026-05-12T02-07-43Z",
+  "split_feature_frequency": {
+    "dti": 86,
+    "fico_range_low": 90,
+    "loan_term_months": 8,
+    "ltv": 77
+  },
+  "substrate": "FM-2022Q1"
+}
