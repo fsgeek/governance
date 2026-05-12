@@ -1,0 +1,3236 @@
+{
+  "pre_reg": "docs/superpowers/specs/2026-05-12-policy-constrained-rashomon-refinement-preregistration-note.md",
+  "policy": "thin_demo_hmda_mortgage",
+  "monotonic_cst_default_convention": {
+    "fico_range_low": -1,
+    "dti": 1
+  },
+  "named_features": [
+    "fico_range_low",
+    "dti",
+    "annual_inc",
+    "emp_length"
+  ],
+  "epsilon": 0.02,
+  "params": {
+    "depths": [
+      1,
+      2,
+      3
+    ],
+    "leaf_mins": [
+      25,
+      50,
+      100
+    ],
+    "n_perm": 500,
+    "null_percentile": 95,
+    "auc_floor": 0.52
+  },
+  "bursts": {
+    "D_2015H2_dti": {
+      "v1": "2015Q3",
+      "v2": "2015Q4",
+      "flagged_grades": [
+        "A1",
+        "A5",
+        "B1",
+        "C1",
+        "C2",
+        "C5",
+        "D4"
+      ],
+      "grades": {
+        "A1": {
+          "n_v1": 3528,
+          "n_v2": 4809,
+          "default_rate_v1": 0.0295,
+          "default_rate_v2": 0.027,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 9,
+          "band_distinct_members": 8,
+          "best_holdout_auc": 0.6339,
+          "distinct_used_feature_sets": [
+            [
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 3,
+          "median_pairwise_spearman": 0.9558,
+          "min_pairwise_spearman": 0.9369,
+          "n_forward_predicting_members": 8,
+          "n_members_evaluated": 8,
+          "best_oos_auc_constrained_band": 0.6073,
+          "best_oos_auc_unconstrained_best_member": 0.5954,
+          "oos_auc_kitchen_sink_tree": 0.5749,
+          "member_forward_results": [
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.6339,
+              "oos_auc": 0.6073,
+              "null_p95": 0.5441,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.6334,
+              "oos_auc": 0.6073,
+              "null_p95": 0.5434,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.6315,
+              "oos_auc": 0.6066,
+              "null_p95": 0.5411,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.6221,
+              "oos_auc": 0.6001,
+              "null_p95": 0.5425,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.6197,
+              "oos_auc": 0.6,
+              "null_p95": 0.5417,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.6183,
+              "oos_auc": 0.5992,
+              "null_p95": 0.5412,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.6175,
+              "oos_auc": 0.5943,
+              "null_p95": 0.5412,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.6155,
+              "oos_auc": 0.5943,
+              "null_p95": 0.5412,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": false,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "A5": {
+          "n_v1": 5098,
+          "n_v2": 5825,
+          "default_rate_v1": 0.0679,
+          "default_rate_v2": 0.0731,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 19,
+          "band_distinct_members": 17,
+          "best_holdout_auc": 0.5549,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti"
+            ],
+            [
+              "dti",
+              "emp_length"
+            ],
+            [
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 8,
+          "median_pairwise_spearman": 0.6264,
+          "min_pairwise_spearman": -0.0614,
+          "n_forward_predicting_members": 14,
+          "n_members_evaluated": 17,
+          "best_oos_auc_constrained_band": 0.5555,
+          "best_oos_auc_unconstrained_best_member": 0.5544,
+          "oos_auc_kitchen_sink_tree": 0.5431,
+          "member_forward_results": [
+            {
+              "subset": [
+                "fico_range_low"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5549,
+              "oos_auc": 0.5304,
+              "null_p95": 0.5203,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5548,
+              "oos_auc": 0.5304,
+              "null_p95": 0.5228,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5441,
+              "oos_auc": 0.5516,
+              "null_p95": 0.522,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5435,
+              "oos_auc": 0.5531,
+              "null_p95": 0.522,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5428,
+              "oos_auc": 0.4964,
+              "null_p95": 0.5221,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5417,
+              "oos_auc": 0.496,
+              "null_p95": 0.5205,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5397,
+              "oos_auc": 0.5517,
+              "null_p95": 0.5252,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5397,
+              "oos_auc": 0.5517,
+              "null_p95": 0.524,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5387,
+              "oos_auc": 0.5555,
+              "null_p95": 0.5227,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5385,
+              "oos_auc": 0.5555,
+              "null_p95": 0.523,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.538,
+              "oos_auc": 0.5528,
+              "null_p95": 0.5205,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.537,
+              "oos_auc": 0.5545,
+              "null_p95": 0.5234,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.536,
+              "oos_auc": 0.496,
+              "null_p95": 0.519,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.536,
+              "oos_auc": 0.5489,
+              "null_p95": 0.5248,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.536,
+              "oos_auc": 0.5383,
+              "null_p95": 0.5252,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5351,
+              "oos_auc": 0.5487,
+              "null_p95": 0.5235,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5351,
+              "oos_auc": 0.5381,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": true,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "B1": {
+          "n_v1": 5168,
+          "n_v2": 6231,
+          "default_rate_v1": 0.0886,
+          "default_rate_v2": 0.0847,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 11,
+          "band_distinct_members": 8,
+          "best_holdout_auc": 0.5774,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc",
+              "dti"
+            ],
+            [
+              "annual_inc",
+              "emp_length"
+            ],
+            [
+              "annual_inc",
+              "emp_length",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 3,
+          "median_pairwise_spearman": 0.167,
+          "min_pairwise_spearman": 0.1381,
+          "n_forward_predicting_members": 8,
+          "n_members_evaluated": 8,
+          "best_oos_auc_constrained_band": 0.5382,
+          "best_oos_auc_unconstrained_best_member": 0.5351,
+          "oos_auc_kitchen_sink_tree": 0.5389,
+          "member_forward_results": [
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5774,
+              "oos_auc": 0.5351,
+              "null_p95": 0.519,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5773,
+              "oos_auc": 0.5272,
+              "null_p95": 0.5175,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5677,
+              "oos_auc": 0.5382,
+              "null_p95": 0.5193,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5644,
+              "oos_auc": 0.5329,
+              "null_p95": 0.5167,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5643,
+              "oos_auc": 0.5372,
+              "null_p95": 0.5197,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5643,
+              "oos_auc": 0.5372,
+              "null_p95": 0.5213,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5613,
+              "oos_auc": 0.5304,
+              "null_p95": 0.5177,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5613,
+              "oos_auc": 0.5304,
+              "null_p95": 0.5175,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": true,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "C1": {
+          "n_v1": 4875,
+          "n_v2": 5977,
+          "default_rate_v1": 0.169,
+          "default_rate_v2": 0.1829,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 68,
+          "band_distinct_members": 42,
+          "best_holdout_auc": 0.5535,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "dti"
+            ],
+            [
+              "emp_length"
+            ],
+            [
+              "annual_inc",
+              "dti"
+            ],
+            [
+              "annual_inc",
+              "emp_length"
+            ],
+            [
+              "annual_inc",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "emp_length"
+            ],
+            [
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "emp_length"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 12,
+          "median_pairwise_spearman": 0.7431,
+          "min_pairwise_spearman": -0.0775,
+          "n_forward_predicting_members": 42,
+          "n_members_evaluated": 42,
+          "best_oos_auc_constrained_band": 0.5486,
+          "best_oos_auc_unconstrained_best_member": 0.5478,
+          "oos_auc_kitchen_sink_tree": 0.5422,
+          "member_forward_results": [
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5535,
+              "oos_auc": 0.5486,
+              "null_p95": 0.5148,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5522,
+              "oos_auc": 0.5347,
+              "null_p95": 0.5148,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.55,
+              "oos_auc": 0.523,
+              "null_p95": 0.5169,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5498,
+              "oos_auc": 0.548,
+              "null_p95": 0.5163,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.549,
+              "oos_auc": 0.5347,
+              "null_p95": 0.5143,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5489,
+              "oos_auc": 0.5337,
+              "null_p95": 0.5148,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5488,
+              "oos_auc": 0.5352,
+              "null_p95": 0.5135,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5473,
+              "oos_auc": 0.5449,
+              "null_p95": 0.5163,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5472,
+              "oos_auc": 0.5409,
+              "null_p95": 0.5152,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5469,
+              "oos_auc": 0.5434,
+              "null_p95": 0.5147,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5469,
+              "oos_auc": 0.5441,
+              "null_p95": 0.5149,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5466,
+              "oos_auc": 0.5397,
+              "null_p95": 0.5143,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5466,
+              "oos_auc": 0.5457,
+              "null_p95": 0.5146,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5461,
+              "oos_auc": 0.533,
+              "null_p95": 0.5145,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5457,
+              "oos_auc": 0.5316,
+              "null_p95": 0.5138,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5457,
+              "oos_auc": 0.5456,
+              "null_p95": 0.5158,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5449,
+              "oos_auc": 0.5329,
+              "null_p95": 0.5147,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5448,
+              "oos_auc": 0.5417,
+              "null_p95": 0.5164,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.544,
+              "oos_auc": 0.5419,
+              "null_p95": 0.5143,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5437,
+              "oos_auc": 0.5342,
+              "null_p95": 0.514,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.542,
+              "oos_auc": 0.5277,
+              "null_p95": 0.5143,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5405,
+              "oos_auc": 0.5362,
+              "null_p95": 0.5142,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5405,
+              "oos_auc": 0.5418,
+              "null_p95": 0.5154,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5405,
+              "oos_auc": 0.5362,
+              "null_p95": 0.5138,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5405,
+              "oos_auc": 0.5418,
+              "null_p95": 0.5158,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.54,
+              "oos_auc": 0.5277,
+              "null_p95": 0.5121,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.54,
+              "oos_auc": 0.5337,
+              "null_p95": 0.5165,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5372,
+              "oos_auc": 0.5291,
+              "null_p95": 0.5141,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5372,
+              "oos_auc": 0.5207,
+              "null_p95": 0.5132,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5372,
+              "oos_auc": 0.5207,
+              "null_p95": 0.5122,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5367,
+              "oos_auc": 0.5257,
+              "null_p95": 0.5142,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5362,
+              "oos_auc": 0.5283,
+              "null_p95": 0.5142,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5362,
+              "oos_auc": 0.5286,
+              "null_p95": 0.5148,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5361,
+              "oos_auc": 0.5267,
+              "null_p95": 0.5151,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5356,
+              "oos_auc": 0.5283,
+              "null_p95": 0.5154,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5352,
+              "oos_auc": 0.5267,
+              "null_p95": 0.5144,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.535,
+              "oos_auc": 0.5277,
+              "null_p95": 0.5142,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5345,
+              "oos_auc": 0.5227,
+              "null_p95": 0.5133,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5345,
+              "oos_auc": 0.5257,
+              "null_p95": 0.5143,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5342,
+              "oos_auc": 0.5216,
+              "null_p95": 0.5153,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5338,
+              "oos_auc": 0.5233,
+              "null_p95": 0.5159,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5338,
+              "oos_auc": 0.5237,
+              "null_p95": 0.5145,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": true,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "C2": {
+          "n_v1": 4555,
+          "n_v2": 5382,
+          "default_rate_v1": 0.1802,
+          "default_rate_v2": 0.1826,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 28,
+          "band_distinct_members": 14,
+          "best_holdout_auc": 0.5788,
+          "distinct_used_feature_sets": [
+            [
+              "dti"
+            ],
+            [
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 4,
+          "median_pairwise_spearman": 0.9496,
+          "min_pairwise_spearman": 0.7729,
+          "n_forward_predicting_members": 14,
+          "n_members_evaluated": 14,
+          "best_oos_auc_constrained_band": 0.5358,
+          "best_oos_auc_unconstrained_best_member": 0.5125,
+          "oos_auc_kitchen_sink_tree": 0.5278,
+          "member_forward_results": [
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5788,
+              "oos_auc": 0.5358,
+              "null_p95": 0.5167,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5764,
+              "oos_auc": 0.5283,
+              "null_p95": 0.5171,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5764,
+              "oos_auc": 0.5283,
+              "null_p95": 0.5152,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5755,
+              "oos_auc": 0.5305,
+              "null_p95": 0.5142,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5716,
+              "oos_auc": 0.5311,
+              "null_p95": 0.5175,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5716,
+              "oos_auc": 0.5311,
+              "null_p95": 0.5164,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5703,
+              "oos_auc": 0.5278,
+              "null_p95": 0.5172,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5703,
+              "oos_auc": 0.5278,
+              "null_p95": 0.5169,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.569,
+              "oos_auc": 0.5278,
+              "null_p95": 0.5173,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.569,
+              "oos_auc": 0.5278,
+              "null_p95": 0.5174,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5688,
+              "oos_auc": 0.5287,
+              "null_p95": 0.5153,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5688,
+              "oos_auc": 0.5287,
+              "null_p95": 0.5165,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5642,
+              "oos_auc": 0.5247,
+              "null_p95": 0.5152,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5589,
+              "oos_auc": 0.524,
+              "null_p95": 0.5157,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": false,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "C5": {
+          "n_v1": 3063,
+          "n_v2": 3355,
+          "default_rate_v1": 0.2334,
+          "default_rate_v2": 0.2218,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 72,
+          "band_distinct_members": 48,
+          "best_holdout_auc": 0.5327,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "dti"
+            ],
+            [
+              "annual_inc",
+              "dti"
+            ],
+            [
+              "annual_inc",
+              "emp_length"
+            ],
+            [
+              "annual_inc",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "emp_length"
+            ],
+            [
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 9,
+          "median_pairwise_spearman": 0.5637,
+          "min_pairwise_spearman": 0.0702,
+          "n_forward_predicting_members": 0,
+          "n_members_evaluated": 48,
+          "best_oos_auc_constrained_band": 0.5175,
+          "best_oos_auc_unconstrained_best_member": 0.5166,
+          "oos_auc_kitchen_sink_tree": 0.5222,
+          "member_forward_results": [
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5327,
+              "oos_auc": 0.5113,
+              "null_p95": 0.5173,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5303,
+              "oos_auc": 0.5113,
+              "null_p95": 0.5167,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5295,
+              "oos_auc": 0.5166,
+              "null_p95": 0.5205,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5295,
+              "oos_auc": 0.5166,
+              "null_p95": 0.5188,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5278,
+              "oos_auc": 0.5166,
+              "null_p95": 0.5177,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.527,
+              "oos_auc": 0.5166,
+              "null_p95": 0.5175,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.527,
+              "oos_auc": 0.5166,
+              "null_p95": 0.5168,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5251,
+              "oos_auc": 0.5166,
+              "null_p95": 0.5188,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5247,
+              "oos_auc": 0.5102,
+              "null_p95": 0.5176,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5246,
+              "oos_auc": 0.5101,
+              "null_p95": 0.5189,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5244,
+              "oos_auc": 0.517,
+              "null_p95": 0.5185,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5243,
+              "oos_auc": 0.5102,
+              "null_p95": 0.5184,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.524,
+              "oos_auc": 0.5126,
+              "null_p95": 0.5154,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.524,
+              "oos_auc": 0.5126,
+              "null_p95": 0.515,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5236,
+              "oos_auc": 0.5158,
+              "null_p95": 0.5176,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5235,
+              "oos_auc": 0.5158,
+              "null_p95": 0.5203,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5221,
+              "oos_auc": 0.5143,
+              "null_p95": 0.5151,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5221,
+              "oos_auc": 0.5143,
+              "null_p95": 0.5143,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5221,
+              "oos_auc": 0.5143,
+              "null_p95": 0.5134,
+              "verdict": "NEAR-HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5221,
+              "oos_auc": 0.5143,
+              "null_p95": 0.5134,
+              "verdict": "NEAR-HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5214,
+              "oos_auc": 0.5121,
+              "null_p95": 0.5183,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5211,
+              "oos_auc": 0.5125,
+              "null_p95": 0.5194,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5207,
+              "oos_auc": 0.5092,
+              "null_p95": 0.5186,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5207,
+              "oos_auc": 0.5098,
+              "null_p95": 0.5167,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5205,
+              "oos_auc": 0.5122,
+              "null_p95": 0.5185,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5204,
+              "oos_auc": 0.5092,
+              "null_p95": 0.5174,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5204,
+              "oos_auc": 0.5098,
+              "null_p95": 0.5152,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5192,
+              "oos_auc": 0.5173,
+              "null_p95": 0.5186,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5192,
+              "oos_auc": 0.5059,
+              "null_p95": 0.5174,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5179,
+              "oos_auc": 0.5172,
+              "null_p95": 0.5197,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5177,
+              "oos_auc": 0.5172,
+              "null_p95": 0.5192,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5177,
+              "oos_auc": 0.5094,
+              "null_p95": 0.517,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5177,
+              "oos_auc": 0.5068,
+              "null_p95": 0.5172,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5177,
+              "oos_auc": 0.5126,
+              "null_p95": 0.52,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5177,
+              "oos_auc": 0.5068,
+              "null_p95": 0.5177,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5175,
+              "oos_auc": 0.5175,
+              "null_p95": 0.5195,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.517,
+              "oos_auc": 0.5162,
+              "null_p95": 0.5174,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5161,
+              "oos_auc": 0.5162,
+              "null_p95": 0.5192,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5161,
+              "oos_auc": 0.5162,
+              "null_p95": 0.5186,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5156,
+              "oos_auc": 0.5145,
+              "null_p95": 0.5143,
+              "verdict": "NEAR-HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5156,
+              "oos_auc": 0.5126,
+              "null_p95": 0.5152,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5156,
+              "oos_auc": 0.5145,
+              "null_p95": 0.5157,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5156,
+              "oos_auc": 0.5126,
+              "null_p95": 0.5154,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5154,
+              "oos_auc": 0.5131,
+              "null_p95": 0.5184,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5148,
+              "oos_auc": 0.5054,
+              "null_p95": 0.5163,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5141,
+              "oos_auc": 0.5137,
+              "null_p95": 0.5179,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5141,
+              "oos_auc": 0.5134,
+              "null_p95": 0.5184,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5139,
+              "oos_auc": 0.5151,
+              "null_p95": 0.5191,
+              "verdict": "MISS"
+            }
+          ],
+          "non_trivial": true,
+          "plural": true,
+          "forward_predictive": false,
+          "constraint_cheap": true
+        },
+        "D4": {
+          "n_v1": 1402,
+          "n_v2": 1248,
+          "default_rate_v1": 0.281,
+          "default_rate_v2": 0.3109,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 17,
+          "band_distinct_members": 16,
+          "best_holdout_auc": 0.5918,
+          "distinct_used_feature_sets": [
+            [
+              "emp_length"
+            ],
+            [
+              "dti",
+              "emp_length"
+            ],
+            [
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "emp_length",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "emp_length",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 6,
+          "median_pairwise_spearman": 0.6245,
+          "min_pairwise_spearman": 0.0407,
+          "n_forward_predicting_members": 13,
+          "n_members_evaluated": 16,
+          "best_oos_auc_constrained_band": 0.5431,
+          "best_oos_auc_unconstrained_best_member": 0.525,
+          "oos_auc_kitchen_sink_tree": 0.5257,
+          "member_forward_results": [
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5918,
+              "oos_auc": 0.534,
+              "null_p95": 0.5258,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5918,
+              "oos_auc": 0.534,
+              "null_p95": 0.5264,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5841,
+              "oos_auc": 0.5331,
+              "null_p95": 0.524,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5833,
+              "oos_auc": 0.5346,
+              "null_p95": 0.5296,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5826,
+              "oos_auc": 0.525,
+              "null_p95": 0.5243,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5826,
+              "oos_auc": 0.525,
+              "null_p95": 0.5248,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5826,
+              "oos_auc": 0.525,
+              "null_p95": 0.5248,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5826,
+              "oos_auc": 0.525,
+              "null_p95": 0.5247,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5795,
+              "oos_auc": 0.4891,
+              "null_p95": 0.5282,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5769,
+              "oos_auc": 0.538,
+              "null_p95": 0.5284,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5768,
+              "oos_auc": 0.5345,
+              "null_p95": 0.5259,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5762,
+              "oos_auc": 0.4891,
+              "null_p95": 0.5281,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.576,
+              "oos_auc": 0.5066,
+              "null_p95": 0.5287,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5752,
+              "oos_auc": 0.5345,
+              "null_p95": 0.5273,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5724,
+              "oos_auc": 0.5431,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5723,
+              "oos_auc": 0.5256,
+              "null_p95": 0.5235,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": true,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        }
+      },
+      "n_effective_grades": 7,
+      "non_trivial_count": 7,
+      "plural_count": 5,
+      "forward_predictive_count": 6,
+      "constraint_cheap_count": 7,
+      "claim_holds": true,
+      "claim_falsified": false
+    },
+    "A_2013_14_annual_inc": {
+      "v1": "2013Q3",
+      "v2": "2013Q4",
+      "flagged_grades": [
+        "B1",
+        "B2",
+        "B3",
+        "B4",
+        "C4"
+      ],
+      "grades": {
+        "B1": {
+          "n_v1": 2211,
+          "n_v2": 2496,
+          "default_rate_v1": 0.0687,
+          "default_rate_v2": 0.0693,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 6,
+          "band_distinct_members": 5,
+          "best_holdout_auc": 0.5867,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "emp_length"
+            ],
+            [
+              "annual_inc",
+              "emp_length"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 3,
+          "median_pairwise_spearman": 0.7678,
+          "min_pairwise_spearman": 0.0233,
+          "n_forward_predicting_members": 4,
+          "n_members_evaluated": 5,
+          "best_oos_auc_constrained_band": 0.5923,
+          "best_oos_auc_unconstrained_best_member": 0.5887,
+          "oos_auc_kitchen_sink_tree": 0.5949,
+          "member_forward_results": [
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5867,
+              "oos_auc": 0.5887,
+              "null_p95": 0.5371,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.5867,
+              "oos_auc": 0.5888,
+              "null_p95": 0.536,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5746,
+              "oos_auc": 0.5923,
+              "null_p95": 0.5359,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5746,
+              "oos_auc": 0.5888,
+              "null_p95": 0.5365,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "emp_length"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.57,
+              "oos_auc": 0.5048,
+              "null_p95": 0.5356,
+              "verdict": "MISS"
+            }
+          ],
+          "non_trivial": true,
+          "plural": true,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "B2": {
+          "n_v1": 2484,
+          "n_v2": 2667,
+          "default_rate_v1": 0.091,
+          "default_rate_v2": 0.0844,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 12,
+          "band_distinct_members": 8,
+          "best_holdout_auc": 0.5447,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "dti",
+              "emp_length"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 2,
+          "median_pairwise_spearman": 0.9414,
+          "min_pairwise_spearman": 0.1085,
+          "n_forward_predicting_members": 6,
+          "n_members_evaluated": 8,
+          "best_oos_auc_constrained_band": 0.5735,
+          "best_oos_auc_unconstrained_best_member": 0.5735,
+          "oos_auc_kitchen_sink_tree": 0.5254,
+          "member_forward_results": [
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5447,
+              "oos_auc": 0.5735,
+              "null_p95": 0.5334,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5447,
+              "oos_auc": 0.5735,
+              "null_p95": 0.5304,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5444,
+              "oos_auc": 0.5735,
+              "null_p95": 0.5299,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5444,
+              "oos_auc": 0.5735,
+              "null_p95": 0.5302,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5384,
+              "oos_auc": 0.5557,
+              "null_p95": 0.5317,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5384,
+              "oos_auc": 0.5557,
+              "null_p95": 0.5312,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5247,
+              "oos_auc": 0.4914,
+              "null_p95": 0.5277,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5247,
+              "oos_auc": 0.4914,
+              "null_p95": 0.5278,
+              "verdict": "MISS"
+            }
+          ],
+          "non_trivial": true,
+          "plural": false,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "B3": {
+          "n_v1": 2556,
+          "n_v2": 2806,
+          "default_rate_v1": 0.0966,
+          "default_rate_v2": 0.0941,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 45,
+          "band_distinct_members": 20,
+          "best_holdout_auc": 0.6172,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "annual_inc",
+              "dti"
+            ],
+            [
+              "annual_inc",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 4,
+          "median_pairwise_spearman": 0.9076,
+          "min_pairwise_spearman": 0.582,
+          "n_forward_predicting_members": 20,
+          "n_members_evaluated": 20,
+          "best_oos_auc_constrained_band": 0.5708,
+          "best_oos_auc_unconstrained_best_member": 0.5584,
+          "oos_auc_kitchen_sink_tree": 0.5385,
+          "member_forward_results": [
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.6172,
+              "oos_auc": 0.5584,
+              "null_p95": 0.5305,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.6147,
+              "oos_auc": 0.5708,
+              "null_p95": 0.5302,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.6134,
+              "oos_auc": 0.5687,
+              "null_p95": 0.5267,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.6115,
+              "oos_auc": 0.5365,
+              "null_p95": 0.5277,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.6115,
+              "oos_auc": 0.5365,
+              "null_p95": 0.5266,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.6101,
+              "oos_auc": 0.5296,
+              "null_p95": 0.5282,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.5251,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.5271,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.6069,
+              "oos_auc": 0.5355,
+              "null_p95": 0.5251,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.6059,
+              "oos_auc": 0.5341,
+              "null_p95": 0.5242,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.6059,
+              "oos_auc": 0.5341,
+              "null_p95": 0.5259,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.6054,
+              "oos_auc": 0.5341,
+              "null_p95": 0.526,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.6054,
+              "oos_auc": 0.5341,
+              "null_p95": 0.5264,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.6035,
+              "oos_auc": 0.5399,
+              "null_p95": 0.524,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.603,
+              "oos_auc": 0.5399,
+              "null_p95": 0.5262,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": false,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "B4": {
+          "n_v1": 2612,
+          "n_v2": 2629,
+          "default_rate_v1": 0.1145,
+          "default_rate_v2": 0.1054,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 23,
+          "band_distinct_members": 12,
+          "best_holdout_auc": 0.5977,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "annual_inc",
+              "dti"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 2,
+          "median_pairwise_spearman": 0.9481,
+          "min_pairwise_spearman": 0.797,
+          "n_forward_predicting_members": 12,
+          "n_members_evaluated": 12,
+          "best_oos_auc_constrained_band": 0.5604,
+          "best_oos_auc_unconstrained_best_member": 0.5604,
+          "oos_auc_kitchen_sink_tree": 0.5539,
+          "member_forward_results": [
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5977,
+              "oos_auc": 0.5604,
+              "null_p95": 0.526,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.595,
+              "oos_auc": 0.5476,
+              "null_p95": 0.5256,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5886,
+              "oos_auc": 0.5464,
+              "null_p95": 0.528,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5882,
+              "oos_auc": 0.5476,
+              "null_p95": 0.5273,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5876,
+              "oos_auc": 0.551,
+              "null_p95": 0.5288,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5876,
+              "oos_auc": 0.551,
+              "null_p95": 0.5229,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5876,
+              "oos_auc": 0.551,
+              "null_p95": 0.5248,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 1,
+              "leaf_min": 25,
+              "holdout_auc": 0.5876,
+              "oos_auc": 0.551,
+              "null_p95": 0.5228,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5837,
+              "oos_auc": 0.5488,
+              "null_p95": 0.525,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5809,
+              "oos_auc": 0.5464,
+              "null_p95": 0.5243,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc",
+                "emp_length"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.5805,
+              "oos_auc": 0.5476,
+              "null_p95": 0.5247,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.5781,
+              "oos_auc": 0.5524,
+              "null_p95": 0.5289,
+              "verdict": "HIT"
+            }
+          ],
+          "non_trivial": true,
+          "plural": false,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        },
+        "C4": {
+          "n_v1": 1209,
+          "n_v2": 1269,
+          "default_rate_v1": 0.1588,
+          "default_rate_v2": 0.1639,
+          "n_combos_tried": 135,
+          "band_members_within_eps": 16,
+          "band_distinct_members": 14,
+          "best_holdout_auc": 0.6148,
+          "distinct_used_feature_sets": [
+            [
+              "annual_inc"
+            ],
+            [
+              "dti"
+            ],
+            [
+              "annual_inc",
+              "dti"
+            ],
+            [
+              "annual_inc",
+              "fico_range_low"
+            ],
+            [
+              "dti",
+              "fico_range_low"
+            ],
+            [
+              "annual_inc",
+              "dti",
+              "fico_range_low"
+            ]
+          ],
+          "n_distinct_used_feature_sets": 6,
+          "median_pairwise_spearman": 0.6552,
+          "min_pairwise_spearman": 0.1941,
+          "n_forward_predicting_members": 9,
+          "n_members_evaluated": 14,
+          "best_oos_auc_constrained_band": 0.5592,
+          "best_oos_auc_unconstrained_best_member": 0.5563,
+          "oos_auc_kitchen_sink_tree": 0.5406,
+          "member_forward_results": [
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.6148,
+              "oos_auc": 0.5563,
+              "null_p95": 0.5348,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.6096,
+              "oos_auc": 0.5116,
+              "null_p95": 0.5374,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.609,
+              "oos_auc": 0.5592,
+              "null_p95": 0.5351,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.6056,
+              "oos_auc": 0.5585,
+              "null_p95": 0.5358,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 2,
+              "leaf_min": 25,
+              "holdout_auc": 0.6051,
+              "oos_auc": 0.536,
+              "null_p95": 0.5307,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.6029,
+              "oos_auc": 0.5535,
+              "null_p95": 0.5379,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 100,
+              "holdout_auc": 0.6029,
+              "oos_auc": 0.549,
+              "null_p95": 0.5355,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.6018,
+              "oos_auc": 0.5497,
+              "null_p95": 0.5361,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 3,
+              "leaf_min": 50,
+              "holdout_auc": 0.6006,
+              "oos_auc": 0.5106,
+              "null_p95": 0.5335,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5998,
+              "oos_auc": 0.5575,
+              "null_p95": 0.5341,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "annual_inc"
+              ],
+              "depth": 3,
+              "leaf_min": 25,
+              "holdout_auc": 0.5992,
+              "oos_auc": 0.5418,
+              "null_p95": 0.5315,
+              "verdict": "HIT"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5967,
+              "oos_auc": 0.5085,
+              "null_p95": 0.5326,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 50,
+              "holdout_auc": 0.5961,
+              "oos_auc": 0.5067,
+              "null_p95": 0.5336,
+              "verdict": "MISS"
+            },
+            {
+              "subset": [
+                "fico_range_low",
+                "dti"
+              ],
+              "depth": 2,
+              "leaf_min": 100,
+              "holdout_auc": 0.5961,
+              "oos_auc": 0.5067,
+              "null_p95": 0.5305,
+              "verdict": "MISS"
+            }
+          ],
+          "non_trivial": true,
+          "plural": true,
+          "forward_predictive": true,
+          "constraint_cheap": true
+        }
+      },
+      "n_effective_grades": 5,
+      "non_trivial_count": 5,
+      "plural_count": 2,
+      "forward_predictive_count": 5,
+      "constraint_cheap_count": 5,
+      "claim_holds": false,
+      "claim_falsified": true
+    }
+  },
+  "verdict": {
+    "claim_holds_per_burst": {
+      "D_2015H2_dti": true,
+      "A_2013_14_annual_inc": false
+    },
+    "claim_falsified_per_burst": {
+      "D_2015H2_dti": false,
+      "A_2013_14_annual_inc": true
+    },
+    "plurality_is_the_soft_spot_per_burst": {
+      "D_2015H2_dti": false,
+      "A_2013_14_annual_inc": true
+    },
+    "summary": "Substantive claim 'the policy-constrained Rashomon refinement set is non-trivial, plural, and forward-predictively valid' \u2014 HOLDS on: D_2015H2_dti; FALSIFIED on: A_2013_14_annual_inc. Plurality is the binding constraint on: A_2013_14_annual_inc"
+  }
+}
