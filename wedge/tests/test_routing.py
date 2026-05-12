@@ -17,14 +17,19 @@ from wedge.routing import (
     brier_by_tercile,
     calibration_gap_vs_disagreement,
     consensus_scores,
+    cross_tier_consistency,
+    disagreement_explainer,
     ece,
     feature_space_outlierness,
     grade_routing_verdict,
     member_score_matrix,
     operational_lift,
+    partial_dependence_profile,
     per_borrower_disagreement,
     quantile_bin_labels,
     tercile_labels,
+    threshold_proximity_correlation,
+    univariate_disagreement_correlations,
     within_tercile_member_auc,
 )
 
@@ -300,3 +305,147 @@ def test_grade_routing_verdict_degenerate_inputs_are_none():
     v = grade_routing_verdict(metric1=m1, metric2={"spearman_rho": None},
                               metric3={"high_minus_low": None}, metric4={"lift": None})
     assert all(x is None for x in v.values())
+
+
+# ---------------------------------------------------------------------------
+# disagreement_explainer
+# ---------------------------------------------------------------------------
+def test_explainer_recovers_the_driving_feature():
+    rng = np.random.default_rng(0)
+    n = 2000
+    f0 = rng.normal(0, 1, n)
+    f1 = rng.uniform(0, 100, n)          # the driver
+    f2 = rng.normal(50, 5, n)
+    X = np.column_stack([f0, f1, f2])
+    names = ["fico", "dti", "annual_inc"]
+    d = 0.01 + 0.0008 * np.abs(f1 - 50) + rng.normal(0, 0.0005, n)   # U-shaped in dti
+    res = disagreement_explainer(d, X, names, max_depth=3, min_samples_leaf=50, n_splits=5, seed=0)
+    assert res["root_feature"] == "dti"
+    assert res["top_importances"][0][0] == "dti"
+    assert res["cv_r2"] > 0.3                                         # well-explained
+    assert res["n"] == n and res["n_features"] == 3
+
+
+def test_explainer_low_r2_when_d_is_noise():
+    rng = np.random.default_rng(1)
+    n = 1500
+    X = rng.normal(0, 1, size=(n, 4))
+    d = 0.02 + rng.normal(0, 0.003, n)   # d unrelated to X
+    res = disagreement_explainer(d, X, ["a", "b", "c", "d"], n_splits=5, seed=0)
+    assert res["cv_r2"] is not None and res["cv_r2"] < 0.1
+
+
+def test_explainer_degenerate_small_n_or_constant_d():
+    X = np.arange(20, dtype=float).reshape(10, 2)
+    assert disagreement_explainer(np.linspace(0, 1, 10), X, ["a", "b"], n_splits=5)["cv_r2"] is None  # n too small
+    Xb = np.random.default_rng(0).normal(0, 1, size=(200, 2))
+    assert disagreement_explainer(np.full(200, 0.03), Xb, ["a", "b"])["cv_r2"] is None                # constant d
+
+
+def test_explainer_shape_mismatch_raises():
+    with pytest.raises(ValueError):
+        disagreement_explainer(np.zeros(10), np.zeros((10, 3)), ["a", "b"])
+
+
+# ---------------------------------------------------------------------------
+# partial_dependence_profile
+# ---------------------------------------------------------------------------
+def test_pd_profile_detects_u_shape_tails():
+    rng = np.random.default_rng(0)
+    f = rng.uniform(0, 100, 5000)
+    d = 0.01 + 0.0010 * np.abs(f - 50) + rng.normal(0, 0.0002, 5000)   # U in f
+    prof = partial_dependence_profile(d, f, n_deciles=10)
+    assert prof["shape"] == "tails"
+    assert prof["tail_ratio"] is not None and prof["tail_ratio"] >= 1.5
+    assert prof["argmax_bucket"] in (0, 9)
+
+
+def test_pd_profile_detects_monotone():
+    rng = np.random.default_rng(1)
+    f = rng.uniform(0, 100, 5000)
+    d = 0.01 + 0.0003 * f + rng.normal(0, 0.0002, 5000)               # increasing in f
+    prof = partial_dependence_profile(d, f, n_deciles=10)
+    assert prof["shape"] == "monotone"
+
+
+def test_pd_profile_detects_interior_threshold_bump():
+    rng = np.random.default_rng(2)
+    f = rng.uniform(0, 100, 8000)
+    # A bump centred at f=50 (deciles 4-5) and low elsewhere -> interior argmax.
+    d = 0.01 + 0.02 * np.exp(-((f - 50) ** 2) / (2 * 6.0 ** 2)) + rng.normal(0, 0.0003, 8000)
+    prof = partial_dependence_profile(d, f, n_deciles=10)
+    assert prof["shape"] == "threshold"
+    assert prof["argmax_bucket"] not in (0, 9)
+
+
+def test_pd_profile_flat_when_d_constant_ish():
+    rng = np.random.default_rng(3)
+    f = rng.uniform(0, 100, 4000)
+    d = 0.02 + rng.normal(0, 0.0002, 4000)   # essentially no dependence
+    assert partial_dependence_profile(d, f, n_deciles=10)["shape"] == "flat"
+
+
+# ---------------------------------------------------------------------------
+# univariate_disagreement_correlations
+# ---------------------------------------------------------------------------
+def test_univariate_correlations_pick_up_the_monotone_driver():
+    rng = np.random.default_rng(0)
+    n = 3000
+    f0 = rng.uniform(0, 100, n)
+    f1 = rng.normal(0, 1, n)
+    X = np.column_stack([f0, f1])
+    d = 0.01 + 0.0004 * f0 + rng.normal(0, 0.0003, n)
+    res = univariate_disagreement_correlations(d, X, ["dti", "noise"], n_deciles=10)
+    assert res["dti"]["spearman_rho"] > 0.5
+    assert abs(res["noise"]["spearman_rho"]) < 0.1
+    assert res["dti"]["mean_d_top_decile"] > res["dti"]["mean_d_bottom_decile"]
+
+
+def test_univariate_correlations_constant_feature_is_none():
+    X = np.column_stack([np.full(100, 5.0), np.arange(100, dtype=float)])
+    d = np.arange(100, dtype=float) / 100.0
+    res = univariate_disagreement_correlations(d, X, ["const", "ramp"], n_deciles=5)
+    assert res["const"]["spearman_rho"] is None
+    assert res["ramp"]["spearman_rho"] is not None
+
+
+# ---------------------------------------------------------------------------
+# threshold_proximity_correlation
+# ---------------------------------------------------------------------------
+def test_threshold_proximity_picks_up_distance_to_ceiling():
+    rng = np.random.default_rng(0)
+    n = 4000
+    dti = rng.uniform(10, 40, n)         # interior tier, below the 43 ceiling
+    fico = rng.uniform(660, 720, n)
+    # d grows as dti approaches 43 (proximity small -> d large): negative rho on |dti-43|.
+    d = 0.01 + 0.0015 * (1.0 / (1.0 + np.abs(dti - 43.0))) + rng.normal(0, 0.00001, n)
+    res = threshold_proximity_correlation(d, dti, fico, dti_ceiling=43.0, fico_floor=620.0)
+    assert res["dti_proximity"]["spearman_rho"] < -0.3   # closer to 43 -> higher d
+    assert res["max_abs_rho"] is not None and res["max_abs_rho"] > 0.3
+
+
+def test_threshold_proximity_missing_feature_is_none():
+    d = np.arange(50, dtype=float) / 50.0
+    res = threshold_proximity_correlation(d, None, np.linspace(600, 700, 50))
+    assert res["dti_proximity"]["spearman_rho"] is None
+    assert res["fico_proximity"]["spearman_rho"] is not None
+
+
+# ---------------------------------------------------------------------------
+# cross_tier_consistency
+# ---------------------------------------------------------------------------
+def test_cross_tier_consistency_majority():
+    tops = {"A5": "dti", "B1": "dti", "C1": "dti", "C5": "annual_inc", "D4": "dti"}
+    shapes = {"A5": "tails", "B1": "tails", "C1": "monotone", "C5": "tails", "D4": "threshold"}
+    res = cross_tier_consistency(tops, shapes)
+    assert res["dominant_feature"]["modal"] == "dti" and res["dominant_feature"]["modal_count"] == 4
+    assert res["dominant_feature"]["majority"] is True
+    # tails 3 of 5 -> 3 > 2.5 -> majority True
+    assert res["pd_shape"]["modal"] == "tails" and res["pd_shape"]["majority"] is True
+
+
+def test_cross_tier_consistency_no_majority():
+    tops = {"A": "dti", "B": "annual_inc", "C": "fico", "D": "emp_length", "E": "dti"}
+    res = cross_tier_consistency(tops, {})
+    assert res["dominant_feature"]["majority"] is False  # modal "dti" is only 2 of 5
+    assert res["pd_shape"]["n"] == 0

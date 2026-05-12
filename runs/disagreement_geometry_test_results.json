@@ -1,0 +1,2079 @@
+{
+  "pre_reg": "docs/superpowers/specs/2026-05-12-disagreement-geometry-preregistration-note.md",
+  "burst": "D_2015H2_dti",
+  "v1": "2015Q3",
+  "v2": "2015Q4",
+  "policy": "thin_demo_hmda_mortgage",
+  "monotonic_cst_default_convention": {
+    "fico_range_low": -1,
+    "dti": 1
+  },
+  "named_features": [
+    "fico_range_low",
+    "dti",
+    "annual_inc",
+    "emp_length"
+  ],
+  "extension_features": [
+    "revol_util",
+    "open_acc",
+    "inq_last_6mths",
+    "delinq_2yrs",
+    "total_acc",
+    "mort_acc",
+    "loan_amnt",
+    "revol_bal",
+    "pub_rec"
+  ],
+  "band_params": {
+    "epsilon": 0.02,
+    "depths": [
+      1,
+      2,
+      3
+    ],
+    "leaf_mins": [
+      25,
+      50,
+      100
+    ],
+    "seed": 0,
+    "plurality_rho_max": 0.9
+  },
+  "explainer_params": {
+    "max_depth": 3,
+    "min_samples_leaf": 50,
+    "cv_folds": 5,
+    "n_deciles": 10,
+    "r2_good": 0.3,
+    "rho_good": 0.3,
+    "delta_r2": 0.1,
+    "dti_ceiling": 43.0,
+    "fico_floor": 620.0
+  },
+  "flagged_grades_v1": [
+    "A1",
+    "A5",
+    "B1",
+    "C1",
+    "C2",
+    "C5",
+    "D4"
+  ],
+  "grades": {
+    "A1": {
+      "n_v1": 3528,
+      "band_members_within_eps": 9,
+      "band_distinct_members": 8,
+      "n_distinct_used_feature_sets": 3,
+      "median_pairwise_spearman_v1": 0.9558,
+      "min_pairwise_spearman_v1": 0.9369,
+      "plural": false,
+      "v1": {
+        "d_summary": {
+          "min": 0.000735,
+          "median": 0.002957,
+          "max": 0.028033,
+          "mean": 0.003514,
+          "std": 0.003598
+        },
+        "explainer_named": {
+          "n": 3528,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.6299
+            ],
+            [
+              "dti",
+              0.3609
+            ],
+            [
+              "emp_length",
+              0.0092
+            ]
+          ],
+          "cv_r2": 0.8611,
+          "cv_r2_folds": [
+            0.8698,
+            0.8193,
+            0.8645,
+            0.8627,
+            0.8895
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 3528,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.6299
+            ],
+            [
+              "dti",
+              0.3609
+            ],
+            [
+              "emp_length",
+              0.0092
+            ]
+          ],
+          "cv_r2": 0.8612,
+          "cv_r2_folds": [
+            0.8698,
+            0.8193,
+            0.8645,
+            0.8627,
+            0.8895
+          ]
+        },
+        "delta_r2": 0.0001,
+        "root_feature": "dti",
+        "rho_top_abs": 0.051,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.003145,
+            0.003412,
+            0.003004,
+            0.002839,
+            0.002702,
+            0.002745,
+            0.002638,
+            0.002682,
+            0.002702,
+            0.009283
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 3.268,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.304,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.003588,
+            "mean_d_bottom_decile": 0.003508,
+            "tail_over_mid": 1.024
+          },
+          "dti": {
+            "spearman_rho": -0.051,
+            "spearman_p": 0.0025,
+            "mean_d_top_decile": 0.009283,
+            "mean_d_bottom_decile": 0.003145,
+            "tail_over_mid": 3.268
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0028,
+            "spearman_p": 0.8685,
+            "mean_d_top_decile": 0.003392,
+            "mean_d_bottom_decile": 0.003914,
+            "tail_over_mid": 1.125
+          },
+          "emp_length": {
+            "spearman_rho": -0.0558,
+            "spearman_p": 0.0009,
+            "mean_d_top_decile": 0.003122,
+            "mean_d_bottom_decile": 0.004153,
+            "tail_over_mid": 1.192
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.051,
+            "spearman_p": 0.0025
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.304,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.304
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.000735,
+          "median": 0.002957,
+          "max": 0.028033,
+          "mean": 0.003494,
+          "std": 0.00357
+        },
+        "explainer_named": {
+          "n": 4809,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.6774
+            ],
+            [
+              "dti",
+              0.3226
+            ]
+          ],
+          "cv_r2": 0.8743,
+          "cv_r2_folds": [
+            0.8639,
+            0.8858,
+            0.8737,
+            0.8864,
+            0.8615
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 4809,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.6772
+            ],
+            [
+              "dti",
+              0.3225
+            ],
+            [
+              "revol_util",
+              0.0003
+            ]
+          ],
+          "cv_r2": 0.8742,
+          "cv_r2_folds": [
+            0.8639,
+            0.8857,
+            0.8737,
+            0.8864,
+            0.8611
+          ]
+        },
+        "delta_r2": -0.0001,
+        "root_feature": "dti",
+        "rho_top_abs": 0.0413,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.003127,
+            0.00319,
+            0.003085,
+            0.002946,
+            0.002793,
+            0.002708,
+            0.002696,
+            0.002726,
+            0.002629,
+            0.009054
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 3.181,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.3384,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.003754,
+            "mean_d_bottom_decile": 0.003346,
+            "tail_over_mid": 1.078
+          },
+          "dti": {
+            "spearman_rho": -0.0413,
+            "spearman_p": 0.0042,
+            "mean_d_top_decile": 0.009054,
+            "mean_d_bottom_decile": 0.003127,
+            "tail_over_mid": 3.181
+          },
+          "annual_inc": {
+            "spearman_rho": -0.0328,
+            "spearman_p": 0.0231,
+            "mean_d_top_decile": 0.003049,
+            "mean_d_bottom_decile": 0.003632,
+            "tail_over_mid": 1.028
+          },
+          "emp_length": {
+            "spearman_rho": -0.0431,
+            "spearman_p": 0.0028,
+            "mean_d_top_decile": 0.003351,
+            "mean_d_bottom_decile": 0.003906,
+            "tail_over_mid": 1.129
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0413,
+            "spearman_p": 0.0042
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.3384,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.3384
+        }
+      }
+    },
+    "A5": {
+      "n_v1": 5098,
+      "band_members_within_eps": 19,
+      "band_distinct_members": 17,
+      "n_distinct_used_feature_sets": 8,
+      "median_pairwise_spearman_v1": 0.6264,
+      "min_pairwise_spearman_v1": -0.0614,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.004848,
+          "median": 0.011038,
+          "max": 0.057057,
+          "mean": 0.013353,
+          "std": 0.007206
+        },
+        "explainer_named": {
+          "n": 5098,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.5786
+            ],
+            [
+              "annual_inc",
+              0.3769
+            ],
+            [
+              "fico_range_low",
+              0.0357
+            ]
+          ],
+          "cv_r2": 0.4632,
+          "cv_r2_folds": [
+            0.4448,
+            0.4823,
+            0.4609,
+            0.4773,
+            0.4506
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5098,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.5786
+            ],
+            [
+              "annual_inc",
+              0.3769
+            ],
+            [
+              "fico_range_low",
+              0.0357
+            ]
+          ],
+          "cv_r2": 0.4632,
+          "cv_r2_folds": [
+            0.4448,
+            0.4823,
+            0.4609,
+            0.4773,
+            0.4506
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "dti",
+        "rho_top_abs": 0.2701,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.0132,
+            0.010939,
+            0.010852,
+            0.010649,
+            0.011063,
+            0.011717,
+            0.014579,
+            0.014931,
+            0.014211,
+            0.021404
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.731,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.2818,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.015369,
+            "mean_d_bottom_decile": 0.010724,
+            "tail_over_mid": 1.144
+          },
+          "dti": {
+            "spearman_rho": 0.2701,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.021404,
+            "mean_d_bottom_decile": 0.0132,
+            "tail_over_mid": 1.731
+          },
+          "annual_inc": {
+            "spearman_rho": -0.2683,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012301,
+            "mean_d_bottom_decile": 0.018367,
+            "tail_over_mid": 1.428
+          },
+          "emp_length": {
+            "spearman_rho": -0.095,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012986,
+            "mean_d_bottom_decile": 0.014163,
+            "tail_over_mid": 1.065
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.2701,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.2818,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.2818
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.005007,
+          "median": 0.011038,
+          "max": 0.057808,
+          "mean": 0.013559,
+          "std": 0.007548
+        },
+        "explainer_named": {
+          "n": 5825,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.6292
+            ],
+            [
+              "annual_inc",
+              0.293
+            ],
+            [
+              "fico_range_low",
+              0.0579
+            ]
+          ],
+          "cv_r2": 0.5206,
+          "cv_r2_folds": [
+            0.4574,
+            0.522,
+            0.5701,
+            0.5823,
+            0.4714
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5825,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.6292
+            ],
+            [
+              "annual_inc",
+              0.293
+            ],
+            [
+              "fico_range_low",
+              0.0579
+            ]
+          ],
+          "cv_r2": 0.5206,
+          "cv_r2_folds": [
+            0.4574,
+            0.522,
+            0.5701,
+            0.5823,
+            0.4714
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "dti",
+        "rho_top_abs": 0.305,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.01286,
+            0.010764,
+            0.011011,
+            0.010945,
+            0.010876,
+            0.012215,
+            0.013611,
+            0.014524,
+            0.014938,
+            0.023848
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.929,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.2768,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.016261,
+            "mean_d_bottom_decile": 0.011051,
+            "tail_over_mid": 1.201
+          },
+          "dti": {
+            "spearman_rho": 0.305,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.023848,
+            "mean_d_bottom_decile": 0.01286,
+            "tail_over_mid": 1.929
+          },
+          "annual_inc": {
+            "spearman_rho": -0.2375,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012262,
+            "mean_d_bottom_decile": 0.017842,
+            "tail_over_mid": 1.353
+          },
+          "emp_length": {
+            "spearman_rho": -0.0277,
+            "spearman_p": 0.0346,
+            "mean_d_top_decile": 0.014222,
+            "mean_d_bottom_decile": 0.013305,
+            "tail_over_mid": 1.053
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.305,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.2768,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.305
+        }
+      }
+    },
+    "B1": {
+      "n_v1": 5168,
+      "band_members_within_eps": 11,
+      "band_distinct_members": 8,
+      "n_distinct_used_feature_sets": 3,
+      "median_pairwise_spearman_v1": 0.167,
+      "min_pairwise_spearman_v1": 0.1381,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.004137,
+          "median": 0.010711,
+          "max": 0.078311,
+          "mean": 0.013685,
+          "std": 0.009347
+        },
+        "explainer_named": {
+          "n": 5168,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.5548
+            ],
+            [
+              "dti",
+              0.2473
+            ],
+            [
+              "fico_range_low",
+              0.1951
+            ]
+          ],
+          "cv_r2": 0.5718,
+          "cv_r2_folds": [
+            0.622,
+            0.5514,
+            0.5747,
+            0.5525,
+            0.5586
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5168,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.5548
+            ],
+            [
+              "dti",
+              0.2473
+            ],
+            [
+              "fico_range_low",
+              0.1951
+            ]
+          ],
+          "cv_r2": 0.5718,
+          "cv_r2_folds": [
+            0.622,
+            0.5514,
+            0.5747,
+            0.5525,
+            0.5586
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.1041,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.022066,
+            0.021693,
+            0.009843,
+            0.009414,
+            0.009227,
+            0.009279,
+            0.012009,
+            0.012803,
+            0.013184,
+            0.017332
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.811,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.1669,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.022065,
+            "mean_d_bottom_decile": 0.012945,
+            "tail_over_mid": 1.733
+          },
+          "dti": {
+            "spearman_rho": -0.1674,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.016369,
+            "mean_d_bottom_decile": 0.017199,
+            "tail_over_mid": 1.332
+          },
+          "annual_inc": {
+            "spearman_rho": -0.1041,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.017332,
+            "mean_d_bottom_decile": 0.022066,
+            "tail_over_mid": 1.811
+          },
+          "emp_length": {
+            "spearman_rho": -0.245,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012576,
+            "mean_d_bottom_decile": 0.014129,
+            "tail_over_mid": 1.026
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.1674,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.1669,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1674
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.004137,
+          "median": 0.01133,
+          "max": 0.078311,
+          "mean": 0.013933,
+          "std": 0.009684
+        },
+        "explainer_named": {
+          "n": 6231,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.5613
+            ],
+            [
+              "dti",
+              0.259
+            ],
+            [
+              "fico_range_low",
+              0.1685
+            ]
+          ],
+          "cv_r2": 0.5586,
+          "cv_r2_folds": [
+            0.5619,
+            0.5817,
+            0.4986,
+            0.6008,
+            0.5501
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 6231,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.5613
+            ],
+            [
+              "dti",
+              0.259
+            ],
+            [
+              "fico_range_low",
+              0.1685
+            ]
+          ],
+          "cv_r2": 0.5586,
+          "cv_r2_folds": [
+            0.5619,
+            0.5817,
+            0.4986,
+            0.6008,
+            0.5501
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.1178,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.023313,
+            0.022882,
+            0.009807,
+            0.009459,
+            0.00921,
+            0.009506,
+            0.012463,
+            0.012643,
+            0.013788,
+            0.016246
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.87,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.1553,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.022297,
+            "mean_d_bottom_decile": 0.013003,
+            "tail_over_mid": 1.715
+          },
+          "dti": {
+            "spearman_rho": -0.1618,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.016596,
+            "mean_d_bottom_decile": 0.016972,
+            "tail_over_mid": 1.284
+          },
+          "annual_inc": {
+            "spearman_rho": -0.1178,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.016246,
+            "mean_d_bottom_decile": 0.023313,
+            "tail_over_mid": 1.87
+          },
+          "emp_length": {
+            "spearman_rho": -0.2337,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012648,
+            "mean_d_bottom_decile": 0.01395,
+            "tail_over_mid": 0.99
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.1618,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.1553,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1618
+        }
+      }
+    },
+    "C1": {
+      "n_v1": 4875,
+      "band_members_within_eps": 68,
+      "band_distinct_members": 42,
+      "n_distinct_used_feature_sets": 12,
+      "median_pairwise_spearman_v1": 0.7431,
+      "min_pairwise_spearman_v1": -0.0775,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.00763,
+          "median": 0.018629,
+          "max": 0.09974,
+          "mean": 0.019922,
+          "std": 0.008264
+        },
+        "explainer_named": {
+          "n": 4875,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.97
+            ],
+            [
+              "dti",
+              0.03
+            ]
+          ],
+          "cv_r2": 0.6885,
+          "cv_r2_folds": [
+            0.6593,
+            0.7329,
+            0.6707,
+            0.6993,
+            0.6801
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 4875,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.97
+            ],
+            [
+              "dti",
+              0.03
+            ]
+          ],
+          "cv_r2": 0.6885,
+          "cv_r2_folds": [
+            0.6593,
+            0.7329,
+            0.6707,
+            0.6993,
+            0.6801
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.0672,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.027756,
+            0.018282,
+            0.018152,
+            0.018351,
+            0.019279,
+            0.019539,
+            0.019779,
+            0.019174,
+            0.018249,
+            0.020651
+          ],
+          "n_buckets": 10,
+          "shape": "mixed",
+          "tail_ratio": 1.472,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.0268,
+            "spearman_p": 0.0616,
+            "mean_d_top_decile": 0.020205,
+            "mean_d_bottom_decile": 0.019764,
+            "tail_over_mid": 1.015
+          },
+          "dti": {
+            "spearman_rho": -0.0038,
+            "spearman_p": 0.7931,
+            "mean_d_top_decile": 0.021724,
+            "mean_d_bottom_decile": 0.022461,
+            "tail_over_mid": 1.159
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0672,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.020651,
+            "mean_d_bottom_decile": 0.027756,
+            "tail_over_mid": 1.472
+          },
+          "emp_length": {
+            "spearman_rho": -0.0086,
+            "spearman_p": 0.5497,
+            "mean_d_top_decile": 0.019086,
+            "mean_d_bottom_decile": 0.021811,
+            "tail_over_mid": 1.102
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0038,
+            "spearman_p": 0.7931
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.0268,
+            "spearman_p": 0.0616
+          },
+          "max_abs_rho": 0.0268
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.007017,
+          "median": 0.018835,
+          "max": 0.103145,
+          "mean": 0.020599,
+          "std": 0.009747
+        },
+        "explainer_named": {
+          "n": 5977,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.9193
+            ],
+            [
+              "fico_range_low",
+              0.0564
+            ],
+            [
+              "dti",
+              0.0244
+            ]
+          ],
+          "cv_r2": 0.7963,
+          "cv_r2_folds": [
+            0.8166,
+            0.8139,
+            0.7682,
+            0.8192,
+            0.7637
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5977,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.9193
+            ],
+            [
+              "fico_range_low",
+              0.0564
+            ],
+            [
+              "dti",
+              0.0244
+            ]
+          ],
+          "cv_r2": 0.7963,
+          "cv_r2_folds": [
+            0.8166,
+            0.8139,
+            0.7682,
+            0.8192,
+            0.7637
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.0497,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.033607,
+            0.018159,
+            0.018396,
+            0.018183,
+            0.019173,
+            0.01981,
+            0.019667,
+            0.019285,
+            0.018055,
+            0.021649
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.784,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.0027,
+            "spearman_p": 0.8355,
+            "mean_d_top_decile": 0.021285,
+            "mean_d_bottom_decile": 0.02071,
+            "tail_over_mid": 1.038
+          },
+          "dti": {
+            "spearman_rho": 0.0118,
+            "spearman_p": 0.3612,
+            "mean_d_top_decile": 0.022964,
+            "mean_d_bottom_decile": 0.022389,
+            "tail_over_mid": 1.144
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0497,
+            "spearman_p": 0.0001,
+            "mean_d_top_decile": 0.021649,
+            "mean_d_bottom_decile": 0.033607,
+            "tail_over_mid": 1.784
+          },
+          "emp_length": {
+            "spearman_rho": -0.0003,
+            "spearman_p": 0.9832,
+            "mean_d_top_decile": 0.019308,
+            "mean_d_bottom_decile": 0.022543,
+            "tail_over_mid": 1.099
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.0116,
+            "spearman_p": 0.3691
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.0027,
+            "spearman_p": 0.8355
+          },
+          "max_abs_rho": 0.0116
+        }
+      }
+    },
+    "C2": {
+      "n_v1": 4555,
+      "band_members_within_eps": 28,
+      "band_distinct_members": 14,
+      "n_distinct_used_feature_sets": 4,
+      "median_pairwise_spearman_v1": 0.9496,
+      "min_pairwise_spearman_v1": 0.7729,
+      "plural": false,
+      "v1": {
+        "d_summary": {
+          "min": 0.002965,
+          "median": 0.012002,
+          "max": 0.078311,
+          "mean": 0.013184,
+          "std": 0.009359
+        },
+        "explainer_named": {
+          "n": 4555,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.4926
+            ],
+            [
+              "fico_range_low",
+              0.3574
+            ],
+            [
+              "dti",
+              0.15
+            ]
+          ],
+          "cv_r2": 0.5449,
+          "cv_r2_folds": [
+            0.5,
+            0.5504,
+            0.5674,
+            0.477,
+            0.6298
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 4555,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.4926
+            ],
+            [
+              "fico_range_low",
+              0.3574
+            ],
+            [
+              "dti",
+              0.15
+            ]
+          ],
+          "cv_r2": 0.5449,
+          "cv_r2_folds": [
+            0.5,
+            0.5504,
+            0.5674,
+            0.477,
+            0.6298
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.1854,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.023425,
+            0.016218,
+            0.012103,
+            0.01079,
+            0.010936,
+            0.010847,
+            0.010656,
+            0.010535,
+            0.010421,
+            0.015905
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 2.026,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.1273,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012938,
+            "mean_d_bottom_decile": 0.015039,
+            "tail_over_mid": 1.158
+          },
+          "dti": {
+            "spearman_rho": -0.0004,
+            "spearman_p": 0.9775,
+            "mean_d_top_decile": 0.014566,
+            "mean_d_bottom_decile": 0.018968,
+            "tail_over_mid": 1.544
+          },
+          "annual_inc": {
+            "spearman_rho": -0.1854,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.015905,
+            "mean_d_bottom_decile": 0.023425,
+            "tail_over_mid": 2.026
+          },
+          "emp_length": {
+            "spearman_rho": -0.1026,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012266,
+            "mean_d_bottom_decile": 0.014591,
+            "tail_over_mid": 1.112
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0004,
+            "spearman_p": 0.9775
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.1273,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1273
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.002965,
+          "median": 0.012002,
+          "max": 0.078311,
+          "mean": 0.013194,
+          "std": 0.009123
+        },
+        "explainer_named": {
+          "n": 5382,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.4165
+            ],
+            [
+              "fico_range_low",
+              0.4001
+            ],
+            [
+              "dti",
+              0.1834
+            ]
+          ],
+          "cv_r2": 0.5603,
+          "cv_r2_folds": [
+            0.5094,
+            0.5729,
+            0.5603,
+            0.5844,
+            0.5743
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5382,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.4165
+            ],
+            [
+              "fico_range_low",
+              0.4001
+            ],
+            [
+              "dti",
+              0.1834
+            ]
+          ],
+          "cv_r2": 0.5598,
+          "cv_r2_folds": [
+            0.5094,
+            0.5729,
+            0.5603,
+            0.5823,
+            0.5743
+          ]
+        },
+        "delta_r2": -0.0005,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.1409,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.02186,
+            0.01617,
+            0.012113,
+            0.011252,
+            0.010919,
+            0.010835,
+            0.010725,
+            0.010585,
+            0.010759,
+            0.016706
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.873,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.1517,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012369,
+            "mean_d_bottom_decile": 0.014537,
+            "tail_over_mid": 1.107
+          },
+          "dti": {
+            "spearman_rho": -0.005,
+            "spearman_p": 0.7151,
+            "mean_d_top_decile": 0.013763,
+            "mean_d_bottom_decile": 0.018861,
+            "tail_over_mid": 1.519
+          },
+          "annual_inc": {
+            "spearman_rho": -0.1409,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.016706,
+            "mean_d_bottom_decile": 0.02186,
+            "tail_over_mid": 1.873
+          },
+          "emp_length": {
+            "spearman_rho": -0.1165,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.011338,
+            "mean_d_bottom_decile": 0.01451,
+            "tail_over_mid": 1.094
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.005,
+            "spearman_p": 0.7151
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.1517,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1517
+        }
+      }
+    },
+    "C5": {
+      "n_v1": 3063,
+      "band_members_within_eps": 72,
+      "band_distinct_members": 48,
+      "n_distinct_used_feature_sets": 9,
+      "median_pairwise_spearman_v1": 0.5637,
+      "min_pairwise_spearman_v1": 0.0702,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.008135,
+          "median": 0.02302,
+          "max": 0.093553,
+          "mean": 0.025397,
+          "std": 0.0142
+        },
+        "explainer_named": {
+          "n": 3063,
+          "n_features": 4,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.4066
+            ],
+            [
+              "fico_range_low",
+              0.3627
+            ],
+            [
+              "dti",
+              0.2291
+            ]
+          ],
+          "cv_r2": 0.4569,
+          "cv_r2_folds": [
+            0.509,
+            0.4713,
+            0.4498,
+            0.4872,
+            0.3671
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 3063,
+          "n_features": 13,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.4066
+            ],
+            [
+              "fico_range_low",
+              0.3627
+            ],
+            [
+              "dti",
+              0.2291
+            ]
+          ],
+          "cv_r2": 0.4567,
+          "cv_r2_folds": [
+            0.509,
+            0.4713,
+            0.4488,
+            0.4872,
+            0.3671
+          ]
+        },
+        "delta_r2": -0.0002,
+        "root_feature": "fico_range_low",
+        "rho_top_abs": 0.1443,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.025978,
+            0.024383,
+            0.021953,
+            0.022751,
+            0.023242,
+            0.023479,
+            0.02467,
+            0.023992,
+            0.023936,
+            0.0396
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.681,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.1443,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.0396,
+            "mean_d_bottom_decile": 0.025978,
+            "tail_over_mid": 1.681
+          },
+          "dti": {
+            "spearman_rho": 0.1216,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.032327,
+            "mean_d_bottom_decile": 0.028067,
+            "tail_over_mid": 1.336
+          },
+          "annual_inc": {
+            "spearman_rho": -0.0165,
+            "spearman_p": 0.3605,
+            "mean_d_top_decile": 0.036869,
+            "mean_d_bottom_decile": 0.034552,
+            "tail_over_mid": 1.616
+          },
+          "emp_length": {
+            "spearman_rho": -0.049,
+            "spearman_p": 0.0067,
+            "mean_d_top_decile": 0.023635,
+            "mean_d_bottom_decile": 0.023852,
+            "tail_over_mid": 0.924
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.1216,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.1443,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1443
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.008135,
+          "median": 0.022539,
+          "max": 0.093553,
+          "mean": 0.025784,
+          "std": 0.014476
+        },
+        "explainer_named": {
+          "n": 3355,
+          "n_features": 4,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.3753
+            ],
+            [
+              "fico_range_low",
+              0.3666
+            ],
+            [
+              "dti",
+              0.2522
+            ]
+          ],
+          "cv_r2": 0.4257,
+          "cv_r2_folds": [
+            0.4591,
+            0.4419,
+            0.4215,
+            0.4284,
+            0.3777
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 3355,
+          "n_features": 13,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.3753
+            ],
+            [
+              "fico_range_low",
+              0.3666
+            ],
+            [
+              "dti",
+              0.2522
+            ]
+          ],
+          "cv_r2": 0.4257,
+          "cv_r2_folds": [
+            0.4591,
+            0.4419,
+            0.4215,
+            0.4284,
+            0.3777
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "fico_range_low",
+        "rho_top_abs": 0.1346,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.026137,
+            0.02479,
+            0.023491,
+            0.024368,
+            0.024001,
+            0.023582,
+            0.023926,
+            0.023688,
+            0.024168,
+            0.039708
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.654,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.1346,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.039708,
+            "mean_d_bottom_decile": 0.026137,
+            "tail_over_mid": 1.654
+          },
+          "dti": {
+            "spearman_rho": 0.1354,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.033551,
+            "mean_d_bottom_decile": 0.028679,
+            "tail_over_mid": 1.372
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0171,
+            "spearman_p": 0.3223,
+            "mean_d_top_decile": 0.038163,
+            "mean_d_bottom_decile": 0.034082,
+            "tail_over_mid": 1.645
+          },
+          "emp_length": {
+            "spearman_rho": -0.051,
+            "spearman_p": 0.0031,
+            "mean_d_top_decile": 0.024327,
+            "mean_d_bottom_decile": 0.02553,
+            "tail_over_mid": 0.982
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.1354,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.1346,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1354
+        }
+      }
+    },
+    "D4": {
+      "n_v1": 1402,
+      "band_members_within_eps": 17,
+      "band_distinct_members": 16,
+      "n_distinct_used_feature_sets": 6,
+      "median_pairwise_spearman_v1": 0.6245,
+      "min_pairwise_spearman_v1": 0.0407,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.014282,
+          "median": 0.03274,
+          "max": 0.106257,
+          "mean": 0.033242,
+          "std": 0.016549
+        },
+        "explainer_named": {
+          "n": 1402,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.7741
+            ],
+            [
+              "fico_range_low",
+              0.1331
+            ],
+            [
+              "emp_length",
+              0.0928
+            ]
+          ],
+          "cv_r2": 0.5955,
+          "cv_r2_folds": [
+            0.6184,
+            0.4765,
+            0.6973,
+            0.6114,
+            0.5736
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 1402,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.7741
+            ],
+            [
+              "fico_range_low",
+              0.1331
+            ],
+            [
+              "emp_length",
+              0.0928
+            ]
+          ],
+          "cv_r2": 0.5955,
+          "cv_r2_folds": [
+            0.6184,
+            0.4765,
+            0.6973,
+            0.6114,
+            0.5736
+          ]
+        },
+        "delta_r2": 0.0,
+        "root_feature": "dti",
+        "rho_top_abs": 0.3094,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.065504,
+            0.03613,
+            0.029655,
+            0.028085,
+            0.029353,
+            0.028667,
+            0.028513,
+            0.029009,
+            0.028938,
+            0.028363
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 2.199,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.1288,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.040362,
+            "mean_d_bottom_decile": 0.031649,
+            "tail_over_mid": 1.24
+          },
+          "dti": {
+            "spearman_rho": -0.3094,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.028363,
+            "mean_d_bottom_decile": 0.065504,
+            "tail_over_mid": 2.199
+          },
+          "annual_inc": {
+            "spearman_rho": 0.1442,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.036417,
+            "mean_d_bottom_decile": 0.031338,
+            "tail_over_mid": 1.101
+          },
+          "emp_length": {
+            "spearman_rho": 0.1495,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.032253,
+            "mean_d_bottom_decile": 0.027213,
+            "tail_over_mid": 0.945
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.3094,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.1288,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.3094
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.014282,
+          "median": 0.03274,
+          "max": 0.103258,
+          "mean": 0.033294,
+          "std": 0.016097
+        },
+        "explainer_named": {
+          "n": 1248,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.8253
+            ],
+            [
+              "fico_range_low",
+              0.0947
+            ],
+            [
+              "emp_length",
+              0.08
+            ]
+          ],
+          "cv_r2": 0.5867,
+          "cv_r2_folds": [
+            0.5897,
+            0.5798,
+            0.5848,
+            0.6392,
+            0.5397
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 1248,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.8253
+            ],
+            [
+              "fico_range_low",
+              0.0947
+            ],
+            [
+              "emp_length",
+              0.08
+            ]
+          ],
+          "cv_r2": 0.5907,
+          "cv_r2_folds": [
+            0.5897,
+            0.5798,
+            0.5925,
+            0.6392,
+            0.5523
+          ]
+        },
+        "delta_r2": 0.004,
+        "root_feature": "dti",
+        "rho_top_abs": 0.2968,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.065633,
+            0.031089,
+            0.029147,
+            0.030832,
+            0.028601,
+            0.031757,
+            0.029581,
+            0.02809,
+            0.029181,
+            0.028953
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 2.204,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.1326,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.038661,
+            "mean_d_bottom_decile": 0.03106,
+            "tail_over_mid": 1.175
+          },
+          "dti": {
+            "spearman_rho": -0.2968,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.028953,
+            "mean_d_bottom_decile": 0.065633,
+            "tail_over_mid": 2.204
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0851,
+            "spearman_p": 0.0026,
+            "mean_d_top_decile": 0.036237,
+            "mean_d_bottom_decile": 0.033642,
+            "tail_over_mid": 1.102
+          },
+          "emp_length": {
+            "spearman_rho": 0.0663,
+            "spearman_p": 0.0192,
+            "mean_d_top_decile": 0.033921,
+            "mean_d_bottom_decile": 0.029604,
+            "tail_over_mid": 1.007
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.2968,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.1326,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.2968
+        }
+      }
+    }
+  },
+  "plural_grades": [
+    "A5",
+    "B1",
+    "C1",
+    "C5",
+    "D4"
+  ],
+  "verdict_v1_primary": {
+    "n_plural": 5,
+    "plural_grades": [
+      "A5",
+      "B1",
+      "C1",
+      "C5",
+      "D4"
+    ],
+    "P1_named_features_explain_d": {
+      "well_explained_grades": [
+        "A5",
+        "B1",
+        "C1",
+        "C5",
+        "D4"
+      ],
+      "n": 5,
+      "hit": true
+    },
+    "P2_same_dominant_driver": {
+      "per_grade_root": {
+        "A5": "dti",
+        "B1": "annual_inc",
+        "C1": "annual_inc",
+        "C5": "fico_range_low",
+        "D4": "dti"
+      },
+      "n": 5,
+      "counts": {
+        "dti": 2,
+        "annual_inc": 2,
+        "fico_range_low": 1
+      },
+      "modal": "dti",
+      "modal_count": 2,
+      "majority": false,
+      "hit": false,
+      "P2_dti_hit": false
+    },
+    "P3_concentration": {
+      "per_grade_shape": {
+        "A5": "tails",
+        "B1": "tails",
+        "C1": "mixed",
+        "C5": "tails",
+        "D4": "tails"
+      },
+      "shape_counts": {
+        "tails": 4,
+        "mixed": 1
+      },
+      "P3_tails_hit": true,
+      "P3_threshold_hit": false
+    },
+    "P4_rescue_extension_features": {
+      "per_grade_named_r2": {
+        "A5": 0.4632,
+        "B1": 0.5718,
+        "C1": 0.6885,
+        "C5": 0.4569,
+        "D4": 0.5955
+      },
+      "per_grade_delta_r2": {
+        "A5": 0.0,
+        "B1": 0.0,
+        "C1": 0.0,
+        "C5": -0.0002,
+        "D4": 0.0
+      },
+      "n_delta_r2_ge_0.1": 0,
+      "n_named_r2_lt_0.3": 0,
+      "hit": false
+    },
+    "threshold_proximity_max_abs_rho_per_grade": {
+      "A5": 0.2818,
+      "B1": 0.1674,
+      "C1": 0.0268,
+      "C5": 0.1443,
+      "D4": 0.3094
+    }
+  },
+  "verdict_v2_robustness": {
+    "n_plural": 5,
+    "plural_grades": [
+      "A5",
+      "B1",
+      "C1",
+      "C5",
+      "D4"
+    ],
+    "P1_named_features_explain_d": {
+      "well_explained_grades": [
+        "A5",
+        "B1",
+        "C1",
+        "C5",
+        "D4"
+      ],
+      "n": 5,
+      "hit": true
+    },
+    "P2_same_dominant_driver": {
+      "per_grade_root": {
+        "A5": "dti",
+        "B1": "annual_inc",
+        "C1": "annual_inc",
+        "C5": "fico_range_low",
+        "D4": "dti"
+      },
+      "n": 5,
+      "counts": {
+        "dti": 2,
+        "annual_inc": 2,
+        "fico_range_low": 1
+      },
+      "modal": "dti",
+      "modal_count": 2,
+      "majority": false,
+      "hit": false,
+      "P2_dti_hit": false
+    },
+    "P3_concentration": {
+      "per_grade_shape": {
+        "A5": "tails",
+        "B1": "tails",
+        "C1": "tails",
+        "C5": "tails",
+        "D4": "tails"
+      },
+      "shape_counts": {
+        "tails": 5
+      },
+      "P3_tails_hit": true,
+      "P3_threshold_hit": false
+    },
+    "P4_rescue_extension_features": {
+      "per_grade_named_r2": {
+        "A5": 0.5206,
+        "B1": 0.5586,
+        "C1": 0.7963,
+        "C5": 0.4257,
+        "D4": 0.5867
+      },
+      "per_grade_delta_r2": {
+        "A5": 0.0,
+        "B1": 0.0,
+        "C1": 0.0,
+        "C5": 0.0,
+        "D4": 0.004
+      },
+      "n_delta_r2_ge_0.1": 0,
+      "n_named_r2_lt_0.3": 0,
+      "hit": false
+    },
+    "threshold_proximity_max_abs_rho_per_grade": {
+      "A5": 0.305,
+      "B1": 0.1618,
+      "C1": 0.0116,
+      "C5": 0.1354,
+      "D4": 0.2968
+    }
+  },
+  "summary": "Disagreement geometry, Burst D, 5 plural grades ['A5', 'B1', 'C1', 'C5', 'D4'] (primary arm = V1 2015Q3): P1 (named features explain d) HIT (5/5 well-explained); P2 (same dominant driver) MISS [modal=dti]; P3 concentration = tails; P4 (rescue: extension features explain d where named ones don't) MISS. Routing implication: P4 did not fire -> the residual-tracking reading stands, routing stays deflated."
+}

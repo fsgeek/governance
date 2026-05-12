@@ -25,6 +25,8 @@ from typing import Callable, Optional
 import numpy as np
 from scipy.stats import spearmanr
 from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import KFold, cross_val_score
+from sklearn.tree import DecisionTreeRegressor
 
 
 # ---------------------------------------------------------------------------
@@ -319,3 +321,180 @@ def grade_routing_verdict(*, metric1: dict, metric2: dict, metric3: dict,
     m4 = None if lift is None else bool(lift >= 0)
     return {"m1_tercile_predictability_routing": m1, "m2_calibration_gap_routing": m2,
             "m3_brier_routing": m3, "m4_operational_lift_nonneg": m4}
+
+
+# ===========================================================================
+# Geometry of the disagreement: is d(x) a legible function of the features?
+# (pre-reg: docs/superpowers/specs/2026-05-12-disagreement-geometry-preregistration-note.md)
+#
+# The disagreement-routing result deflated; the post-hoc reading was "d(x)
+# tracks where the within-tier residual feature is active". These helpers test
+# that as a falsifiable claim: explain d from the policy-named features (and
+# from the extension features), find the dominant driver, classify where d
+# concentrates, and check cross-tier consistency.
+# ===========================================================================
+def disagreement_explainer(d: np.ndarray, X: np.ndarray, feature_names: list[str], *,
+                           max_depth: int = 3, min_samples_leaf: int = 50,
+                           n_splits: int = 5, seed: int = 0) -> dict:
+    """Fit a shallow regression CART predicting per-borrower disagreement `d`
+    from the features `X` (aligned to `feature_names`). Report the out-of-fold
+    R^2 (k-fold CV; the fraction of var(d) the features capture), and -- from a
+    fit on all the data -- the root-split feature and the top-3 feature
+    importances. Degenerate cases (n too small, d ~ constant) -> cv_r2 None.
+
+    Returns {"cv_r2", "cv_r2_folds", "root_feature", "top_importances",
+    "n", "n_features"}.
+    """
+    d = np.asarray(d, dtype=float).ravel()
+    X = np.asarray(X, dtype=float)
+    n, p = X.shape
+    names = list(feature_names)
+    if n != d.size or p != len(names):
+        raise ValueError("X / d / feature_names shape mismatch")
+    base = {"n": int(n), "n_features": int(p), "root_feature": None,
+            "top_importances": [], "cv_r2": None, "cv_r2_folds": []}
+    if n < max(2 * n_splits, 20) or float(np.std(d)) < 1e-12:
+        return base
+    tree = DecisionTreeRegressor(max_depth=max_depth, min_samples_leaf=min_samples_leaf,
+                                 random_state=seed)
+    kf = KFold(n_splits=n_splits, shuffle=True, random_state=seed)
+    folds = cross_val_score(tree, X, d, cv=kf, scoring="r2")
+    full = DecisionTreeRegressor(max_depth=max_depth, min_samples_leaf=min_samples_leaf,
+                                 random_state=seed).fit(X, d)
+    t = full.tree_
+    root_feat = names[int(t.feature[0])] if t.node_count > 0 and int(t.feature[0]) >= 0 else None
+    imps = sorted(zip(names, (float(i) for i in full.feature_importances_)),
+                  key=lambda kv: -kv[1])
+    base.update({"cv_r2": round(float(np.mean(folds)), 4),
+                 "cv_r2_folds": [round(float(f), 4) for f in folds],
+                 "root_feature": root_feat,
+                 "top_importances": [(nm, round(im, 4)) for nm, im in imps[:3] if im > 0]})
+    return base
+
+
+def _decile_means(values: np.ndarray, d: np.ndarray, n_deciles: int = 10) -> np.ndarray:
+    """Mean of `d` within each rank-quantile bucket of `values` (equal-sized,
+    `quantile_bin_labels` convention)."""
+    bins = quantile_bin_labels(np.asarray(values, dtype=float), n_deciles)
+    d = np.asarray(d, dtype=float)
+    out = []
+    for b in range(int(bins.max()) + 1 if bins.size else 0):
+        m = bins == b
+        if m.any():
+            out.append(float(d[m].mean()))
+    return np.asarray(out, dtype=float)
+
+
+def partial_dependence_profile(d: np.ndarray, feature_values: np.ndarray, *,
+                               n_deciles: int = 10) -> dict:
+    """Profile of mean disagreement `d` across deciles of one feature, plus a
+    coarse shape label:
+
+      flat      : the decile-mean spread is small relative to the overall level
+      tails     : the max decile-mean sits in an end bucket and the larger tail
+                  is >= 1.5x the middle-8 mean (U-shaped or one-tailed)
+      threshold : the max sits in an interior bucket and is >= 1.3x the middle
+                  mean (a bump -- candidate "near a policy threshold")
+      monotone  : |Spearman(decile index, decile mean)| >= 0.8 and not flat
+      mixed     : none of the above
+
+    Returns {"decile_mean_d", "n_buckets", "shape", "tail_ratio", "argmax_bucket"}.
+    """
+    m = _decile_means(feature_values, d, n_deciles)
+    if m.size < 3:
+        return {"decile_mean_d": [round(float(x), 6) for x in m], "n_buckets": int(m.size),
+                "shape": "flat", "tail_ratio": None, "argmax_bucket": None}
+    overall = float(np.mean(m))
+    spread = float(m.max() - m.min())
+    mid = float(np.mean(m[1:-1])) if m.size >= 3 else overall
+    tail = max(float(m[0]), float(m[-1]))
+    tail_ratio = (tail / mid) if mid > 1e-12 else None
+    argmax = int(np.argmax(m))
+    end_buckets = {0, m.size - 1}
+    idx = np.arange(m.size, dtype=float)
+    rho_idx = spearmanr(idx, m).correlation
+    monotone = rho_idx is not None and not np.isnan(rho_idx) and abs(rho_idx) >= 0.8
+    if overall > 1e-12 and spread / overall < 0.20:
+        shape = "flat"                                   # decile means barely move
+    elif monotone:
+        shape = "monotone"                               # one-sided ramp (incl. a single-tail rise)
+    elif argmax in end_buckets and tail_ratio is not None and tail_ratio >= 1.5:
+        shape = "tails"                                  # U-shape: both ends elevated, middle low
+    elif (argmax not in end_buckets) and mid > 1e-12 and (float(m[argmax]) / mid) >= 1.3:
+        shape = "threshold"                              # interior bump (candidate "near a policy threshold")
+    else:
+        shape = "mixed"
+    return {"decile_mean_d": [round(float(x), 6) for x in m], "n_buckets": int(m.size),
+            "shape": shape, "tail_ratio": None if tail_ratio is None else round(tail_ratio, 3),
+            "argmax_bucket": argmax}
+
+
+def univariate_disagreement_correlations(d: np.ndarray, X: np.ndarray,
+                                         feature_names: list[str], *,
+                                         n_deciles: int = 10) -> dict:
+    """Per feature: Spearman of (feature value, `d`) with its p-value, the mean
+    `d` in the feature's top and bottom decile, and the larger-tail / middle-8
+    ratio. Returns {feature: {...}}."""
+    d = np.asarray(d, dtype=float).ravel()
+    X = np.asarray(X, dtype=float)
+    out: dict = {}
+    for j, nm in enumerate(feature_names):
+        col = X[:, j]
+        if float(np.std(col)) < 1e-12 or float(np.std(d)) < 1e-12:
+            out[nm] = {"spearman_rho": None, "spearman_p": None, "mean_d_top_decile": None,
+                       "mean_d_bottom_decile": None, "tail_over_mid": None}
+            continue
+        sr = spearmanr(col, d)
+        m = _decile_means(col, d, n_deciles)
+        mid = float(np.mean(m[1:-1])) if m.size >= 3 else float(np.mean(m))
+        tail = max(float(m[0]), float(m[-1])) if m.size else None
+        out[nm] = {"spearman_rho": None if np.isnan(sr.correlation) else round(float(sr.correlation), 4),
+                   "spearman_p": None if np.isnan(sr.pvalue) else round(float(sr.pvalue), 4),
+                   "mean_d_top_decile": round(float(m[-1]), 6) if m.size else None,
+                   "mean_d_bottom_decile": round(float(m[0]), 6) if m.size else None,
+                   "tail_over_mid": None if (tail is None or mid <= 1e-12) else round(tail / mid, 3)}
+    return out
+
+
+def threshold_proximity_correlation(d: np.ndarray, dti_values: np.ndarray,
+                                    fico_values: np.ndarray, *, dti_ceiling: float = 43.0,
+                                    fico_floor: float = 620.0) -> dict:
+    """Spearman of |dti - dti_ceiling| with `d` and of |fico - fico_floor| with
+    `d` -- does *proximity to the documented policy thresholds* track the
+    disagreement? Reports both and the max |rho|. Missing feature -> None."""
+    d = np.asarray(d, dtype=float).ravel()
+    def one(vals):
+        if vals is None:
+            return {"spearman_rho": None, "spearman_p": None}
+        v = np.asarray(vals, dtype=float)
+        if v.size != d.size or float(np.std(v)) < 1e-12 or float(np.std(d)) < 1e-12:
+            return {"spearman_rho": None, "spearman_p": None}
+        sr = spearmanr(v, d)
+        return {"spearman_rho": None if np.isnan(sr.correlation) else round(float(sr.correlation), 4),
+                "spearman_p": None if np.isnan(sr.pvalue) else round(float(sr.pvalue), 4)}
+    dti_prox = one(None if dti_values is None else np.abs(np.asarray(dti_values, float) - dti_ceiling))
+    fico_prox = one(None if fico_values is None else np.abs(np.asarray(fico_values, float) - fico_floor))
+    cands = [abs(x["spearman_rho"]) for x in (dti_prox, fico_prox) if x["spearman_rho"] is not None]
+    return {"dti_ceiling": dti_ceiling, "fico_floor": fico_floor,
+            "dti_proximity": dti_prox, "fico_proximity": fico_prox,
+            "max_abs_rho": round(max(cands), 4) if cands else None}
+
+
+def cross_tier_consistency(per_grade_top_features: dict, per_grade_shapes: dict) -> dict:
+    """Across the plural grades: the multiset of dominant disagreement-driver
+    features and of PD shapes, the modal value of each and whether it covers a
+    strict majority of the grades. Returns the counts + the booleans."""
+    def summarize(mapping: dict) -> dict:
+        vals = [v for v in mapping.values() if v is not None]
+        n = len(vals)
+        counts: dict = {}
+        for v in vals:
+            counts[v] = counts.get(v, 0) + 1
+        modal, modal_n = (None, 0)
+        for v, c in sorted(counts.items(), key=lambda kv: -kv[1]):
+            modal, modal_n = v, c
+            break
+        return {"n": n, "counts": counts, "modal": modal, "modal_count": modal_n,
+                "majority": bool(n > 0 and modal_n > n / 2)}
+    return {"dominant_feature": summarize(per_grade_top_features),
+            "pd_shape": summarize(per_grade_shapes)}
