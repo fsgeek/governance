@@ -63,6 +63,7 @@ FIELD_POSITIONS: dict[str, int] = {
     "loan_id": 1,                          # gloss 2  LOAN_IDENTIFIER
     "monthly_reporting_period": 2,         # gloss 3  MONTHLY_REPORTING_PERIOD
     "channel": 3,                          # gloss 4  CHANNEL
+    "orig_interest_rate": 7,               # gloss 8  ORIGINAL_INTEREST_RATE
     "loan_term": 12,                       # gloss 13 ORIGINAL_LOAN_TERM
     "origination_date": 13,                # gloss 14 ORIGINATION_DATE  (MMYYYY)
     "first_payment_date": 14,              # gloss 15 FIRST_PAYMENT_DATE
@@ -257,6 +258,7 @@ WEDGE_FEATURES = {
     "dti": "dti",
     "ltv": "ltv",
     "loan_term_months": "loan_term",
+    "orig_interest_rate": "orig_interest_rate",
     "loan_purpose": "loan_purpose",
     "occupancy_status": "occupancy",
 }
@@ -274,7 +276,7 @@ def to_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
         col = f"c{FIELD_POSITIONS[fm_name]}"
         out[wedge_name] = df[col]
     # Numeric coercion for the numeric features.
-    for c in ("fico_range_low", "dti", "ltv", "loan_term_months"):
+    for c in ("fico_range_low", "dti", "ltv", "loan_term_months", "orig_interest_rate"):
         out[c] = pd.to_numeric(out[c], errors="coerce")
     out["lien_position"] = 1
     if "label" in df.columns:
