@@ -1,0 +1,4945 @@
+{
+  "pre_reg": "docs/superpowers/specs/2026-05-12-extension-admitted-band-preregistration-note.md",
+  "burst": "D_2015H2_dti",
+  "v1": "2015Q3",
+  "v2": "2015Q4",
+  "policy": "thin_demo_hmda_mortgage",
+  "monotonic_cst_default_convention_named_only": {
+    "fico_range_low": -1,
+    "dti": 1
+  },
+  "named_features": [
+    "fico_range_low",
+    "dti",
+    "annual_inc",
+    "emp_length"
+  ],
+  "extension_features": [
+    "revol_util",
+    "open_acc",
+    "inq_last_6mths",
+    "delinq_2yrs",
+    "total_acc",
+    "mort_acc",
+    "loan_amnt",
+    "revol_bal",
+    "pub_rec"
+  ],
+  "band_params": {
+    "epsilon": 0.02,
+    "depths": [
+      1,
+      2,
+      3
+    ],
+    "leaf_mins": [
+      25,
+      50,
+      100
+    ],
+    "seed": 0,
+    "plurality_rho_max": 0.9,
+    "candidate_set": "named + extension"
+  },
+  "explainer_params": {
+    "max_depth": 3,
+    "min_samples_leaf": 50,
+    "cv_folds": 5,
+    "n_deciles": 10,
+    "r2_good": 0.3,
+    "rho_good": 0.3,
+    "delta_r2": 0.1,
+    "delta_r2_band_soft": -0.15,
+    "dti_ceiling": 43.0,
+    "fico_floor": 620.0
+  },
+  "six_named_only_band_plural_set": [
+    "A5",
+    "B1",
+    "C1",
+    "C5",
+    "D4"
+  ],
+  "six_named_only_band_named_explainer_r2_v1": {
+    "A1": 0.8611,
+    "A5": 0.4632,
+    "B1": 0.5718,
+    "C1": 0.6885,
+    "C2": 0.5449,
+    "C5": 0.4569,
+    "D4": 0.5955
+  },
+  "flagged_grades_v1": [
+    "A1",
+    "A5",
+    "B1",
+    "C1",
+    "C2",
+    "C5",
+    "D4"
+  ],
+  "grades": {
+    "A1": {
+      "n_v1": 3528,
+      "default_rate_v1": 0.0295,
+      "n_combos_tried": 73719,
+      "band_members_within_eps": 1216,
+      "band_distinct_members": 1216,
+      "n_distinct_used_feature_sets": 58,
+      "best_holdout_auc": 0.6479,
+      "distinct_used_feature_sets": [
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_bal"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_bal"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "pub_rec",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ]
+      ],
+      "median_pairwise_spearman_v1": 0.8259,
+      "min_pairwise_spearman_v1": 0.6241,
+      "uses_extension": true,
+      "extension_features_used_union": [
+        "inq_last_6mths",
+        "mort_acc",
+        "open_acc",
+        "pub_rec",
+        "revol_bal",
+        "revol_util"
+      ],
+      "n_distinct_members_using_extension": 1204,
+      "extension_feature_member_counts": {
+        "revol_util": 552,
+        "open_acc": 1064,
+        "inq_last_6mths": 556,
+        "mort_acc": 182,
+        "revol_bal": 474,
+        "pub_rec": 4
+      },
+      "in_six_plural_set": false,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.002261,
+          "median": 0.006778,
+          "max": 0.038308,
+          "mean": 0.008214,
+          "std": 0.00508
+        },
+        "explainer_named": {
+          "n": 3528,
+          "n_features": 4,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.5009
+            ],
+            [
+              "dti",
+              0.4933
+            ],
+            [
+              "annual_inc",
+              0.0059
+            ]
+          ],
+          "cv_r2": 0.6606,
+          "cv_r2_folds": [
+            0.6359,
+            0.6379,
+            0.7087,
+            0.5902,
+            0.7304
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 3528,
+          "n_features": 13,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.3941
+            ],
+            [
+              "dti",
+              0.3924
+            ],
+            [
+              "inq_last_6mths",
+              0.1414
+            ]
+          ],
+          "cv_r2": 0.84,
+          "cv_r2_folds": [
+            0.8441,
+            0.8238,
+            0.8663,
+            0.8245,
+            0.8413
+          ]
+        },
+        "delta_r2": 0.1794,
+        "root_feature": "fico_range_low",
+        "rho_top_abs": 0.5659,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.012541,
+            0.012267,
+            0.012911,
+            0.007169,
+            0.006568,
+            0.006564,
+            0.006549,
+            0.005833,
+            0.005824,
+            0.005899
+          ],
+          "n_buckets": 10,
+          "shape": "monotone",
+          "tail_ratio": 1.575,
+          "argmax_bucket": 2
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.5659,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.005899,
+            "mean_d_bottom_decile": 0.012541,
+            "tail_over_mid": 1.575
+          },
+          "dti": {
+            "spearman_rho": 0.1581,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.013978,
+            "mean_d_bottom_decile": 0.007097,
+            "tail_over_mid": 1.831
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0396,
+            "spearman_p": 0.0187,
+            "mean_d_top_decile": 0.008468,
+            "mean_d_bottom_decile": 0.008945,
+            "tail_over_mid": 1.106
+          },
+          "emp_length": {
+            "spearman_rho": 0.0004,
+            "spearman_p": 0.9796,
+            "mean_d_top_decile": 0.007948,
+            "mean_d_bottom_decile": 0.008747,
+            "tail_over_mid": 1.069
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.1581,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.5659,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.5659
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.001815,
+          "median": 0.006778,
+          "max": 0.038363,
+          "mean": 0.008405,
+          "std": 0.005405
+        },
+        "explainer_named": {
+          "n": 4809,
+          "n_features": 4,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.5085
+            ],
+            [
+              "dti",
+              0.4841
+            ],
+            [
+              "annual_inc",
+              0.0074
+            ]
+          ],
+          "cv_r2": 0.6881,
+          "cv_r2_folds": [
+            0.6927,
+            0.7016,
+            0.6946,
+            0.699,
+            0.6526
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 4809,
+          "n_features": 13,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.4109
+            ],
+            [
+              "dti",
+              0.3937
+            ],
+            [
+              "inq_last_6mths",
+              0.1296
+            ]
+          ],
+          "cv_r2": 0.846,
+          "cv_r2_folds": [
+            0.8504,
+            0.8636,
+            0.8508,
+            0.8524,
+            0.8128
+          ]
+        },
+        "delta_r2": 0.1579,
+        "root_feature": "fico_range_low",
+        "rho_top_abs": 0.5786,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.013065,
+            0.013061,
+            0.013385,
+            0.007528,
+            0.006552,
+            0.006364,
+            0.00641,
+            0.006036,
+            0.005824,
+            0.005821
+          ],
+          "n_buckets": 10,
+          "shape": "monotone",
+          "tail_ratio": 1.604,
+          "argmax_bucket": 2
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.5786,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.005821,
+            "mean_d_bottom_decile": 0.013065,
+            "tail_over_mid": 1.604
+          },
+          "dti": {
+            "spearman_rho": 0.1393,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.013973,
+            "mean_d_bottom_decile": 0.007197,
+            "tail_over_mid": 1.777
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0522,
+            "spearman_p": 0.0003,
+            "mean_d_top_decile": 0.008732,
+            "mean_d_bottom_decile": 0.008366,
+            "tail_over_mid": 1.043
+          },
+          "emp_length": {
+            "spearman_rho": 0.0137,
+            "spearman_p": 0.3417,
+            "mean_d_top_decile": 0.00874,
+            "mean_d_bottom_decile": 0.008565,
+            "tail_over_mid": 1.048
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.1393,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.5786,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.5786
+        }
+      }
+    },
+    "A5": {
+      "n_v1": 5098,
+      "default_rate_v1": 0.0679,
+      "n_combos_tried": 73719,
+      "band_members_within_eps": 751,
+      "band_distinct_members": 718,
+      "n_distinct_used_feature_sets": 75,
+      "best_holdout_auc": 0.559,
+      "distinct_used_feature_sets": [
+        [
+          "annual_inc"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs"
+        ],
+        [
+          "annual_inc",
+          "dti"
+        ],
+        [
+          "annual_inc",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "inq_last_6mths"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "revol_bal"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "revol_bal"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "mort_acc",
+          "open_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "mort_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_bal",
+          "revol_util"
+        ]
+      ],
+      "median_pairwise_spearman_v1": 0.8361,
+      "min_pairwise_spearman_v1": -0.1251,
+      "uses_extension": true,
+      "extension_features_used_union": [
+        "delinq_2yrs",
+        "inq_last_6mths",
+        "loan_amnt",
+        "mort_acc",
+        "open_acc",
+        "pub_rec",
+        "revol_bal",
+        "revol_util",
+        "total_acc"
+      ],
+      "n_distinct_members_using_extension": 658,
+      "extension_feature_member_counts": {
+        "revol_util": 264,
+        "open_acc": 308,
+        "inq_last_6mths": 4,
+        "delinq_2yrs": 78,
+        "total_acc": 32,
+        "mort_acc": 42,
+        "loan_amnt": 228,
+        "revol_bal": 296,
+        "pub_rec": 5
+      },
+      "in_six_plural_set": true,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.004343,
+          "median": 0.011032,
+          "max": 0.050387,
+          "mean": 0.012705,
+          "std": 0.006611
+        },
+        "explainer_named": {
+          "n": 5098,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.7738
+            ],
+            [
+              "annual_inc",
+              0.2212
+            ],
+            [
+              "fico_range_low",
+              0.005
+            ]
+          ],
+          "cv_r2": 0.4152,
+          "cv_r2_folds": [
+            0.3289,
+            0.4289,
+            0.4305,
+            0.4653,
+            0.4224
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5098,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "open_acc",
+              0.502
+            ],
+            [
+              "dti",
+              0.4649
+            ],
+            [
+              "revol_util",
+              0.0218
+            ]
+          ],
+          "cv_r2": 0.6758,
+          "cv_r2_folds": [
+            0.7094,
+            0.6898,
+            0.7185,
+            0.6234,
+            0.6382
+          ]
+        },
+        "delta_r2": 0.2606,
+        "root_feature": "dti",
+        "rho_top_abs": 0.3378,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.011734,
+            0.009995,
+            0.010036,
+            0.009767,
+            0.009939,
+            0.011015,
+            0.015302,
+            0.015548,
+            0.013804,
+            0.019915
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.67,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.0698,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.014168,
+            "mean_d_bottom_decile": 0.011399,
+            "tail_over_mid": 1.117
+          },
+          "dti": {
+            "spearman_rho": 0.3378,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.019915,
+            "mean_d_bottom_decile": 0.011734,
+            "tail_over_mid": 1.67
+          },
+          "annual_inc": {
+            "spearman_rho": -0.2345,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012184,
+            "mean_d_bottom_decile": 0.015502,
+            "tail_over_mid": 1.248
+          },
+          "emp_length": {
+            "spearman_rho": -0.0432,
+            "spearman_p": 0.0021,
+            "mean_d_top_decile": 0.012433,
+            "mean_d_bottom_decile": 0.012739,
+            "tail_over_mid": 1.0
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.3378,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.0698,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.3378
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.004717,
+          "median": 0.011051,
+          "max": 0.051863,
+          "mean": 0.012879,
+          "std": 0.006704
+        },
+        "explainer_named": {
+          "n": 5825,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.7425
+            ],
+            [
+              "annual_inc",
+              0.2511
+            ],
+            [
+              "fico_range_low",
+              0.0065
+            ]
+          ],
+          "cv_r2": 0.4854,
+          "cv_r2_folds": [
+            0.4363,
+            0.465,
+            0.5046,
+            0.4872,
+            0.5338
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5825,
+          "n_features": 13,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.5471
+            ],
+            [
+              "open_acc",
+              0.4014
+            ],
+            [
+              "annual_inc",
+              0.0287
+            ]
+          ],
+          "cv_r2": 0.6546,
+          "cv_r2_folds": [
+            0.6754,
+            0.6451,
+            0.6696,
+            0.6724,
+            0.6106
+          ]
+        },
+        "delta_r2": 0.1692,
+        "root_feature": "dti",
+        "rho_top_abs": 0.3445,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.011777,
+            0.009923,
+            0.010101,
+            0.010071,
+            0.009865,
+            0.011941,
+            0.014521,
+            0.014947,
+            0.01422,
+            0.021431
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 1.794,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.0804,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.014344,
+            "mean_d_bottom_decile": 0.01167,
+            "tail_over_mid": 1.116
+          },
+          "dti": {
+            "spearman_rho": 0.3445,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.021431,
+            "mean_d_bottom_decile": 0.011777,
+            "tail_over_mid": 1.794
+          },
+          "annual_inc": {
+            "spearman_rho": -0.1915,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.012198,
+            "mean_d_bottom_decile": 0.015315,
+            "tail_over_mid": 1.21
+          },
+          "emp_length": {
+            "spearman_rho": -0.0101,
+            "spearman_p": 0.4423,
+            "mean_d_top_decile": 0.013491,
+            "mean_d_bottom_decile": 0.0125,
+            "tail_over_mid": 1.05
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.3445,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.0804,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.3445
+        }
+      }
+    },
+    "B1": {
+      "n_v1": 5168,
+      "default_rate_v1": 0.0886,
+      "n_combos_tried": 73719,
+      "band_members_within_eps": 904,
+      "band_distinct_members": 752,
+      "n_distinct_used_feature_sets": 20,
+      "best_holdout_auc": 0.5836,
+      "distinct_used_feature_sets": [
+        [
+          "annual_inc",
+          "dti"
+        ],
+        [
+          "annual_inc",
+          "emp_length"
+        ],
+        [
+          "dti",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "fico_range_low"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "revol_util"
+        ]
+      ],
+      "median_pairwise_spearman_v1": 0.5629,
+      "min_pairwise_spearman_v1": -0.0005,
+      "uses_extension": true,
+      "extension_features_used_union": [
+        "inq_last_6mths",
+        "loan_amnt",
+        "open_acc",
+        "revol_util",
+        "total_acc"
+      ],
+      "n_distinct_members_using_extension": 564,
+      "extension_feature_member_counts": {
+        "revol_util": 288,
+        "open_acc": 384,
+        "inq_last_6mths": 4,
+        "total_acc": 104,
+        "loan_amnt": 32
+      },
+      "in_six_plural_set": true,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.00524,
+          "median": 0.011799,
+          "max": 0.086856,
+          "mean": 0.016252,
+          "std": 0.011224
+        },
+        "explainer_named": {
+          "n": 5168,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.6179
+            ],
+            [
+              "fico_range_low",
+              0.2613
+            ],
+            [
+              "dti",
+              0.1207
+            ]
+          ],
+          "cv_r2": 0.4206,
+          "cv_r2_folds": [
+            0.3429,
+            0.3378,
+            0.4778,
+            0.4827,
+            0.4618
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5168,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "revol_util",
+              0.4025
+            ],
+            [
+              "annual_inc",
+              0.3934
+            ],
+            [
+              "dti",
+              0.1751
+            ]
+          ],
+          "cv_r2": 0.6099,
+          "cv_r2_folds": [
+            0.6636,
+            0.5477,
+            0.6312,
+            0.6178,
+            0.5894
+          ]
+        },
+        "delta_r2": 0.1893,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.2362,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.030076,
+            0.022306,
+            0.012953,
+            0.012403,
+            0.012325,
+            0.012914,
+            0.013633,
+            0.014245,
+            0.014816,
+            0.01684
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 2.081,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.0935,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.027114,
+            "mean_d_bottom_decile": 0.015058,
+            "tail_over_mid": 1.802
+          },
+          "dti": {
+            "spearman_rho": -0.1871,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.019362,
+            "mean_d_bottom_decile": 0.017693,
+            "tail_over_mid": 1.235
+          },
+          "annual_inc": {
+            "spearman_rho": -0.2362,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.01684,
+            "mean_d_bottom_decile": 0.030076,
+            "tail_over_mid": 2.081
+          },
+          "emp_length": {
+            "spearman_rho": -0.1364,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.015517,
+            "mean_d_bottom_decile": 0.017215,
+            "tail_over_mid": 1.061
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.1871,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.0935,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1871
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.00524,
+          "median": 0.012477,
+          "max": 0.086546,
+          "mean": 0.016474,
+          "std": 0.011394
+        },
+        "explainer_named": {
+          "n": 6231,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.6146
+            ],
+            [
+              "fico_range_low",
+              0.2737
+            ],
+            [
+              "dti",
+              0.1117
+            ]
+          ],
+          "cv_r2": 0.4331,
+          "cv_r2_folds": [
+            0.4406,
+            0.4434,
+            0.4137,
+            0.463,
+            0.4048
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 6231,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.4191
+            ],
+            [
+              "revol_util",
+              0.4163
+            ],
+            [
+              "dti",
+              0.1349
+            ]
+          ],
+          "cv_r2": 0.6469,
+          "cv_r2_folds": [
+            0.6337,
+            0.6402,
+            0.6365,
+            0.6469,
+            0.6772
+          ]
+        },
+        "delta_r2": 0.2138,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.262,
+        "well_explained": true,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.030649,
+            0.024008,
+            0.012723,
+            0.012944,
+            0.012,
+            0.012721,
+            0.013811,
+            0.013986,
+            0.014768,
+            0.017106
+          ],
+          "n_buckets": 10,
+          "shape": "tails",
+          "tail_ratio": 2.096,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.0763,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.028022,
+            "mean_d_bottom_decile": 0.0152,
+            "tail_over_mid": 1.845
+          },
+          "dti": {
+            "spearman_rho": -0.1789,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.019804,
+            "mean_d_bottom_decile": 0.017782,
+            "tail_over_mid": 1.246
+          },
+          "annual_inc": {
+            "spearman_rho": -0.262,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.017106,
+            "mean_d_bottom_decile": 0.030649,
+            "tail_over_mid": 2.096
+          },
+          "emp_length": {
+            "spearman_rho": -0.1202,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.014829,
+            "mean_d_bottom_decile": 0.016339,
+            "tail_over_mid": 0.979
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.1789,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.0763,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.1789
+        }
+      }
+    },
+    "C1": {
+      "n_v1": 4875,
+      "default_rate_v1": 0.169,
+      "n_combos_tried": 73719,
+      "band_members_within_eps": 271,
+      "band_distinct_members": 271,
+      "n_distinct_used_feature_sets": 15,
+      "best_holdout_auc": 0.5801,
+      "distinct_used_feature_sets": [
+        [
+          "delinq_2yrs",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "delinq_2yrs",
+          "emp_length",
+          "mort_acc"
+        ],
+        [
+          "loan_amnt",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "emp_length",
+          "fico_range_low",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "pub_rec"
+        ]
+      ],
+      "median_pairwise_spearman_v1": 0.3699,
+      "min_pairwise_spearman_v1": -0.0066,
+      "uses_extension": true,
+      "extension_features_used_union": [
+        "delinq_2yrs",
+        "inq_last_6mths",
+        "loan_amnt",
+        "mort_acc",
+        "open_acc",
+        "pub_rec",
+        "revol_bal",
+        "revol_util"
+      ],
+      "n_distinct_members_using_extension": 271,
+      "extension_feature_member_counts": {
+        "revol_util": 4,
+        "open_acc": 144,
+        "inq_last_6mths": 6,
+        "delinq_2yrs": 9,
+        "mort_acc": 143,
+        "loan_amnt": 4,
+        "revol_bal": 58,
+        "pub_rec": 6
+      },
+      "in_six_plural_set": true,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.003425,
+          "median": 0.017326,
+          "max": 0.068921,
+          "mean": 0.018003,
+          "std": 0.00918
+        },
+        "explainer_named": {
+          "n": 4875,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.8967
+            ],
+            [
+              "fico_range_low",
+              0.1033
+            ]
+          ],
+          "cv_r2": 0.0637,
+          "cv_r2_folds": [
+            0.0658,
+            0.0719,
+            0.0718,
+            0.0639,
+            0.0452
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 4875,
+          "n_features": 13,
+          "root_feature": "mort_acc",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.4007
+            ],
+            [
+              "open_acc",
+              0.3889
+            ],
+            [
+              "mort_acc",
+              0.1123
+            ]
+          ],
+          "cv_r2": 0.691,
+          "cv_r2_folds": [
+            0.6661,
+            0.7324,
+            0.6985,
+            0.6724,
+            0.6857
+          ]
+        },
+        "delta_r2": 0.6273,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.0419,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.020225,
+            0.016965,
+            0.015652,
+            0.015805,
+            0.017548,
+            0.017684,
+            0.018495,
+            0.018946,
+            0.019134,
+            0.019576
+          ],
+          "n_buckets": 10,
+          "shape": "mixed",
+          "tail_ratio": 1.154,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.0017,
+            "spearman_p": 0.9034,
+            "mean_d_top_decile": 0.018144,
+            "mean_d_bottom_decile": 0.017961,
+            "tail_over_mid": 1.008
+          },
+          "dti": {
+            "spearman_rho": -0.0356,
+            "spearman_p": 0.0129,
+            "mean_d_top_decile": 0.01731,
+            "mean_d_bottom_decile": 0.018442,
+            "tail_over_mid": 1.023
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0419,
+            "spearman_p": 0.0034,
+            "mean_d_top_decile": 0.019576,
+            "mean_d_bottom_decile": 0.020225,
+            "tail_over_mid": 1.154
+          },
+          "emp_length": {
+            "spearman_rho": 0.0246,
+            "spearman_p": 0.0858,
+            "mean_d_top_decile": 0.018156,
+            "mean_d_bottom_decile": 0.017619,
+            "tail_over_mid": 1.007
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0356,
+            "spearman_p": 0.0129
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.0017,
+            "spearman_p": 0.9034
+          },
+          "max_abs_rho": 0.0356
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.003425,
+          "median": 0.01733,
+          "max": 0.073899,
+          "mean": 0.018262,
+          "std": 0.009372
+        },
+        "explainer_named": {
+          "n": 5977,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.9656
+            ],
+            [
+              "emp_length",
+              0.0259
+            ],
+            [
+              "fico_range_low",
+              0.0085
+            ]
+          ],
+          "cv_r2": 0.1108,
+          "cv_r2_folds": [
+            0.0655,
+            0.0508,
+            0.1373,
+            0.1424,
+            0.1582
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5977,
+          "n_features": 13,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.623
+            ],
+            [
+              "annual_inc",
+              0.2312
+            ],
+            [
+              "mort_acc",
+              0.1458
+            ]
+          ],
+          "cv_r2": 0.4306,
+          "cv_r2_folds": [
+            0.39,
+            0.4184,
+            0.4504,
+            0.4479,
+            0.4464
+          ]
+        },
+        "delta_r2": 0.3198,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.0135,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.022609,
+            0.017224,
+            0.015604,
+            0.015657,
+            0.017259,
+            0.017947,
+            0.018437,
+            0.018538,
+            0.019126,
+            0.020218
+          ],
+          "n_buckets": 10,
+          "shape": "mixed",
+          "tail_ratio": 1.294,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.0031,
+            "spearman_p": 0.8089,
+            "mean_d_top_decile": 0.018674,
+            "mean_d_bottom_decile": 0.01826,
+            "tail_over_mid": 1.025
+          },
+          "dti": {
+            "spearman_rho": -0.0146,
+            "spearman_p": 0.2581,
+            "mean_d_top_decile": 0.018075,
+            "mean_d_bottom_decile": 0.017813,
+            "tail_over_mid": 0.985
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0135,
+            "spearman_p": 0.298,
+            "mean_d_top_decile": 0.020218,
+            "mean_d_bottom_decile": 0.022609,
+            "tail_over_mid": 1.294
+          },
+          "emp_length": {
+            "spearman_rho": 0.0332,
+            "spearman_p": 0.0102,
+            "mean_d_top_decile": 0.018108,
+            "mean_d_bottom_decile": 0.017699,
+            "tail_over_mid": 0.987
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0148,
+            "spearman_p": 0.2531
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.0031,
+            "spearman_p": 0.8089
+          },
+          "max_abs_rho": 0.0148
+        }
+      }
+    },
+    "C2": {
+      "n_v1": 4555,
+      "default_rate_v1": 0.1802,
+      "n_combos_tried": 73719,
+      "band_members_within_eps": 2906,
+      "band_distinct_members": 2294,
+      "n_distinct_used_feature_sets": 158,
+      "best_holdout_auc": 0.5868,
+      "distinct_used_feature_sets": [
+        [
+          "delinq_2yrs",
+          "dti"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "inq_last_6mths"
+        ],
+        [
+          "dti",
+          "mort_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "mort_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "loan_amnt",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "loan_amnt",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "open_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "mort_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "pub_rec",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "mort_acc",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "emp_length",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "fico_range_low",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "fico_range_low",
+          "loan_amnt",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "pub_rec",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "loan_amnt",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "loan_amnt",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "loan_amnt",
+          "open_acc",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "loan_amnt",
+          "pub_rec",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "revol_util"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "pub_rec",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "loan_amnt",
+          "mort_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "loan_amnt",
+          "pub_rec",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "inq_last_6mths",
+          "loan_amnt",
+          "pub_rec",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "loan_amnt",
+          "mort_acc",
+          "pub_rec",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "loan_amnt",
+          "open_acc",
+          "revol_bal",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "inq_last_6mths",
+          "open_acc",
+          "pub_rec",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "fico_range_low",
+          "loan_amnt",
+          "mort_acc",
+          "pub_rec",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "pub_rec",
+          "revol_bal",
+          "revol_util"
+        ]
+      ],
+      "median_pairwise_spearman_v1": 0.6035,
+      "min_pairwise_spearman_v1": -0.0902,
+      "uses_extension": true,
+      "extension_features_used_union": [
+        "delinq_2yrs",
+        "inq_last_6mths",
+        "loan_amnt",
+        "mort_acc",
+        "open_acc",
+        "pub_rec",
+        "revol_bal",
+        "revol_util",
+        "total_acc"
+      ],
+      "n_distinct_members_using_extension": 2272,
+      "extension_feature_member_counts": {
+        "revol_util": 866,
+        "open_acc": 1081,
+        "inq_last_6mths": 1567,
+        "delinq_2yrs": 194,
+        "total_acc": 820,
+        "mort_acc": 524,
+        "loan_amnt": 1670,
+        "revol_bal": 70,
+        "pub_rec": 432
+      },
+      "in_six_plural_set": false,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.014172,
+          "median": 0.031029,
+          "max": 0.098979,
+          "mean": 0.033655,
+          "std": 0.011123
+        },
+        "explainer_named": {
+          "n": 4555,
+          "n_features": 4,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.4502
+            ],
+            [
+              "annual_inc",
+              0.3417
+            ],
+            [
+              "dti",
+              0.2081
+            ]
+          ],
+          "cv_r2": 0.1086,
+          "cv_r2_folds": [
+            0.0994,
+            0.1262,
+            0.1254,
+            0.1035,
+            0.0886
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 4555,
+          "n_features": 13,
+          "root_feature": "loan_amnt",
+          "top_importances": [
+            [
+              "dti",
+              0.3656
+            ],
+            [
+              "loan_amnt",
+              0.2405
+            ],
+            [
+              "inq_last_6mths",
+              0.2363
+            ]
+          ],
+          "cv_r2": 0.3609,
+          "cv_r2_folds": [
+            0.3465,
+            0.3537,
+            0.3716,
+            0.3647,
+            0.3682
+          ]
+        },
+        "delta_r2": 0.2523,
+        "root_feature": "fico_range_low",
+        "rho_top_abs": 0.2317,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.038241,
+            0.037047,
+            0.036838,
+            0.033659,
+            0.033358,
+            0.031132,
+            0.030997,
+            0.032551,
+            0.030995,
+            0.031732
+          ],
+          "n_buckets": 10,
+          "shape": "monotone",
+          "tail_ratio": 1.148,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.2317,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.031732,
+            "mean_d_bottom_decile": 0.038241,
+            "tail_over_mid": 1.148
+          },
+          "dti": {
+            "spearman_rho": -0.0251,
+            "spearman_p": 0.0901,
+            "mean_d_top_decile": 0.032681,
+            "mean_d_bottom_decile": 0.032783,
+            "tail_over_mid": 0.967
+          },
+          "annual_inc": {
+            "spearman_rho": -0.1782,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.029581,
+            "mean_d_bottom_decile": 0.037449,
+            "tail_over_mid": 1.112
+          },
+          "emp_length": {
+            "spearman_rho": -0.0398,
+            "spearman_p": 0.0072,
+            "mean_d_top_decile": 0.033143,
+            "mean_d_bottom_decile": 0.033353,
+            "tail_over_mid": 0.988
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0251,
+            "spearman_p": 0.0901
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.2317,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.2317
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.013969,
+          "median": 0.031835,
+          "max": 0.107678,
+          "mean": 0.034418,
+          "std": 0.011647
+        },
+        "explainer_named": {
+          "n": 5382,
+          "n_features": 4,
+          "root_feature": "fico_range_low",
+          "top_importances": [
+            [
+              "fico_range_low",
+              0.3725
+            ],
+            [
+              "dti",
+              0.3427
+            ],
+            [
+              "annual_inc",
+              0.2848
+            ]
+          ],
+          "cv_r2": 0.1322,
+          "cv_r2_folds": [
+            0.1134,
+            0.1586,
+            0.1198,
+            0.1226,
+            0.1468
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 5382,
+          "n_features": 13,
+          "root_feature": "inq_last_6mths",
+          "top_importances": [
+            [
+              "loan_amnt",
+              0.3175
+            ],
+            [
+              "dti",
+              0.3083
+            ],
+            [
+              "inq_last_6mths",
+              0.2396
+            ]
+          ],
+          "cv_r2": 0.3954,
+          "cv_r2_folds": [
+            0.3687,
+            0.399,
+            0.4171,
+            0.4118,
+            0.3804
+          ]
+        },
+        "delta_r2": 0.2632,
+        "root_feature": "fico_range_low",
+        "rho_top_abs": 0.2276,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.038518,
+            0.038271,
+            0.0384,
+            0.03453,
+            0.03344,
+            0.032206,
+            0.032554,
+            0.032663,
+            0.031363,
+            0.032235
+          ],
+          "n_buckets": 10,
+          "shape": "monotone",
+          "tail_ratio": 1.127,
+          "argmax_bucket": 0
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.2276,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.032235,
+            "mean_d_bottom_decile": 0.038518,
+            "tail_over_mid": 1.127
+          },
+          "dti": {
+            "spearman_rho": 0.0164,
+            "spearman_p": 0.2296,
+            "mean_d_top_decile": 0.034851,
+            "mean_d_bottom_decile": 0.03378,
+            "tail_over_mid": 1.012
+          },
+          "annual_inc": {
+            "spearman_rho": -0.1891,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.030532,
+            "mean_d_bottom_decile": 0.038705,
+            "tail_over_mid": 1.126
+          },
+          "emp_length": {
+            "spearman_rho": -0.049,
+            "spearman_p": 0.0003,
+            "mean_d_top_decile": 0.033772,
+            "mean_d_bottom_decile": 0.034736,
+            "tail_over_mid": 1.008
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.0164,
+            "spearman_p": 0.2296
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.2276,
+            "spearman_p": 0.0
+          },
+          "max_abs_rho": 0.2276
+        }
+      }
+    },
+    "C5": {
+      "n_v1": 3063,
+      "default_rate_v1": 0.2334,
+      "n_combos_tried": 73719,
+      "band_members_within_eps": 2041,
+      "band_distinct_members": 2024,
+      "n_distinct_used_feature_sets": 62,
+      "best_holdout_auc": 0.5627,
+      "distinct_used_feature_sets": [
+        [
+          "annual_inc",
+          "inq_last_6mths"
+        ],
+        [
+          "delinq_2yrs",
+          "mort_acc"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "inq_last_6mths",
+          "pub_rec"
+        ],
+        [
+          "delinq_2yrs",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc"
+        ],
+        [
+          "inq_last_6mths",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "inq_last_6mths",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "mort_acc",
+          "revol_bal"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc"
+        ],
+        [
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt",
+          "pub_rec"
+        ],
+        [
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt",
+          "revol_util"
+        ],
+        [
+          "emp_length",
+          "loan_amnt",
+          "mort_acc",
+          "revol_bal"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "open_acc",
+          "total_acc"
+        ],
+        [
+          "fico_range_low",
+          "mort_acc",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "revol_bal"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "loan_amnt",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "inq_last_6mths",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "mort_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "loan_amnt",
+          "mort_acc",
+          "revol_bal",
+          "total_acc"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc"
+        ],
+        [
+          "emp_length",
+          "fico_range_low",
+          "inq_last_6mths",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc",
+          "pub_rec"
+        ],
+        [
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "emp_length",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc",
+          "revol_bal"
+        ],
+        [
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "inq_last_6mths",
+          "loan_amnt",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "loan_amnt",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "loan_amnt",
+          "mort_acc",
+          "revol_bal",
+          "total_acc"
+        ],
+        [
+          "fico_range_low",
+          "inq_last_6mths",
+          "loan_amnt",
+          "mort_acc",
+          "open_acc",
+          "revol_util"
+        ]
+      ],
+      "median_pairwise_spearman_v1": 0.8692,
+      "min_pairwise_spearman_v1": -0.024,
+      "uses_extension": true,
+      "extension_features_used_union": [
+        "delinq_2yrs",
+        "inq_last_6mths",
+        "loan_amnt",
+        "mort_acc",
+        "open_acc",
+        "pub_rec",
+        "revol_bal",
+        "revol_util",
+        "total_acc"
+      ],
+      "n_distinct_members_using_extension": 2024,
+      "extension_feature_member_counts": {
+        "revol_util": 84,
+        "open_acc": 523,
+        "inq_last_6mths": 422,
+        "delinq_2yrs": 2,
+        "total_acc": 335,
+        "mort_acc": 1254,
+        "loan_amnt": 1926,
+        "revol_bal": 576,
+        "pub_rec": 10
+      },
+      "in_six_plural_set": true,
+      "plural": true,
+      "v1": {
+        "d_summary": {
+          "min": 0.008612,
+          "median": 0.03263,
+          "max": 0.113951,
+          "mean": 0.032986,
+          "std": 0.01745
+        },
+        "explainer_named": {
+          "n": 3063,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.48
+            ],
+            [
+              "annual_inc",
+              0.3996
+            ],
+            [
+              "fico_range_low",
+              0.1204
+            ]
+          ],
+          "cv_r2": 0.1295,
+          "cv_r2_folds": [
+            0.1578,
+            0.1281,
+            0.1024,
+            0.1436,
+            0.1157
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 3063,
+          "n_features": 13,
+          "root_feature": "loan_amnt",
+          "top_importances": [
+            [
+              "loan_amnt",
+              0.5451
+            ],
+            [
+              "open_acc",
+              0.2467
+            ],
+            [
+              "dti",
+              0.1645
+            ]
+          ],
+          "cv_r2": 0.3853,
+          "cv_r2_folds": [
+            0.3375,
+            0.4255,
+            0.3531,
+            0.4103,
+            0.4002
+          ]
+        },
+        "delta_r2": 0.2558,
+        "root_feature": "dti",
+        "rho_top_abs": 0.1915,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.032874,
+            0.028954,
+            0.029785,
+            0.028268,
+            0.029376,
+            0.029716,
+            0.032156,
+            0.03897,
+            0.039603,
+            0.040179
+          ],
+          "n_buckets": 10,
+          "shape": "mixed",
+          "tail_ratio": 1.252,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.0362,
+            "spearman_p": 0.0453,
+            "mean_d_top_decile": 0.031023,
+            "mean_d_bottom_decile": 0.03556,
+            "tail_over_mid": 1.081
+          },
+          "dti": {
+            "spearman_rho": 0.1915,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.040179,
+            "mean_d_bottom_decile": 0.032874,
+            "tail_over_mid": 1.252
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0269,
+            "spearman_p": 0.1373,
+            "mean_d_top_decile": 0.035196,
+            "mean_d_bottom_decile": 0.038131,
+            "tail_over_mid": 1.189
+          },
+          "emp_length": {
+            "spearman_rho": -0.0306,
+            "spearman_p": 0.0903,
+            "mean_d_top_decile": 0.031632,
+            "mean_d_bottom_decile": 0.03601,
+            "tail_over_mid": 1.099
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.1915,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.0362,
+            "spearman_p": 0.0453
+          },
+          "max_abs_rho": 0.1915
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.008788,
+          "median": 0.034686,
+          "max": 0.101017,
+          "mean": 0.033863,
+          "std": 0.017774
+        },
+        "explainer_named": {
+          "n": 3355,
+          "n_features": 4,
+          "root_feature": "dti",
+          "top_importances": [
+            [
+              "dti",
+              0.5186
+            ],
+            [
+              "annual_inc",
+              0.3416
+            ],
+            [
+              "fico_range_low",
+              0.0771
+            ]
+          ],
+          "cv_r2": 0.162,
+          "cv_r2_folds": [
+            0.1561,
+            0.1684,
+            0.173,
+            0.1247,
+            0.1876
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 3355,
+          "n_features": 13,
+          "root_feature": "loan_amnt",
+          "top_importances": [
+            [
+              "loan_amnt",
+              0.5419
+            ],
+            [
+              "open_acc",
+              0.1813
+            ],
+            [
+              "annual_inc",
+              0.1262
+            ]
+          ],
+          "cv_r2": 0.5329,
+          "cv_r2_folds": [
+            0.5426,
+            0.5256,
+            0.543,
+            0.565,
+            0.4885
+          ]
+        },
+        "delta_r2": 0.3709,
+        "root_feature": "dti",
+        "rho_top_abs": 0.2014,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.032996,
+            0.031029,
+            0.029468,
+            0.029423,
+            0.028427,
+            0.029597,
+            0.033836,
+            0.040444,
+            0.041566,
+            0.041851
+          ],
+          "n_buckets": 10,
+          "shape": "mixed",
+          "tail_ratio": 1.269,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.0124,
+            "spearman_p": 0.4735,
+            "mean_d_top_decile": 0.034924,
+            "mean_d_bottom_decile": 0.03596,
+            "tail_over_mid": 1.074
+          },
+          "dti": {
+            "spearman_rho": 0.2014,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.041851,
+            "mean_d_bottom_decile": 0.032996,
+            "tail_over_mid": 1.269
+          },
+          "annual_inc": {
+            "spearman_rho": 0.0305,
+            "spearman_p": 0.0775,
+            "mean_d_top_decile": 0.036567,
+            "mean_d_bottom_decile": 0.037088,
+            "tail_over_mid": 1.12
+          },
+          "emp_length": {
+            "spearman_rho": -0.0348,
+            "spearman_p": 0.0439,
+            "mean_d_top_decile": 0.03268,
+            "mean_d_bottom_decile": 0.035465,
+            "tail_over_mid": 1.049
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": -0.2014,
+            "spearman_p": 0.0
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.0124,
+            "spearman_p": 0.4735
+          },
+          "max_abs_rho": 0.2014
+        }
+      }
+    },
+    "D4": {
+      "n_v1": 1402,
+      "default_rate_v1": 0.281,
+      "n_combos_tried": 73719,
+      "band_members_within_eps": 1883,
+      "band_distinct_members": 1883,
+      "n_distinct_used_feature_sets": 36,
+      "best_holdout_auc": 0.5991,
+      "distinct_used_feature_sets": [
+        [
+          "emp_length"
+        ],
+        [
+          "annual_inc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "inq_last_6mths"
+        ],
+        [
+          "emp_length",
+          "total_acc"
+        ],
+        [
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "emp_length",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "emp_length",
+          "inq_last_6mths"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "dti",
+          "inq_last_6mths",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "emp_length",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "open_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "emp_length",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "mort_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "pub_rec"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "emp_length",
+          "mort_acc",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "revol_util",
+          "total_acc"
+        ],
+        [
+          "annual_inc",
+          "delinq_2yrs",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "revol_bal"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "emp_length",
+          "fico_range_low",
+          "mort_acc",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "revol_bal",
+          "revol_util"
+        ],
+        [
+          "annual_inc",
+          "dti",
+          "fico_range_low",
+          "mort_acc",
+          "revol_util",
+          "total_acc"
+        ]
+      ],
+      "median_pairwise_spearman_v1": 0.9257,
+      "min_pairwise_spearman_v1": -0.0667,
+      "uses_extension": true,
+      "extension_features_used_union": [
+        "delinq_2yrs",
+        "inq_last_6mths",
+        "mort_acc",
+        "open_acc",
+        "pub_rec",
+        "revol_bal",
+        "revol_util",
+        "total_acc"
+      ],
+      "n_distinct_members_using_extension": 724,
+      "extension_feature_member_counts": {
+        "revol_util": 356,
+        "open_acc": 132,
+        "inq_last_6mths": 128,
+        "delinq_2yrs": 25,
+        "total_acc": 190,
+        "mort_acc": 76,
+        "revol_bal": 20,
+        "pub_rec": 1
+      },
+      "in_six_plural_set": true,
+      "plural": false,
+      "v1": {
+        "d_summary": {
+          "min": 0.013942,
+          "median": 0.021738,
+          "max": 0.056256,
+          "mean": 0.02368,
+          "std": 0.006445
+        },
+        "explainer_named": {
+          "n": 1402,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.7827
+            ],
+            [
+              "fico_range_low",
+              0.146
+            ],
+            [
+              "dti",
+              0.0374
+            ]
+          ],
+          "cv_r2": 0.1497,
+          "cv_r2_folds": [
+            0.2321,
+            0.1836,
+            0.0577,
+            0.1372,
+            0.1382
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 1402,
+          "n_features": 13,
+          "root_feature": "inq_last_6mths",
+          "top_importances": [
+            [
+              "inq_last_6mths",
+              0.3842
+            ],
+            [
+              "fico_range_low",
+              0.285
+            ],
+            [
+              "total_acc",
+              0.2165
+            ]
+          ],
+          "cv_r2": 0.4625,
+          "cv_r2_folds": [
+            0.4471,
+            0.5267,
+            0.4687,
+            0.452,
+            0.4179
+          ]
+        },
+        "delta_r2": 0.3128,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.2642,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.023648,
+            0.021796,
+            0.022132,
+            0.022174,
+            0.021737,
+            0.023005,
+            0.022735,
+            0.024684,
+            0.026219,
+            0.028672
+          ],
+          "n_buckets": 10,
+          "shape": "mixed",
+          "tail_ratio": 1.243,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": 0.0081,
+            "spearman_p": 0.7622,
+            "mean_d_top_decile": 0.025263,
+            "mean_d_bottom_decile": 0.022782,
+            "tail_over_mid": 1.071
+          },
+          "dti": {
+            "spearman_rho": -0.0592,
+            "spearman_p": 0.0267,
+            "mean_d_top_decile": 0.022842,
+            "mean_d_bottom_decile": 0.02262,
+            "tail_over_mid": 0.955
+          },
+          "annual_inc": {
+            "spearman_rho": 0.2642,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.028672,
+            "mean_d_bottom_decile": 0.023648,
+            "tail_over_mid": 1.243
+          },
+          "emp_length": {
+            "spearman_rho": 0.0939,
+            "spearman_p": 0.0004,
+            "mean_d_top_decile": 0.023797,
+            "mean_d_bottom_decile": 0.022789,
+            "tail_over_mid": 1.001
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0592,
+            "spearman_p": 0.0267
+          },
+          "fico_proximity": {
+            "spearman_rho": 0.0081,
+            "spearman_p": 0.7622
+          },
+          "max_abs_rho": 0.0592
+        }
+      },
+      "v2": {
+        "d_summary": {
+          "min": 0.012022,
+          "median": 0.021738,
+          "max": 0.052265,
+          "mean": 0.023515,
+          "std": 0.006271
+        },
+        "explainer_named": {
+          "n": 1248,
+          "n_features": 4,
+          "root_feature": "annual_inc",
+          "top_importances": [
+            [
+              "annual_inc",
+              0.684
+            ],
+            [
+              "fico_range_low",
+              0.2018
+            ],
+            [
+              "dti",
+              0.1142
+            ]
+          ],
+          "cv_r2": 0.1146,
+          "cv_r2_folds": [
+            0.0024,
+            0.1454,
+            0.088,
+            0.1661,
+            0.1711
+          ]
+        },
+        "explainer_named_plus_extension": {
+          "n": 1248,
+          "n_features": 13,
+          "root_feature": "total_acc",
+          "top_importances": [
+            [
+              "total_acc",
+              0.386
+            ],
+            [
+              "inq_last_6mths",
+              0.2765
+            ],
+            [
+              "fico_range_low",
+              0.2557
+            ]
+          ],
+          "cv_r2": 0.3993,
+          "cv_r2_folds": [
+            0.3725,
+            0.3925,
+            0.4621,
+            0.4002,
+            0.3692
+          ]
+        },
+        "delta_r2": 0.2847,
+        "root_feature": "annual_inc",
+        "rho_top_abs": 0.2095,
+        "well_explained": false,
+        "pd_profile_on_root": {
+          "decile_mean_d": [
+            0.024404,
+            0.02176,
+            0.021602,
+            0.021745,
+            0.022981,
+            0.022803,
+            0.022781,
+            0.024578,
+            0.026142,
+            0.026378
+          ],
+          "n_buckets": 10,
+          "shape": "mixed",
+          "tail_ratio": 1.144,
+          "argmax_bucket": 9
+        },
+        "univariate": {
+          "fico_range_low": {
+            "spearman_rho": -0.0353,
+            "spearman_p": 0.2126,
+            "mean_d_top_decile": 0.024341,
+            "mean_d_bottom_decile": 0.023368,
+            "tail_over_mid": 1.039
+          },
+          "dti": {
+            "spearman_rho": -0.0327,
+            "spearman_p": 0.2487,
+            "mean_d_top_decile": 0.023555,
+            "mean_d_bottom_decile": 0.022135,
+            "tail_over_mid": 0.995
+          },
+          "annual_inc": {
+            "spearman_rho": 0.2095,
+            "spearman_p": 0.0,
+            "mean_d_top_decile": 0.026378,
+            "mean_d_bottom_decile": 0.024404,
+            "tail_over_mid": 1.144
+          },
+          "emp_length": {
+            "spearman_rho": 0.1114,
+            "spearman_p": 0.0001,
+            "mean_d_top_decile": 0.023515,
+            "mean_d_bottom_decile": 0.023205,
+            "tail_over_mid": 0.998
+          }
+        },
+        "threshold_proximity": {
+          "dti_ceiling": 43.0,
+          "fico_floor": 620.0,
+          "dti_proximity": {
+            "spearman_rho": 0.0334,
+            "spearman_p": 0.2377
+          },
+          "fico_proximity": {
+            "spearman_rho": -0.0353,
+            "spearman_p": 0.2126
+          },
+          "max_abs_rho": 0.0353
+        }
+      }
+    }
+  },
+  "plural_grades_extended_band_v1": [
+    "A1",
+    "A5",
+    "B1",
+    "C1",
+    "C2",
+    "C5"
+  ],
+  "plurality_comparison": {
+    "extended_band_plural": [
+      "A1",
+      "A5",
+      "B1",
+      "C1",
+      "C2",
+      "C5"
+    ],
+    "six_named_only_band_plural": [
+      "A5",
+      "B1",
+      "C1",
+      "C5",
+      "D4"
+    ],
+    "headline_plural_intersection": [
+      "A5",
+      "B1",
+      "C1",
+      "C5"
+    ],
+    "became_plural_under_extended_band": [
+      "A1",
+      "C2"
+    ],
+    "lost_plurality_under_extended_band": [
+      "D4"
+    ],
+    "P5_plurality_flipped": true
+  },
+  "verdict_v1_primary": {
+    "n_headline_plural": 4,
+    "headline_plural_grades": [
+      "A5",
+      "B1",
+      "C1",
+      "C5"
+    ],
+    "A_band_uses_extension": {
+      "per_grade": {
+        "A5": true,
+        "B1": true,
+        "C1": true,
+        "C5": true
+      },
+      "n_using": 4,
+      "hit": true
+    },
+    "P1ish_named_features_explain_d_ext": {
+      "well_explained_grades": [
+        "A5",
+        "B1"
+      ],
+      "n": 2,
+      "still_named_legible_on_majority": false
+    },
+    "P2ish_same_dominant_driver": {
+      "per_grade_root": {
+        "A5": "dti",
+        "B1": "annual_inc",
+        "C1": "annual_inc",
+        "C5": "dti"
+      },
+      "n": 4,
+      "counts": {
+        "dti": 2,
+        "annual_inc": 2
+      },
+      "modal": "dti",
+      "modal_count": 2,
+      "majority": false
+    },
+    "P3ish_concentration": {
+      "per_grade_shape": {
+        "A5": "tails",
+        "B1": "tails",
+        "C1": "mixed",
+        "C5": "mixed"
+      },
+      "shape_counts": {
+        "tails": 2,
+        "mixed": 2
+      }
+    },
+    "P4_strict_rescue": {
+      "per_grade_named_r2": {
+        "A5": 0.4152,
+        "B1": 0.4206,
+        "C1": 0.0637,
+        "C5": 0.1295
+      },
+      "per_grade_all_r2": {
+        "A5": 0.6758,
+        "B1": 0.6099,
+        "C1": 0.691,
+        "C5": 0.3853
+      },
+      "per_grade_delta_r2": {
+        "A5": 0.2606,
+        "B1": 0.1893,
+        "C1": 0.6273,
+        "C5": 0.2558
+      },
+      "n_delta_r2_ge_0.1": 4,
+      "n_named_r2_lt_0.3": 2,
+      "hit": false
+    },
+    "P4_soft_named_grip_drops_vs_six": {
+      "per_grade_named_r2_six_band": {
+        "A5": 0.4632,
+        "B1": 0.5718,
+        "C1": 0.6885,
+        "C5": 0.4569
+      },
+      "per_grade_delta_r2_band": {
+        "A5": -0.048,
+        "B1": -0.1512,
+        "C1": -0.6248,
+        "C5": -0.3274
+      },
+      "n_delta_r2_band_le_neg0.15": 3,
+      "hit": true
+    },
+    "threshold_proximity_max_abs_rho_per_grade": {
+      "A5": 0.3378,
+      "B1": 0.1871,
+      "C1": 0.0356,
+      "C5": 0.1915
+    }
+  },
+  "verdict_v2_robustness": {
+    "n_headline_plural": 4,
+    "headline_plural_grades": [
+      "A5",
+      "B1",
+      "C1",
+      "C5"
+    ],
+    "A_band_uses_extension": {
+      "per_grade": {
+        "A5": true,
+        "B1": true,
+        "C1": true,
+        "C5": true
+      },
+      "n_using": 4,
+      "hit": true
+    },
+    "P1ish_named_features_explain_d_ext": {
+      "well_explained_grades": [
+        "A5",
+        "B1"
+      ],
+      "n": 2,
+      "still_named_legible_on_majority": false
+    },
+    "P2ish_same_dominant_driver": {
+      "per_grade_root": {
+        "A5": "dti",
+        "B1": "annual_inc",
+        "C1": "annual_inc",
+        "C5": "dti"
+      },
+      "n": 4,
+      "counts": {
+        "dti": 2,
+        "annual_inc": 2
+      },
+      "modal": "dti",
+      "modal_count": 2,
+      "majority": false
+    },
+    "P3ish_concentration": {
+      "per_grade_shape": {
+        "A5": "tails",
+        "B1": "tails",
+        "C1": "mixed",
+        "C5": "mixed"
+      },
+      "shape_counts": {
+        "tails": 2,
+        "mixed": 2
+      }
+    },
+    "P4_strict_rescue": {
+      "per_grade_named_r2": {
+        "A5": 0.4854,
+        "B1": 0.4331,
+        "C1": 0.1108,
+        "C5": 0.162
+      },
+      "per_grade_all_r2": {
+        "A5": 0.6546,
+        "B1": 0.6469,
+        "C1": 0.4306,
+        "C5": 0.5329
+      },
+      "per_grade_delta_r2": {
+        "A5": 0.1692,
+        "B1": 0.2138,
+        "C1": 0.3198,
+        "C5": 0.3709
+      },
+      "n_delta_r2_ge_0.1": 4,
+      "n_named_r2_lt_0.3": 2,
+      "hit": false
+    },
+    "P4_soft_named_grip_drops_vs_six": {
+      "per_grade_named_r2_six_band": {
+        "A5": 0.4632,
+        "B1": 0.5718,
+        "C1": 0.6885,
+        "C5": 0.4569
+      },
+      "per_grade_delta_r2_band": {
+        "A5": 0.0222,
+        "B1": -0.1387,
+        "C1": -0.5777,
+        "C5": -0.2949
+      },
+      "n_delta_r2_band_le_neg0.15": 2,
+      "hit": false
+    },
+    "threshold_proximity_max_abs_rho_per_grade": {
+      "A5": 0.3445,
+      "B1": 0.1789,
+      "C1": 0.0148,
+      "C5": 0.2014
+    }
+  },
+  "summary": "Extension-admitted bands, Burst D, headline-plural set ['A5', 'B1', 'C1', 'C5'] (= extended-plural ['A1', 'A5', 'B1', 'C1', 'C2', 'C5'] INT #6-plural ['A5', 'B1', 'C1', 'C5', 'D4']; became-plural=['A1', 'C2'], lost-plurality=['D4']; primary arm = V1 2015Q3): A (band uses extension features) HIT (4/4 headline grades); d_ext still named-legible on a majority: False (2/4); P4-strict (R2_named_ext<0.3 on >maj AND dR2_ext>=0.1 on >maj) MISS (n_dR2>=0.1=4, n_R2_named<0.3=2); P4-soft (dR2_band<=-0.15 vs #6 on >maj) HIT (n=3); P5 (plurality flipped) HIT. Routing implication: P4-strict missed but P4-soft fired -> the locus of disagreement PARTLY moved to un-named structure (named-explainer grip dropped vs the #6 band) without fully leaving the policy vocabulary -> a weak reprieve for routing; report the per-tier picture."
+}
