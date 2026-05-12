@@ -1,0 +1,3190 @@
+{
+  "pre_reg": "docs/superpowers/specs/2026-05-12-disagreement-routing-preregistration-note.md",
+  "burst": "D_2015H2_dti",
+  "v1": "2015Q3",
+  "v2": "2015Q4",
+  "policy": "thin_demo_hmda_mortgage",
+  "monotonic_cst_default_convention": {
+    "fico_range_low": -1,
+    "dti": 1
+  },
+  "named_features": [
+    "fico_range_low",
+    "dti",
+    "annual_inc",
+    "emp_length"
+  ],
+  "band_params": {
+    "epsilon": 0.02,
+    "depths": [
+      1,
+      2,
+      3
+    ],
+    "leaf_mins": [
+      25,
+      50,
+      100
+    ],
+    "seed": 0,
+    "plurality_rho_max": 0.9
+  },
+  "routing_params": {
+    "n_perm": 500,
+    "null_percentile": 95,
+    "n_deciles": 10
+  },
+  "flagged_grades_v1": [
+    "A1",
+    "A5",
+    "B1",
+    "C1",
+    "C2",
+    "C5",
+    "D4"
+  ],
+  "grades": {
+    "A1": {
+      "n_v1": 3528,
+      "n_v2": 4809,
+      "default_rate_v1": 0.0295,
+      "default_rate_v2": 0.027,
+      "band_members_within_eps": 9,
+      "band_distinct_members": 8,
+      "best_holdout_auc": 0.6339,
+      "n_distinct_used_feature_sets": 3,
+      "median_pairwise_spearman_v1": 0.9558,
+      "min_pairwise_spearman_v1": 0.9369,
+      "non_trivial": true,
+      "plural": false,
+      "v2_forward": {
+        "n": 4809,
+        "n_default": 130,
+        "disagreement_summary": {
+          "min": 0.000735,
+          "median": 0.002957,
+          "max": 0.028033,
+          "mean": 0.003494
+        },
+        "tercile_sizes": {
+          "0": 1603,
+          "1": 1603,
+          "2": 1603
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.577357984994641,
+            "null_p95": 0.5641,
+            "n": 1603,
+            "n_default": 48,
+            "per_member_auc": [
+              0.5774,
+              0.5774,
+              0.5774,
+              0.5774,
+              0.5774,
+              0.5774,
+              0.5774,
+              0.5774
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.4951215611004478,
+            "null_p95": 0.56,
+            "n": 1603,
+            "n_default": 40,
+            "per_member_auc": [
+              0.5087,
+              0.5087,
+              0.5087,
+              0.4794,
+              0.4794,
+              0.4794,
+              0.4982,
+              0.4982
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.6668287270064976,
+            "null_p95": 0.5673,
+            "n": 1603,
+            "n_default": 42,
+            "per_member_auc": [
+              0.6692,
+              0.6692,
+              0.6659,
+              0.6779,
+              0.677,
+              0.6737,
+              0.6509,
+              0.6509
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.7939,
+          "spearman_p": 0.0061,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 481,
+              "mean_consensus": 0.03436,
+              "mean_default": 0.02287,
+              "abs_gap": 0.01149
+            },
+            {
+              "bin": 1,
+              "n": 481,
+              "mean_consensus": 0.05226,
+              "mean_default": 0.04366,
+              "abs_gap": 0.00861
+            },
+            {
+              "bin": 2,
+              "n": 481,
+              "mean_consensus": 0.03707,
+              "mean_default": 0.02911,
+              "abs_gap": 0.00796
+            },
+            {
+              "bin": 3,
+              "n": 481,
+              "mean_consensus": 0.01742,
+              "mean_default": 0.01871,
+              "abs_gap": 0.00129
+            },
+            {
+              "bin": 4,
+              "n": 481,
+              "mean_consensus": 0.02784,
+              "mean_default": 0.02079,
+              "abs_gap": 0.00705
+            },
+            {
+              "bin": 5,
+              "n": 481,
+              "mean_consensus": 0.02647,
+              "mean_default": 0.02079,
+              "abs_gap": 0.00568
+            },
+            {
+              "bin": 6,
+              "n": 481,
+              "mean_consensus": 0.02548,
+              "mean_default": 0.03326,
+              "abs_gap": 0.00779
+            },
+            {
+              "bin": 7,
+              "n": 481,
+              "mean_consensus": 0.01279,
+              "mean_default": 0.01247,
+              "abs_gap": 0.00031
+            },
+            {
+              "bin": 8,
+              "n": 481,
+              "mean_consensus": 0.02143,
+              "mean_default": 0.02495,
+              "abs_gap": 0.00352
+            },
+            {
+              "bin": 9,
+              "n": 480,
+              "mean_consensus": 0.04273,
+              "mean_default": 0.04375,
+              "abs_gap": 0.00102
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.029104,
+            "1": 0.024366,
+            "2": 0.025126
+          },
+          "high_minus_low": -0.003978
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.008042,
+          "ece_auto_kept": 0.010487,
+          "lift": -0.002444,
+          "n_total": 4809,
+          "n_routed_out": 1603
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 2.0304,
+            "1": 1.615,
+            "2": 2.0082
+          },
+          "high_over_low": 0.989
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": false
+        }
+      },
+      "v1_insample": {
+        "n": 3528,
+        "n_default": 104,
+        "disagreement_summary": {
+          "min": 0.000735,
+          "median": 0.002957,
+          "max": 0.028033,
+          "mean": 0.003514
+        },
+        "tercile_sizes": {
+          "0": 1176,
+          "1": 1176,
+          "2": 1176
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.6198874611573024,
+            "null_p95": 0.5699,
+            "n": 1176,
+            "n_default": 42,
+            "per_member_auc": [
+              0.6199,
+              0.6199,
+              0.6199,
+              0.6199,
+              0.6199,
+              0.6199,
+              0.6199,
+              0.6199
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5538262431328356,
+            "null_p95": 0.5599,
+            "n": 1176,
+            "n_default": 31,
+            "per_member_auc": [
+              0.5268,
+              0.5268,
+              0.5268,
+              0.5934,
+              0.5934,
+              0.5934,
+              0.5349,
+              0.5349
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.7389667558811099,
+            "null_p95": 0.5786,
+            "n": 1176,
+            "n_default": 31,
+            "per_member_auc": [
+              0.7483,
+              0.7483,
+              0.7451,
+              0.7327,
+              0.7319,
+              0.7287,
+              0.7384,
+              0.7384
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.4909,
+          "spearman_p": 0.1497,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 353,
+              "mean_consensus": 0.03351,
+              "mean_default": 0.02833,
+              "abs_gap": 0.00518
+            },
+            {
+              "bin": 1,
+              "n": 353,
+              "mean_consensus": 0.05151,
+              "mean_default": 0.05666,
+              "abs_gap": 0.00515
+            },
+            {
+              "bin": 2,
+              "n": 353,
+              "mean_consensus": 0.03563,
+              "mean_default": 0.0255,
+              "abs_gap": 0.01014
+            },
+            {
+              "bin": 3,
+              "n": 353,
+              "mean_consensus": 0.01742,
+              "mean_default": 0.01983,
+              "abs_gap": 0.00241
+            },
+            {
+              "bin": 4,
+              "n": 352,
+              "mean_consensus": 0.02863,
+              "mean_default": 0.04545,
+              "abs_gap": 0.01683
+            },
+            {
+              "bin": 5,
+              "n": 353,
+              "mean_consensus": 0.02647,
+              "mean_default": 0.017,
+              "abs_gap": 0.00947
+            },
+            {
+              "bin": 6,
+              "n": 353,
+              "mean_consensus": 0.02535,
+              "mean_default": 0.02266,
+              "abs_gap": 0.00268
+            },
+            {
+              "bin": 7,
+              "n": 353,
+              "mean_consensus": 0.01208,
+              "mean_default": 0.017,
+              "abs_gap": 0.00491
+            },
+            {
+              "bin": 8,
+              "n": 353,
+              "mean_consensus": 0.0216,
+              "mean_default": 0.02266,
+              "abs_gap": 0.00106
+            },
+            {
+              "bin": 9,
+              "n": 352,
+              "mean_consensus": 0.04259,
+              "mean_default": 0.03977,
+              "abs_gap": 0.00282
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.034205,
+            "1": 0.025619,
+            "2": 0.025043
+          },
+          "high_minus_low": -0.009162
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.004085,
+          "ece_auto_kept": 0.003366,
+          "lift": 0.000719,
+          "n_total": 3528,
+          "n_routed_out": 1176
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.9956,
+            "1": 1.5783,
+            "2": 2.0105
+          },
+          "high_over_low": 1.007
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": true
+        }
+      }
+    },
+    "A5": {
+      "n_v1": 5098,
+      "n_v2": 5825,
+      "default_rate_v1": 0.0679,
+      "default_rate_v2": 0.0731,
+      "band_members_within_eps": 19,
+      "band_distinct_members": 17,
+      "best_holdout_auc": 0.5549,
+      "n_distinct_used_feature_sets": 8,
+      "median_pairwise_spearman_v1": 0.6264,
+      "min_pairwise_spearman_v1": -0.0614,
+      "non_trivial": true,
+      "plural": true,
+      "v2_forward": {
+        "n": 5825,
+        "n_default": 426,
+        "disagreement_summary": {
+          "min": 0.005007,
+          "median": 0.011038,
+          "max": 0.057808,
+          "mean": 0.013559
+        },
+        "tercile_sizes": {
+          "0": 1942,
+          "1": 1942,
+          "2": 1941
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5546854554353581,
+            "null_p95": 0.5354,
+            "n": 1942,
+            "n_default": 130,
+            "per_member_auc": [
+              0.4879,
+              0.4879,
+              0.5894,
+              0.5939,
+              0.4768,
+              0.4879,
+              0.5854,
+              0.5854,
+              0.6018,
+              0.6018,
+              0.5869,
+              0.5818,
+              0.4879,
+              0.5894,
+              0.548,
+              0.5894,
+              0.548
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5104333655467759,
+            "null_p95": 0.535,
+            "n": 1942,
+            "n_default": 147,
+            "per_member_auc": [
+              0.5128,
+              0.5128,
+              0.5082,
+              0.5098,
+              0.51,
+              0.4904,
+              0.5156,
+              0.5156,
+              0.5234,
+              0.5234,
+              0.5223,
+              0.5292,
+              0.4904,
+              0.5051,
+              0.5016,
+              0.5051,
+              0.5016
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5515685143604422,
+            "null_p95": 0.5347,
+            "n": 1941,
+            "n_default": 149,
+            "per_member_auc": [
+              0.5862,
+              0.586,
+              0.5758,
+              0.5587,
+              0.4847,
+              0.4996,
+              0.5526,
+              0.5526,
+              0.5593,
+              0.5586,
+              0.5591,
+              0.5495,
+              0.4996,
+              0.5651,
+              0.5638,
+              0.5633,
+              0.562
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.1758,
+          "spearman_p": 0.6272,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 583,
+              "mean_consensus": 0.06359,
+              "mean_default": 0.08748,
+              "abs_gap": 0.02388
+            },
+            {
+              "bin": 1,
+              "n": 582,
+              "mean_consensus": 0.06442,
+              "mean_default": 0.05498,
+              "abs_gap": 0.00944
+            },
+            {
+              "bin": 2,
+              "n": 583,
+              "mean_consensus": 0.0671,
+              "mean_default": 0.06175,
+              "abs_gap": 0.00535
+            },
+            {
+              "bin": 3,
+              "n": 582,
+              "mean_consensus": 0.06404,
+              "mean_default": 0.09107,
+              "abs_gap": 0.02703
+            },
+            {
+              "bin": 4,
+              "n": 583,
+              "mean_consensus": 0.06535,
+              "mean_default": 0.0669,
+              "abs_gap": 0.00155
+            },
+            {
+              "bin": 5,
+              "n": 582,
+              "mean_consensus": 0.07329,
+              "mean_default": 0.07388,
+              "abs_gap": 0.0006
+            },
+            {
+              "bin": 6,
+              "n": 583,
+              "mean_consensus": 0.06645,
+              "mean_default": 0.06861,
+              "abs_gap": 0.00216
+            },
+            {
+              "bin": 7,
+              "n": 582,
+              "mean_consensus": 0.05898,
+              "mean_default": 0.06873,
+              "abs_gap": 0.00975
+            },
+            {
+              "bin": 8,
+              "n": 583,
+              "mean_consensus": 0.07256,
+              "mean_default": 0.05832,
+              "abs_gap": 0.01424
+            },
+            {
+              "bin": 9,
+              "n": 582,
+              "mean_consensus": 0.09333,
+              "mean_default": 0.09966,
+              "abs_gap": 0.00632
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.062233,
+            "1": 0.070177,
+            "2": 0.070548
+          },
+          "high_minus_low": 0.008315
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.010062,
+          "ece_auto_kept": 0.013904,
+          "lift": -0.003843,
+          "n_total": 5825,
+          "n_routed_out": 1941
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.6881,
+            "1": 1.5658,
+            "2": 1.9302
+          },
+          "high_over_low": 1.143
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": true,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": true,
+          "m4_operational_lift_nonneg": false
+        }
+      },
+      "v1_insample": {
+        "n": 5098,
+        "n_default": 346,
+        "disagreement_summary": {
+          "min": 0.004848,
+          "median": 0.011038,
+          "max": 0.057057,
+          "mean": 0.013353
+        },
+        "tercile_sizes": {
+          "0": 1700,
+          "1": 1699,
+          "2": 1699
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5163611253075837,
+            "null_p95": 0.5441,
+            "n": 1700,
+            "n_default": 106,
+            "per_member_auc": [
+              0.5146,
+              0.5146,
+              0.5177,
+              0.5245,
+              0.496,
+              0.5028,
+              0.504,
+              0.504,
+              0.5024,
+              0.5024,
+              0.5261,
+              0.5496,
+              0.5028,
+              0.5177,
+              0.5406,
+              0.5177,
+              0.5406
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5978613339275105,
+            "null_p95": 0.5418,
+            "n": 1699,
+            "n_default": 99,
+            "per_member_auc": [
+              0.5353,
+              0.5353,
+              0.626,
+              0.6218,
+              0.6374,
+              0.607,
+              0.5791,
+              0.5791,
+              0.587,
+              0.587,
+              0.5876,
+              0.5945,
+              0.607,
+              0.6182,
+              0.6215,
+              0.6182,
+              0.6215
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.6024353559193322,
+            "null_p95": 0.5357,
+            "n": 1699,
+            "n_default": 141,
+            "per_member_auc": [
+              0.5643,
+              0.5642,
+              0.6275,
+              0.6302,
+              0.557,
+              0.5082,
+              0.6219,
+              0.6219,
+              0.6341,
+              0.6314,
+              0.632,
+              0.6092,
+              0.5085,
+              0.6329,
+              0.6314,
+              0.6342,
+              0.6327
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.0061,
+          "spearman_p": 0.9867,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 510,
+              "mean_consensus": 0.0632,
+              "mean_default": 0.07255,
+              "abs_gap": 0.00935
+            },
+            {
+              "bin": 1,
+              "n": 510,
+              "mean_consensus": 0.06407,
+              "mean_default": 0.06667,
+              "abs_gap": 0.00259
+            },
+            {
+              "bin": 2,
+              "n": 510,
+              "mean_consensus": 0.06694,
+              "mean_default": 0.05882,
+              "abs_gap": 0.00812
+            },
+            {
+              "bin": 3,
+              "n": 510,
+              "mean_consensus": 0.06372,
+              "mean_default": 0.03529,
+              "abs_gap": 0.02843
+            },
+            {
+              "bin": 4,
+              "n": 509,
+              "mean_consensus": 0.06491,
+              "mean_default": 0.05305,
+              "abs_gap": 0.01186
+            },
+            {
+              "bin": 5,
+              "n": 510,
+              "mean_consensus": 0.07296,
+              "mean_default": 0.07647,
+              "abs_gap": 0.00351
+            },
+            {
+              "bin": 6,
+              "n": 510,
+              "mean_consensus": 0.06661,
+              "mean_default": 0.0549,
+              "abs_gap": 0.01171
+            },
+            {
+              "bin": 7,
+              "n": 510,
+              "mean_consensus": 0.06036,
+              "mean_default": 0.05882,
+              "abs_gap": 0.00154
+            },
+            {
+              "bin": 8,
+              "n": 510,
+              "mean_consensus": 0.06666,
+              "mean_default": 0.06863,
+              "abs_gap": 0.00197
+            },
+            {
+              "bin": 9,
+              "n": 509,
+              "mean_consensus": 0.09431,
+              "mean_default": 0.1336,
+              "abs_gap": 0.03929
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.058427,
+            "1": 0.054426,
+            "2": 0.074767
+          },
+          "high_minus_low": 0.01634
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.014022,
+          "ece_auto_kept": 0.017379,
+          "lift": -0.003356,
+          "n_total": 5098,
+          "n_routed_out": 1699
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.6449,
+            "1": 1.5582,
+            "2": 1.9392
+          },
+          "high_over_low": 1.179
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": true,
+          "m4_operational_lift_nonneg": false
+        }
+      }
+    },
+    "B1": {
+      "n_v1": 5168,
+      "n_v2": 6231,
+      "default_rate_v1": 0.0886,
+      "default_rate_v2": 0.0847,
+      "band_members_within_eps": 11,
+      "band_distinct_members": 8,
+      "best_holdout_auc": 0.5774,
+      "n_distinct_used_feature_sets": 3,
+      "median_pairwise_spearman_v1": 0.167,
+      "min_pairwise_spearman_v1": 0.1381,
+      "non_trivial": true,
+      "plural": true,
+      "v2_forward": {
+        "n": 6231,
+        "n_default": 528,
+        "disagreement_summary": {
+          "min": 0.004137,
+          "median": 0.01133,
+          "max": 0.078311,
+          "mean": 0.013933
+        },
+        "tercile_sizes": {
+          "0": 2077,
+          "1": 2077,
+          "2": 2077
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5113447139346334,
+            "null_p95": 0.5298,
+            "n": 2077,
+            "n_default": 184,
+            "per_member_auc": [
+              0.5095,
+              0.5095,
+              0.5095,
+              0.506,
+              0.5174,
+              0.5174,
+              0.5108,
+              0.5108
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5262115452737133,
+            "null_p95": 0.531,
+            "n": 2077,
+            "n_default": 195,
+            "per_member_auc": [
+              0.538,
+              0.5349,
+              0.5358,
+              0.5162,
+              0.52,
+              0.52,
+              0.5224,
+              0.5224
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5468482396474421,
+            "null_p95": 0.5414,
+            "n": 2077,
+            "n_default": 149,
+            "per_member_auc": [
+              0.5593,
+              0.5491,
+              0.5603,
+              0.5626,
+              0.5385,
+              0.5385,
+              0.5333,
+              0.5333
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": 0.3818,
+          "spearman_p": 0.2763,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 624,
+              "mean_consensus": 0.08969,
+              "mean_default": 0.08654,
+              "abs_gap": 0.00316
+            },
+            {
+              "bin": 1,
+              "n": 623,
+              "mean_consensus": 0.09326,
+              "mean_default": 0.09952,
+              "abs_gap": 0.00626
+            },
+            {
+              "bin": 2,
+              "n": 623,
+              "mean_consensus": 0.09519,
+              "mean_default": 0.08026,
+              "abs_gap": 0.01493
+            },
+            {
+              "bin": 3,
+              "n": 623,
+              "mean_consensus": 0.08677,
+              "mean_default": 0.09952,
+              "abs_gap": 0.01275
+            },
+            {
+              "bin": 4,
+              "n": 623,
+              "mean_consensus": 0.08551,
+              "mean_default": 0.0947,
+              "abs_gap": 0.00919
+            },
+            {
+              "bin": 5,
+              "n": 623,
+              "mean_consensus": 0.08802,
+              "mean_default": 0.08026,
+              "abs_gap": 0.00776
+            },
+            {
+              "bin": 6,
+              "n": 623,
+              "mean_consensus": 0.08813,
+              "mean_default": 0.08347,
+              "abs_gap": 0.00466
+            },
+            {
+              "bin": 7,
+              "n": 623,
+              "mean_consensus": 0.07503,
+              "mean_default": 0.05457,
+              "abs_gap": 0.02045
+            },
+            {
+              "bin": 8,
+              "n": 623,
+              "mean_consensus": 0.07576,
+              "mean_default": 0.08186,
+              "abs_gap": 0.0061
+            },
+            {
+              "bin": 9,
+              "n": 623,
+              "mean_consensus": 0.10777,
+              "mean_default": 0.08668,
+              "abs_gap": 0.02109
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.080771,
+            "1": 0.084898,
+            "2": 0.066396
+          },
+          "high_minus_low": -0.014375
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.007591,
+          "ece_auto_kept": 0.007031,
+          "lift": 0.000561,
+          "n_total": 6231,
+          "n_routed_out": 2077
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.5843,
+            "1": 1.6479,
+            "2": 2.2996
+          },
+          "high_over_low": 1.451
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": true,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": true
+        }
+      },
+      "v1_insample": {
+        "n": 5168,
+        "n_default": 458,
+        "disagreement_summary": {
+          "min": 0.004137,
+          "median": 0.010711,
+          "max": 0.078311,
+          "mean": 0.013685
+        },
+        "tercile_sizes": {
+          "0": 1723,
+          "1": 1723,
+          "2": 1722
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5318794448378308,
+            "null_p95": 0.5279,
+            "n": 1723,
+            "n_default": 167,
+            "per_member_auc": [
+              0.5281,
+              0.5281,
+              0.5281,
+              0.5146,
+              0.5498,
+              0.5498,
+              0.5282,
+              0.5282
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5277744097999031,
+            "null_p95": 0.5376,
+            "n": 1723,
+            "n_default": 164,
+            "per_member_auc": [
+              0.54,
+              0.5165,
+              0.5223,
+              0.5117,
+              0.5348,
+              0.5348,
+              0.5311,
+              0.5311
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.6351711179127688,
+            "null_p95": 0.5466,
+            "n": 1722,
+            "n_default": 127,
+            "per_member_auc": [
+              0.6581,
+              0.655,
+              0.6671,
+              0.6467,
+              0.6111,
+              0.6111,
+              0.6161,
+              0.6161
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": 0.2848,
+          "spearman_p": 0.425,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 517,
+              "mean_consensus": 0.08944,
+              "mean_default": 0.08704,
+              "abs_gap": 0.0024
+            },
+            {
+              "bin": 1,
+              "n": 517,
+              "mean_consensus": 0.09326,
+              "mean_default": 0.08124,
+              "abs_gap": 0.01202
+            },
+            {
+              "bin": 2,
+              "n": 517,
+              "mean_consensus": 0.09759,
+              "mean_default": 0.12573,
+              "abs_gap": 0.02814
+            },
+            {
+              "bin": 3,
+              "n": 517,
+              "mean_consensus": 0.08315,
+              "mean_default": 0.09284,
+              "abs_gap": 0.00969
+            },
+            {
+              "bin": 4,
+              "n": 516,
+              "mean_consensus": 0.08659,
+              "mean_default": 0.10465,
+              "abs_gap": 0.01806
+            },
+            {
+              "bin": 5,
+              "n": 517,
+              "mean_consensus": 0.08813,
+              "mean_default": 0.08704,
+              "abs_gap": 0.00109
+            },
+            {
+              "bin": 6,
+              "n": 517,
+              "mean_consensus": 0.08682,
+              "mean_default": 0.0793,
+              "abs_gap": 0.00751
+            },
+            {
+              "bin": 7,
+              "n": 517,
+              "mean_consensus": 0.07462,
+              "mean_default": 0.04449,
+              "abs_gap": 0.03013
+            },
+            {
+              "bin": 8,
+              "n": 517,
+              "mean_consensus": 0.07423,
+              "mean_default": 0.0619,
+              "abs_gap": 0.01233
+            },
+            {
+              "bin": 9,
+              "n": 516,
+              "mean_consensus": 0.1061,
+              "mean_default": 0.12209,
+              "abs_gap": 0.01599
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.087368,
+            "1": 0.085956,
+            "2": 0.066307
+          },
+          "high_minus_low": -0.021061
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.014789,
+          "ece_auto_kept": 0.015752,
+          "lift": -0.000962,
+          "n_total": 5168,
+          "n_routed_out": 1722
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.5747,
+            "1": 1.6376,
+            "2": 2.2344
+          },
+          "high_over_low": 1.419
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": true,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": false
+        }
+      }
+    },
+    "C1": {
+      "n_v1": 4875,
+      "n_v2": 5977,
+      "default_rate_v1": 0.169,
+      "default_rate_v2": 0.1829,
+      "band_members_within_eps": 68,
+      "band_distinct_members": 42,
+      "best_holdout_auc": 0.5535,
+      "n_distinct_used_feature_sets": 12,
+      "median_pairwise_spearman_v1": 0.7431,
+      "min_pairwise_spearman_v1": -0.0775,
+      "non_trivial": true,
+      "plural": true,
+      "v2_forward": {
+        "n": 5977,
+        "n_default": 1093,
+        "disagreement_summary": {
+          "min": 0.007017,
+          "median": 0.018835,
+          "max": 0.103145,
+          "mean": 0.020599
+        },
+        "tercile_sizes": {
+          "0": 1993,
+          "1": 1992,
+          "2": 1992
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5480481709129813,
+            "null_p95": 0.525,
+            "n": 1993,
+            "n_default": 382,
+            "per_member_auc": [
+              0.5568,
+              0.548,
+              0.544,
+              0.5573,
+              0.548,
+              0.5487,
+              0.55,
+              0.5564,
+              0.5542,
+              0.5566,
+              0.5566,
+              0.5543,
+              0.5566,
+              0.5536,
+              0.5537,
+              0.5563,
+              0.5541,
+              0.5505,
+              0.5503,
+              0.5539,
+              0.5463,
+              0.5546,
+              0.5559,
+              0.5546,
+              0.5559,
+              0.5463,
+              0.5487,
+              0.5242,
+              0.5254,
+              0.5254,
+              0.5392,
+              0.5476,
+              0.5481,
+              0.5392,
+              0.5469,
+              0.5392,
+              0.5463,
+              0.5425,
+              0.5392,
+              0.5425,
+              0.5425,
+              0.5474
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5287587068725796,
+            "null_p95": 0.5283,
+            "n": 1992,
+            "n_default": 340,
+            "per_member_auc": [
+              0.5443,
+              0.5246,
+              0.5047,
+              0.5475,
+              0.5246,
+              0.5272,
+              0.5337,
+              0.5468,
+              0.544,
+              0.5469,
+              0.5464,
+              0.5424,
+              0.5471,
+              0.5397,
+              0.5398,
+              0.546,
+              0.5396,
+              0.5424,
+              0.5439,
+              0.5394,
+              0.5226,
+              0.5402,
+              0.5414,
+              0.5402,
+              0.5414,
+              0.5226,
+              0.5272,
+              0.5378,
+              0.5084,
+              0.5084,
+              0.5066,
+              0.5204,
+              0.5212,
+              0.5066,
+              0.5204,
+              0.5066,
+              0.5226,
+              0.5104,
+              0.5066,
+              0.5103,
+              0.5104,
+              0.5046
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5216195018041903,
+            "null_p95": 0.5248,
+            "n": 1992,
+            "n_default": 371,
+            "per_member_auc": [
+              0.5425,
+              0.5264,
+              0.5188,
+              0.5412,
+              0.5264,
+              0.5213,
+              0.5132,
+              0.5321,
+              0.5229,
+              0.5259,
+              0.526,
+              0.5221,
+              0.5293,
+              0.5086,
+              0.503,
+              0.5321,
+              0.5028,
+              0.5248,
+              0.5239,
+              0.508,
+              0.5141,
+              0.5104,
+              0.5244,
+              0.5104,
+              0.5244,
+              0.5141,
+              0.5213,
+              0.5219,
+              0.5277,
+              0.5277,
+              0.5333,
+              0.516,
+              0.5152,
+              0.5355,
+              0.5166,
+              0.5355,
+              0.5141,
+              0.5168,
+              0.5333,
+              0.5106,
+              0.5184,
+              0.5153
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.2242,
+          "spearman_p": 0.5334,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 598,
+              "mean_consensus": 0.15458,
+              "mean_default": 0.19398,
+              "abs_gap": 0.0394
+            },
+            {
+              "bin": 1,
+              "n": 598,
+              "mean_consensus": 0.17938,
+              "mean_default": 0.18395,
+              "abs_gap": 0.00456
+            },
+            {
+              "bin": 2,
+              "n": 598,
+              "mean_consensus": 0.17591,
+              "mean_default": 0.199,
+              "abs_gap": 0.02309
+            },
+            {
+              "bin": 3,
+              "n": 597,
+              "mean_consensus": 0.17759,
+              "mean_default": 0.1943,
+              "abs_gap": 0.01671
+            },
+            {
+              "bin": 4,
+              "n": 598,
+              "mean_consensus": 0.16993,
+              "mean_default": 0.15217,
+              "abs_gap": 0.01776
+            },
+            {
+              "bin": 5,
+              "n": 598,
+              "mean_consensus": 0.1722,
+              "mean_default": 0.1806,
+              "abs_gap": 0.0084
+            },
+            {
+              "bin": 6,
+              "n": 597,
+              "mean_consensus": 0.16299,
+              "mean_default": 0.16918,
+              "abs_gap": 0.00619
+            },
+            {
+              "bin": 7,
+              "n": 598,
+              "mean_consensus": 0.16607,
+              "mean_default": 0.19398,
+              "abs_gap": 0.02791
+            },
+            {
+              "bin": 8,
+              "n": 598,
+              "mean_consensus": 0.16501,
+              "mean_default": 0.17559,
+              "abs_gap": 0.01058
+            },
+            {
+              "bin": 9,
+              "n": 597,
+              "mean_consensus": 0.17665,
+              "mean_default": 0.18593,
+              "abs_gap": 0.00928
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.154357,
+            "1": 0.141035,
+            "2": 0.151671
+          },
+          "high_minus_low": -0.002686
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.016492,
+          "ece_auto_kept": 0.013598,
+          "lift": 0.002895,
+          "n_total": 5977,
+          "n_routed_out": 1992
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.707,
+            "1": 1.6724,
+            "2": 2.2634
+          },
+          "high_over_low": 1.326
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": true,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": true
+        }
+      },
+      "v1_insample": {
+        "n": 4875,
+        "n_default": 824,
+        "disagreement_summary": {
+          "min": 0.00763,
+          "median": 0.018629,
+          "max": 0.09974,
+          "mean": 0.019922
+        },
+        "tercile_sizes": {
+          "0": 1625,
+          "1": 1625,
+          "2": 1625
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5788196895702539,
+            "null_p95": 0.5306,
+            "n": 1625,
+            "n_default": 296,
+            "per_member_auc": [
+              0.5883,
+              0.586,
+              0.519,
+              0.5912,
+              0.586,
+              0.5843,
+              0.5866,
+              0.5916,
+              0.5912,
+              0.5913,
+              0.589,
+              0.5883,
+              0.5882,
+              0.5772,
+              0.5769,
+              0.5893,
+              0.5784,
+              0.591,
+              0.5905,
+              0.5787,
+              0.5844,
+              0.5774,
+              0.59,
+              0.5774,
+              0.59,
+              0.5844,
+              0.5843,
+              0.5103,
+              0.5731,
+              0.5731,
+              0.5893,
+              0.5857,
+              0.5843,
+              0.5893,
+              0.5863,
+              0.5893,
+              0.5844,
+              0.551,
+              0.5893,
+              0.5507,
+              0.551,
+              0.5524
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5288878580562857,
+            "null_p95": 0.5301,
+            "n": 1625,
+            "n_default": 273,
+            "per_member_auc": [
+              0.5405,
+              0.5473,
+              0.5025,
+              0.5418,
+              0.5473,
+              0.5405,
+              0.5375,
+              0.542,
+              0.536,
+              0.5407,
+              0.5377,
+              0.5353,
+              0.5397,
+              0.532,
+              0.5308,
+              0.5393,
+              0.5291,
+              0.5401,
+              0.5405,
+              0.5302,
+              0.5361,
+              0.5295,
+              0.537,
+              0.5295,
+              0.537,
+              0.5361,
+              0.5405,
+              0.5093,
+              0.5102,
+              0.5102,
+              0.5129,
+              0.5353,
+              0.5358,
+              0.5129,
+              0.5358,
+              0.5129,
+              0.5361,
+              0.5,
+              0.5129,
+              0.5002,
+              0.5,
+              0.5126
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5585006849455111,
+            "null_p95": 0.5309,
+            "n": 1625,
+            "n_default": 255,
+            "per_member_auc": [
+              0.5855,
+              0.566,
+              0.5622,
+              0.5795,
+              0.566,
+              0.5424,
+              0.5656,
+              0.5785,
+              0.559,
+              0.5753,
+              0.5805,
+              0.5563,
+              0.5538,
+              0.572,
+              0.5691,
+              0.5839,
+              0.567,
+              0.5565,
+              0.5563,
+              0.5698,
+              0.5449,
+              0.559,
+              0.5523,
+              0.559,
+              0.5523,
+              0.5449,
+              0.5424,
+              0.5407,
+              0.5291,
+              0.5291,
+              0.5465,
+              0.5518,
+              0.5519,
+              0.5453,
+              0.5489,
+              0.5453,
+              0.5449,
+              0.5708,
+              0.5465,
+              0.5707,
+              0.5705,
+              0.5652
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": 0.0545,
+          "spearman_p": 0.881,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 488,
+              "mean_consensus": 0.15539,
+              "mean_default": 0.12705,
+              "abs_gap": 0.02834
+            },
+            {
+              "bin": 1,
+              "n": 487,
+              "mean_consensus": 0.17943,
+              "mean_default": 0.19713,
+              "abs_gap": 0.0177
+            },
+            {
+              "bin": 2,
+              "n": 488,
+              "mean_consensus": 0.17592,
+              "mean_default": 0.19877,
+              "abs_gap": 0.02285
+            },
+            {
+              "bin": 3,
+              "n": 487,
+              "mean_consensus": 0.17333,
+              "mean_default": 0.19507,
+              "abs_gap": 0.02175
+            },
+            {
+              "bin": 4,
+              "n": 488,
+              "mean_consensus": 0.17538,
+              "mean_default": 0.18033,
+              "abs_gap": 0.00495
+            },
+            {
+              "bin": 5,
+              "n": 487,
+              "mean_consensus": 0.16581,
+              "mean_default": 0.14374,
+              "abs_gap": 0.02207
+            },
+            {
+              "bin": 6,
+              "n": 488,
+              "mean_consensus": 0.16696,
+              "mean_default": 0.17418,
+              "abs_gap": 0.00722
+            },
+            {
+              "bin": 7,
+              "n": 487,
+              "mean_consensus": 0.16427,
+              "mean_default": 0.15606,
+              "abs_gap": 0.00821
+            },
+            {
+              "bin": 8,
+              "n": 488,
+              "mean_consensus": 0.16206,
+              "mean_default": 0.1209,
+              "abs_gap": 0.04116
+            },
+            {
+              "bin": 9,
+              "n": 487,
+              "mean_consensus": 0.1727,
+              "mean_default": 0.19713,
+              "abs_gap": 0.02443
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.14719,
+            "1": 0.139311,
+            "2": 0.13042
+          },
+          "high_minus_low": -0.01677
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.02066,
+          "ece_auto_kept": 0.017542,
+          "lift": 0.003118,
+          "n_total": 4875,
+          "n_routed_out": 1625
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.6801,
+            "1": 1.651,
+            "2": 2.0953
+          },
+          "high_over_low": 1.247
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": true,
+          "m2_calibration_gap_routing": true,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": true
+        }
+      }
+    },
+    "C2": {
+      "n_v1": 4555,
+      "n_v2": 5382,
+      "default_rate_v1": 0.1802,
+      "default_rate_v2": 0.1826,
+      "band_members_within_eps": 28,
+      "band_distinct_members": 14,
+      "best_holdout_auc": 0.5788,
+      "n_distinct_used_feature_sets": 4,
+      "median_pairwise_spearman_v1": 0.9496,
+      "min_pairwise_spearman_v1": 0.7729,
+      "non_trivial": true,
+      "plural": false,
+      "v2_forward": {
+        "n": 5382,
+        "n_default": 983,
+        "disagreement_summary": {
+          "min": 0.002965,
+          "median": 0.012002,
+          "max": 0.078311,
+          "mean": 0.013194
+        },
+        "tercile_sizes": {
+          "0": 1794,
+          "1": 1794,
+          "2": 1794
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5331568657695975,
+            "null_p95": 0.5278,
+            "n": 1794,
+            "n_default": 287,
+            "per_member_auc": [
+              0.5448,
+              0.5369,
+              0.5369,
+              0.5389,
+              0.5304,
+              0.5304,
+              0.5304,
+              0.5304,
+              0.5304,
+              0.5304,
+              0.5314,
+              0.5314,
+              0.5323,
+              0.5291
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.4879691118069802,
+            "null_p95": 0.5273,
+            "n": 1794,
+            "n_default": 324,
+            "per_member_auc": [
+              0.5065,
+              0.492,
+              0.492,
+              0.4888,
+              0.483,
+              0.483,
+              0.483,
+              0.483,
+              0.483,
+              0.483,
+              0.4885,
+              0.4885,
+              0.488,
+              0.4894
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5364314961727171,
+            "null_p95": 0.5262,
+            "n": 1794,
+            "n_default": 372,
+            "per_member_auc": [
+              0.5432,
+              0.5224,
+              0.5224,
+              0.5435,
+              0.551,
+              0.551,
+              0.5288,
+              0.5288,
+              0.5288,
+              0.5288,
+              0.527,
+              0.527,
+              0.5541,
+              0.5535
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": 0.4909,
+          "spearman_p": 0.1497,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 539,
+              "mean_consensus": 0.18165,
+              "mean_default": 0.1577,
+              "abs_gap": 0.02395
+            },
+            {
+              "bin": 1,
+              "n": 538,
+              "mean_consensus": 0.15933,
+              "mean_default": 0.15799,
+              "abs_gap": 0.00134
+            },
+            {
+              "bin": 2,
+              "n": 538,
+              "mean_consensus": 0.18702,
+              "mean_default": 0.17286,
+              "abs_gap": 0.01416
+            },
+            {
+              "bin": 3,
+              "n": 538,
+              "mean_consensus": 0.17182,
+              "mean_default": 0.15242,
+              "abs_gap": 0.0194
+            },
+            {
+              "bin": 4,
+              "n": 538,
+              "mean_consensus": 0.18865,
+              "mean_default": 0.17472,
+              "abs_gap": 0.01392
+            },
+            {
+              "bin": 5,
+              "n": 539,
+              "mean_consensus": 0.17141,
+              "mean_default": 0.18924,
+              "abs_gap": 0.01783
+            },
+            {
+              "bin": 6,
+              "n": 538,
+              "mean_consensus": 0.19697,
+              "mean_default": 0.21933,
+              "abs_gap": 0.02236
+            },
+            {
+              "bin": 7,
+              "n": 538,
+              "mean_consensus": 0.21487,
+              "mean_default": 0.24349,
+              "abs_gap": 0.02863
+            },
+            {
+              "bin": 8,
+              "n": 538,
+              "mean_consensus": 0.19885,
+              "mean_default": 0.1803,
+              "abs_gap": 0.01855
+            },
+            {
+              "bin": 9,
+              "n": 538,
+              "mean_consensus": 0.1399,
+              "mean_default": 0.17844,
+              "abs_gap": 0.03854
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.13432,
+            "1": 0.148753,
+            "2": 0.165067
+          },
+          "high_minus_low": 0.030747
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.021463,
+          "ece_auto_kept": 0.023901,
+          "lift": -0.002439,
+          "n_total": 5382,
+          "n_routed_out": 1794
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.5394,
+            "1": 1.9193,
+            "2": 2.0669
+          },
+          "high_over_low": 1.343
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": true,
+          "m3_brier_routing": true,
+          "m4_operational_lift_nonneg": false
+        }
+      },
+      "v1_insample": {
+        "n": 4555,
+        "n_default": 821,
+        "disagreement_summary": {
+          "min": 0.002965,
+          "median": 0.012002,
+          "max": 0.078311,
+          "mean": 0.013184
+        },
+        "tercile_sizes": {
+          "0": 1519,
+          "1": 1518,
+          "2": 1518
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5281843237148702,
+            "null_p95": 0.5286,
+            "n": 1519,
+            "n_default": 275,
+            "per_member_auc": [
+              0.529,
+              0.5325,
+              0.5325,
+              0.5406,
+              0.5268,
+              0.5268,
+              0.5268,
+              0.5268,
+              0.5268,
+              0.5268,
+              0.5257,
+              0.5257,
+              0.5246,
+              0.523
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5380628616422005,
+            "null_p95": 0.5321,
+            "n": 1518,
+            "n_default": 267,
+            "per_member_auc": [
+              0.5459,
+              0.5332,
+              0.5332,
+              0.5389,
+              0.5404,
+              0.5404,
+              0.5404,
+              0.5404,
+              0.5404,
+              0.5404,
+              0.5333,
+              0.5333,
+              0.5323,
+              0.5404
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.6138221159309966,
+            "null_p95": 0.5287,
+            "n": 1518,
+            "n_default": 279,
+            "per_member_auc": [
+              0.6193,
+              0.5978,
+              0.5978,
+              0.62,
+              0.6249,
+              0.6249,
+              0.618,
+              0.618,
+              0.618,
+              0.618,
+              0.5994,
+              0.5994,
+              0.6195,
+              0.6184
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.0061,
+          "spearman_p": 0.9867,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 456,
+              "mean_consensus": 0.18153,
+              "mean_default": 0.17105,
+              "abs_gap": 0.01047
+            },
+            {
+              "bin": 1,
+              "n": 455,
+              "mean_consensus": 0.15908,
+              "mean_default": 0.18681,
+              "abs_gap": 0.02773
+            },
+            {
+              "bin": 2,
+              "n": 456,
+              "mean_consensus": 0.19201,
+              "mean_default": 0.20614,
+              "abs_gap": 0.01413
+            },
+            {
+              "bin": 3,
+              "n": 455,
+              "mean_consensus": 0.16783,
+              "mean_default": 0.16484,
+              "abs_gap": 0.00299
+            },
+            {
+              "bin": 4,
+              "n": 456,
+              "mean_consensus": 0.1887,
+              "mean_default": 0.20175,
+              "abs_gap": 0.01305
+            },
+            {
+              "bin": 5,
+              "n": 455,
+              "mean_consensus": 0.17177,
+              "mean_default": 0.15385,
+              "abs_gap": 0.01793
+            },
+            {
+              "bin": 6,
+              "n": 456,
+              "mean_consensus": 0.19543,
+              "mean_default": 0.17763,
+              "abs_gap": 0.0178
+            },
+            {
+              "bin": 7,
+              "n": 455,
+              "mean_consensus": 0.2138,
+              "mean_default": 0.22857,
+              "abs_gap": 0.01477
+            },
+            {
+              "bin": 8,
+              "n": 456,
+              "mean_consensus": 0.1982,
+              "mean_default": 0.17325,
+              "abs_gap": 0.02496
+            },
+            {
+              "bin": 9,
+              "n": 455,
+              "mean_consensus": 0.14116,
+              "mean_default": 0.13846,
+              "abs_gap": 0.0027
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.147903,
+            "1": 0.144517,
+            "2": 0.145479
+          },
+          "high_minus_low": -0.002424
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.011475,
+          "ece_auto_kept": 0.017784,
+          "lift": -0.006309,
+          "n_total": 4555,
+          "n_routed_out": 1518
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.5278,
+            "1": 1.8818,
+            "2": 1.9758
+          },
+          "high_over_low": 1.293
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": false
+        }
+      }
+    },
+    "C5": {
+      "n_v1": 3063,
+      "n_v2": 3355,
+      "default_rate_v1": 0.2334,
+      "default_rate_v2": 0.2218,
+      "band_members_within_eps": 72,
+      "band_distinct_members": 48,
+      "best_holdout_auc": 0.5327,
+      "n_distinct_used_feature_sets": 9,
+      "median_pairwise_spearman_v1": 0.5637,
+      "min_pairwise_spearman_v1": 0.0702,
+      "non_trivial": true,
+      "plural": true,
+      "v2_forward": {
+        "n": 3355,
+        "n_default": 744,
+        "disagreement_summary": {
+          "min": 0.008135,
+          "median": 0.022539,
+          "max": 0.093553,
+          "mean": 0.025784
+        },
+        "tercile_sizes": {
+          "0": 1119,
+          "1": 1118,
+          "2": 1118
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5085901353690935,
+            "null_p95": 0.5206,
+            "n": 1119,
+            "n_default": 260,
+            "per_member_auc": [
+              0.5134,
+              0.5134,
+              0.5063,
+              0.5063,
+              0.5063,
+              0.5063,
+              0.5063,
+              0.5063,
+              0.5063,
+              0.5063,
+              0.5071,
+              0.5063,
+              0.5133,
+              0.5133,
+              0.5071,
+              0.5071,
+              0.5133,
+              0.5133,
+              0.5133,
+              0.5133,
+              0.5065,
+              0.5065,
+              0.5133,
+              0.5133,
+              0.5065,
+              0.5133,
+              0.5133,
+              0.5065,
+              0.494,
+              0.4968,
+              0.4968,
+              0.5177,
+              0.5133,
+              0.5177,
+              0.5133,
+              0.4968,
+              0.5066,
+              0.5066,
+              0.5066,
+              0.5133,
+              0.5133,
+              0.5133,
+              0.5133,
+              0.5178,
+              0.4937,
+              0.5063,
+              0.5063,
+              0.5063
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5209654393182533,
+            "null_p95": 0.5349,
+            "n": 1118,
+            "n_default": 237,
+            "per_member_auc": [
+              0.5311,
+              0.5311,
+              0.5278,
+              0.5278,
+              0.5278,
+              0.5278,
+              0.5278,
+              0.5278,
+              0.507,
+              0.507,
+              0.508,
+              0.507,
+              0.5264,
+              0.5264,
+              0.5071,
+              0.5071,
+              0.5239,
+              0.5239,
+              0.5239,
+              0.5239,
+              0.5151,
+              0.5156,
+              0.5246,
+              0.5216,
+              0.5151,
+              0.5246,
+              0.5216,
+              0.5155,
+              0.5218,
+              0.5145,
+              0.5145,
+              0.5251,
+              0.5246,
+              0.5285,
+              0.5246,
+              0.5151,
+              0.5066,
+              0.5066,
+              0.5066,
+              0.5264,
+              0.5264,
+              0.5264,
+              0.5264,
+              0.5348,
+              0.517,
+              0.5278,
+              0.5278,
+              0.5303
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5095170461148012,
+            "null_p95": 0.5336,
+            "n": 1118,
+            "n_default": 247,
+            "per_member_auc": [
+              0.4939,
+              0.4939,
+              0.518,
+              0.518,
+              0.518,
+              0.518,
+              0.518,
+              0.518,
+              0.5155,
+              0.5144,
+              0.5328,
+              0.5155,
+              0.4938,
+              0.4938,
+              0.5282,
+              0.5282,
+              0.5011,
+              0.5011,
+              0.5011,
+              0.5011,
+              0.5122,
+              0.5152,
+              0.4939,
+              0.4929,
+              0.513,
+              0.4939,
+              0.4929,
+              0.5251,
+              0.5087,
+              0.5297,
+              0.5297,
+              0.4907,
+              0.4879,
+              0.4929,
+              0.4879,
+              0.533,
+              0.5332,
+              0.5332,
+              0.5332,
+              0.4993,
+              0.4938,
+              0.4993,
+              0.4938,
+              0.4938,
+              0.5156,
+              0.5102,
+              0.5133,
+              0.5166
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.0545,
+          "spearman_p": 0.881,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 336,
+              "mean_consensus": 0.23419,
+              "mean_default": 0.24107,
+              "abs_gap": 0.00688
+            },
+            {
+              "bin": 1,
+              "n": 335,
+              "mean_consensus": 0.23322,
+              "mean_default": 0.19104,
+              "abs_gap": 0.04217
+            },
+            {
+              "bin": 2,
+              "n": 336,
+              "mean_consensus": 0.21458,
+              "mean_default": 0.25298,
+              "abs_gap": 0.03839
+            },
+            {
+              "bin": 3,
+              "n": 335,
+              "mean_consensus": 0.25382,
+              "mean_default": 0.23881,
+              "abs_gap": 0.01502
+            },
+            {
+              "bin": 4,
+              "n": 336,
+              "mean_consensus": 0.23112,
+              "mean_default": 0.20833,
+              "abs_gap": 0.02278
+            },
+            {
+              "bin": 5,
+              "n": 335,
+              "mean_consensus": 0.21569,
+              "mean_default": 0.20597,
+              "abs_gap": 0.00972
+            },
+            {
+              "bin": 6,
+              "n": 336,
+              "mean_consensus": 0.22813,
+              "mean_default": 0.21131,
+              "abs_gap": 0.01682
+            },
+            {
+              "bin": 7,
+              "n": 335,
+              "mean_consensus": 0.24606,
+              "mean_default": 0.24478,
+              "abs_gap": 0.00128
+            },
+            {
+              "bin": 8,
+              "n": 336,
+              "mean_consensus": 0.24531,
+              "mean_default": 0.20833,
+              "abs_gap": 0.03698
+            },
+            {
+              "bin": 9,
+              "n": 335,
+              "mean_consensus": 0.23816,
+              "mean_default": 0.21493,
+              "abs_gap": 0.02323
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.178298,
+            "1": 0.167049,
+            "2": 0.17328
+          },
+          "high_minus_low": -0.005018
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.020283,
+          "ece_auto_kept": 0.019752,
+          "lift": 0.000531,
+          "n_total": 3355,
+          "n_routed_out": 1118
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.4276,
+            "1": 1.808,
+            "2": 2.3514
+          },
+          "high_over_low": 1.647
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": true
+        }
+      },
+      "v1_insample": {
+        "n": 3063,
+        "n_default": 715,
+        "disagreement_summary": {
+          "min": 0.008135,
+          "median": 0.02302,
+          "max": 0.093553,
+          "mean": 0.025397
+        },
+        "tercile_sizes": {
+          "0": 1021,
+          "1": 1021,
+          "2": 1021
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5085386917979026,
+            "null_p95": 0.5189,
+            "n": 1021,
+            "n_default": 219,
+            "per_member_auc": [
+              0.5166,
+              0.5166,
+              0.5029,
+              0.5029,
+              0.5029,
+              0.5029,
+              0.5029,
+              0.5029,
+              0.5029,
+              0.5029,
+              0.5032,
+              0.5029,
+              0.5161,
+              0.5161,
+              0.5032,
+              0.5032,
+              0.5161,
+              0.5161,
+              0.5161,
+              0.5161,
+              0.503,
+              0.5028,
+              0.5161,
+              0.5161,
+              0.503,
+              0.5161,
+              0.5161,
+              0.5028,
+              0.4862,
+              0.5155,
+              0.5155,
+              0.5117,
+              0.5161,
+              0.5117,
+              0.5161,
+              0.5153,
+              0.503,
+              0.503,
+              0.503,
+              0.5161,
+              0.5161,
+              0.5161,
+              0.5161,
+              0.5123,
+              0.4863,
+              0.5029,
+              0.5029,
+              0.5029
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5414897564650895,
+            "null_p95": 0.5333,
+            "n": 1021,
+            "n_default": 235,
+            "per_member_auc": [
+              0.553,
+              0.553,
+              0.5482,
+              0.5482,
+              0.5482,
+              0.5482,
+              0.5482,
+              0.5482,
+              0.5317,
+              0.5317,
+              0.5347,
+              0.5317,
+              0.5441,
+              0.5441,
+              0.5337,
+              0.5337,
+              0.544,
+              0.544,
+              0.544,
+              0.544,
+              0.5262,
+              0.5287,
+              0.5534,
+              0.5436,
+              0.5262,
+              0.5534,
+              0.5436,
+              0.5292,
+              0.5274,
+              0.5268,
+              0.5268,
+              0.5559,
+              0.5534,
+              0.5582,
+              0.5534,
+              0.5294,
+              0.5341,
+              0.5341,
+              0.5341,
+              0.5441,
+              0.5441,
+              0.5441,
+              0.5441,
+              0.5498,
+              0.526,
+              0.5482,
+              0.5482,
+              0.5483
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5885963336862271,
+            "null_p95": 0.5319,
+            "n": 1021,
+            "n_default": 261,
+            "per_member_auc": [
+              0.5794,
+              0.5794,
+              0.599,
+              0.599,
+              0.599,
+              0.599,
+              0.599,
+              0.599,
+              0.6008,
+              0.6003,
+              0.5873,
+              0.6008,
+              0.5848,
+              0.5848,
+              0.5881,
+              0.5881,
+              0.5374,
+              0.5374,
+              0.5374,
+              0.5374,
+              0.6142,
+              0.6107,
+              0.5806,
+              0.618,
+              0.6137,
+              0.5806,
+              0.618,
+              0.5979,
+              0.6012,
+              0.6097,
+              0.6097,
+              0.5694,
+              0.5851,
+              0.5848,
+              0.5851,
+              0.6071,
+              0.5871,
+              0.5871,
+              0.5871,
+              0.5489,
+              0.5848,
+              0.5489,
+              0.5848,
+              0.5568,
+              0.5984,
+              0.6104,
+              0.6173,
+              0.6176
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": 0.3576,
+          "spearman_p": 0.3104,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 307,
+              "mean_consensus": 0.23296,
+              "mean_default": 0.22801,
+              "abs_gap": 0.00495
+            },
+            {
+              "bin": 1,
+              "n": 306,
+              "mean_consensus": 0.23322,
+              "mean_default": 0.23856,
+              "abs_gap": 0.00535
+            },
+            {
+              "bin": 2,
+              "n": 306,
+              "mean_consensus": 0.21543,
+              "mean_default": 0.19608,
+              "abs_gap": 0.01936
+            },
+            {
+              "bin": 3,
+              "n": 307,
+              "mean_consensus": 0.25042,
+              "mean_default": 0.1987,
+              "abs_gap": 0.05172
+            },
+            {
+              "bin": 4,
+              "n": 306,
+              "mean_consensus": 0.23299,
+              "mean_default": 0.25163,
+              "abs_gap": 0.01865
+            },
+            {
+              "bin": 5,
+              "n": 306,
+              "mean_consensus": 0.21395,
+              "mean_default": 0.20261,
+              "abs_gap": 0.01133
+            },
+            {
+              "bin": 6,
+              "n": 307,
+              "mean_consensus": 0.22569,
+              "mean_default": 0.2215,
+              "abs_gap": 0.0042
+            },
+            {
+              "bin": 7,
+              "n": 306,
+              "mean_consensus": 0.25039,
+              "mean_default": 0.23856,
+              "abs_gap": 0.01183
+            },
+            {
+              "bin": 8,
+              "n": 306,
+              "mean_consensus": 0.24283,
+              "mean_default": 0.28105,
+              "abs_gap": 0.03822
+            },
+            {
+              "bin": 9,
+              "n": 306,
+              "mean_consensus": 0.23745,
+              "mean_default": 0.27778,
+              "abs_gap": 0.04033
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.168596,
+            "1": 0.175875,
+            "2": 0.184798
+          },
+          "high_minus_low": 0.016202
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.023911,
+          "ece_auto_kept": 0.016035,
+          "lift": 0.007876,
+          "n_total": 3063,
+          "n_routed_out": 1021
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.4274,
+            "1": 1.7778,
+            "2": 2.2522
+          },
+          "high_over_low": 1.578
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": true,
+          "m3_brier_routing": true,
+          "m4_operational_lift_nonneg": true
+        }
+      }
+    },
+    "D4": {
+      "n_v1": 1402,
+      "n_v2": 1248,
+      "default_rate_v1": 0.281,
+      "default_rate_v2": 0.3109,
+      "band_members_within_eps": 17,
+      "band_distinct_members": 16,
+      "best_holdout_auc": 0.5918,
+      "n_distinct_used_feature_sets": 6,
+      "median_pairwise_spearman_v1": 0.6245,
+      "min_pairwise_spearman_v1": 0.0407,
+      "non_trivial": true,
+      "plural": true,
+      "v2_forward": {
+        "n": 1248,
+        "n_default": 388,
+        "disagreement_summary": {
+          "min": 0.014282,
+          "median": 0.03274,
+          "max": 0.103258,
+          "mean": 0.033294
+        },
+        "tercile_sizes": {
+          "0": 416,
+          "1": 416,
+          "2": 416
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5407747145753307,
+            "null_p95": 0.5431,
+            "n": 416,
+            "n_default": 132,
+            "per_member_auc": [
+              0.5415,
+              0.5415,
+              0.5415,
+              0.5415,
+              0.5332,
+              0.5332,
+              0.5332,
+              0.5332,
+              0.5528,
+              0.5486,
+              0.5415,
+              0.5528,
+              0.5348,
+              0.5415,
+              0.5487,
+              0.5332
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5325743456770116,
+            "null_p95": 0.548,
+            "n": 416,
+            "n_default": 129,
+            "per_member_auc": [
+              0.5421,
+              0.5421,
+              0.5383,
+              0.5421,
+              0.5314,
+              0.5314,
+              0.5314,
+              0.5314,
+              0.4822,
+              0.5462,
+              0.5421,
+              0.4822,
+              0.5517,
+              0.5383,
+              0.5567,
+              0.5314
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.5010157548429284,
+            "null_p95": 0.5524,
+            "n": 416,
+            "n_default": 127,
+            "per_member_auc": [
+              0.514,
+              0.514,
+              0.5101,
+              0.5192,
+              0.507,
+              0.507,
+              0.507,
+              0.507,
+              0.4378,
+              0.5208,
+              0.5183,
+              0.4378,
+              0.4565,
+              0.522,
+              0.5251,
+              0.5122
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": -0.0424,
+          "spearman_p": 0.9074,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 125,
+              "mean_consensus": 0.33796,
+              "mean_default": 0.376,
+              "abs_gap": 0.03804
+            },
+            {
+              "bin": 1,
+              "n": 125,
+              "mean_consensus": 0.31581,
+              "mean_default": 0.264,
+              "abs_gap": 0.05181
+            },
+            {
+              "bin": 2,
+              "n": 125,
+              "mean_consensus": 0.28607,
+              "mean_default": 0.32,
+              "abs_gap": 0.03393
+            },
+            {
+              "bin": 3,
+              "n": 125,
+              "mean_consensus": 0.28329,
+              "mean_default": 0.336,
+              "abs_gap": 0.05271
+            },
+            {
+              "bin": 4,
+              "n": 124,
+              "mean_consensus": 0.29081,
+              "mean_default": 0.29032,
+              "abs_gap": 0.00048
+            },
+            {
+              "bin": 5,
+              "n": 125,
+              "mean_consensus": 0.28506,
+              "mean_default": 0.288,
+              "abs_gap": 0.00294
+            },
+            {
+              "bin": 6,
+              "n": 125,
+              "mean_consensus": 0.28255,
+              "mean_default": 0.328,
+              "abs_gap": 0.04545
+            },
+            {
+              "bin": 7,
+              "n": 125,
+              "mean_consensus": 0.31432,
+              "mean_default": 0.304,
+              "abs_gap": 0.01032
+            },
+            {
+              "bin": 8,
+              "n": 125,
+              "mean_consensus": 0.24471,
+              "mean_default": 0.264,
+              "abs_gap": 0.01929
+            },
+            {
+              "bin": 9,
+              "n": 124,
+              "mean_consensus": 0.2013,
+              "mean_default": 0.33871,
+              "abs_gap": 0.13741
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.215387,
+            "1": 0.213279,
+            "2": 0.218058
+          },
+          "high_minus_low": 0.002671
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.036696,
+          "ece_auto_kept": 0.046191,
+          "lift": -0.009494,
+          "n_total": 1248,
+          "n_routed_out": 416
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.6605,
+            "1": 1.8012,
+            "2": 1.9062
+          },
+          "high_over_low": 1.148
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": false,
+          "m3_brier_routing": true,
+          "m4_operational_lift_nonneg": false
+        }
+      },
+      "v1_insample": {
+        "n": 1402,
+        "n_default": 394,
+        "disagreement_summary": {
+          "min": 0.014282,
+          "median": 0.03274,
+          "max": 0.106257,
+          "mean": 0.033242
+        },
+        "tercile_sizes": {
+          "0": 468,
+          "1": 467,
+          "2": 467
+        },
+        "metric1_tercile_member_auc": {
+          "0": {
+            "mean_member_auc": 0.5760763917611051,
+            "null_p95": 0.5391,
+            "n": 468,
+            "n_default": 154,
+            "per_member_auc": [
+              0.5811,
+              0.5811,
+              0.5784,
+              0.5811,
+              0.5651,
+              0.5651,
+              0.5651,
+              0.5651,
+              0.5913,
+              0.5913,
+              0.5811,
+              0.5913,
+              0.5455,
+              0.5784,
+              0.5913,
+              0.5651
+            ]
+          },
+          "1": {
+            "mean_member_auc": 0.5452957372745948,
+            "null_p95": 0.545,
+            "n": 467,
+            "n_default": 130,
+            "per_member_auc": [
+              0.5614,
+              0.5614,
+              0.5532,
+              0.5614,
+              0.5273,
+              0.5273,
+              0.5273,
+              0.5273,
+              0.554,
+              0.5329,
+              0.5614,
+              0.554,
+              0.5606,
+              0.5532,
+              0.5346,
+              0.5273
+            ]
+          },
+          "2": {
+            "mean_member_auc": 0.592308855360326,
+            "null_p95": 0.5467,
+            "n": 467,
+            "n_default": 110,
+            "per_member_auc": [
+              0.6061,
+              0.6061,
+              0.6194,
+              0.611,
+              0.6086,
+              0.6086,
+              0.6086,
+              0.6086,
+              0.5158,
+              0.5539,
+              0.612,
+              0.5158,
+              0.6069,
+              0.624,
+              0.5581,
+              0.6135
+            ]
+          }
+        },
+        "metric2_calibration_gap_vs_disagreement": {
+          "spearman_rho": 0.0667,
+          "spearman_p": 0.8548,
+          "n_bins_used": 10,
+          "per_bin": [
+            {
+              "bin": 0,
+              "n": 141,
+              "mean_consensus": 0.32464,
+              "mean_default": 0.39716,
+              "abs_gap": 0.07252
+            },
+            {
+              "bin": 1,
+              "n": 140,
+              "mean_consensus": 0.32663,
+              "mean_default": 0.33571,
+              "abs_gap": 0.00908
+            },
+            {
+              "bin": 2,
+              "n": 140,
+              "mean_consensus": 0.29044,
+              "mean_default": 0.3,
+              "abs_gap": 0.00956
+            },
+            {
+              "bin": 3,
+              "n": 140,
+              "mean_consensus": 0.27689,
+              "mean_default": 0.27857,
+              "abs_gap": 0.00168
+            },
+            {
+              "bin": 4,
+              "n": 140,
+              "mean_consensus": 0.27924,
+              "mean_default": 0.20714,
+              "abs_gap": 0.0721
+            },
+            {
+              "bin": 5,
+              "n": 141,
+              "mean_consensus": 0.29847,
+              "mean_default": 0.30496,
+              "abs_gap": 0.0065
+            },
+            {
+              "bin": 6,
+              "n": 140,
+              "mean_consensus": 0.27725,
+              "mean_default": 0.32143,
+              "abs_gap": 0.04418
+            },
+            {
+              "bin": 7,
+              "n": 140,
+              "mean_consensus": 0.31289,
+              "mean_default": 0.3,
+              "abs_gap": 0.01289
+            },
+            {
+              "bin": 8,
+              "n": 140,
+              "mean_consensus": 0.23686,
+              "mean_default": 0.19286,
+              "abs_gap": 0.044
+            },
+            {
+              "bin": 9,
+              "n": 140,
+              "mean_consensus": 0.19835,
+              "mean_default": 0.17143,
+              "abs_gap": 0.02692
+            }
+          ]
+        },
+        "metric3_consensus_brier_by_tercile": {
+          "brier_by_tercile": {
+            "0": 0.216704,
+            "1": 0.198892,
+            "2": 0.173693
+          },
+          "high_minus_low": -0.043011
+        },
+        "metric4_operational_lift": {
+          "ece_all": 0.043227,
+          "ece_auto_kept": 0.048712,
+          "lift": -0.005485,
+          "n_total": 1402,
+          "n_routed_out": 467
+        },
+        "diagnostic_feature_space_outlierness": {
+          "mean_mahalanobis_by_tercile": {
+            "0": 1.6521,
+            "1": 1.793,
+            "2": 1.9497
+          },
+          "high_over_low": 1.18
+        },
+        "routing_relevant": {
+          "m1_tercile_predictability_routing": false,
+          "m2_calibration_gap_routing": true,
+          "m3_brier_routing": false,
+          "m4_operational_lift_nonneg": false
+        }
+      }
+    }
+  },
+  "plural_grades": [
+    "A5",
+    "B1",
+    "C1",
+    "C5",
+    "D4"
+  ],
+  "verdict_v2_forward": {
+    "n_plural_grades": 5,
+    "plural_grades": [
+      "A5",
+      "B1",
+      "C1",
+      "C5",
+      "D4"
+    ],
+    "metric1_routing_yes_no": [
+      2,
+      3
+    ],
+    "metric2_routing_yes_no": [
+      1,
+      4
+    ],
+    "metric3_routing_yes_no": [
+      2,
+      3
+    ],
+    "metric4_lift_nonneg_yes_no": [
+      3,
+      2
+    ],
+    "metrics_1_2_3_routing_majority": false,
+    "metrics_1_2_3_falsified_majority": true,
+    "metric4_lift_nonneg_majority": true,
+    "valid_routing_signal": false,
+    "deflated_no_routing_signal": true
+  },
+  "verdict_v1_insample": {
+    "n_plural_grades": 5,
+    "metric1_routing_yes_no": [
+      1,
+      4
+    ],
+    "metric2_routing_yes_no": [
+      4,
+      1
+    ],
+    "metric3_routing_yes_no": [
+      2,
+      3
+    ],
+    "metric4_lift_nonneg_yes_no": [
+      2,
+      3
+    ]
+  },
+  "most_disagreeing_grade": {
+    "grade": "B1",
+    "median_pairwise_spearman_v1": 0.167,
+    "v2_routing_relevant": {
+      "m1_tercile_predictability_routing": false,
+      "m2_calibration_gap_routing": true,
+      "m3_brier_routing": false,
+      "m4_operational_lift_nonneg": true
+    }
+  },
+  "summary": "Disagreement-as-routing on Burst D (2015Q3->2015Q4), 5 plural grades ['A5', 'B1', 'C1', 'C5', 'D4']: metrics 1/2/3 routing-yes counts = 2/1/2 of 5; metric-4 lift>=0 on 3/5. DEFLATED: routing signal not valid (1-3 fail on a majority)."
+}
