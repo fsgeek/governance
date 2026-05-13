@@ -1,0 +1,244 @@
+{
+  "test": "rb05 rung-2.5 direct verification \u2014 named-explainer depth sweep",
+  "vintage": "2016Q1",
+  "cell": "rb05",
+  "n": 45692,
+  "default_rate": 0.0049,
+  "named_features": [
+    "fico_range_low",
+    "dti",
+    "ltv",
+    "cltv",
+    "mortgage_insurance_pct",
+    "loan_term_months",
+    "loan_purpose",
+    "num_units",
+    "num_borrowers",
+    "first_time_homebuyer",
+    "property_type"
+  ],
+  "extension_features": [
+    "property_state",
+    "original_upb",
+    "seller_name",
+    "servicer_name"
+  ],
+  "band_summary": {
+    "n_distinct_uf_members": 9,
+    "n_distinct_used_feature_sets": 4,
+    "median_pairwise_spearman": 0.9983,
+    "distinct_used_feature_sets": [
+      [
+        "dti",
+        "property_state"
+      ],
+      [
+        "dti",
+        "first_time_homebuyer",
+        "property_state"
+      ],
+      [
+        "dti",
+        "loan_purpose",
+        "property_state"
+      ],
+      [
+        "dti",
+        "property_state",
+        "servicer_name"
+      ]
+    ],
+    "d_min": 0.0,
+    "d_median": 0.0,
+    "d_max": 0.001566,
+    "d_std": 0.000201
+  },
+  "explainer_named_depth_sweep": {
+    "3": {
+      "cv_r2_named": 0.2077,
+      "cv_r2_folds": [
+        0.1971,
+        0.1892,
+        0.2236,
+        0.2034,
+        0.2251
+      ],
+      "root_feature": "first_time_homebuyer",
+      "top_importances": [
+        [
+          "dti",
+          0.7105
+        ],
+        [
+          "first_time_homebuyer",
+          0.2045
+        ],
+        [
+          "ltv",
+          0.0844
+        ],
+        [
+          "cltv",
+          0.0006
+        ]
+      ],
+      "n_features_used": 4,
+      "n_internal_nodes": 5,
+      "n_leaves": 6
+    },
+    "4": {
+      "cv_r2_named": 0.2097,
+      "cv_r2_folds": [
+        0.2052,
+        0.2002,
+        0.2146,
+        0.1998,
+        0.2287
+      ],
+      "root_feature": "first_time_homebuyer",
+      "top_importances": [
+        [
+          "dti",
+          0.6837
+        ],
+        [
+          "first_time_homebuyer",
+          0.1968
+        ],
+        [
+          "ltv",
+          0.0812
+        ],
+        [
+          "property_type",
+          0.0306
+        ],
+        [
+          "fico_range_low",
+          0.0071
+        ]
+      ],
+      "n_features_used": 6,
+      "n_internal_nodes": 9,
+      "n_leaves": 10
+    },
+    "5": {
+      "cv_r2_named": 0.2145,
+      "cv_r2_folds": [
+        0.2019,
+        0.2088,
+        0.2233,
+        0.2062,
+        0.2321
+      ],
+      "root_feature": "first_time_homebuyer",
+      "top_importances": [
+        [
+          "dti",
+          0.6512
+        ],
+        [
+          "first_time_homebuyer",
+          0.1874
+        ],
+        [
+          "ltv",
+          0.1145
+        ],
+        [
+          "property_type",
+          0.0393
+        ],
+        [
+          "fico_range_low",
+          0.007
+        ]
+      ],
+      "n_features_used": 6,
+      "n_internal_nodes": 16,
+      "n_leaves": 17
+    },
+    "6": {
+      "cv_r2_named": 0.2147,
+      "cv_r2_folds": [
+        0.2034,
+        0.2013,
+        0.2182,
+        0.2109,
+        0.2399
+      ],
+      "root_feature": "first_time_homebuyer",
+      "top_importances": [
+        [
+          "dti",
+          0.6584
+        ],
+        [
+          "first_time_homebuyer",
+          0.1816
+        ],
+        [
+          "ltv",
+          0.1111
+        ],
+        [
+          "property_type",
+          0.0381
+        ],
+        [
+          "fico_range_low",
+          0.0102
+        ]
+      ],
+      "n_features_used": 6,
+      "n_internal_nodes": 26,
+      "n_leaves": 27
+    },
+    "7": {
+      "cv_r2_named": 0.2103,
+      "cv_r2_folds": [
+        0.2058,
+        0.1953,
+        0.2172,
+        0.19,
+        0.2431
+      ],
+      "root_feature": "first_time_homebuyer",
+      "top_importances": [
+        [
+          "dti",
+          0.6467
+        ],
+        [
+          "first_time_homebuyer",
+          0.1784
+        ],
+        [
+          "ltv",
+          0.1148
+        ],
+        [
+          "property_type",
+          0.0376
+        ],
+        [
+          "fico_range_low",
+          0.0188
+        ]
+      ],
+      "n_features_used": 7,
+      "n_internal_nodes": 38,
+      "n_leaves": 39
+    }
+  },
+  "ms": 5,
+  "epsilon": 0.02,
+  "explainer_leaf_min": 50,
+  "explainer_cv_folds": 5,
+  "reference_2016Q1_main_run": {
+    "rb05_variant_A_R2_named_at_depth_3": 0.208,
+    "rb05_variant_B_R2_named_at_depth_3": 0.688,
+    "note": "main run JSON: runs/fm_rich_policy_vocab_adequacy_2016Q1.json"
+  },
+  "total_seconds": 1170.0
+}
