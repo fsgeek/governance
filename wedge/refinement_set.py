@@ -97,6 +97,7 @@ def build_refinement_band(
     leaf_mins: Iterable[int] = (25, 50, 100),
     holdout_frac: float = 0.3,
     seed: int = 0,
+    max_subset_size: Optional[int] = None,
 ) -> RefinementBand:
     """Build the epsilon-band of policy-admissible refinements for one tier.
 
@@ -108,6 +109,15 @@ def build_refinement_band(
     `monotonic_cst_map` values must already be in the *default-prediction*
     convention (caller negates the policy encoder's grant-convention values).
     An empty map gives the unconstrained band.
+
+    `max_subset_size` (optional): only enumerate feature subsets of size <= this.
+    Default ``None`` enumerates all sizes (the original behavior). Setting it to
+    ``k`` is *lossless* whenever ``k >= 2 ** max(depths) - 1`` (the max number of
+    internal nodes, hence the max number of distinct features a CART of that depth
+    can split on): every tree fittable on a larger subset is identical to one
+    fittable on some enumerated subset of size <= k, so band membership is
+    unchanged. Below that bound it is a deliberate restriction. Exists as a
+    compute control for large candidate-feature sets (2**p subsets blows up).
     """
     feature_names = list(feature_names)
     X = np.asarray(X, dtype=float)
@@ -122,8 +132,9 @@ def build_refinement_band(
     if yho.min() == yho.max() or ytr.min() == ytr.max():
         return RefinementBand([], [], None, epsilon, 0, tuple(feature_names))
 
+    k_max = len(feature_names) if max_subset_size is None else min(int(max_subset_size), len(feature_names))
     all_subsets = []
-    for k in range(1, len(feature_names) + 1):
+    for k in range(1, k_max + 1):
         all_subsets.extend(combinations(feature_names, k))
 
     scored: list[tuple[float, RefinementMember]] = []

@@ -17,6 +17,9 @@ import pytest
 from wedge.collectors.fanniemae import (
     EXPECTED_NUM_COLUMNS,
     FIELD_POSITIONS,
+    WEDGE_CATEGORICAL_FEATURES,
+    WEDGE_NUMERIC_FEATURES,
+    bucket_high_cardinality,
     derive_origination_and_label,
     filter_eligible,
     load_fanniemae,
@@ -38,6 +41,19 @@ def _row(
     term: str = "360",
     delinq: str = "00",
     zero_balance: str = "",
+    cltv: str = "",
+    mi_pct: str = "",
+    upb: str = "",
+    num_units: str = "",
+    num_borrowers: str = "",
+    channel: str = "",
+    fthb: str = "",
+    property_type: str = "",
+    amort: str = "",
+    state: str = "",
+    msa: str = "",
+    seller: str = "",
+    servicer: str = "",
 ) -> str:
     """Build one pipe-delimited row of EXPECTED_NUM_COLUMNS fields with
     the listed positions populated and all other positions empty."""
@@ -52,6 +68,19 @@ def _row(
     cols[FIELD_POSITIONS["loan_term"]] = term
     cols[FIELD_POSITIONS["current_loan_delinquency_status"]] = delinq
     cols[FIELD_POSITIONS["zero_balance_code"]] = zero_balance
+    cols[FIELD_POSITIONS["cltv"]] = cltv
+    cols[FIELD_POSITIONS["mortgage_insurance_pct"]] = mi_pct
+    cols[FIELD_POSITIONS["original_upb"]] = upb
+    cols[FIELD_POSITIONS["num_units"]] = num_units
+    cols[FIELD_POSITIONS["num_borrowers"]] = num_borrowers
+    cols[FIELD_POSITIONS["channel"]] = channel
+    cols[FIELD_POSITIONS["first_time_buyer"]] = fthb
+    cols[FIELD_POSITIONS["property_type"]] = property_type
+    cols[FIELD_POSITIONS["amortization_type"]] = amort
+    cols[FIELD_POSITIONS["property_state"]] = state
+    cols[FIELD_POSITIONS["msa"]] = msa
+    cols[FIELD_POSITIONS["seller_name"]] = seller
+    cols[FIELD_POSITIONS["servicer_name"]] = servicer
     return "|".join(cols)
 
 
@@ -208,3 +237,92 @@ def test_load_fanniemae_returns_case_objects(tmp_path):
 def test_load_fanniemae_missing_file_raises_with_readme_pointer(tmp_path):
     with pytest.raises(FileNotFoundError, match="data/fanniemae/README.md"):
         load_fanniemae(tmp_path / "nope.txt")
+
+
+# ----------------------------------------------------------------------
+# Extended named-policy + extension features (the #11 rich-policy collector
+# extension: cltv / mortgage_insurance_pct / original_upb / num_units /
+# num_borrowers / channel / first_time_homebuyer / property_type /
+# amortization_type / property_state / msa / seller_name / servicer_name).
+# ----------------------------------------------------------------------
+
+
+def test_new_field_positions_distinct_and_in_range():
+    # Adding fields must not collide with an existing position or run off
+    # the end of the 113-column layout (the "no silent drop" contract).
+    positions = list(FIELD_POSITIONS.values())
+    assert len(positions) == len(set(positions)), "duplicate column position in FIELD_POSITIONS"
+    assert all(0 <= p < EXPECTED_NUM_COLUMNS for p in positions)
+    for name in ("cltv", "mortgage_insurance_pct", "original_upb", "num_units",
+                 "num_borrowers", "channel", "first_time_buyer", "property_type",
+                 "amortization_type", "property_state", "msa", "seller_name",
+                 "servicer_name"):
+        assert name in FIELD_POSITIONS
+
+
+def test_map_fields_accepts_new_named_and_extension_fields():
+    out = map_fields(["cltv", "mortgage_insurance_pct", "original_upb", "property_state",
+                      "seller_name", "servicer_name", "msa", "amortization_type"])
+    assert set(out) == {"cltv", "mortgage_insurance_pct", "original_upb", "property_state",
+                        "seller_name", "servicer_name", "msa", "amortization_type"}
+
+
+def test_to_feature_frame_emits_extended_features_with_types(tmp_path):
+    rows = (
+        _make_loan_history("A", 24, fico="780", ltv="65", dti="28", term="360",
+                           cltv="65", mi_pct="", upb="453000.00", num_units="1",
+                           num_borrowers="1", channel="R", fthb="N",
+                           property_type="PU", amort="FRM", state="OH", msa="18140",
+                           seller="Quicken Loans, Llc", servicer="Quicken Loans Inc.")
+        + _make_loan_history("B", 24, fico="660", ltv="95", dti="44", term="180",
+                             cltv="97", mi_pct="30", upb="210000.00", num_units="2",
+                             num_borrowers="2", channel="B", fthb="Y",
+                             property_type="SF", amort="FRM", state="TX", msa="",
+                             seller="Wells Fargo Bank, N.A.", servicer="Wells Fargo Bank, N.A.")
+    )
+    p = _fixture_file(tmp_path, rows)
+    raw = read_raw(p)
+    collapsed = derive_origination_and_label(raw)
+    eligible = filter_eligible(collapsed)
+    feats = to_feature_frame(eligible)
+
+    # Every numeric and categorical wedge feature is present.
+    for c in WEDGE_NUMERIC_FEATURES:
+        assert c in feats.columns, f"missing numeric feature {c}"
+    for c in WEDGE_CATEGORICAL_FEATURES:
+        assert c in feats.columns, f"missing categorical feature {c}"
+
+    by_loan = feats.set_index("loan_id")
+    # Numerics are numeric-coerced.
+    assert by_loan.loc["A", "cltv"] == 65
+    assert by_loan.loc["A", "original_upb"] == 453000.0
+    assert by_loan.loc["A", "num_units"] == 1
+    assert by_loan.loc["B", "num_borrowers"] == 2
+    assert by_loan.loc["B", "mortgage_insurance_pct"] == 30
+    # Empty MI percentage (LTV<=80, no MI) -> NaN, not 0.
+    assert pd.isna(by_loan.loc["A", "mortgage_insurance_pct"])
+    # Empty MSA (rural) -> NaN.
+    assert pd.isna(by_loan.loc["B", "msa"])
+    # Categoricals stay as strings.
+    assert by_loan.loc["A", "property_type"] == "PU"
+    assert by_loan.loc["A", "amortization_type"] == "FRM"
+    assert by_loan.loc["A", "property_state"] == "OH"
+    assert by_loan.loc["B", "channel"] == "B"
+    assert by_loan.loc["A", "seller_name"] == "Quicken Loans, Llc"
+
+
+def test_bucket_high_cardinality_keeps_top_k_and_other():
+    s = pd.Series(["X"] * 10 + ["Y"] * 5 + ["Z"] * 3 + ["W"] * 1 + [None] * 2)
+    out = bucket_high_cardinality(s, top_k=2)
+    assert set(out.dropna().unique()) == {"X", "Y", "__other__"}
+    # The kept values keep their label; rarer ones collapse.
+    assert (out[s == "X"] == "X").all()
+    assert (out[s == "Z"] == "__other__").all()
+    # Missing stays missing.
+    assert out.isna().sum() == 2
+
+
+def test_bucket_high_cardinality_all_missing_returns_unchanged():
+    s = pd.Series([None, None, None], dtype=object)
+    out = bucket_high_cardinality(s, top_k=5)
+    assert out.isna().all()

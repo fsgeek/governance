@@ -1,0 +1,243 @@
+# Medium-fidelity policy graph for first-lien residential mortgage decisions,
+# reconstructed from the *public structure* of the Fannie Mae Selling Guide and
+# Eligibility Matrix.
+#
+# Status: MEDIUM-FIDELITY RECONSTRUCTION. This is one notch up in fidelity from
+# the thin demos (thin_demo_fm.yaml / thin_demo_hmda.yaml) — it names the ~13
+# underwriting inputs the Selling Guide actually enumerates and encodes the
+# Eligibility-Matrix cutoffs (DTI / FICO / LTV-CLTV / occupancy / units, plus
+# the conforming-loan-limit gate) whose *values* are public and stable. It is
+# NOT a faithful transcription of the current Eligibility Matrix PDF (that
+# document is not in this repo), and it is not the policy of any specific
+# lender's overlays. The point is "a serious policy vocabulary," not "the
+# literal document." Numbers (FICO 620 floor, DTI 50 ceiling, LTV 97 ceiling
+# for 1-unit purchase, $453,100 baseline 2018 conforming limit for a 1-unit
+# property) are public conventions; the exact matrix cell structure (min-FICO
+# by LTV band, reserve months by occupancy/units) is approximated.
+#
+# Same audience contract as the thin demos: human-readable AND machine-
+# encodable. The artifact a regulator audits is the same artifact that
+# constrains the models. The decision graph below is documentation + the audit
+# artifact; the encoder reads `constraints`, not `nodes`.
+#
+# SCHEMA NOTE (recorded as a finding for the #11 result note, not fixed here):
+# the Eligibility-Matrix cutoffs are *eligibility gates* — feature / operator /
+# threshold / on-fail-route — a constraint type the current schema has no
+# first-class slot for. They are expressed below inside `applicable_regime` as
+# the regime envelope where the standard automated path applies; out-of-envelope
+# loans route to manual review and are not scored (the encoder's existing
+# semantics). #11 is the empirical demonstration that the schema wants a
+# `gates:` block parallel to `monotonicity:`. That extension is deliberately
+# NOT built here (don't extend the schema on spec).
+
+name: fnma_eligibility_matrix
+version: 0.1
+status: medium-fidelity-reconstruction
+description: |
+  Medium-fidelity reconstruction of the public structure of the Fannie Mae
+  Selling Guide / Eligibility Matrix for first-lien residential mortgage
+  decisions on owner-occupied 1-4 unit properties. Names the standard
+  underwriting inputs the Selling Guide enumerates; encodes the
+  Eligibility-Matrix cutoffs as a regime envelope. Companion experiment:
+  the #11 rich-policy vocabulary-adequacy test (does a serious codified
+  mortgage policy still leave the C2/C5/D4-style refinement-set vocabulary
+  gap open, or was that an LC thin-demo artifact?).
+
+constraints:
+
+  # Sign of effect on the *positive* class (grant) probability, per the
+  # encoder's sklearn-monotonicity convention (positive => higher feature
+  # value never decreases grant probability). Only the numeric risk inputs
+  # the Selling Guide treats monotonically are constrained; the categorical
+  # mandatory features (loan_purpose, occupancy_status, property_type,
+  # num_units, num_borrowers, first_time_homebuyer, amortization_type) are
+  # mandatory-to-consider but have no monotone sign and so carry no entry
+  # here — they appear in `mandatory_features` and the `nodes` graph, not in
+  # the sklearn monotonic_cst array.
+  monotonicity:
+    - feature: fico_range_low
+      direction: positive
+      rationale: Higher origination FICO never decreases grant probability;
+        the Selling Guide's representative-credit-score logic is monotone.
+    - feature: dti
+      direction: negative
+      rationale: Higher debt-to-income never increases grant probability;
+        the Eligibility Matrix's DTI ceilings are one-sided.
+    - feature: ltv
+      direction: negative
+      rationale: Higher loan-to-value never increases grant probability;
+        higher LTV strictly tightens the eligible matrix cell.
+    - feature: cltv
+      direction: negative
+      rationale: Higher combined LTV (incl. subordinate financing) never
+        increases grant probability; the matrix bounds CLTV alongside LTV.
+    - feature: mortgage_insurance_pct
+      direction: positive
+      rationale: Greater MI coverage at a given LTV makes the standard path
+        more available, not less (direction stated relative to grant prob;
+        revisit at build time if the data argues otherwise — MI is also a
+        marker of high-LTV loans, so the raw bivariate sign may differ).
+
+  # The underwriting inputs the Selling Guide names and an underwriter (or
+  # the automated underwriting system) must consider. Target ~13 features
+  # vs the thin demo's 3. Features the FM public Loan-Performance file does
+  # not expose without disproportionate effort are dropped by the analysis
+  # script at build time and the result note records exactly which (the FM
+  # public file is thinner than a real underwriting file — no income, no
+  # reserves, no liquid assets, no residual income — so even this "rich"
+  # policy is bounded above by the data; that ceiling is part of the
+  # finding).
+  mandatory_features:
+    - fico_range_low          # representative credit score at origination
+    - dti                     # debt-to-income ratio
+    - ltv                     # original loan-to-value
+    - cltv                    # original combined loan-to-value (if exposed)
+    - mortgage_insurance_pct  # MI coverage percentage (if exposed)
+    - loan_term_months        # original amortization term
+    - loan_purpose            # purchase / cash-out refi / no-cash refi / refi
+    - occupancy_status        # principal / second / investor (regime-filtered)
+    - num_units               # 1-4 units
+    - num_borrowers           # number of borrowers on the note
+    - first_time_homebuyer    # FTHB indicator
+    - property_type           # SF detached / condo / co-op / PUD / MH
+    - amortization_type       # fixed / ARM (FM 2018Q1 is overwhelmingly FRM;
+                              # the script keeps this only if it has spread)
+
+  # The *primary* run (variant A in #11) leaves geography / lender / loan-size
+  # ADMISSIBLE so the test can measure whether the residual model
+  # indeterminacy collapses onto them. A *compliant* policy graph would
+  # prohibit property_state / msa as redlining proxies (and seller_name /
+  # servicer_name are not borrower attributes) — the #11 comparison run
+  # (variant B) does exactly that, deriving a prohibited-features variant of
+  # these constraints in-script. Recording the choice here so it is explicit
+  # and pre-committed: empty for variant A; { property_state, msa,
+  # seller_name, servicer_name } for variant B.
+  prohibited_features: []
+
+  # The Eligibility-Matrix gates, expressed as the regime envelope where the
+  # standard automated path applies. Out-of-envelope loans route to manual
+  # review and are not scored. (SEE the schema note in the file header: these
+  # are gates, not a regime dict; the schema wants a first-class `gates:`
+  # block. Encoded here in the only slot the current schema offers.)
+  applicable_regime:
+    occupancy: owner_occupied
+    loan_purpose: [purchase, cash_out_refi, no_cash_refi, refi_unspecified]
+    lien_position: first
+    # --- eligibility gates (feature / operator / threshold / on-fail) ---
+    # Loan amount within the 2018 baseline conforming limit (1-unit
+    # $453,100; higher for 2-4 units and high-cost areas — encoded as an
+    # approximate UPB ceiling, flagged). Out -> not the conforming-loan path.
+    conforming_loan_limit_upb: 453100
+    # Representative FICO floor for the standard conventional path.
+    min_fico_range_low: 620
+    # ATR/QM-adjacent DTI ceiling as enforced by the Eligibility Matrix.
+    max_dti: 50
+    # LTV ceiling for the standard 1-unit purchase path (97% with MI;
+    # cash-out and 2-4 unit paths are tighter — approximated by this single
+    # ceiling, flagged).
+    max_ltv: 97
+
+nodes:
+
+  - id: entry
+    type: entry
+    next: regime_check
+
+  - id: regime_check
+    type: gate
+    predicate: case is in applicable_regime (owner-occupied, first-lien,
+      purchase or refinance)
+    on_pass: conforming_limit_gate
+    on_fail: manual_review
+    rationale: Out-of-regime cases (investor / second-home, second liens,
+      non-standard purposes) are not scoped by the standard automated path.
+
+  - id: conforming_limit_gate
+    type: gate
+    feature: original_upb
+    operator: "<="
+    threshold: 453100
+    on_pass: fico_floor
+    on_fail: non_conforming_route
+    rationale: Loan amount must be within the applicable 2018 conforming
+      loan limit (baseline 1-unit value shown; 2-4 unit and high-cost-area
+      ceilings are higher — approximated here). Above the limit is a jumbo /
+      high-balance path outside this graph.
+
+  - id: fico_floor
+    type: threshold
+    feature: fico_range_low
+    operator: ">="
+    threshold: 620
+    on_pass: dti_ceiling
+    on_fail: decline
+    rationale: Representative-credit-score floor for the standard
+      conventional path.
+
+  - id: dti_ceiling
+    type: threshold
+    feature: dti
+    operator: "<="
+    threshold: 50
+    on_pass: ltv_cltv_check
+    on_fail: manual_review
+    rationale: Eligibility-Matrix DTI ceiling; above it requires
+      compensating factors and manual underwriting.
+
+  - id: ltv_cltv_check
+    type: threshold
+    feature: ltv
+    operator: "<="
+    threshold: 97
+    on_pass: mi_requirement
+    on_fail: manual_review
+    rationale: LTV ceiling for the standard 1-unit purchase path; CLTV is
+      bounded alongside LTV in the matrix cell. Above requires a tighter
+      matrix cell or manual review.
+
+  - id: mi_requirement
+    type: gate
+    predicate: if ltv > 80 then mortgage_insurance_pct meets the
+      coverage schedule for the matrix cell
+    on_pass: standard_grant
+    on_fail: manual_review
+    rationale: Loans above 80% LTV require mortgage insurance at the
+      coverage level the Eligibility Matrix specifies for the cell.
+
+  - id: standard_grant
+    type: leaf
+    decision: grant
+    rationale: All standard-path conditions satisfied; eligible for
+      automated approval at the standard pricing tier (LLPAs applied
+      per the separate price grid).
+
+  - id: manual_review
+    type: leaf
+    decision: human_review
+    rationale: Case is in-regime but outside one or more standard-path
+      cutoffs; requires human underwriter judgment / compensating factors.
+
+  - id: non_conforming_route
+    type: leaf
+    decision: human_review
+    rationale: Loan amount exceeds the conforming limit; handled on a
+      jumbo / high-balance path outside this graph.
+
+  - id: decline
+    type: leaf
+    decision: deny
+    rationale: Case fails the representative-FICO floor for the standard
+      conventional path.
+
+pricing:
+  applies_to: [grant]
+  schedule: external_pricing_table
+  notes: |
+    Pricing (note rate + Loan-Level Price Adjustments) is intentionally not
+    a decision-graph output — same separation-of-concerns rationale as the
+    thin demos. The LLPA grid (FICO x LTV cells, plus adjustments for
+    cash-out / units / property-type / subordinate financing) is the
+    "external_pricing_table" referenced here; the #11 test stratifies on
+    a pricing/grading output (rate-band deciles, primary; FICO x LTV LLPA
+    grid cells, parallel) to keep the stratum the same *kind* of object as
+    LendingClub's sub_grade.

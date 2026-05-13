@@ -62,20 +62,28 @@ from wedge.types import Case
 FIELD_POSITIONS: dict[str, int] = {
     "loan_id": 1,                          # gloss 2  LOAN_IDENTIFIER
     "monthly_reporting_period": 2,         # gloss 3  MONTHLY_REPORTING_PERIOD
-    "channel": 3,                          # gloss 4  CHANNEL
+    "channel": 3,                          # gloss 4  CHANNEL  (R=retail, B=broker, C=correspondent)
+    "seller_name": 4,                      # gloss 5  SELLER_NAME  (high-cardinality categorical)
+    "servicer_name": 5,                    # gloss 6  SERVICER_NAME  (high-cardinality categorical)
     "orig_interest_rate": 7,               # gloss 8  ORIGINAL_INTEREST_RATE
+    "original_upb": 9,                     # gloss 10 ORIGINAL_UPB  (loan amount, dollars)
     "loan_term": 12,                       # gloss 13 ORIGINAL_LOAN_TERM
     "origination_date": 13,                # gloss 14 ORIGINATION_DATE  (MMYYYY)
     "first_payment_date": 14,              # gloss 15 FIRST_PAYMENT_DATE
     "ltv": 19,                             # gloss 20 ORIGINAL_LOAN_TO_VALUE
+    "cltv": 20,                            # gloss 21 ORIGINAL_COMBINED_LOAN_TO_VALUE
     "num_borrowers": 21,                   # gloss 22 NUMBER_OF_BORROWERS
     "dti": 22,                             # gloss 23 DEBT_TO_INCOME_RATIO
     "credit_score": 23,                    # gloss 24 BORROWER_CREDIT_SCORE_AT_ORIGINATION
-    "first_time_buyer": 25,                # gloss 26 FIRST_TIME_HOME_BUYER_INDICATOR
+    "first_time_buyer": 25,                # gloss 26 FIRST_TIME_HOME_BUYER_INDICATOR  (Y/N/U)
     "loan_purpose": 26,                    # gloss 27 LOAN_PURPOSE  (P=purchase, C=cash-out refi, R=no-cash refi, U=refi)
-    "property_type": 27,                   # gloss 28 PROPERTY_TYPE
-    "num_units": 28,                       # gloss 29 NUMBER_OF_UNITS
+    "property_type": 27,                   # gloss 28 PROPERTY_TYPE  (SF/CO/CP/MH/PU)
+    "num_units": 28,                       # gloss 29 NUMBER_OF_UNITS  (1-4)
     "occupancy": 29,                       # gloss 30 OCCUPANCY_STATUS  (P=primary, S=second, I=investor)
+    "property_state": 30,                  # gloss 31 PROPERTY_STATE  (2-letter; redlining-proxy extension feature)
+    "msa": 31,                             # gloss 32 METROPOLITAN_STATISTICAL_AREA  (CBSA code; redlining-proxy extension feature)
+    "mortgage_insurance_pct": 33,          # gloss 34 MORTGAGE_INSURANCE_PERCENTAGE  (empty when LTV<=80 / no MI)
+    "amortization_type": 34,               # gloss 35 AMORTIZATION_TYPE  (FRM/ARM; near-constant FRM on 2018Q1)
     "current_loan_delinquency_status": 39, # gloss 40 CURRENT_LOAN_DELINQUENCY_STATUS
     "zero_balance_code": 43,               # gloss 44 ZERO_BALANCE_CODE
 }
@@ -253,22 +261,66 @@ def filter_eligible(df: pd.DataFrame) -> pd.DataFrame:
 # ----------------------------------------------------------------------
 # Public entry point.
 # ----------------------------------------------------------------------
-WEDGE_FEATURES = {
+# Numeric wedge features (numeric-coerced in to_feature_frame).
+WEDGE_NUMERIC_FEATURES: dict[str, str] = {
     "fico_range_low": "credit_score",
     "dti": "dti",
     "ltv": "ltv",
+    "cltv": "cltv",
+    "mortgage_insurance_pct": "mortgage_insurance_pct",
     "loan_term_months": "loan_term",
     "orig_interest_rate": "orig_interest_rate",
+    "original_upb": "original_upb",
+    "num_units": "num_units",
+    "num_borrowers": "num_borrowers",
+}
+# Categorical wedge features (kept as strings; empty -> NaN). Downstream
+# analysis code that needs a numeric array integer-encodes / buckets these
+# (see bucket_high_cardinality for the high-cardinality ones).
+WEDGE_CATEGORICAL_FEATURES: dict[str, str] = {
     "loan_purpose": "loan_purpose",
     "occupancy_status": "occupancy",
+    "channel": "channel",
+    "first_time_homebuyer": "first_time_buyer",
+    "property_type": "property_type",
+    "amortization_type": "amortization_type",
+    "property_state": "property_state",
+    "msa": "msa",
+    "seller_name": "seller_name",
+    "servicer_name": "servicer_name",
 }
+# Back-compat alias: callers that iterated WEDGE_FEATURES still work; the
+# numeric/categorical split is the structured view.
+WEDGE_FEATURES: dict[str, str] = {**WEDGE_NUMERIC_FEATURES, **WEDGE_CATEGORICAL_FEATURES}
+
+
+def bucket_high_cardinality(s: pd.Series, *, top_k: int = 20,
+                            other_label: str = "__other__") -> pd.Series:
+    """Collapse a high-cardinality categorical Series to its `top_k` most
+    frequent values plus an "other" bucket; missing stays missing.
+
+    Used for seller_name / servicer_name before they enter a tree as an
+    integer-encoded feature — a few hundred lender names would otherwise be
+    an unusable split variable. The mapping is data-dependent (per the
+    Series passed in) and the kept values are recorded in the result note.
+    """
+    s = s.copy()
+    nonnull = s.dropna()
+    if nonnull.empty:
+        return s
+    keep = set(nonnull.value_counts().nlargest(top_k).index)
+    return s.where(s.isna() | s.isin(keep), other_label)
 
 
 def to_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
     """Project the eligible-loan frame onto the wedge feature names.
 
-    Adds lien_position=1 (dataset is first-lien only). Does NOT add
-    annual_inc — Fannie Mae does not release applicant income.
+    Emits all WEDGE_NUMERIC_FEATURES (numeric-coerced) and
+    WEDGE_CATEGORICAL_FEATURES (string, empty -> NaN). Adds lien_position=1
+    (dataset is first-lien only). Does NOT add annual_inc — Fannie Mae does
+    not release applicant income. High-cardinality categoricals
+    (seller_name / servicer_name) are emitted raw here; bucket them with
+    bucket_high_cardinality before use.
     """
     out = pd.DataFrame()
     out["loan_id"] = df["loan_id"] if "loan_id" in df.columns else df[f"c{FIELD_POSITIONS['loan_id']}"]
@@ -276,7 +328,7 @@ def to_feature_frame(df: pd.DataFrame) -> pd.DataFrame:
         col = f"c{FIELD_POSITIONS[fm_name]}"
         out[wedge_name] = df[col]
     # Numeric coercion for the numeric features.
-    for c in ("fico_range_low", "dti", "ltv", "loan_term_months", "orig_interest_rate"):
+    for c in WEDGE_NUMERIC_FEATURES:
         out[c] = pd.to_numeric(out[c], errors="coerce")
     out["lien_position"] = 1
     if "label" in df.columns:

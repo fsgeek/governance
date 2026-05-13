@@ -97,6 +97,30 @@ def test_unconstrained_band_via_empty_map():
     assert len(band.members) >= 1
 
 
+def test_max_subset_size_is_lossless_when_at_least_max_internal_nodes():
+    # depths max 3 => a CART splits on <= 2**3 - 1 = 7 distinct features; the
+    # fixture has 4 features, so any cap >= 4 (in particular 7) enumerates the
+    # same subsets and yields bit-for-bit the same band.
+    X, y, names = _within_tier_fixture()
+    kw = dict(feature_names=names, monotonic_cst_map={"dti": +1, "fico_range_low": -1},
+              epsilon=0.05, depths=(1, 2, 3), leaf_mins=(25, 50, 100), holdout_frac=0.3, seed=0)
+    full = build_refinement_band(X, y, **kw)
+    capped = build_refinement_band(X, y, max_subset_size=7, **kw)
+    assert full.n_combos_tried == capped.n_combos_tried
+    assert [m.tree_signature for m in full.members] == [m.tree_signature for m in capped.members]
+
+
+def test_max_subset_size_below_bound_restricts_subsets():
+    X, y, names = _within_tier_fixture()
+    kw = dict(feature_names=names, monotonic_cst_map={}, epsilon=0.05,
+              depths=(1, 2, 3), leaf_mins=(25, 50, 100), holdout_frac=0.3, seed=0)
+    full = build_refinement_band(X, y, **kw)            # 4 features -> 15 subsets
+    capped = build_refinement_band(X, y, max_subset_size=2, **kw)  # 4 + 6 = 10 subsets
+    assert capped.n_combos_tried < full.n_combos_tried
+    for m in capped.members:
+        assert len(m.feature_subset) <= 2
+
+
 def test_band_degenerate_labels_returns_empty():
     X = np.random.default_rng(0).normal(size=(200, 4))
     y = np.ones(200, dtype=int)
