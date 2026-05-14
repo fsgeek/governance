@@ -1,0 +1,5793 @@
+{
+  "test": "silence-manufacture variant-indexicality (#12)",
+  "pre_reg_commit": "9dd642b",
+  "pre_reg_ots_commit": "3a8959f",
+  "pre_reg_path": "docs/superpowers/specs/2026-05-13-variant-indexical-silence-manufacture-preregistration-note.md",
+  "j_threshold_primary": 0.5,
+  "j_thresholds_sensitivity": [
+    0.3,
+    0.4,
+    0.5,
+    0.6,
+    0.7
+  ],
+  "adequacy_threshold_R2_named": 0.3,
+  "n_cells_considered": 29,
+  "aggregate": {
+    "n_in_scope": 29,
+    "n_reorganized": 5,
+    "n_censored": 24,
+    "n_manufactured_silence": 3,
+    "manufactured_silence_cells": [
+      [
+        "2016Q1",
+        "rb00"
+      ],
+      [
+        "2016Q1",
+        "rb05"
+      ],
+      [
+        "2016Q1",
+        "rb09"
+      ]
+    ],
+    "P1_reorganization_rate": 0.1724137931034483,
+    "P1_HIT": true,
+    "P2_classifier_accuracy_property_state": 1.0,
+    "P2_HIT": true,
+    "P2_extended_classifier_accuracy_3prohib": 0.7241379310344828,
+    "P3_verdict_divergence_on_reorganized": 0.6,
+    "P3_HIT": true,
+    "P4_manufactured_silence_count": 3,
+    "P4_HIT": false,
+    "P5_divergence_ratio_reorg_over_censored": Infinity,
+    "P5_censored_divergence_rate": 0.0,
+    "P5_HIT": true,
+    "j_threshold_sensitivity": {
+      "j_thresh_0.3": {
+        "n_reorganized": 3,
+        "reorganization_rate": 0.10344827586206896,
+        "n_manufactured_silence": 3
+      },
+      "j_thresh_0.4": {
+        "n_reorganized": 5,
+        "reorganization_rate": 0.1724137931034483,
+        "n_manufactured_silence": 3
+      },
+      "j_thresh_0.5": {
+        "n_reorganized": 5,
+        "reorganization_rate": 0.1724137931034483,
+        "n_manufactured_silence": 3
+      },
+      "j_thresh_0.6": {
+        "n_reorganized": 5,
+        "reorganization_rate": 0.1724137931034483,
+        "n_manufactured_silence": 3
+      },
+      "j_thresh_0.7": {
+        "n_reorganized": 6,
+        "reorganization_rate": 0.20689655172413793,
+        "n_manufactured_silence": 3
+      }
+    }
+  },
+  "cells": [
+    {
+      "vintage": "2018Q1",
+      "cell": "rb00",
+      "in_scope": true,
+      "n_distinct_ufs_A": 28,
+      "n_distinct_ufs_B": 15,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8983,
+      "R2_named_B": 0.89,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.14285714285714285,
+      "prohibited_3_saturation_A": 0.4642857142857143,
+      "jaccard_primary": 0.7894736842105263,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.7894736842105263
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.7894736842105263
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.7894736842105263
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.7894736842105263
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.7894736842105263
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": [
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ]
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb01",
+      "in_scope": true,
+      "n_distinct_ufs_A": 8,
+      "n_distinct_ufs_B": 6,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.9493,
+      "R2_named_B": 0.9404,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.0,
+      "prohibited_3_saturation_A": 0.25,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "loan_purpose",
+          "num_borrowers",
+          "num_units"
+        ]
+      ],
+      "ufs_B_repr": [
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "loan_purpose",
+          "num_borrowers",
+          "num_units"
+        ]
+      ]
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb02",
+      "in_scope": true,
+      "n_distinct_ufs_A": 55,
+      "n_distinct_ufs_B": 22,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.7834,
+      "R2_named_B": 0.792,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.23636363636363636,
+      "prohibited_3_saturation_A": 0.5818181818181818,
+      "jaccard_primary": 0.9565217391304348,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9565217391304348
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9565217391304348
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9565217391304348
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9565217391304348
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9565217391304348
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "dti",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<22 ufs>"
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb03",
+      "in_scope": true,
+      "n_distinct_ufs_A": 121,
+      "n_distinct_ufs_B": 73,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.9198,
+      "R2_named_B": 0.8935,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.0,
+      "prohibited_3_saturation_A": 0.39669421487603307,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<73 ufs>"
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb04",
+      "in_scope": true,
+      "n_distinct_ufs_A": 39,
+      "n_distinct_ufs_B": 31,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.7871,
+      "R2_named_B": 0.7523,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.07692307692307693,
+      "prohibited_3_saturation_A": 0.20512820512820512,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<31 ufs>"
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb05",
+      "in_scope": true,
+      "n_distinct_ufs_A": 70,
+      "n_distinct_ufs_B": 46,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.715,
+      "R2_named_B": 0.7232,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.12857142857142856,
+      "prohibited_3_saturation_A": 0.34285714285714286,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<46 ufs>"
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb06",
+      "in_scope": true,
+      "n_distinct_ufs_A": 30,
+      "n_distinct_ufs_B": 10,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8259,
+      "R2_named_B": 0.8047,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.3,
+      "prohibited_3_saturation_A": 0.6666666666666666,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ]
+      ]
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb07",
+      "in_scope": true,
+      "n_distinct_ufs_A": 110,
+      "n_distinct_ufs_B": 47,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.7795,
+      "R2_named_B": 0.8175,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.18181818181818182,
+      "prohibited_3_saturation_A": 0.5727272727272728,
+      "jaccard_primary": 0.9591836734693877,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9591836734693877
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9591836734693877
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9591836734693877
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9591836734693877
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9591836734693877
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<47 ufs>"
+    },
+    {
+      "vintage": "2018Q1",
+      "cell": "rb08",
+      "in_scope": true,
+      "n_distinct_ufs_A": 39,
+      "n_distinct_ufs_B": 20,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.7848,
+      "R2_named_B": 0.7189,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.07692307692307693,
+      "prohibited_3_saturation_A": 0.48717948717948717,
+      "jaccard_primary": 0.9523809523809523,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9523809523809523
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9523809523809523
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9523809523809523
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9523809523809523
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9523809523809523
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ]
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb00",
+      "in_scope": true,
+      "n_distinct_ufs_A": 3,
+      "n_distinct_ufs_B": 38,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.0351,
+      "R2_named_B": 0.7686,
+      "adequacy_A": "inadequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": true,
+      "plural_A": true,
+      "plural_B": false,
+      "rung_classification": "3b-codification-irreducible",
+      "property_state_saturation_A": 1.0,
+      "prohibited_3_saturation_A": 1.0,
+      "jaccard_primary": 0.0,
+      "is_reorganized_primary": true,
+      "reorganization_reason_primary": "empty-uf-in-A-restricted",
+      "manufactured_silence": true,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [],
+        [
+          "loan_purpose"
+        ],
+        [
+          "num_borrowers"
+        ]
+      ],
+      "ufs_B_repr": "<38 ufs>"
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb01",
+      "in_scope": true,
+      "n_distinct_ufs_A": 40,
+      "n_distinct_ufs_B": 30,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.9358,
+      "R2_named_B": 0.9205,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.0,
+      "prohibited_3_saturation_A": 0.25,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<30 ufs>"
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb02",
+      "in_scope": true,
+      "n_distinct_ufs_A": 35,
+      "n_distinct_ufs_B": 28,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8935,
+      "R2_named_B": 0.8862,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.05714285714285714,
+      "prohibited_3_saturation_A": 0.2,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<28 ufs>"
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb03",
+      "in_scope": true,
+      "n_distinct_ufs_A": 4,
+      "n_distinct_ufs_B": 8,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.3651,
+      "R2_named_B": 0.7778,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.5,
+      "prohibited_3_saturation_A": 0.5,
+      "jaccard_primary": 0.3333333333333333,
+      "is_reorganized_primary": true,
+      "reorganization_reason_primary": "jaccard<0.5",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.3333333333333333
+        },
+        "j_thresh_0.4": {
+          "reorganized": true,
+          "reason": "jaccard<0.4",
+          "jaccard": 0.3333333333333333
+        },
+        "j_thresh_0.5": {
+          "reorganized": true,
+          "reason": "jaccard<0.5",
+          "jaccard": 0.3333333333333333
+        },
+        "j_thresh_0.6": {
+          "reorganized": true,
+          "reason": "jaccard<0.6",
+          "jaccard": 0.3333333333333333
+        },
+        "j_thresh_0.7": {
+          "reorganized": true,
+          "reason": "jaccard<0.7",
+          "jaccard": 0.3333333333333333
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "dti",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "loan_term_months",
+          "num_borrowers"
+        ]
+      ],
+      "ufs_B_repr": [
+        [
+          "dti",
+          "first_time_homebuyer",
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "loan_purpose",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "loan_purpose",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "loan_purpose",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "loan_term_months",
+          "num_borrowers"
+        ]
+      ]
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb04",
+      "in_scope": true,
+      "n_distinct_ufs_A": 56,
+      "n_distinct_ufs_B": 30,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8415,
+      "R2_named_B": 0.8495,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.21428571428571427,
+      "prohibited_3_saturation_A": 0.4642857142857143,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "mortgage_insurance_pct"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<30 ufs>"
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb05",
+      "in_scope": true,
+      "n_distinct_ufs_A": 4,
+      "n_distinct_ufs_B": 31,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.2077,
+      "R2_named_B": 0.6877,
+      "adequacy_A": "inadequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": true,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": "3b-codification-irreducible",
+      "property_state_saturation_A": 1.0,
+      "prohibited_3_saturation_A": 1.0,
+      "jaccard_primary": 0.0,
+      "is_reorganized_primary": true,
+      "reorganization_reason_primary": "jaccard<0.5",
+      "manufactured_silence": true,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": true,
+          "reason": "jaccard<0.3",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": true,
+          "reason": "jaccard<0.4",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": true,
+          "reason": "jaccard<0.5",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": true,
+          "reason": "jaccard<0.6",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": true,
+          "reason": "jaccard<0.7",
+          "jaccard": 0.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "dti"
+        ],
+        [
+          "dti",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "loan_purpose"
+        ]
+      ],
+      "ufs_B_repr": "<31 ufs>"
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb06",
+      "in_scope": true,
+      "n_distinct_ufs_A": 53,
+      "n_distinct_ufs_B": 30,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.5914,
+      "R2_named_B": 0.8797,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.16981132075471697,
+      "prohibited_3_saturation_A": 0.4339622641509434,
+      "jaccard_primary": 0.967741935483871,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.967741935483871
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.967741935483871
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.967741935483871
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.967741935483871
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.967741935483871
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<30 ufs>"
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb07",
+      "in_scope": true,
+      "n_distinct_ufs_A": 36,
+      "n_distinct_ufs_B": 24,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.9366,
+      "R2_named_B": 0.9175,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.1388888888888889,
+      "prohibited_3_saturation_A": 0.3333333333333333,
+      "jaccard_primary": 0.9230769230769231,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9230769230769231
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9230769230769231
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9230769230769231
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9230769230769231
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.9230769230769231
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_units"
+        ]
+      ],
+      "ufs_B_repr": "<24 ufs>"
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb08",
+      "in_scope": true,
+      "n_distinct_ufs_A": 33,
+      "n_distinct_ufs_B": 16,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8581,
+      "R2_named_B": 0.7788,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.30303030303030304,
+      "prohibited_3_saturation_A": 0.5151515151515151,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": [
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "property_type"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ]
+    },
+    {
+      "vintage": "2016Q1",
+      "cell": "rb09",
+      "in_scope": true,
+      "n_distinct_ufs_A": 31,
+      "n_distinct_ufs_B": 37,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.0222,
+      "R2_named_B": 0.7435,
+      "adequacy_A": "inadequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": true,
+      "plural_A": true,
+      "plural_B": false,
+      "rung_classification": "3a/3b-mixed-loan-size-and-geo",
+      "property_state_saturation_A": 1.0,
+      "prohibited_3_saturation_A": 1.0,
+      "jaccard_primary": 0.0,
+      "is_reorganized_primary": true,
+      "reorganization_reason_primary": "empty-uf-in-A-restricted",
+      "manufactured_silence": true,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": true,
+          "reason": "empty-uf-in-A-restricted",
+          "jaccard": 0.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [],
+        [
+          "cltv"
+        ],
+        [
+          "cltv",
+          "dti"
+        ],
+        [
+          "cltv",
+          "dti",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "dti",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "dti",
+          "property_type"
+        ],
+        [
+          "cltv",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "property_type"
+        ],
+        [
+          "dti",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "dti",
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "dti",
+          "ltv"
+        ],
+        [
+          "dti",
+          "ltv",
+          "property_type"
+        ],
+        [
+          "dti",
+          "original_upb"
+        ],
+        [
+          "first_time_homebuyer"
+        ],
+        [
+          "first_time_homebuyer",
+          "mortgage_insurance_pct"
+        ],
+        [
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "loan_purpose"
+        ],
+        [
+          "loan_purpose",
+          "property_type"
+        ],
+        [
+          "ltv"
+        ],
+        [
+          "ltv",
+          "property_type"
+        ],
+        [
+          "original_upb"
+        ],
+        [
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<37 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb00",
+      "in_scope": true,
+      "n_distinct_ufs_A": 29,
+      "n_distinct_ufs_B": 13,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.78,
+      "R2_named_B": 0.8226,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.2413793103448276,
+      "prohibited_3_saturation_A": 0.5517241379310345,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": [
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ]
+      ]
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb01",
+      "in_scope": true,
+      "n_distinct_ufs_A": 45,
+      "n_distinct_ufs_B": 27,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.7713,
+      "R2_named_B": 0.7307,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.06666666666666667,
+      "prohibited_3_saturation_A": 0.4,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<27 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb02",
+      "in_scope": true,
+      "n_distinct_ufs_A": 78,
+      "n_distinct_ufs_B": 29,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8213,
+      "R2_named_B": 0.8158,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.2948717948717949,
+      "prohibited_3_saturation_A": 0.6282051282051282,
+      "jaccard_primary": 0.8285714285714286,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8285714285714286
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8285714285714286
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8285714285714286
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8285714285714286
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8285714285714286
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<29 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb03",
+      "in_scope": true,
+      "n_distinct_ufs_A": 61,
+      "n_distinct_ufs_B": 33,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8856,
+      "R2_named_B": 0.8608,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.22950819672131148,
+      "prohibited_3_saturation_A": 0.45901639344262296,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<33 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb04",
+      "in_scope": true,
+      "n_distinct_ufs_A": 38,
+      "n_distinct_ufs_B": 30,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.6872,
+      "R2_named_B": 0.7917,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.23684210526315788,
+      "prohibited_3_saturation_A": 0.2894736842105263,
+      "jaccard_primary": 0.8709677419354839,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8709677419354839
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8709677419354839
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8709677419354839
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8709677419354839
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8709677419354839
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<30 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb05",
+      "in_scope": true,
+      "n_distinct_ufs_A": 36,
+      "n_distinct_ufs_B": 23,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8593,
+      "R2_named_B": 0.8479,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.1388888888888889,
+      "prohibited_3_saturation_A": 0.3611111111111111,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<23 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb06",
+      "in_scope": true,
+      "n_distinct_ufs_A": 47,
+      "n_distinct_ufs_B": 23,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.849,
+      "R2_named_B": 0.9099,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.1702127659574468,
+      "prohibited_3_saturation_A": 0.5106382978723404,
+      "jaccard_primary": 0.8846153846153846,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8846153846153846
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8846153846153846
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8846153846153846
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8846153846153846
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.8846153846153846
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<23 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb07",
+      "in_scope": true,
+      "n_distinct_ufs_A": 50,
+      "n_distinct_ufs_B": 28,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.8373,
+      "R2_named_B": 0.8348,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": false,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.08,
+      "prohibited_3_saturation_A": 0.44,
+      "jaccard_primary": 1.0,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        },
+        "j_thresh_0.7": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 1.0
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "num_units"
+        ],
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "num_units"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_units"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "property_type"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months"
+        ],
+        [
+          "fico_range_low",
+          "loan_term_months",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "fico_range_low",
+          "num_units"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "property_type"
+        ]
+      ],
+      "ufs_B_repr": "<28 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb08",
+      "in_scope": true,
+      "n_distinct_ufs_A": 11,
+      "n_distinct_ufs_B": 24,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.4499,
+      "R2_named_B": 0.7297,
+      "adequacy_A": "adequate",
+      "adequacy_B": "adequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": false,
+      "rung_classification": null,
+      "property_state_saturation_A": 0.5454545454545454,
+      "prohibited_3_saturation_A": 0.5454545454545454,
+      "jaccard_primary": 0.36,
+      "is_reorganized_primary": true,
+      "reorganization_reason_primary": "jaccard<0.5",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.36
+        },
+        "j_thresh_0.4": {
+          "reorganized": true,
+          "reason": "jaccard<0.4",
+          "jaccard": 0.36
+        },
+        "j_thresh_0.5": {
+          "reorganized": true,
+          "reason": "jaccard<0.5",
+          "jaccard": 0.36
+        },
+        "j_thresh_0.6": {
+          "reorganized": true,
+          "reason": "jaccard<0.6",
+          "jaccard": 0.36
+        },
+        "j_thresh_0.7": {
+          "reorganized": true,
+          "reason": "jaccard<0.7",
+          "jaccard": 0.36
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv",
+          "fico_range_low"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "fico_range_low"
+        ],
+        [
+          "fico_range_low",
+          "ltv"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<24 ufs>"
+    },
+    {
+      "vintage": "2008Q1",
+      "cell": "rb09",
+      "in_scope": true,
+      "n_distinct_ufs_A": 78,
+      "n_distinct_ufs_B": 30,
+      "prohibited_features": [
+        "property_state",
+        "seller_name",
+        "servicer_name"
+      ],
+      "R2_named_A": 0.076,
+      "R2_named_B": 0.2636,
+      "adequacy_A": "inadequate",
+      "adequacy_B": "inadequate",
+      "verdict_differs": false,
+      "plural_A": true,
+      "plural_B": true,
+      "rung_classification": "3a/3b-mixed-loan-size-and-geo",
+      "property_state_saturation_A": 0.44871794871794873,
+      "prohibited_3_saturation_A": 0.6410256410256411,
+      "jaccard_primary": 0.6818181818181818,
+      "is_reorganized_primary": false,
+      "reorganization_reason_primary": "censored",
+      "manufactured_silence": false,
+      "j_threshold_sensitivity": {
+        "j_thresh_0.3": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.6818181818181818
+        },
+        "j_thresh_0.4": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.6818181818181818
+        },
+        "j_thresh_0.5": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.6818181818181818
+        },
+        "j_thresh_0.6": {
+          "reorganized": false,
+          "reason": "censored",
+          "jaccard": 0.6818181818181818
+        },
+        "j_thresh_0.7": {
+          "reorganized": true,
+          "reason": "jaccard<0.7",
+          "jaccard": 0.6818181818181818
+        }
+      },
+      "ufs_A_restricted_repr": [
+        [
+          "cltv"
+        ],
+        [
+          "cltv",
+          "dti"
+        ],
+        [
+          "cltv",
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "dti",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "dti",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "dti",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "dti",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "ltv"
+        ],
+        [
+          "cltv",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "num_borrowers"
+        ],
+        [
+          "cltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "cltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "num_units",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "loan_term_months",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "ltv"
+        ],
+        [
+          "dti",
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "dti",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "dti",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "first_time_homebuyer",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "loan_purpose",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "num_units",
+          "original_upb"
+        ],
+        [
+          "fico_range_low",
+          "original_upb"
+        ],
+        [
+          "loan_term_months",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "loan_term_months",
+          "original_upb"
+        ],
+        [
+          "ltv"
+        ],
+        [
+          "ltv",
+          "num_borrowers"
+        ],
+        [
+          "ltv",
+          "num_borrowers",
+          "num_units"
+        ],
+        [
+          "ltv",
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "ltv",
+          "original_upb"
+        ],
+        [
+          "num_borrowers",
+          "original_upb"
+        ],
+        [
+          "original_upb"
+        ]
+      ],
+      "ufs_B_repr": "<30 ufs>"
+    }
+  ]
+}
