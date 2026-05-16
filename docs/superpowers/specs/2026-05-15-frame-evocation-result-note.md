@@ -115,7 +115,7 @@ What this result does NOT let us claim:
 - Pre-reg: HEAD `991a2d9`, OTS-stamped at `f469fcf`. Predictions frozen before any code touched data; the data-structure surprises documented in §2 (Pre-reg corrections) reflect script-implementation issues, not retroactive prediction-editing.
 - Run: `scripts/frame_evocation_test.py` (unit tests pass; permutation tests with n=10,000, seed=20260515 reproducible).
 - Output: `runs/frame_evocation_2026-05-15.json` (per-cell scores + aggregate AUCs + permutation results + P3 detail).
-- Result note commit: [TBD]. OTS: [TBD].
+- Result note commit: `a0caa64`. OTS: `bb56e2e`.
 
 ## Followups (both branches terminal, per pre-reg §7)
 
