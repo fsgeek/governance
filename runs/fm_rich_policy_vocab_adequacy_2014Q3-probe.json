@@ -1,0 +1,857 @@
+{
+  "pre_reg": "docs/superpowers/specs/2026-05-12-fm-rich-policy-vocab-adequacy-preregistration-note.md",
+  "test": "fm-rich-policy-vocab-adequacy-#11",
+  "substrate": "FM-2014Q3",
+  "run_at": "2026-05-16T00-30-04Z",
+  "policy": "fnma_eligibility_matrix",
+  "policy_version": "0.1",
+  "policy_status": "medium-fidelity-reconstruction",
+  "regime_envelope": {
+    "fico_floor": 620.0,
+    "dti_ceiling": 50.0,
+    "ltv_ceiling": 97.0,
+    "conforming_upb": "auto-satisfied (FM acquisitions are conforming)"
+  },
+  "prep": {
+    "n_after_dropna_keys": 339754,
+    "upb_pctiles": {
+      "50": 200000.0,
+      "90": 390000.0,
+      "99": 575000.0,
+      "100": 959000.0
+    },
+    "frac_upb_over_453100": 0.0341,
+    "n_in_regime_envelope": 339702,
+    "frac_dropped_by_envelope": 0.0007,
+    "default_rate": 0.00468,
+    "high_cardinality_kept_buckets": {
+      "seller_name": [
+        "Bvrt 2014-1 Trust",
+        "Citimortgage, Inc.",
+        "Ditech Financial Llc",
+        "Flagstar Bank, Fsb",
+        "Franklin American Mortgage Company",
+        "Freedom Mortgage Corp.",
+        "Homebridge Financial Services, Inc.",
+        "Jpmorgan Chase Bank, National Association",
+        "Loandepot.Com, Llc",
+        "Nationstar Mortgage, Llc",
+        "Other",
+        "Pennymac Corp.",
+        "Phh Mortgage Corporation",
+        "Quicken Loans Inc.",
+        "Stearns Lending, Llc",
+        "Suntrust Mortgage Inc.",
+        "United Shore Financial Services, Llc D/B/A United Wholesale Mortgage",
+        "Wells Fargo Bank, N.A."
+      ],
+      "servicer_name": [
+        "Citimortgage, Inc.",
+        "Green Tree Servicing, Llc",
+        "Jp Morgan Chase Bank, Na",
+        "Lakeview Loan Servicing, Llc",
+        "Nationstar Mortgage, Llc",
+        "Other",
+        "Phh Mortgage Corporation",
+        "Pnc Bank, N.A.",
+        "Quicken Loans Inc.",
+        "Suntrust Mortgage Inc.",
+        "Wells Fargo Bank, N.A."
+      ]
+    },
+    "categorical_code_maps": {
+      "loan_purpose": {
+        "C": 0,
+        "P": 1,
+        "R": 2
+      },
+      "property_type": {
+        "CO": 0,
+        "CP": 1,
+        "MH": 2,
+        "PU": 3,
+        "SF": 4
+      },
+      "first_time_homebuyer": {
+        "N": 0,
+        "Y": 1
+      },
+      "amortization_type": {
+        "FRM": 0
+      },
+      "occupancy_status": {
+        "P": 0
+      },
+      "property_state": {
+        "AK": 0,
+        "AL": 1,
+        "AR": 2,
+        "AZ": 3,
+        "CA": 4,
+        "CO": 5,
+        "CT": 6,
+        "DC": 7,
+        "DE": 8,
+        "FL": 9,
+        "GA": 10,
+        "GU": 11,
+        "HI": 12,
+        "IA": 13,
+        "ID": 14,
+        "IL": 15,
+        "IN": 16,
+        "KS": 17,
+        "KY": 18,
+        "LA": 19,
+        "MA": 20,
+        "MD": 21,
+        "ME": 22,
+        "MI": 23,
+        "MN": 24,
+        "MO": 25,
+        "MS": 26,
+        "MT": 27,
+        "NC": 28,
+        "ND": 29,
+        "NE": 30,
+        "NH": 31,
+        "NJ": 32,
+        "NM": 33,
+        "NV": 34,
+        "NY": 35,
+        "OH": 36,
+        "OK": 37,
+        "OR": 38,
+        "PA": 39,
+        "PR": 40,
+        "RI": 41,
+        "SC": 42,
+        "SD": 43,
+        "TN": 44,
+        "TX": 45,
+        "UT": 46,
+        "VA": 47,
+        "VI": 48,
+        "VT": 49,
+        "WA": 50,
+        "WI": 51,
+        "WV": 52,
+        "WY": 53
+      },
+      "seller_name": {
+        "Bvrt 2014-1 Trust": 0,
+        "Citimortgage, Inc.": 1,
+        "Ditech Financial Llc": 2,
+        "Flagstar Bank, Fsb": 3,
+        "Franklin American Mortgage Company": 4,
+        "Freedom Mortgage Corp.": 5,
+        "Homebridge Financial Services, Inc.": 6,
+        "Jpmorgan Chase Bank, National Association": 7,
+        "Loandepot.Com, Llc": 8,
+        "Nationstar Mortgage, Llc": 9,
+        "Other": 10,
+        "Pennymac Corp.": 11,
+        "Phh Mortgage Corporation": 12,
+        "Quicken Loans Inc.": 13,
+        "Stearns Lending, Llc": 14,
+        "Suntrust Mortgage Inc.": 15,
+        "United Shore Financial Services, Llc D/B/A United Wholesale Mortgage": 16,
+        "Wells Fargo Bank, N.A.": 17
+      },
+      "servicer_name": {
+        "Citimortgage, Inc.": 0,
+        "Green Tree Servicing, Llc": 1,
+        "Jp Morgan Chase Bank, Na": 2,
+        "Lakeview Loan Servicing, Llc": 3,
+        "Nationstar Mortgage, Llc": 4,
+        "Other": 5,
+        "Phh Mortgage Corporation": 6,
+        "Pnc Bank, N.A.": 7,
+        "Quicken Loans Inc.": 8,
+        "Suntrust Mortgage Inc.": 9,
+        "Wells Fargo Bank, N.A.": 10
+      }
+    },
+    "near_constant_dropped": [
+      "amortization_type",
+      "occupancy_status"
+    ]
+  },
+  "named_features_exposed": [
+    "fico_range_low",
+    "dti",
+    "ltv",
+    "cltv",
+    "mortgage_insurance_pct",
+    "loan_term_months",
+    "loan_purpose",
+    "num_units",
+    "num_borrowers",
+    "first_time_homebuyer",
+    "property_type"
+  ],
+  "extension_features_exposed": [
+    "property_state",
+    "original_upb",
+    "seller_name",
+    "servicer_name"
+  ],
+  "dropped_features": [
+    "amortization_type",
+    "occupancy_status"
+  ],
+  "monotonic_cst_default_convention": {
+    "fico_range_low": -1,
+    "dti": 1,
+    "ltv": 1,
+    "cltv": 1,
+    "mortgage_insurance_pct": -1
+  },
+  "band_params": {
+    "epsilon": 0.02,
+    "depths": [
+      1,
+      2,
+      3
+    ],
+    "leaf_mins": [
+      25,
+      50,
+      100
+    ],
+    "seed": 0,
+    "holdout_frac": 0.3,
+    "plurality_rho_max": 0.9,
+    "max_subset_size": 7,
+    "dedup": "used-feature-set (highest-holdout-AUC representative)",
+    "candidate_set": "named-policy features UNION extension features (orig_interest_rate excluded -- defines the rate stratum)"
+  },
+  "explainer_params": {
+    "max_depth": 3,
+    "min_samples_leaf": 50,
+    "cv_folds": 5,
+    "r2_good": 0.3,
+    "dr2_ext_min": 0.15
+  },
+  "placebo_params": {
+    "n_random_draws": 5,
+    "seller_servicer_topk": 20,
+    "msa_topk": 40
+  },
+  "eps_arm": [
+    0.01,
+    0.02,
+    0.05
+  ],
+  "min_cell_loans": 5000,
+  "probe": true,
+  "strata": {
+    "S_rate": {
+      "stratum": "S-rate (orig_interest_rate deciles)",
+      "cell_col": "s_rate",
+      "cell_loan_counts": {
+        "rb00": 42353,
+        "rb01": 28886,
+        "rb02": 32399,
+        "rb03": 65332,
+        "rb04": 46408,
+        "rb05": 40627,
+        "rb06": 32889,
+        "rb07": 24204,
+        "rb08": 26604
+      },
+      "analyzed_cells": [
+        "rb04"
+      ],
+      "min_cell_loans": 5000,
+      "cells": {
+        "rb04": {
+          "n": 46408,
+          "variant_A_geography_admissible": {
+            "verdict": "ANALYZED",
+            "n": 46408,
+            "n_default": 149,
+            "default_rate": 0.00321,
+            "candidate_named": [
+              "fico_range_low",
+              "dti",
+              "ltv",
+              "cltv",
+              "mortgage_insurance_pct",
+              "loan_term_months",
+              "loan_purpose",
+              "num_units",
+              "num_borrowers",
+              "first_time_homebuyer",
+              "property_type"
+            ],
+            "candidate_extension": [
+              "property_state",
+              "original_upb",
+              "seller_name",
+              "servicer_name"
+            ],
+            "band_members_within_eps": 2334,
+            "band_distinct_by_tree_signature": 794,
+            "n_distinct_uf_members": 32,
+            "n_distinct_used_feature_sets": 21,
+            "distinct_used_feature_sets": [
+              [
+                "dti",
+                "fico_range_low"
+              ],
+              [
+                "fico_range_low",
+                "num_borrowers"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "seller_name"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "servicer_name"
+              ],
+              [
+                "fico_range_low",
+                "first_time_homebuyer",
+                "loan_purpose"
+              ],
+              [
+                "fico_range_low",
+                "loan_purpose",
+                "num_borrowers"
+              ],
+              [
+                "fico_range_low",
+                "loan_purpose",
+                "seller_name"
+              ],
+              [
+                "fico_range_low",
+                "loan_purpose",
+                "servicer_name"
+              ],
+              [
+                "fico_range_low",
+                "loan_term_months",
+                "num_borrowers"
+              ],
+              [
+                "fico_range_low",
+                "num_borrowers",
+                "property_type"
+              ],
+              [
+                "fico_range_low",
+                "num_borrowers",
+                "seller_name"
+              ],
+              [
+                "fico_range_low",
+                "num_borrowers",
+                "servicer_name"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "loan_purpose",
+                "num_borrowers"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "loan_term_months",
+                "num_borrowers"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers",
+                "original_upb"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers",
+                "property_type"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers",
+                "seller_name"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers",
+                "servicer_name"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "seller_name",
+                "servicer_name"
+              ],
+              [
+                "fico_range_low",
+                "loan_purpose",
+                "seller_name",
+                "servicer_name"
+              ]
+            ],
+            "n_members_using_extension": 16,
+            "extension_features_used_union": [
+              "original_upb",
+              "seller_name",
+              "servicer_name"
+            ],
+            "best_holdout_auc": 0.7529,
+            "median_pairwise_spearman": 0.8254,
+            "min_pairwise_spearman": 0.6889,
+            "plural": true,
+            "d_summary": {
+              "min": 3.5e-05,
+              "median": 0.000896,
+              "max": 0.005929,
+              "std": 0.000824
+            },
+            "R2_named": 0.7022,
+            "R2_all": 0.7022,
+            "dR2_ext": 0.0,
+            "explainer_named_root_feature": "fico_range_low",
+            "explainer_named_top_importances": [
+              [
+                "fico_range_low",
+                0.7214
+              ],
+              [
+                "num_borrowers",
+                0.1958
+              ],
+              [
+                "dti",
+                0.0827
+              ]
+            ],
+            "explainer_all_root_feature": "fico_range_low",
+            "explainer_all_top_importances": [
+              [
+                "fico_range_low",
+                0.7214
+              ],
+              [
+                "num_borrowers",
+                0.1958
+              ],
+              [
+                "dti",
+                0.0827
+              ]
+            ],
+            "extension_importances_in_all_explainer": [],
+            "rung_classification": null,
+            "pd_shape_d_on_named_root": "monotone",
+            "well_explained_by_named": true,
+            "gap_recurs": false,
+            "univariate_spearman_d": {
+              "fico_range_low": {
+                "spearman_rho": -0.5571,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.000637,
+                "mean_d_bottom_decile": 0.00255,
+                "tail_over_mid": 2.614
+              },
+              "dti": {
+                "spearman_rho": 0.2874,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001377,
+                "mean_d_bottom_decile": 0.000779,
+                "tail_over_mid": 1.247
+              },
+              "ltv": {
+                "spearman_rho": 0.0004,
+                "spearman_p": 0.9391,
+                "mean_d_top_decile": 0.001137,
+                "mean_d_bottom_decile": 0.001225,
+                "tail_over_mid": 1.136
+              },
+              "cltv": {
+                "spearman_rho": -0.0014,
+                "spearman_p": 0.756,
+                "mean_d_top_decile": 0.001133,
+                "mean_d_bottom_decile": 0.001237,
+                "tail_over_mid": 1.148
+              },
+              "mortgage_insurance_pct": {
+                "spearman_rho": 0.0286,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001117,
+                "mean_d_bottom_decile": 0.001094,
+                "tail_over_mid": 1.018
+              },
+              "loan_term_months": {
+                "spearman_rho": -0.0529,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001082,
+                "mean_d_bottom_decile": 0.001223,
+                "tail_over_mid": 1.126
+              },
+              "loan_purpose": {
+                "spearman_rho": -0.0522,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001114,
+                "mean_d_bottom_decile": 0.001254,
+                "tail_over_mid": 1.164
+              },
+              "num_units": {
+                "spearman_rho": 0.0025,
+                "spearman_p": 0.5849,
+                "mean_d_top_decile": 0.001097,
+                "mean_d_bottom_decile": 0.001104,
+                "tail_over_mid": 1.005
+              },
+              "num_borrowers": {
+                "spearman_rho": -0.2818,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.000904,
+                "mean_d_bottom_decile": 0.00127,
+                "tail_over_mid": 1.153
+              },
+              "first_time_homebuyer": {
+                "spearman_rho": 0.0345,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001121,
+                "mean_d_bottom_decile": 0.001086,
+                "tail_over_mid": 1.021
+              },
+              "property_type": {
+                "spearman_rho": 0.0038,
+                "spearman_p": 0.417,
+                "mean_d_top_decile": 0.001115,
+                "mean_d_bottom_decile": 0.001096,
+                "tail_over_mid": 1.016
+              },
+              "property_state": {
+                "spearman_rho": -0.0217,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001064,
+                "mean_d_bottom_decile": 0.001138,
+                "tail_over_mid": 1.036
+              },
+              "original_upb": {
+                "spearman_rho": -0.0467,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001056,
+                "mean_d_bottom_decile": 0.001213,
+                "tail_over_mid": 1.113
+              },
+              "seller_name": {
+                "spearman_rho": -0.0311,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.000993,
+                "mean_d_bottom_decile": 0.001199,
+                "tail_over_mid": 1.09
+              },
+              "servicer_name": {
+                "spearman_rho": -0.0387,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.000993,
+                "mean_d_bottom_decile": 0.001147,
+                "tail_over_mid": 1.037
+              }
+            },
+            "mandatory_feature_enforcement": {
+              "R_member_n_qualifying": 0,
+              "R_any_union_covers_mandatory": false,
+              "R_any_missing_from_union": [
+                "cltv",
+                "ltv",
+                "mortgage_insurance_pct",
+                "num_units"
+              ],
+              "R_majority_all_mandatory_used_by_ge_half_members": false,
+              "mandatory_feature_usage_share": {
+                "fico_range_low": 1.0,
+                "dti": 0.594,
+                "ltv": 0.0,
+                "cltv": 0.0,
+                "mortgage_insurance_pct": 0.0,
+                "loan_term_months": 0.062,
+                "loan_purpose": 0.188,
+                "num_units": 0.0,
+                "num_borrowers": 0.531,
+                "first_time_homebuyer": 0.031,
+                "property_type": 0.062
+              },
+              "interpretation": "R-majority = each exposed mandatory feature used by >=50% of distinct band members; geometry reported on the full de-duped within-eps band (the construction)"
+            },
+            "n_combos_tried": 147447
+          },
+          "variant_B_compliant_geography_prohibited": {
+            "verdict": "ANALYZED",
+            "n": 46408,
+            "n_default": 149,
+            "default_rate": 0.00321,
+            "candidate_named": [
+              "fico_range_low",
+              "dti",
+              "ltv",
+              "cltv",
+              "mortgage_insurance_pct",
+              "loan_term_months",
+              "loan_purpose",
+              "num_units",
+              "num_borrowers",
+              "first_time_homebuyer",
+              "property_type"
+            ],
+            "candidate_extension": [
+              "original_upb"
+            ],
+            "band_members_within_eps": 663,
+            "band_distinct_by_tree_signature": 237,
+            "n_distinct_uf_members": 17,
+            "n_distinct_used_feature_sets": 11,
+            "distinct_used_feature_sets": [
+              [
+                "dti",
+                "fico_range_low"
+              ],
+              [
+                "fico_range_low",
+                "num_borrowers"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers"
+              ],
+              [
+                "fico_range_low",
+                "first_time_homebuyer",
+                "loan_purpose"
+              ],
+              [
+                "fico_range_low",
+                "loan_purpose",
+                "num_borrowers"
+              ],
+              [
+                "fico_range_low",
+                "loan_term_months",
+                "num_borrowers"
+              ],
+              [
+                "fico_range_low",
+                "num_borrowers",
+                "property_type"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "loan_purpose",
+                "num_borrowers"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "loan_term_months",
+                "num_borrowers"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers",
+                "original_upb"
+              ],
+              [
+                "dti",
+                "fico_range_low",
+                "num_borrowers",
+                "property_type"
+              ]
+            ],
+            "n_members_using_extension": 1,
+            "extension_features_used_union": [
+              "original_upb"
+            ],
+            "best_holdout_auc": 0.7529,
+            "median_pairwise_spearman": 0.8261,
+            "min_pairwise_spearman": 0.6899,
+            "plural": true,
+            "d_summary": {
+              "min": 3.9e-05,
+              "median": 0.000979,
+              "max": 0.006388,
+              "std": 0.000861
+            },
+            "R2_named": 0.6608,
+            "R2_all": 0.6608,
+            "dR2_ext": 0.0,
+            "explainer_named_root_feature": "fico_range_low",
+            "explainer_named_top_importances": [
+              [
+                "fico_range_low",
+                0.5953
+              ],
+              [
+                "num_borrowers",
+                0.2879
+              ],
+              [
+                "dti",
+                0.1168
+              ]
+            ],
+            "explainer_all_root_feature": "fico_range_low",
+            "explainer_all_top_importances": [
+              [
+                "fico_range_low",
+                0.5953
+              ],
+              [
+                "num_borrowers",
+                0.2879
+              ],
+              [
+                "dti",
+                0.1168
+              ]
+            ],
+            "extension_importances_in_all_explainer": [],
+            "rung_classification": null,
+            "pd_shape_d_on_named_root": "monotone",
+            "well_explained_by_named": true,
+            "gap_recurs": false,
+            "univariate_spearman_d": {
+              "fico_range_low": {
+                "spearman_rho": -0.4495,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.000648,
+                "mean_d_bottom_decile": 0.002416,
+                "tail_over_mid": 2.56
+              },
+              "dti": {
+                "spearman_rho": 0.2587,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001397,
+                "mean_d_bottom_decile": 0.000722,
+                "tail_over_mid": 1.316
+              },
+              "ltv": {
+                "spearman_rho": -0.0176,
+                "spearman_p": 0.0002,
+                "mean_d_top_decile": 0.001094,
+                "mean_d_bottom_decile": 0.001196,
+                "tail_over_mid": 1.149
+              },
+              "cltv": {
+                "spearman_rho": -0.0212,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001088,
+                "mean_d_bottom_decile": 0.001213,
+                "tail_over_mid": 1.167
+              },
+              "mortgage_insurance_pct": {
+                "spearman_rho": 0.009,
+                "spearman_p": 0.0519,
+                "mean_d_top_decile": 0.001072,
+                "mean_d_bottom_decile": 0.00106,
+                "tail_over_mid": 1.011
+              },
+              "loan_term_months": {
+                "spearman_rho": -0.0542,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001044,
+                "mean_d_bottom_decile": 0.001187,
+                "tail_over_mid": 1.133
+              },
+              "loan_purpose": {
+                "spearman_rho": -0.0616,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001056,
+                "mean_d_bottom_decile": 0.001221,
+                "tail_over_mid": 1.172
+              },
+              "num_units": {
+                "spearman_rho": 0.0044,
+                "spearman_p": 0.3424,
+                "mean_d_top_decile": 0.00106,
+                "mean_d_bottom_decile": 0.001067,
+                "tail_over_mid": 1.006
+              },
+              "num_borrowers": {
+                "spearman_rho": -0.3138,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.000809,
+                "mean_d_bottom_decile": 0.001286,
+                "tail_over_mid": 1.207
+              },
+              "first_time_homebuyer": {
+                "spearman_rho": 0.0288,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001088,
+                "mean_d_bottom_decile": 0.001047,
+                "tail_over_mid": 1.027
+              },
+              "property_type": {
+                "spearman_rho": -0.0063,
+                "spearman_p": 0.1734,
+                "mean_d_top_decile": 0.00107,
+                "mean_d_bottom_decile": 0.00111,
+                "tail_over_mid": 1.053
+              },
+              "original_upb": {
+                "spearman_rho": -0.06,
+                "spearman_p": 0.0,
+                "mean_d_top_decile": 0.001005,
+                "mean_d_bottom_decile": 0.001225,
+                "tail_over_mid": 1.169
+              }
+            },
+            "mandatory_feature_enforcement": {
+              "R_member_n_qualifying": 0,
+              "R_any_union_covers_mandatory": false,
+              "R_any_missing_from_union": [
+                "cltv",
+                "ltv",
+                "mortgage_insurance_pct",
+                "num_units"
+              ],
+              "R_majority_all_mandatory_used_by_ge_half_members": false,
+              "mandatory_feature_usage_share": {
+                "fico_range_low": 1.0,
+                "dti": 0.647,
+                "ltv": 0.0,
+                "cltv": 0.0,
+                "mortgage_insurance_pct": 0.0,
+                "loan_term_months": 0.118,
+                "loan_purpose": 0.176,
+                "num_units": 0.0,
+                "num_borrowers": 0.647,
+                "first_time_homebuyer": 0.059,
+                "property_type": 0.118
+              },
+              "interpretation": "R-majority = each exposed mandatory feature used by >=50% of distinct band members; geometry reported on the full de-duped within-eps band (the construction)"
+            },
+            "n_combos_tried": 29709
+          },
+          "seconds": 2609.9
+        }
+      },
+      "plural_cells_variant_A": [
+        "rb04"
+      ]
+    }
+  },
+  "total_seconds": 3447.6
+}
