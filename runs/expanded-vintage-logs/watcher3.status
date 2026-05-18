@@ -1,1 +1,7 @@
 watcher3 started at 2026-05-17T12:41:36Z; waiting for 2009Q1 (PID 339297) to exit
+2009Q1 exited at 2026-05-18T00:50:44Z; checking for output JSON
+2009Q1 JSON found, launching 2020Q2 + 2012Q1 in parallel with --no-placebo --no-eps-arm
+launched: 2020Q2=1291832 2012Q1=1291833 at 2026-05-18T00:51:16Z
+2020Q2 exited 1 at 2026-05-18T00:55:04Z
+2012Q1 exited 137 at 2026-05-18T01:12:24Z
+all 4 vintages complete at 2026-05-18T01:12:24Z
