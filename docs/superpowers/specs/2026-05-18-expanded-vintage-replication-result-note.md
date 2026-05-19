@@ -170,4 +170,30 @@ Ordered by what would close the largest open question first.
 
 ---
 
+## 8. Recovery rerun — protocol deviations declared
+
+**Date:** 2026-05-18 (post-stamp of §1–§7). **Scope:** 2020Q2 (exit 1) and 2012Q1 (exit 137, OOM) — the two fresh vintages flagged in §6 followup #2. Recovery executed Windows-native (256 GB physical) via `scripts/run_windows_vintages.ps1`.
+
+### 8a. Flag deviation: `--no-placebo --no-eps-arm`
+
+The recovery script invokes the per-vintage runner with `--no-placebo --no-eps-arm`. These skip the script-internal sensitivity arms originating in pre-reg #11 (per-cell label-shuffle placebo and ε-band sensitivity sweep at ε ∈ {0.01, 0.02, 0.05}). They do **not** correspond to pre-reg #14 §4a (corpus-level label permutation, computed at aggregation time) or §4b (hyperparameter sensitivity spot-check on a single fresh vintage).
+
+**Verification (2026-05-18):** the placebo and eps_arm output fields (`cells.*.placebo`, `eps_arm_on_plural_variant_A`, `placebo_params`) are not consumed by `silence_manufacture_test.py` or `frame_evocation_test.py` (grep, both files: zero matches for any of those keys). The P1/P2/P4 discriminators are computed from band-construction outputs only.
+
+**Implication:** the 2020Q2 and 2012Q1 recovery JSONs will be structurally asymmetric from the completed-vintage JSONs (missing the placebo and eps_arm subtrees), but the asymmetry does not propagate into any P-verdict. The §4b hyperparameter sensitivity spot-check remains satisfied by the existing completed vintages.
+
+### 8b. Execution orchestration
+
+The recovery script as originally drafted launched both vintages in parallel. Given that each peaks at ~30 GB RSS during `pandas.read_csv` (and the 2020Q2 / 2012Q1 CSVs are larger than the original #11 cohort), the recovery script was amended to run them **sequentially**, matching the FM-load discipline documented in `scripts/fm_rich_policy_vocab_adequacy_test.py` L16-18 ("STRICTLY SERIAL ... never two in parallel"). No pre-reg #14 clause forbids parallel execution per se; sequential is chosen for memory prudence on the recovery host (shared with other workloads).
+
+### 8c. Path resolution fix
+
+The Windows runner sets `$env:PYTHONPATH = (Get-Location).Path` before launching Python, restoring the canonical `PYTHONPATH=.` invocation documented in the per-vintage script's usage block (L30). No code is modified.
+
+### 8d. Patch hashes
+
+Result-note revision committing this §8: [to be filled at commit time]. Runner script (`scripts/run_windows_vintages.ps1`): [to be filled at commit time].
+
+---
+
 **Result-note author:** Claude Opus 4.7 (governance lineage). **Date:** 2026-05-18. **Method:** in-script analysis using `silence_manufacture_test.analyze_cell` against the 5 per-vintage `fm_rich_policy_vocab_adequacy_*.json` files. No new compute, no model fits. P-verdicts P1/P2/P4 pending re-run of `scripts/frame_evocation_test.py` on the expanded corpus. **Pseudonym layer in use:** Olorin (layer 1) / Tay (layer 2). **References to result-notes use [[wikilink]] form.**
