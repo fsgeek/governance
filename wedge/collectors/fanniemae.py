@@ -168,6 +168,114 @@ def read_raw(path: Path | str, *, nrows: Optional[int] = None) -> pd.DataFrame:
     return df
 
 
+def _parquet_sibling_path(csv_path: Path) -> Path:
+    """Convention: data/fanniemae/{V}.csv ↔ data/fanniemae/parquet/{V}.parquet.
+
+    Matches the layout produced by scripts/convert_fm_csv_to_parquet.py.
+    """
+    return csv_path.parent / "parquet" / (csv_path.stem + ".parquet")
+
+
+def read_raw_auto(path: Path | str, *, nrows: Optional[int] = None,
+                  prefer_parquet: bool = True) -> pd.DataFrame:
+    """Like read_raw but transparently uses a sibling Parquet file if present.
+
+    The Parquet file is expected to have been produced by
+    scripts/convert_fm_csv_to_parquet.py, which uses the same dtype=str
+    + na_values=[""] contract as read_raw — so the returned DataFrame is
+    semantically equivalent to read_raw(csv_path, nrows=nrows).
+
+    prefer_parquet=False forces the CSV path (useful for parity testing).
+    """
+    p = Path(path)
+    parquet_path = _parquet_sibling_path(p)
+    if prefer_parquet and parquet_path.exists():
+        import pyarrow.parquet as pq
+        # If nrows is given, read only that many rows to match read_raw semantics.
+        if nrows is not None:
+            pf = pq.ParquetFile(parquet_path)
+            tables = []
+            seen = 0
+            for batch in pf.iter_batches(batch_size=min(nrows, 1_000_000)):
+                if seen >= nrows:
+                    break
+                want = min(len(batch), nrows - seen)
+                if want < len(batch):
+                    batch = batch.slice(0, want)
+                tables.append(batch)
+                seen += want
+            if tables:
+                import pyarrow as pa
+                df = pa.Table.from_batches(tables).to_pandas()
+            else:
+                df = pq.read_table(parquet_path).to_pandas().iloc[:0]
+        else:
+            df = pq.read_table(parquet_path).to_pandas()
+        # Parity guard: column count must match read_raw's contract.
+        if df.shape[1] != EXPECTED_NUM_COLUMNS:
+            raise ValueError(
+                f"Parquet {parquet_path} has {df.shape[1]} columns, "
+                f"expected {EXPECTED_NUM_COLUMNS}. Re-convert from CSV.")
+        return df
+    return read_raw(p, nrows=nrows)
+
+
+def _collapsed_cache_path(csv_path: Path, *, horizon_months: int) -> Path:
+    """Path for the per-vintage prepped-frame cache. Lives alongside the raw
+    Parquet at data/fanniemae/parquet/{vintage}_h{h}.collapsed.parquet."""
+    return (csv_path.parent / "parquet"
+            / f"{csv_path.stem}_h{horizon_months}.collapsed.parquet")
+
+
+def load_collapsed_cached(csv_path: Path | str, *,
+                          horizon_months: int = DEFAULT_LABEL_HORIZON_MONTHS,
+                          prefer_parquet: bool = True,
+                          use_cache: bool = True) -> tuple[pd.DataFrame, str]:
+    """Return the feature-frame DataFrame (one row per eligible loan), using a
+    Parquet cache when fresh.
+
+    Pipeline executed on cache miss:
+        read_raw_auto -> derive_origination_and_label(horizon_months=...) ->
+        filter_eligible -> to_feature_frame
+
+    Returns (df, source) where source is one of:
+        "cache"   — read from the collapsed-cache Parquet
+        "parquet" — regenerated from the raw-Parquet sibling
+        "csv"     — regenerated from the raw CSV (no Parquet sibling)
+
+    Cache freshness: cache mtime must exceed the source-data mtime. Edit the
+    raw Parquet (e.g. re-convert from CSV) and the next call regenerates.
+
+    Disable caching with use_cache=False (always regenerate, never write).
+    """
+    p = Path(csv_path)
+    if not p.exists():
+        raise FileNotFoundError(f"{p} not found")
+
+    cache_path = _collapsed_cache_path(p, horizon_months=horizon_months)
+    parquet_src = _parquet_sibling_path(p) if prefer_parquet else None
+    src_for_mtime = parquet_src if (parquet_src and parquet_src.exists()) else p
+
+    if use_cache and cache_path.exists():
+        if cache_path.stat().st_mtime > src_for_mtime.stat().st_mtime:
+            return pd.read_parquet(cache_path), "cache"
+
+    # Cache miss or stale: regenerate.
+    raw = read_raw_auto(p, prefer_parquet=prefer_parquet)
+    used_source = "parquet" if (parquet_src and parquet_src.exists()) else "csv"
+    collapsed = derive_origination_and_label(raw, horizon_months=horizon_months)
+    eligible = filter_eligible(collapsed)
+    feats = to_feature_frame(eligible).copy()
+
+    if use_cache:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = cache_path.with_suffix(cache_path.suffix + ".tmp")
+        feats.to_parquet(tmp, compression="snappy", index=False)
+        tmp.replace(cache_path)
+
+    return feats, used_source
+
+
 # ----------------------------------------------------------------------
 # Origination-row extraction & filtering.
 # ----------------------------------------------------------------------

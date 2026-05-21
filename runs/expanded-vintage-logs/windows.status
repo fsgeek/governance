@@ -1,0 +1,11 @@
+# Windows batch started: 2026-05-19T00:48:17Z
+# Python: .\.venv\Scripts\python.exe
+# PYTHONPATH: C:\Users\TonyMason\source\repos\governance
+# Mode: SEQUENTIAL (FM-load discipline; result-note §8b)
+2020Q2 launching at 2026-05-19T00:48:17Z
+# 2020Q2 PID=35104 at 2026-05-19T00:48:17Z
+2020Q2 exited code 1 at 2026-05-19T00:52:32Z
+2012Q1 launching at 2026-05-19T00:52:32Z
+# 2012Q1 PID=83348 at 2026-05-19T00:52:32Z
+2012Q1 exited code 0 at 2026-05-19T19:02:23Z
+# Windows batch done: 2026-05-19T19:02:23Z

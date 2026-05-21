@@ -1,0 +1,33 @@
+Traceback (most recent call last):
+  File "C:\Users\TonyMason\source\repos\governance\scripts\fm_rich_policy_vocab_adequacy_test.py", line 620, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\Users\TonyMason\source\repos\governance\scripts\fm_rich_policy_vocab_adequacy_test.py", line 556, in main
+    feats = load_vintage(args.vintage, nrows=args.nrows)
+  File "C:\Users\TonyMason\source\repos\governance\scripts\fm_rich_policy_vocab_adequacy_test.py", line 129, in load_vintage
+    raw = read_raw(fm_csv, nrows=nrows)
+  File "C:\Users\TonyMason\source\repos\governance\wedge\collectors\fanniemae.py", line 157, in read_raw
+    df = pd.read_csv(
+        p,
+    ...<7 lines>...
+        na_values=[""],
+    )
+  File "C:\Users\TonyMason\source\repos\governance\.venv\Lib\site-packages\pandas\io\parsers\readers.py", line 873, in read_csv
+    return _read(filepath_or_buffer, kwds)
+  File "C:\Users\TonyMason\source\repos\governance\.venv\Lib\site-packages\pandas\io\parsers\readers.py", line 306, in _read
+    return parser.read(nrows)
+           ~~~~~~~~~~~^^^^^^^
+  File "C:\Users\TonyMason\source\repos\governance\.venv\Lib\site-packages\pandas\io\parsers\readers.py", line 1947, in read
+    ) = self._engine.read(  # type: ignore[attr-defined]
+        ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        nrows
+        ^^^^^
+    )
+    ^
+  File "C:\Users\TonyMason\source\repos\governance\.venv\Lib\site-packages\pandas\io\parsers\c_parser_wrapper.py", line 219, in read
+    data = self._reader.read(nrows)
+  File "pandas/_libs/parsers.pyx", line 814, in pandas._libs.parsers.TextReader.read
+  File "pandas/_libs/parsers.pyx", line 906, in pandas._libs.parsers.TextReader._read_rows
+  File "pandas/_libs/parsers.pyx", line 885, in pandas._libs.parsers.TextReader._check_tokenize_status
+  File "pandas/_libs/parsers.pyx", line 2084, in pandas._libs.parsers.raise_parser_error
+pandas.errors.ParserError: Error tokenizing data. C error: out of memory
