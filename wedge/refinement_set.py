@@ -86,6 +86,40 @@ def _fit_one(X_sub: np.ndarray, y: np.ndarray, *, max_depth: int, min_samples_le
     return m
 
 
+def _score_subset(
+    subset: tuple[str, ...], cols: list[int], mono: tuple[int, ...],
+    Xtr: np.ndarray, ytr: np.ndarray, Xho: np.ndarray, yho: np.ndarray,
+    depths: tuple[int, ...], leaf_mins: tuple[int, ...], seed: int,
+) -> list[Optional[tuple[float, RefinementMember]]]:
+    """Fit every (depth, leaf_min) CART for one feature subset and score it on the
+    holdout. Returns a list aligned to the (depth, leaf_min) enumeration order, with
+    ``None`` where the original serial loop would have skipped (degenerate labels or
+    a single-class holdout). Pure given its inputs, so parallel execution over
+    subsets is bit-identical to the serial loop as long as results are collected in
+    submission order."""
+    Xtr_s, Xho_s = Xtr[:, cols], Xho[:, cols]
+    out: list[Optional[tuple[float, RefinementMember]]] = []
+    for d in depths:
+        for lm in leaf_mins:
+            tree = _fit_one(Xtr_s, ytr, max_depth=d, min_samples_leaf=lm,
+                            monotonic_cst=mono, seed=seed)
+            if tree is None:
+                out.append(None)
+                continue
+            ho_pred = tree.predict_proba(Xho_s)[:, 1]
+            try:
+                auc = float(roc_auc_score(yho, ho_pred))
+            except ValueError:
+                out.append(None)
+                continue
+            out.append((auc, RefinementMember(
+                feature_subset=tuple(subset), max_depth=int(d), min_samples_leaf=int(lm),
+                monotonic_cst=mono, holdout_auc=auc,
+                tree_signature=_tree_signature(tree, tuple(subset)),
+            )))
+    return out
+
+
 def build_refinement_band(
     X: np.ndarray,
     y: np.ndarray,
@@ -98,6 +132,7 @@ def build_refinement_band(
     holdout_frac: float = 0.3,
     seed: int = 0,
     max_subset_size: Optional[int] = None,
+    n_jobs: int = 1,
 ) -> RefinementBand:
     """Build the epsilon-band of policy-admissible refinements for one tier.
 
@@ -118,8 +153,15 @@ def build_refinement_band(
     fittable on some enumerated subset of size <= k, so band membership is
     unchanged. Below that bound it is a deliberate restriction. Exists as a
     compute control for large candidate-feature sets (2**p subsets blows up).
+
+    `n_jobs` (default 1): the per-subset CART fits are independent, so they run in
+    parallel via joblib when ``n_jobs != 1`` (``-1`` = all cores). Results are
+    collected in submission order, so the band is bit-identical to the serial
+    (``n_jobs == 1``) path -- see test_parallel_njobs_is_bit_identical_to_serial.
     """
     feature_names = list(feature_names)
+    depths = tuple(depths)
+    leaf_mins = tuple(leaf_mins)
     X = np.asarray(X, dtype=float)
     y = np.asarray(y, dtype=int)
     name_to_col = {f: i for i, f in enumerate(feature_names)}
@@ -137,29 +179,24 @@ def build_refinement_band(
     for k in range(1, k_max + 1):
         all_subsets.extend(combinations(feature_names, k))
 
-    scored: list[tuple[float, RefinementMember]] = []
-    n_tried = 0
-    for subset in all_subsets:
-        cols = [name_to_col[f] for f in subset]
-        mono = tuple(int(monotonic_cst_map.get(f, 0)) for f in subset)
-        Xtr_s, Xho_s = Xtr[:, cols], Xho[:, cols]
-        for d in depths:
-            for lm in leaf_mins:
-                n_tried += 1
-                tree = _fit_one(Xtr_s, ytr, max_depth=d, min_samples_leaf=lm,
-                                monotonic_cst=mono, seed=seed)
-                if tree is None:
-                    continue
-                ho_pred = tree.predict_proba(Xho_s)[:, 1]
-                try:
-                    auc = float(roc_auc_score(yho, ho_pred))
-                except ValueError:
-                    continue
-                scored.append((auc, RefinementMember(
-                    feature_subset=tuple(subset), max_depth=int(d), min_samples_leaf=int(lm),
-                    monotonic_cst=mono, holdout_auc=auc,
-                    tree_signature=_tree_signature(tree, tuple(subset)),
-                )))
+    tasks = [(subset, [name_to_col[f] for f in subset],
+              tuple(int(monotonic_cst_map.get(f, 0)) for f in subset))
+             for subset in all_subsets]
+    n_tried = len(all_subsets) * len(depths) * len(leaf_mins)
+
+    if n_jobs == 1:
+        per_subset = [_score_subset(s, cols, mono, Xtr, ytr, Xho, yho, depths, leaf_mins, seed)
+                      for (s, cols, mono) in tasks]
+    else:
+        from joblib import Parallel, delayed
+        per_subset = Parallel(n_jobs=n_jobs)(
+            delayed(_score_subset)(s, cols, mono, Xtr, ytr, Xho, yho, depths, leaf_mins, seed)
+            for (s, cols, mono) in tasks)
+
+    # Flatten in submission order (subset, then depth/leaf_min) so the result is
+    # independent of execution order; drop the skipped (None) combos.
+    scored: list[tuple[float, RefinementMember]] = [
+        item for sub_results in per_subset for item in sub_results if item is not None]
 
     if not scored:
         return RefinementBand([], [], None, epsilon, n_tried, tuple(feature_names))

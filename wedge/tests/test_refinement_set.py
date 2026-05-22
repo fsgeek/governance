@@ -133,6 +133,46 @@ def test_band_degenerate_labels_returns_empty():
 
 
 # ---------------------------------------------------------------------------
+# n_jobs parallelism — must be bit-identical to serial
+# ---------------------------------------------------------------------------
+def _assert_bands_identical(a, b):
+    assert a.best_holdout_auc == b.best_holdout_auc
+    assert a.epsilon == b.epsilon
+    assert a.n_combos_tried == b.n_combos_tried
+    assert a.feature_names == b.feature_names
+    assert a.members == b.members            # frozen dataclasses -> structural ==
+    assert a.distinct_members == b.distinct_members
+
+
+def test_parallel_njobs_is_bit_identical_to_serial_constrained():
+    X, y, names = _within_tier_fixture(n=4000, seed=1)
+    kw = dict(feature_names=names, monotonic_cst_map={"dti": +1, "fico_range_low": -1},
+              epsilon=0.05, depths=(1, 2, 3), leaf_mins=(25, 50, 100), holdout_frac=0.3, seed=0)
+    serial = build_refinement_band(X, y, n_jobs=1, **kw)
+    parallel = build_refinement_band(X, y, n_jobs=-1, **kw)
+    _assert_bands_identical(serial, parallel)
+
+
+def test_parallel_njobs_is_bit_identical_to_serial_unconstrained():
+    X, y, names = _within_tier_fixture(n=3000, seed=2)
+    kw = dict(feature_names=names, monotonic_cst_map={}, epsilon=0.02,
+              depths=(1, 2, 3), leaf_mins=(25, 50, 100), holdout_frac=0.3, seed=0)
+    serial = build_refinement_band(X, y, n_jobs=1, **kw)
+    parallel = build_refinement_band(X, y, n_jobs=4, **kw)
+    _assert_bands_identical(serial, parallel)
+
+
+def test_njobs_defaults_to_serial_behavior():
+    # Omitting n_jobs must behave exactly like n_jobs=1 (back-compat for callers).
+    X, y, names = _within_tier_fixture(n=2500, seed=5)
+    kw = dict(feature_names=names, monotonic_cst_map={"dti": +1},
+              epsilon=0.05, depths=(1, 2, 3), leaf_mins=(25, 50), holdout_frac=0.3, seed=0)
+    default = build_refinement_band(X, y, **kw)
+    explicit_serial = build_refinement_band(X, y, n_jobs=1, **kw)
+    _assert_bands_identical(default, explicit_serial)
+
+
+# ---------------------------------------------------------------------------
 # used_feature_set
 # ---------------------------------------------------------------------------
 def test_used_feature_set_reads_split_features():
