@@ -1,0 +1,55 @@
+{
+  "source_frame_json": "frame_evocation_2026-05-20.json",
+  "n_cells_full": 171,
+  "n_cells_fresh": 142,
+  "P1_named_diff_fresh": {
+    "verdict": "MISS",
+    "n_silence": 23,
+    "n_reorg_agreement": 25,
+    "n_no_reorg": 94,
+    "named_diff_fire_rate_silence": 0.7391304347826086,
+    "named_diff_fire_rate_reorg_agreement": 0.44,
+    "named_diff_fire_rate_no_reorg": 0.18085106382978725,
+    "silence_leg": {
+      "pass": false,
+      "note": "17/23 = 74% (>=80%)"
+    },
+    "reorg_agreement_leg": {
+      "pass": false,
+      "note": "11/25 = 44% (<=20%)"
+    },
+    "false_positive_leg": {
+      "pass": false,
+      "fp_rate": 0.18085106382978725,
+      "threshold": 0.15
+    }
+  },
+  "P2_M2mean_silence_only_full": {
+    "verdict": "MISS",
+    "auc": 0.763262599469496,
+    "p_two_sided": 0.0,
+    "threshold_auc": 0.95
+  },
+  "P3_silence_outside_2016Q1": {
+    "verdict": "HIT",
+    "n_fresh_silence_cells": 23
+  },
+  "P4_M3max_vs_M1_full_primary": {
+    "verdict": "MISS",
+    "obs_diff": 0.019907259354013385,
+    "p_two_sided": 0.6582,
+    "auc_M3max": 0.8429005436520627,
+    "auc_M1": 0.8229932842980493,
+    "threshold_diff": 0.05
+  },
+  "adv_4a_placebo_named_diff": {
+    "pass": true,
+    "obs_auc": 0.7811671087533156,
+    "null_rate_gt_0.95": 0.0
+  },
+  "adv_4d_2009Q1_no_reorg_named_diff_rate": {
+    "rate": 0.30434782608695654,
+    "n_no_reorg": 23,
+    "flag_ge_5pct": true
+  }
+}

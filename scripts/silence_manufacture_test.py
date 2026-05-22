@@ -18,9 +18,12 @@ from collections import defaultdict
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RUNS_DIR = REPO_ROOT / "runs"
-OUTPUT = RUNS_DIR / "silence_manufacture_2026-05-13.json"
+OUTPUT = RUNS_DIR / "silence_manufacture_2026-05-20.json"
 
-VINTAGES = ["2018Q1", "2016Q1", "2008Q1"]
+# Pre-reg #14 expanded corpus: 3 original (H2) + 4 fresh vintages.
+VINTAGES = ["2008Q1", "2016Q1", "2018Q1", "2009Q1", "2014Q3", "2012Q1", "2020Q2"]
+# :315 stratum-scope fix (result-note §2): scan BOTH strata, not S_rate only.
+STRATA = ["S_rate", "S_llpa"]
 J_THRESHOLDS = [0.3, 0.4, 0.5, 0.6, 0.7]
 J_PRIMARY = 0.5
 ADEQUACY_R2_NAMED = 0.30  # pre-registered: R²_named >= 0.30 = vocab-adequate
@@ -78,20 +81,20 @@ def adequacy(r2_named: float | None) -> str | None:
     return "adequate" if r2_named >= ADEQUACY_R2_NAMED else "inadequate"
 
 
-def analyze_cell(cell_id: str, cell: dict, vintage: str) -> dict | None:
+def analyze_cell(cell_id: str, cell: dict, vintage: str, stratum: str = "S_rate") -> dict | None:
     """Return per-cell analysis dict, or None if cell is out of scope."""
     va = cell.get("variant_A_geography_admissible")
     vb = cell.get("variant_B_compliant_geography_prohibited")
     if not va or not vb:
         return None
     if va.get("verdict") != "ANALYZED" or vb.get("verdict") != "ANALYZED":
-        return {"vintage": vintage, "cell": cell_id, "in_scope": False,
+        return {"vintage": vintage, "cell": cell_id, "stratum": stratum, "in_scope": False,
                 "reason_out": f"verdict A={va.get('verdict')} B={vb.get('verdict')}"}
 
     na = va.get("n_distinct_used_feature_sets", 0)
     nb = vb.get("n_distinct_used_feature_sets", 0)
     if na < 2 or nb < 2:
-        return {"vintage": vintage, "cell": cell_id, "in_scope": False,
+        return {"vintage": vintage, "cell": cell_id, "stratum": stratum, "in_scope": False,
                 "reason_out": f"n_ufs A={na} B={nb}"}
 
     # Defensive prohibited-features computation per cell.
@@ -138,6 +141,7 @@ def analyze_cell(cell_id: str, cell: dict, vintage: str) -> dict | None:
     return {
         "vintage": vintage,
         "cell": cell_id,
+        "stratum": stratum,
         "in_scope": True,
         "n_distinct_ufs_A": na,
         "n_distinct_ufs_B": nb,
@@ -312,11 +316,15 @@ def main():
             continue
         with open(path) as f:
             d = json.load(f)
-        cells = d["strata"]["S_rate"]["cells"]
-        for cell_id, cell in cells.items():
-            result = analyze_cell(cell_id, cell, vintage)
-            if result is not None:
-                all_cells.append(result)
+        for stratum in STRATA:
+            strat = d.get("strata", {}).get(stratum)
+            if not strat:
+                continue
+            cells = strat.get("cells", {})
+            for cell_id, cell in cells.items():
+                result = analyze_cell(cell_id, cell, vintage, stratum)
+                if result is not None:
+                    all_cells.append(result)
 
     agg = aggregate([c for c in all_cells if c.get("in_scope")])
 

@@ -1,6 +1,8 @@
-# Expanded-vintage replication (#14) — result note (PARTIAL)
+# Expanded-vintage replication (#14) — result note (COMPLETE)
 
-**Date:** 2026-05-18. **Status:** PARTIAL RESULT (2 of 4 fresh vintages completed; 2 failed). **Pre-registration:** `docs/superpowers/specs/2026-05-15-expanded-vintage-replication-preregistration-note.md` (commit `97fcd6f` per session anchor; OTS `f091480` per path-doc §3 Q5). **Substrate:** FM #11 + #12 + #13 existing corpus (3 vintages: 2008Q1, 2016Q1, 2018Q1) + 4 fresh vintages requested (2009Q1, 2014Q3, 2020Q2, 2012Q1). **Connects:** [[project_saturation_phase_characterization]], [[project_silence_manufacture_result]], [[project_hmda_trimodal_result]], [[project_pragmatics_linguistics_lens]], [[project_pre_registration_pattern]].
+**Date:** 2026-05-18 (§1–§8, PARTIAL) → **2026-05-21 (§9, COMPLETE).** **Status:** COMPLETE — all 4 fresh vintages run (2020Q2 + 2012Q1 recovered, §8); `frame_evocation_test.py` re-run on the full 7-vintage corpus, grading P1/P2/P4. **The four-way verdict (P1 MISS / P2 MISS / P3 HIT / P4 MISS) is in §9, which supersedes the partial scorecard and the §1 distribution.** **Pre-registration:** `docs/superpowers/specs/2026-05-15-expanded-vintage-replication-preregistration-note.md` (commit `97fcd6f` per session anchor; OTS `f091480` per path-doc §3 Q5). **Substrate:** FM #11 + #12 + #13 existing corpus (3 vintages: 2008Q1, 2016Q1, 2018Q1) + 4 fresh vintages (2009Q1, 2014Q3, 2020Q2, 2012Q1). **Connects:** [[project_saturation_phase_characterization]], [[project_silence_manufacture_result]], [[project_hmda_trimodal_result]], [[project_pragmatics_linguistics_lens]], [[project_pre_registration_pattern]].
+
+> **Note on structure:** §1–§8 are the 2026-05-18 PARTIAL record (5 vintages, `silence_manufacture` apparatus), retained as-stamped. §9 is the 2026-05-21 completion: the graded #14 predictions on the full 7-vintage `frame_evocation` corpus (n=171) plus the full-corpus distribution. Where the two differ, §9 governs — and every §1 finding *strengthens* on the larger corpus, none reverses.
 
 ---
 
@@ -31,15 +33,15 @@ The 2 completed fresh vintages bracket two distinct regimes: 2009Q1 (post-crisis
 
 ## P-scorecard (partial)
 
-| Pred. | Prior | Verdict | Headline |
+| Pred. | Prior | Verdict (graded 2026-05-21, §9) | Headline |
 |---|---|---|---|
-| P1 named_diff structural pattern on fresh cells | 0.30 | **NOT YET TESTED** | requires `frame_evocation_test.py` re-run on expanded corpus |
-| P2 M2_mean silence-only AUC ≥ 0.95 on full corpus | 0.40 | NOT YET TESTED | same dependency |
-| P3 silence cell outside 2016Q1 in fresh data | 0.45 | **HIT (8 cells in 2 fresh vintages)** | 2 in 2009Q1, 6 in 2014Q3 |
-| P4 AUC ceiling breaks on M3_max vs M1 | 0.30 | NOT YET TESTED | same dependency |
-| P5 diagnostic: anti-uniformity | n/a | **HIT (multi-axis)** | failures of uniformity surfaced on stratum (P3 vintage non-uniformity is unsurprising; carrier-set non-uniformity is the new one — see §3) |
+| P1 named_diff structural pattern on fresh cells | 0.30 | **MISS** | fires 74% silence / 44% reorg-agreement / 18% no-reorg — detects reorganization, not silence |
+| P2 M2_mean silence-only AUC ≥ 0.95 on full corpus | 0.40 | **MISS** | AUC 0.763 (in-sample 2016Q1 was 1.000 — overfitting) |
+| P3 silence cell outside 2016Q1 in fresh data | 0.45 | **HIT (23 fresh cells)** | 2 in 2009Q1, 6 in 2014Q3, 1 in 2012Q1, 14 in 2020Q2 |
+| P4 AUC ceiling breaks on M3_max vs M1 | 0.30 | **MISS** | M3_max − M1 = +0.020, perm p = 0.66 — tie persists at 6× n |
+| P5 diagnostic: anti-uniformity | n/a | **HIT (multi-axis)** | failures of uniformity surfaced on regime, carrier, mechanism (see §3, §9) |
 
-**P3 HIT is the only stamped verdict landed.** It alone is sufficient to retire the "silence is 2016Q1-specific" framing.
+**Four-way falsification: P3 HIT, P1/P2/P4 MISS.** The MISSes are load-bearing, not a disappointment — see §9. (The headline below and the §1 distribution reflect the 2026-05-18 partial; §9 governs.)
 
 ---
 
@@ -196,4 +198,58 @@ Result-note revision committing this §8: [to be filled at commit time]. Runner 
 
 ---
 
-**Result-note author:** Claude Opus 4.7 (governance lineage). **Date:** 2026-05-18. **Method:** in-script analysis using `silence_manufacture_test.analyze_cell` against the 5 per-vintage `fm_rich_policy_vocab_adequacy_*.json` files. No new compute, no model fits. P-verdicts P1/P2/P4 pending re-run of `scripts/frame_evocation_test.py` on the expanded corpus. **Pseudonym layer in use:** Olorin (layer 1) / Tay (layer 2). **References to result-notes use [[wikilink]] form.**
+## 9. Completion (2026-05-21) — graded verdicts on the full 7-vintage corpus
+
+**Method:** `frame_evocation_test.py` re-run on all 7 vintages → `runs/frame_evocation_2026-05-20.json` (n=171 cells); graded by `scripts/expanded_vintage_aggregate.py` → `runs/expanded_vintage_2026-05-20.json`. The aggregator re-runs byte-identical on a fresh invocation (verified 2026-05-21), so the verdicts below are reproducible from the committed artifacts. Full-corpus distribution recomputed from `runs/silence_manufacture_2026-05-20.json` (the all-strata, 7-vintage `silence_manufacture` re-run, with the §2 `:315` stratum-scope bug fixed). No new model fits.
+
+### 9a. The four-way verdict
+
+| Pred. | Verdict | Numbers | Reading |
+|---|---|---|---|
+| P1 named_diff structural | **MISS** | fires 17/23 silence (74%, need ≥80%); 11/25 reorg-agreement (44%, need ≤20%); 18% no-reorg FP (need ≤15%) | named_diff is a **reorganization** detector, not a silence detector |
+| P2 M2_mean silence-only AUC | **MISS** | AUC 0.763 (need ≥0.95), perm p = 0.000 | the in-sample AUC = 1.000 was 2016Q1 overfitting; signal real but far below ceiling |
+| P3 silence outside 2016Q1 | **HIT** | 23 fresh silence cells (prior 0.45) | silence-manufacture is FM-substrate-general, not 2016Q1-specific |
+| P4 M3_max vs M1 | **MISS** | M3_max − M1 = +0.020, perm p = 0.66 (AUC 0.843 vs 0.823) | the predictive AUC tie persists at 6× the original n |
+| 4a placebo (named_diff) | **PASS** | null-AUC > 0.95 rate = 0.000 | the discriminator's signal is real, not a label-shuffle artifact |
+| 4d 2009Q1 no-reorg FP | flag | 0.304 (7/23) | flagged residual — see §9c, **not** a characterized mechanism |
+
+**The MISSes are the result, and they are load-bearing.** P1/P2/P4 each kill a way the program could have fooled itself:
+
+- **P2 kills the overfitting trap.** The in-sample M2_mean AUC of 1.000 (2016Q1-only) read as "near-perfect silence discriminator." On fresh data it falls to 0.763. Stamping the in-sample number as a result would have been a textbook hypothesis-layer premature collapse ([[project_premature_collapse_frame]]); the fresh corpus is the receipt that catches it.
+- **P1 reshapes a detector into a signal.** named_diff fires on reorganization (74% of silence, but also 44% of reorganized-but-agreeing cells), not on silence specifically. So the search for a *universal silence-specific discriminator* is closed — cleanly, terminally; do not soften it. What survives is observability, not case-level triage: this is the same door [[project_routable_population_result]] closed six ways, and it stays closed. The README's adversarial-review device is a presentation layer, not a triage layer.
+- **P4 confirms no free predictive lunch.** The policy-constrained refinement set buys interpretability/observability at no AUC cost *and no AUC benefit*; the plurality-superiority claim is about artifact form, not predictive accuracy.
+
+This HIT/MISS mix is the calibration sweet spot per [[project_pre_registration_pattern]]: a pre-registration that assumed more uniformity than reality has, with the failures clustering informatively. The honest-scope it forces — observability claims, not silence-detection or triage claims — is exactly the convergence with the text-only-observation impossibility result in [[reference_ai_honesty_paper]].
+
+### 9b. Full-corpus distribution (supersedes §1)
+
+26 manufactured-silence cells on the full corpus (was 11 on the 5-vintage partial; the +15 are the two recovery vintages: 2012Q1 ×1, 2020Q2 ×14). By vintage: 2009Q1 ×2, 2014Q3 ×6, 2016Q1 ×3, 2012Q1 ×1, 2020Q2 ×14 (2008Q1 and 2018Q1: zero). By stratum: **S_llpa ×22, S_rate ×4** — the §2 stratum-scope point sharpens, since 22 of 26 silence cells live in the LLPA stratum the original test never read.
+
+Saturation phase × reorganization status (property_state saturation in variant A, n=171):
+
+| Phase band | n no-reorg | n reorg-agreement | n silence |
+|---|---|---|---|
+| Phase 0 [0, 0.45) | 113 | 19 | **18** |
+| Phase 1 [0.45, 0.55] | 2 | 4 | 1 |
+| Gap (0.55, 1.00) | 3 | 2 | 3 |
+| Phase 2 = 1.00 | 0 | 2 | 4 |
+
+**The trimodal-saturation falsification strengthens.** On the 29-cell characterization, silence lived only at saturation = 1.00. On n=171, **18 of 26 silence cells sit in phase 0 (saturation < 0.45)**, with silence present in every band. "Silence requires complete property_state saturation" is decisively dead; [[project_saturation_phase_characterization]]'s trimodal structure is a 3-vintage/29-cell artifact.
+
+Mechanism classification on all 26 silence cells: **A_geo ×20, A_inst ×5, B ×1** (was 9/1/1 on the partial). The Mechanism-B cell (2014Q3/S_rate/rb03) remains the sole one (§3); it is the cell most plausibly relabel-as-spurious.
+
+### 9c. Two regime-tilt observations (corpus-derived, NOT pre-registered)
+
+These are post-hoc observations on the corpus that revealed them. They are **not** pre-registered findings and must not be re-fit into a discriminator on this same corpus (that re-opens the door P1 just closed). They are flagged here as candidate hypotheses for a *separate* pre-registration on held-out vintages.
+
+1. **Institutional-carrier silence tilts to COVID.** All 5 A_inst cells (institutional carriers saturated, property_state absent) are 2020Q2 ×4 + 2014Q3 ×1; the 2026-05-14 claim that institutional carriers saturate without inducing reorganization is no longer absolute. Carrier identity appears regime-tilted (geographic dominant overall; institutional-only concentrated in the COVID vintage).
+
+2. **4d is a flagged residual, not a mechanism.** named_diff fires on 30% (7/23) of 2009Q1 no-reorg cells. The prior framing as a "stress-regime asymmetry mechanism distinct from silence" does **not** survive the full corpus: per-vintage, the no-reorg fire-rate is crisis 0.22/0.30 but *recovery 2014Q3 = 0.25 and COVID 2020Q2 = 0.16 with expansion = 0.00*, so regime does not separate the elevated from the flat vintages. The rate tracks stratum granularity (S_llpa 0.22 vs S_rate 0.10) and the argmax-fragility of the discriminator (named_diff = argmax-|ρ| over named features; flips concentrate where the |ρ| landscape is flat). It is reported as an uncharacterized residual of the named_diff statistic; characterization, if pursued, is its own pre-registration.
+
+### 9d. Patch hashes
+
+Result-note completion (this §9): [to be filled at commit time].
+
+---
+
+**Result-note author:** Claude Opus 4.7 (governance lineage). **Dates:** §1–§8 2026-05-18 (PARTIAL); §9 2026-05-21 (COMPLETE). **Method:** §1–§8 in-script analysis via `silence_manufacture_test.analyze_cell` (5 vintages); §9 graded verdicts from `frame_evocation_test.py` + `expanded_vintage_aggregate.py` (7 vintages, n=171), aggregator reproducibility verified, distribution recomputed from `silence_manufacture_2026-05-20.json`. No new model fits. **All four #14 predictions now graded: P1 MISS / P2 MISS / P3 HIT / P4 MISS.** **Pseudonym layer in use:** Olorin (layer 1) / Tay (layer 2). **References to result-notes use [[wikilink]] form.**

@@ -34,10 +34,12 @@ from scipy.stats import mannwhitneyu
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 RUNS_DIR = REPO_ROOT / "runs"
-SILENCE_JSON = RUNS_DIR / "silence_manufacture_2026-05-13.json"
-FM11_JSON = {v: RUNS_DIR / f"fm_rich_policy_vocab_adequacy_{v}.json"
-             for v in ("2018Q1", "2016Q1", "2008Q1")}
-OUTPUT = RUNS_DIR / "frame_evocation_2026-05-15.json"
+SILENCE_JSON = RUNS_DIR / "silence_manufacture_2026-05-20.json"
+# Pre-reg #14 expanded corpus: 3 original (H2) + 4 fresh vintages, both strata.
+VINTAGES = ("2008Q1", "2016Q1", "2018Q1", "2009Q1", "2014Q3", "2012Q1", "2020Q2")
+STRATA = ("S_rate", "S_llpa")
+FM11_JSON = {v: RUNS_DIR / f"fm_rich_policy_vocab_adequacy_{v}.json" for v in VINTAGES}
+OUTPUT = RUNS_DIR / "frame_evocation_2026-05-20.json"
 
 VARIANT_A_KEY = "variant_A_geography_admissible"
 VARIANT_B_KEY = "variant_B_compliant_geography_prohibited"
@@ -196,9 +198,12 @@ def load_corpus() -> tuple[list[dict], dict[tuple[str, str], dict], set[str]]:
     for vintage, path in FM11_JSON.items():
         d = json.loads(path.read_text())
         named_features_union.update(d.get("named_features_exposed", []))
-        s_rate = d["strata"]["S_rate"]
-        for cell_id, cell in s_rate["cells"].items():
-            fm11[(vintage, cell_id)] = cell
+        for stratum in STRATA:
+            strat = d.get("strata", {}).get(stratum)
+            if not strat:
+                continue
+            for cell_id, cell in strat.get("cells", {}).items():
+                fm11[(vintage, cell_id)] = cell
     return silence_cells, fm11, named_features_union
 
 
@@ -238,13 +243,23 @@ def cell_metrics(silence_cell: dict, fm11_variant_a: dict, fm11_variant_b: dict,
         clean = [v for v in vals if v is not None]
         return max(clean) if clean else None
 
+    # named_diff / all_diff: binary variant-asymmetry on the peak-|ρ| feature name.
+    # Literal definition (post-hoc note 2026-05-15): fires iff the peak feature
+    # NAME differs between variants. None is treated as a value (None != "fico"
+    # fires; None != None does not). Higher = more unreliable (1 = fires).
+    named_diff = int(va_a["max_rho_feature_named"] != va_b["max_rho_feature_named"])
+    all_diff = int(va_a["max_rho_feature_all"] != va_b["max_rho_feature_all"])
+
     return {
         "vintage": silence_cell["vintage"],
         "cell": silence_cell["cell"],
+        "stratum": silence_cell.get("stratum"),
         "label_silence": bool(silence_cell.get("manufactured_silence")),
         "label_reorganized": bool(silence_cell.get("is_reorganized_primary")),
         "label_nontrivial": bool(silence_cell.get("is_reorganized_primary")),
         "verdict_differs": bool(silence_cell.get("verdict_differs")),
+        "named_diff": named_diff,
+        "all_diff": all_diff,
         "variant_A": va_a,
         "variant_B": va_b,
         "M1_cell": cell_max("M1"),
@@ -289,7 +304,8 @@ def main() -> int:
           f"nontrivial={n_nontrivial} trivial={n_trivial}")
 
     metric_names = ["M1_cell", "M2_mean_cell", "M2_min_cell", "M2_n_zero_cell",
-                    "M3_max_cell", "M3_top2_cell", "M3_entropy_cell", "M3_max_ext_cell"]
+                    "M3_max_cell", "M3_top2_cell", "M3_entropy_cell", "M3_max_ext_cell",
+                    "named_diff", "all_diff"]
     scores = {m: [c[m] for c in per_cell] for m in metric_names}
     aucs_primary = {m: auc(scores[m], labels_primary) for m in metric_names}
     print("AUCs (primary, non-trivial vs trivial):")
