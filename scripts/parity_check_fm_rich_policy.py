@@ -35,6 +35,20 @@ SKIP_PREFIXES = (
 # Per-cell volatile fields (relative to cells.{cell_id}).
 SKIP_PER_CELL = ("seconds",)
 
+# Optionally-computed sensitivity arms, disabled by --no-placebo / --no-eps-arm.
+# These are NOT part of the band-construction math the parity check exists to
+# verify; they appear in a full run and are absent in a --no-* run. Because the
+# #15 B-recovery held-out pipeline runs --no-placebo --no-eps-arm by the FM-load
+# discipline, comparing a held-out (parallel, --no-*) output against a full
+# serial reference must NOT flag their absence as a divergence. Matched anywhere
+# they occur as a path segment (the field itself and its subtree).
+# Added 2026-05-22: prior prefix-only matching mis-reported 13 "divergences"
+# (all placebo/eps_arm "missing in B") as PARITY FAIL on a clean --no-* run.
+SKIP_OPTIONAL_ARMS = (
+    "placebo",
+    "eps_arm_on_plural_variant_A",
+)
+
 DEFAULT_TOL = 1e-9
 
 
@@ -49,6 +63,12 @@ def _should_skip(path: str) -> bool:
     # Per-cell seconds: ...cells.{cell_id}.seconds
     for f in SKIP_PER_CELL:
         if path.endswith("." + f):
+            return True
+    # Optional sensitivity arms (placebo / eps_arm), matched anywhere they
+    # occur as a path segment: the field itself and its entire subtree.
+    for f in SKIP_OPTIONAL_ARMS:
+        if (path.endswith("." + f) or path == f
+                or ("." + f + ".") in path or ("." + f + "[") in path):
             return True
     return False
 
