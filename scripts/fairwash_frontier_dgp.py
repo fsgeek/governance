@@ -183,6 +183,148 @@ def demographic_parity_gap(frame: pd.DataFrame) -> float:
     return float(g0 - g1)
 
 
+# ===========================================================================
+# V2 latent-G twin-world substrate (compliant-practice pre-reg, rev-6)
+#   World A (proxy):      c_fresh <- G -> Y      (G latent; Y depends on G)
+#   World B (legitimate): c_fresh -> Y           (Y ~ World A's observable
+#                                                 regression p_obs => Y _||_ G | obs)
+# Both share the observable joint P(x0..x7, c_fresh, Y); only the latent causal
+# status of c_fresh differs (the cited confounding-vs-causation non-identifiability).
+# G is emitted for the EXPERIMENTER only (disparate-impact, proxy_strength); the
+# audit/discriminator never sees it (except R4's Ĝ_BISG estimate).
+# ===========================================================================
+_TWIN_DISP = 2.5        # disparate logit weight on standardized latent G (World A)
+OBSERVABLE_FEATURES = [f"x{j}" for j in range(N_LEGIT)]  # x0..x7 audit-visible
+CFRESH_PORTFOLIO = ["cfresh_cont", "cfresh_cat", "cfresh_count"]
+
+
+@dataclass(frozen=True)
+class TwinWorldResult:
+    frame: pd.DataFrame
+    proxy_strength_target: float
+    coupling: float
+    world: str
+    bisg_auc_target: float
+    seed: int
+
+
+def _twin_base(rng: np.random.Generator, n: int):
+    """Legit design x0..x7 (2 collinear pairs) + latent G driven by x0."""
+    z = rng.standard_normal((n, N_LEGIT))
+    X = z.copy()
+    X[:, 1] = 0.85 * z[:, 0] + np.sqrt(1 - 0.85**2) * z[:, 1]
+    X[:, 3] = 0.80 * z[:, 2] + np.sqrt(1 - 0.80**2) * z[:, 3]
+    g_latent = 0.35 * X[:, 0] + rng.standard_normal(n)
+    G = (g_latent > np.quantile(g_latent, 1 - G_PREVALENCE)).astype(int)
+    return X, G, g_latent
+
+
+def _cfresh_coupled(rng: np.random.Generator, G: np.ndarray, a: float) -> dict[str, np.ndarray]:
+    """3-family c_fresh portfolio coupled to G with scalar strength `a`."""
+    gz = (G - G.mean()) / (G.std() + 1e-12)
+    cont = a * gz + rng.standard_normal(len(G))
+    cat = rng.binomial(1, np.clip(0.08 + 0.12 * a * G, 0.0, 0.95)).astype(float)
+    rate = np.exp(0.1 + 0.30 * a * G + 0.3 * rng.standard_normal(len(G)))
+    count = rng.poisson(rate).astype(float)
+    return {"cfresh_cont": cont, "cfresh_cat": cat, "cfresh_count": count}
+
+
+def _portfolio_auc_for_G(cf: dict[str, np.ndarray], G: np.ndarray) -> float:
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import roc_auc_score
+    X = np.column_stack([cf[k] for k in CFRESH_PORTFOLIO])
+    lr = LogisticRegression(max_iter=200).fit(X, G)
+    return float(roc_auc_score(G, lr.predict_proba(X)[:, 1]))
+
+
+def _coupling_for_proxy_strength(target: float, seed: int) -> float:
+    """Bisect the scalar coupling `a` so AUC(G ~ c_fresh portfolio) ≈ target.
+    Monotone in `a`; calibrated on a fixed reference sample (deterministic)."""
+    if target <= 0.505:
+        return 0.0
+    rng = np.random.default_rng(seed + 9_000)
+    _, G, _ = _twin_base(rng, 6000)
+    lo, hi = 0.0, 4.0
+    for _ in range(22):
+        mid = 0.5 * (lo + hi)
+        cf = _cfresh_coupled(np.random.default_rng(seed + 9_001), G, mid)
+        if _portfolio_auc_for_G(cf, G) < target:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+def _bisg_estimate(G: np.ndarray, g_latent: np.ndarray, target_auc: float,
+                   rng: np.random.Generator) -> np.ndarray:
+    """Ĝ_BISG: continuous regulator estimate of G with AUC(Ĝ ~ G) ≈ target_auc.
+    Built from the latent G-signal + independent noise ONLY -- never c_fresh."""
+    from sklearn.metrics import roc_auc_score
+    gz = (g_latent - g_latent.mean()) / (g_latent.std() + 1e-12)
+    noise = rng.standard_normal(len(G))
+    lo, hi = 0.0, 40.0
+    for _ in range(40):
+        s = 0.5 * (lo + hi)
+        if roc_auc_score(G, gz + s * noise) > target_auc:
+            lo = s          # too informative -> add noise
+        else:
+            hi = s
+    s = 0.5 * (lo + hi)
+    score = gz + s * noise
+    return 1.0 / (1.0 + np.exp(-(score - score.mean()) / (score.std() + 1e-9)))
+
+
+def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
+                        *, bisg_auc: float = 0.85) -> TwinWorldResult:
+    """One (proxy_strength, world, seed) latent-G twin-world substrate.
+
+    World A and World B share inputs (x0..x7, c_fresh) deterministically given
+    `seed`; they differ only in how Y is generated:
+      World A: Y ~ Bernoulli(sigmoid(legit_logit + disp * G_z))   (G drives Y)
+      World B: Y ~ Bernoulli(p_obs(observables))                  (c_fresh drives Y)
+    where p_obs is World A's observable regression E[Y_A | x0..x7, c_fresh],
+    so the observable joint matches by construction and Y_B _||_ G | observables.
+    """
+    if world not in ("A", "B"):
+        raise ValueError("world must be 'A' or 'B'")
+    rng = np.random.default_rng(seed)
+    X, G, g_latent = _twin_base(rng, n)
+    Gz = (G - G.mean()) / (G.std() + 1e-12)
+    legit_logit = _INTERCEPT + X @ _LEGIT_BETA
+
+    a = _coupling_for_proxy_strength(proxy_strength, seed)
+    cf = _cfresh_coupled(rng, G, a)
+
+    # World A labels (Y depends on latent G); also the basis for p_obs.
+    pA = 1.0 / (1.0 + np.exp(-(legit_logit + _TWIN_DISP * Gz)))
+    YA = rng.binomial(1, pA)
+    y_clean = rng.binomial(1, 1.0 / (1.0 + np.exp(-legit_logit)))
+
+    if world == "A":
+        Y = YA
+    else:
+        # World B: draw Y from World A's OBSERVABLE regression (no G).
+        from sklearn.ensemble import GradientBoostingRegressor
+        obs = np.column_stack([X] + [cf[k] for k in CFRESH_PORTFOLIO])
+        p_obs = GradientBoostingRegressor(max_depth=3, n_estimators=200,
+                                          learning_rate=0.05, subsample=0.8,
+                                          random_state=seed).fit(obs, YA).predict(obs)
+        p_obs = np.clip(p_obs, 1e-4, 1 - 1e-4)
+        Y = rng.binomial(1, p_obs)
+
+    ghat = _bisg_estimate(G, g_latent, bisg_auc, rng)
+
+    cols = {f"x{j}": X[:, j] for j in range(N_LEGIT)}
+    cols.update(cf)
+    cols["G"] = G
+    cols["Y"] = Y
+    cols["Y_clean"] = y_clean
+    cols["Ghat_bisg"] = ghat
+    cols["world"] = world
+    return TwinWorldResult(frame=pd.DataFrame(cols), proxy_strength_target=proxy_strength,
+                           coupling=a, world=world, bisg_auc_target=bisg_auc, seed=seed)
+
+
 if __name__ == "__main__":
     # STRUCTURAL sanity only (valid-run checklist, §2h) -- no models, no hypothesis.
     for ch in CHANNELS:
