@@ -1,0 +1,49 @@
+{
+  "test": "desai-membership-weight",
+  "substrate": "FM-2008Q1",
+  "stratum": "S_rate",
+  "cell": "rb01",
+  "variant": "A_geography_admissible",
+  "source": "collapsed_parquet",
+  "invariant_check": {
+    "expected": {
+      "band_members_within_eps": 2517,
+      "n_distinct_used_feature_sets": 45,
+      "best_holdout_auc": 0.7469
+    },
+    "got": {
+      "band_members_within_eps": 2517,
+      "n_distinct_used_feature_sets": 45,
+      "best_holdout_auc": 0.7469
+    },
+    "match": true
+  },
+  "anchor_distinct_deployed_used_sets": 45,
+  "anchor_dti_in_distinct_sets": "14/45",
+  "band_members_within_eps": 2517,
+  "n_distinct_deployed_used_sets_all_members": 77,
+  "dti": {
+    "free_members": 1383,
+    "free_member_fraction": 0.5495,
+    "using_members": 1134,
+    "free_distinct_sets": 42,
+    "using_distinct_sets": 35
+  },
+  "feature_member_share": {
+    "fico_range_low": 1.0,
+    "dti": 0.4505,
+    "num_borrowers": 0.3254,
+    "cltv": 0.2638,
+    "loan_term_months": 0.205,
+    "ltv": 0.1677,
+    "seller_name": 0.1601,
+    "original_upb": 0.1573,
+    "property_state": 0.0799,
+    "servicer_name": 0.0505,
+    "loan_purpose": 0.0377,
+    "property_type": 0.0362,
+    "first_time_homebuyer": 0.0354
+  },
+  "recorded_bet": "membership-weighted dti-free fraction in [0.20, 0.35]; <0.05 vindicates Desai (corner), >0.50 obliterates it",
+  "seconds": 434.0
+}
