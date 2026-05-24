@@ -1,0 +1,148 @@
+{
+  "experiment": "compliant-practice disparate impact (V2) -- C3 path",
+  "pre_reg_commit": "8fa7992",
+  "smoke": true,
+  "estimator": "cross-fitted GBT AUC-lift (KSG/causal-forest backends pending deps)",
+  "points": [
+    {
+      "proxy_strength": 0.55,
+      "bisg_auc": 0.85,
+      "n_seeds": 6,
+      "refs": {
+        "R1": {
+          "effect_A_minus_B": -0.001522654067198037,
+          "effect_ci": [
+            -0.004503643439744297,
+            0.0006831800468196647
+          ],
+          "sep_auc": 0.38888888888888895,
+          "mean_A": 0.0017795131186983948,
+          "mean_B": 0.003302167185896432,
+          "effect_margin_over_R1": 0.0
+        },
+        "R3": {
+          "effect_A_minus_B": 0.0027664321773865352,
+          "effect_ci": [
+            0.00017240459598749647,
+            0.005272701294135744
+          ],
+          "sep_auc": 0.6666666666666666,
+          "mean_A": 0.002930232202080533,
+          "mean_B": 0.00016380002469399782,
+          "effect_margin_over_R1": 0.004289086244584572
+        },
+        "R5": {
+          "effect_A_minus_B": 0.0016903572689456747,
+          "effect_ci": [
+            -0.0021469485914721123,
+            0.004735400016869576
+          ],
+          "sep_auc": 0.7222222222222223,
+          "mean_A": 0.0029540873284272795,
+          "mean_B": 0.0012637300594816048,
+          "effect_margin_over_R1": 0.003213011336143712
+        },
+        "R4_marginal": {
+          "effect_A_minus_B": -0.003544320733864755,
+          "effect_ci": [
+            -0.00740569877809414,
+            0.0004910071167189556
+          ],
+          "sep_auc": 0.36111111111111116,
+          "mean_A": -0.0004091535479683143,
+          "mean_B": 0.0031351671858964405,
+          "effect_margin_over_R1": -0.002021666666666718
+        },
+        "R4_deconf": {
+          "effect_A_minus_B": 0.0005655094528186541,
+          "effect_ci": [
+            -0.002867012295571366,
+            0.0034728753680491145
+          ],
+          "sep_auc": 0.5277777777777778,
+          "mean_A": 0.002332259206633084,
+          "mean_B": 0.0017667497538144301,
+          "effect_margin_over_R1": 0.0020881635200166913
+        }
+      },
+      "bracket": {
+        "omnibus_lowerbound_acc": 0.4879166666666667,
+        "gate_passes": true,
+        "best_Gfree_effect_margin_over_R1": 0.004289086244584572,
+        "R4_deconf_effect_margin_over_R1": 0.0020881635200166913,
+        "R1_null_sanity_sep_auc": 0.38888888888888895,
+        "R1_null_sanity_fires": false
+      }
+    },
+    {
+      "proxy_strength": 0.85,
+      "bisg_auc": 0.85,
+      "n_seeds": 6,
+      "refs": {
+        "R1": {
+          "effect_A_minus_B": -0.0016478993170334448,
+          "effect_ci": [
+            -0.005978867813867297,
+            0.003813498446204544
+          ],
+          "sep_auc": 0.47222222222222227,
+          "mean_A": 0.06117796821762317,
+          "mean_B": 0.06282586753465662,
+          "effect_margin_over_R1": 0.0
+        },
+        "R3": {
+          "effect_A_minus_B": -0.0005142470727918328,
+          "effect_ci": [
+            -0.006111434659168209,
+            0.00597344257713893
+          ],
+          "sep_auc": 0.5555555555555556,
+          "mean_A": 0.06081840462397359,
+          "mean_B": 0.06133265169676542,
+          "effect_margin_over_R1": 0.001133652244241612
+        },
+        "R5": {
+          "effect_A_minus_B": 0.0020205374404615264,
+          "effect_ci": [
+            -0.003159862229849338,
+            0.008987736332059681
+          ],
+          "sep_auc": 0.6111111111111112,
+          "mean_A": 0.06333768293229242,
+          "mean_B": 0.06131714549183089,
+          "effect_margin_over_R1": 0.003668436757494971
+        },
+        "R4_marginal": {
+          "effect_A_minus_B": -0.0022335289466630845,
+          "effect_ci": [
+            -0.010367929066768145,
+            0.006171928157662894
+          ],
+          "sep_auc": 0.47222222222222227,
+          "mean_A": -0.011887402152747195,
+          "mean_B": -0.00965387320608411,
+          "effect_margin_over_R1": -0.0005856296296296397
+        },
+        "R4_deconf": {
+          "effect_A_minus_B": 0.02238494927708708,
+          "effect_ci": [
+            0.018555408440417327,
+            0.02625609532537647
+          ],
+          "sep_auc": 1.0,
+          "mean_A": 0.03037346802303964,
+          "mean_B": 0.007988518745952558,
+          "effect_margin_over_R1": 0.024032848594120526
+        }
+      },
+      "bracket": {
+        "omnibus_lowerbound_acc": 0.4941666666666667,
+        "gate_passes": true,
+        "best_Gfree_effect_margin_over_R1": 0.003668436757494971,
+        "R4_deconf_effect_margin_over_R1": 0.024032848594120526,
+        "R1_null_sanity_sep_auc": 0.47222222222222227,
+        "R1_null_sanity_fires": false
+      }
+    }
+  ]
+}

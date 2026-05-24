@@ -88,6 +88,34 @@ deconfounding channel — it uses Ĝ, which lives outside the matched joint. (Re
 *effect-size dose-response*, not the rank-inflated sep_auc=1.000.) Matches
 P-C3-payload-IS (prior 0.65) in direction, via the deconfounding operationalization.
 
+## The bracketing frame (Tony, 2026-05-24 — the load-bearing reframe of Finding 4)
+
+Finding 4 is **not a substrate caveat — it is the lower-bound complement to C3-floor's
+upper bound, and they meet in the middle.**
+
+- **C3-floor = UPPER bound on audit power.** The cited non-identifiability theorem: in
+  the ideal latent-G, perfectly-matched limit, *no* single-environment observational
+  audit can separate proxy from legit. Achievable separation is capped at chance — you
+  cannot do better than the floor.
+- **Finding 4 = LOWER bound the certification gate denied.** The §2d omnibus gate
+  certifies "≈ 0 detectable," but targeted references reach the finite residual, so
+  achievable separation has a **nonzero floor the gate missed**. The omnibus
+  *under-certifies* detectability.
+
+True audit capability is **bracketed between them**, and the two bounds arrived from
+opposite directions — an impossibility theorem from above, an empirical gate-blindness
+probe from below — and closed on the same quantity. The bracket is the result, not
+either bound alone.
+
+**Real-world image (why this transfers, not plumbing):** the regulator's
+disparate-impact *omnibus screen* (do outcomes differ by group?) is the lower bound that
+under-certifies; the non-identifiability *theorem* is the ceiling; the *targeted
+proxy-reference* (R4-deconf and the residual-reaching G-free leak) is what lives in the
+gap that neither the screen nor the theorem alone reveals. Audit design that runs only
+the omnibus screen is blind to exactly the band where the action is. → Finding 4 is
+instrumented as a **first-class harness output**: the omnibus-vs-targeted gap reported
+beside C3-floor, as the lower/upper bracket on achievable separation.
+
 ## Net for the cow
 "V2 is the spine / data-only audit can't separate proxy from legit" is **hardened** —
 G-free blindness is near-theorem AND empirically confirmed in effect size. What's
