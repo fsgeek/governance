@@ -1,0 +1,189 @@
+{
+  "experiment": "fairwash-reorganization frontier (synthetic)",
+  "pre_reg": "docs/superpowers/specs/2026-05-23-fairwash-reorganization-frontier-preregistration-note.md",
+  "pre_reg_commit": "daf032d",
+  "smoke": true,
+  "n_cells": 2,
+  "cells": [
+    {
+      "channel": "D2",
+      "seed": 0,
+      "valid_run": true,
+      "delta_M": 0.21989099914295585,
+      "auc_M": 0.8791879187918792,
+      "control_deltas": {
+        "C_drop": -0.034224943297773036,
+        "C_resid": 0.16363860202376046,
+        "C_oracle": -0.14930086982873325,
+        "C_null": -0.11672845907259305
+      },
+      "control_cfresh_null_95_splitgain": 0.03812271069987824,
+      "rows": [
+        {
+          "channel": "D2",
+          "seed": 0,
+          "transform": "T_naive",
+          "r_retained": 0.46230538986627656,
+          "auc_M": 0.8791879187918792,
+          "auc_T": 0.8065046504650466,
+          "delta_M": 0.21989099914295585,
+          "delta_T": 0.10165679408686928,
+          "valid": true,
+          "P1_shap_lime_evade": null,
+          "P2_disagreement": 0.03100258546394714,
+          "n_band_members": 177,
+          "P3a_reorg_catch": false,
+          "jaccard_3a": 1.0,
+          "P3b_reorg_catch": true,
+          "rung3b": {
+            "P3b_reorg_catch": true,
+            "realized": {
+              "cfresh_cont": 0.058367293378136204,
+              "cfresh_cat": 0.011446202224385318,
+              "cfresh_count": 0.032102335757422266
+            },
+            "null_95": 0.03812271069987824,
+            "flagged": {
+              "cfresh_cont": true,
+              "cfresh_cat": false,
+              "cfresh_count": false
+            },
+            "estimator": "split_gain"
+          },
+          "routing": {},
+          "note": ""
+        },
+        {
+          "channel": "D2",
+          "seed": 0,
+          "transform": "T_adv",
+          "r_retained": 0.48123344602596974,
+          "auc_M": 0.8791879187918792,
+          "auc_T": 0.8077027702770276,
+          "delta_M": 0.21989099914295585,
+          "delta_T": 0.1058189032676582,
+          "valid": true,
+          "P1_shap_lime_evade": null,
+          "P2_disagreement": 0.0,
+          "n_band_members": 120,
+          "P3a_reorg_catch": false,
+          "jaccard_3a": 1.0,
+          "P3b_reorg_catch": false,
+          "rung3b": {
+            "P3b_reorg_catch": false,
+            "realized": {
+              "cfresh_cont": 0.0012959496816205224,
+              "cfresh_cat": 0.0011391362122325612,
+              "cfresh_count": 0.002530960057941332
+            },
+            "null_95": 0.03812271069987824,
+            "flagged": {
+              "cfresh_cont": false,
+              "cfresh_cat": false,
+              "cfresh_count": false
+            },
+            "estimator": "split_gain"
+          },
+          "routing": {
+            "cfresh_cont": 0.021064810532501633,
+            "cfresh_cat": 0.09441765631230434,
+            "cfresh_count": 0.07479759451264856,
+            "x7": 0.41769386755016763,
+            "x5": 0.3920260710923779
+          },
+          "note": "cmaes steps=8 stall=0"
+        }
+      ]
+    },
+    {
+      "channel": "D2",
+      "seed": 1,
+      "valid_run": true,
+      "delta_M": 0.15107497295963868,
+      "auc_M": 0.8629275885386866,
+      "control_deltas": {
+        "C_drop": -0.005825537486479848,
+        "C_resid": 0.16138826163684322,
+        "C_oracle": -0.14967077174139926,
+        "C_null": -0.1648892768363726
+      },
+      "control_cfresh_null_95_splitgain": 0.04347067395894342,
+      "rows": [
+        {
+          "channel": "D2",
+          "seed": 1,
+          "transform": "T_naive",
+          "r_retained": 0.6646988632795326,
+          "auc_M": 0.8629275885386866,
+          "auc_T": 0.8046086932166021,
+          "delta_M": 0.15107497295963868,
+          "delta_T": 0.10041936279625796,
+          "valid": true,
+          "P1_shap_lime_evade": null,
+          "P2_disagreement": 0.14036971865289324,
+          "n_band_members": 945,
+          "P3a_reorg_catch": false,
+          "jaccard_3a": 0.7692307692307693,
+          "P3b_reorg_catch": true,
+          "rung3b": {
+            "P3b_reorg_catch": true,
+            "realized": {
+              "cfresh_cont": 0.051254020221691746,
+              "cfresh_cat": 0.005617655085414306,
+              "cfresh_count": 0.027887882334448624
+            },
+            "null_95": 0.04347067395894342,
+            "flagged": {
+              "cfresh_cont": true,
+              "cfresh_cat": false,
+              "cfresh_count": false
+            },
+            "estimator": "split_gain"
+          },
+          "routing": {},
+          "note": ""
+        },
+        {
+          "channel": "D2",
+          "seed": 1,
+          "transform": "T_adv",
+          "r_retained": 0.6741820008792312,
+          "auc_M": 0.8629275885386866,
+          "auc_T": 0.8069894645865261,
+          "delta_M": 0.15107497295963868,
+          "delta_T": 0.10185202755270495,
+          "valid": true,
+          "P1_shap_lime_evade": null,
+          "P2_disagreement": 0.12921522477555664,
+          "n_band_members": 694,
+          "P3a_reorg_catch": false,
+          "jaccard_3a": 0.7692307692307693,
+          "P3b_reorg_catch": false,
+          "rung3b": {
+            "P3b_reorg_catch": false,
+            "realized": {
+              "cfresh_cont": 0.0006489258252597754,
+              "cfresh_cat": 0.004067521620095333,
+              "cfresh_count": 0.0016475562799280249
+            },
+            "null_95": 0.04347067395894342,
+            "flagged": {
+              "cfresh_cont": false,
+              "cfresh_cat": false,
+              "cfresh_count": false
+            },
+            "estimator": "split_gain"
+          },
+          "routing": {
+            "cfresh_cont": 0.011850738372663932,
+            "cfresh_cat": 0.677724346487297,
+            "cfresh_count": 0.05529718325709285,
+            "x7": 0.16287254599092388,
+            "x5": 0.09225518589202236
+          },
+          "note": "cmaes steps=8 stall=0"
+        }
+      ]
+    }
+  ]
+}
