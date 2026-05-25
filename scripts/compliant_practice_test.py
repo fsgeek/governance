@@ -685,9 +685,179 @@ def run_c4(proxy_grid, seeds, n, out_path, smoke, lever="reweight", gamma=GAMMA_
     print(f"\nWrote {out_path.relative_to(REPO)} ({len(cells)} cells)")
 
 
+# ---------------------------------------------------------------------------
+# C4-V1 -- the EXPLICIT-TRANSFORM adversary (V1's T_adv laundering construction),
+# scored on the SAME leak-free harness + retained_excess metric as c4_cell so the
+# V1 (explicit transform) vs V2 (admissible reweighting) levers compare apples-to-
+# apples against the ~0.50 accuracy-tax cap. The load-bearing V1!=V2 test.
+#
+# Lever = V1 LaunderedModel (fft._build_laundered): M_full's G-driven decision
+# residual is re-projected onto admissible carriers (c_fresh + the 2 lowest-coef
+# V_named feats); CMA-ES optimizes softmax routing weights. Two arms:
+#   arm="matched"  : CMA MAXIMIZES adverse_excess s.t. the admissible AUC gate
+#                    (IDENTICAL objective to c4 -- isolates construction DOF vs the
+#                    reweighting lever).
+#   arm="faithful" : V1's OWN objective -- minimize max c_fresh split-importance
+#                    while holding a retention floor + the AUC gate (the recipe as
+#                    the cookbook ships it: "spread the residual to evade rung-3b").
+# Leak-free: CMA selects best_w on sel_frame (val under holdout); retained_excess,
+# AUC gate, and rung validation are computed on rep_frame (test).
+# ---------------------------------------------------------------------------
+C4V1_CARRIER_EXTRA = 2          # low-coef admissible legit carriers added to c_fresh
+
+
+def c4v1_cell(ps, seed, n, smoke, gamma=GAMMA_C4, holdout=False, arm="matched"):
+    import cmaes
+    fr = dgp.generate_twin_world(ps, "A", n, seed).frame
+    sub = twin_to_substrate(fr, seed)
+
+    sel_frame = sub.val if holdout else sub.test
+    rep_frame = sub.test
+    base = {
+        "M_full": _fit_model(sub, OBS + ["G"], "Y", seed),
+        "M_compliant": _fit_model(sub, ADMISSIBLE, "Y", seed),
+        "M_strict": _fit_model(sub, V_NAMED, "Y", seed),
+        "M_oracle": _fit_model(sub, V_NAMED, "Y_clean", seed),
+    }
+    bsel = _derive_baselines({k: _delta_auc(m, sub, sel_frame) for k, m in base.items()})
+    brep = _derive_baselines({k: _delta_auc(m, sub, rep_frame) for k, m in base.items()})
+    ae_full, auc_full = brep["ae_full"], brep["auc_full"]
+    best_adm_auc = brep["best_adm_auc"]
+
+    # M = the discriminatory base (uses G); its disparate channel is what the
+    # explicit transform launders onto admissible carriers.
+    M = base["M_full"]
+    base_feats = list(V_NAMED)        # admissible legit; declared proxies x6,x7 excluded
+    low_coef = sorted(base_feats, key=lambda f: sub.legit_coeffs.get(f, 0.0))[:C4V1_CARRIER_EXTRA]
+    carrier_feats = list(CFRESH) + low_coef
+    dim = len(carrier_feats)
+
+    def build_T(w):
+        sw = np.exp(w - w.max()); sw = sw / sw.sum()
+        return fft._build_laundered(M, sub, base_feats, carrier_feats, sw), sw
+
+    def _ae_auc(T, frame, deriv):
+        dd, a = _delta_auc(T, sub, frame)
+        return deriv["s"] * (dd - deriv["delta_oracle"]), a
+
+    def _native_retention(T, frame):
+        d_T = fft.dp_gap(fft.decisions(T, frame), frame["G"].values)
+        d_M = fft.dp_gap(fft.decisions(M, frame), frame["G"].values)
+        return (d_T / d_M) if abs(d_M) > 1e-9 else 0.0
+
+    def objective(w):
+        T, _ = build_T(w)
+        ae_sel, a_sel = _ae_auc(T, sel_frame, bsel)
+        deficit = (bsel["best_adm_auc"] - gamma) - a_sel   # admissible AUC gate, HARD barrier
+        if deficit > 0:
+            return float(100.0 + 10.0 * deficit)
+        if arm == "matched":
+            return float(-ae_sel)                          # maximize adverse excess
+        # faithful: minimize max c_fresh importance, hold V1's retention floor
+        cf = fft._cfresh_importance(T, sub, estimator="split_gain")
+        max_cf = max(cf.values()) if cf else 0.0
+        r = _native_retention(T, sel_frame)
+        pen = 10.0 * max(0.0, fft.RETENTION_FLOOR - r)
+        return float(max_cf - 0.5 * r + pen)
+
+    pop = 6 if smoke else C4_POP
+    ceiling = 60 if smoke else C4_CEILING
+    maxgen = 5 if smoke else C4_MAXGEN
+    opt = cmaes.CMA(mean=np.zeros(dim), sigma=1.0, seed=seed, population_size=pop)
+    best_w, best_obj = np.zeros(dim), float("inf")
+    evals, gen, conv_stall = 0, 0, 0
+    while gen < maxgen and evals + opt.population_size <= ceiling:
+        sols, improved = [], False
+        for _ in range(opt.population_size):
+            w = opt.ask(); val = objective(w); sols.append((w, val)); evals += 1
+            if val < best_obj - C4_CONV_TOL:
+                best_obj, best_w, improved = val, w, True
+        opt.tell(sols); gen += 1
+        conv_stall = 0 if improved else conv_stall + 1
+        if conv_stall >= C4_CONV_PATIENCE or opt.should_stop():
+            break
+
+    T, sw = build_T(best_w)
+    ae_adv, auc_adv = _ae_auc(T, rep_frame, brep)
+    retained = (ae_adv / ae_full) if abs(ae_full) >= EPSILON_EXCESS else None
+    cf = fft._cfresh_importance(T, sub, estimator="split_gain")
+    max_cfresh = max(cf.values()) if cf else 0.0
+
+    train_dec = fft.decisions(T, sub.train)
+    band_full = fft.build_surrogate_band(sub.train, train_dec, fft.BAND_POOL, seed=seed)
+    prohibited = set(fft.PROHIBITED_IN_POOL)
+    restricted_pool = [f for f in fft.BAND_POOL if f not in prohibited]
+    band_restr = fft.build_surrogate_band(sub.train, train_dec, restricted_pool, seed=seed)
+    r1 = (fft.rung1_shap_lime(T, sub) if not smoke
+          else {"P1_shap_lime_evade": None})
+    r3a = fft.rung3a(band_full, band_restr, prohibited)
+    evade1, catch3a = r1.get("P1_shap_lime_evade"), r3a["P3a_reorg_catch"]
+    rungs_pass = None if evade1 is None else bool(evade1 and not catch3a)
+
+    gate_adm = bool(auc_adv >= best_adm_auc - gamma)
+    gate_full = bool(auc_adv >= auc_full - gamma)
+    success = (retained is not None and retained >= 0.80
+               and (rungs_pass in (True, None)) and gate_adm)
+    return {
+        "proxy_strength": ps, "seed": seed, "arm": arm, "gamma": float(gamma),
+        "holdout": bool(holdout), "lever": "v1_launder",
+        "s_sel": bsel["s"], "s_rep": brep["s"], "s_flip": bool(bsel["s"] != brep["s"]),
+        "retained_excess_adv": (None if retained is None else float(retained)),
+        "r_retained_native": float(_native_retention(T, rep_frame)),
+        "ae_adv": float(ae_adv), "ae_full": float(ae_full),
+        "auc_adv": float(auc_adv), "auc_full": float(auc_full),
+        "best_adm_auc": float(best_adm_auc),
+        "max_cfresh_importance": float(max_cfresh),
+        "routing": {f: float(sw[k]) for k, f in enumerate(carrier_feats)},
+        "gate_full_pass": gate_full, "gate_admissible_pass": gate_adm,
+        "rung1_evade": evade1, "rung3a_catch": catch3a, "rungs_pass": rungs_pass,
+        "cmaes_evals": evals, "cmaes_gens": gen,
+        "P_C4_success": bool(success),
+    }
+
+
+def run_c4v1(proxy_grid, seeds, n, out_path, smoke, gamma=GAMMA_C4, holdout=False, arm="matched"):
+    t0 = time.time()
+    cells = []
+    for ps in proxy_grid:
+        for sd in seeds:
+            c = c4v1_cell(ps, sd, n, smoke, gamma=gamma, holdout=holdout, arm=arm)
+            cells.append(c)
+            re = c["retained_excess_adv"]
+            print(f"[{time.time()-t0:6.1f}s] ps={ps:.2f} seed={sd} arm={arm} | "
+                  f"retained_exc={'None' if re is None else f'{re:+.3f}'} "
+                  f"(native_r={c['r_retained_native']:+.3f}) | "
+                  f"auc_adv={c['auc_adv']:.3f} (adm {c['best_adm_auc']:.3f}) "
+                  f"gateA={c['gate_admissible_pass']} | max_cf={c['max_cfresh_importance']:.3f} "
+                  f"| rungs={c['rungs_pass']} | evals={c['cmaes_evals']}", flush=True)
+    by_ps = {}
+    for ps in proxy_grid:
+        sub = [c for c in cells if c["proxy_strength"] == ps]
+        ra = [c["retained_excess_adv"] for c in sub if c["retained_excess_adv"] is not None]
+        by_ps[f"{ps:.2f}"] = {
+            "n": len(sub),
+            "retained_excess_adv_mean": (float(np.mean(ra)) if ra else None),
+            "retained_excess_adv_ci": (list(_paired_ci(np.array(ra))) if len(ra) > 1 else None),
+            "gate_admissible_pass_rate": float(np.mean([c["gate_admissible_pass"] for c in sub])),
+            "success_rate": float(np.mean([c["P_C4_success"] for c in sub])),
+        }
+    out_path.write_text(json.dumps({
+        "experiment": "compliant-practice (V2) -- C4-V1 explicit-transform adversary (V1!=V2 test)",
+        "pre_reg_commit": "PENDING-FREEZE", "smoke": smoke, "arm": arm, "gamma": float(gamma),
+        "holdout": bool(holdout),
+        "lever_note": "V1 LaunderedModel: M_full G-residual re-projected onto admissible "
+                      "carriers (c_fresh + 2 low-coef V_named), CMA over softmax routing. "
+                      "Scored on V2's retained_excess metric for comparability to the c4 cap.",
+        "arm_note": ("matched = maximize adverse_excess s.t. admissible AUC gate (same "
+                     "objective as c4); faithful = V1 objective (min max c_fresh imp + "
+                     "retention floor + gate)."),
+        "by_proxy_strength": by_ps, "cells": cells}, indent=2))
+    print(f"\nWrote {out_path.relative_to(REPO)} ({len(cells)} cells)")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--mode", choices=["c3", "c1", "c2", "c4"], default="c3")
+    ap.add_argument("--mode", choices=["c3", "c1", "c2", "c4", "c4v1"], default="c3")
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--seeds", type=int, default=N_SEEDS_DEFAULT)
     ap.add_argument("--n", type=int, default=N_DEFAULT)
@@ -701,6 +871,9 @@ def main():
     ap.add_argument("--holdout", action="store_true",
                     help="C4 leak-free eval: CMA selects on val, metrics+gate on test "
                          "(default off reproduces the committed test-selected grid)")
+    ap.add_argument("--arm", choices=["matched", "faithful"], default="matched",
+                    help="c4v1 adversary objective: matched (max adverse_excess, c4-identical) "
+                         "or faithful (V1's min-cfresh-importance recipe)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
@@ -735,6 +908,15 @@ def main():
                                  else "compliant_practice_c4_2026-05-24.json"))
         run_c4(proxy_grid, seeds, n, out_path, args.smoke, lever=args.lever, gamma=args.gamma,
                holdout=args.holdout)
+    elif args.mode == "c4v1":
+        if args.smoke:
+            proxy_grid, seeds, n = (0.55, 0.70), range(2), 2000
+        tag = f"_{args.arm}" + ("_holdout" if args.holdout else "")
+        out_path = (Path(args.out).resolve() if args.out else
+                    REPO_runs / (f"compliant_practice_c4v1{tag}_smoke.json" if args.smoke
+                                 else f"compliant_practice_c4v1{tag}_2026-05-25.json"))
+        run_c4v1(proxy_grid, seeds, n, out_path, args.smoke, gamma=args.gamma,
+                 holdout=args.holdout, arm=args.arm)
     else:
         out_path = (Path(args.out).resolve() if args.out else
                     REPO_runs / ("compliant_practice_smoke.json" if args.smoke
