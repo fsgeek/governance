@@ -1,5 +1,7 @@
 # Compliant-practice disparate impact (V2) — C2 + C4 result note
 
+> **ERRATUM (2026-05-25, discipline finding — not a silent edit).** The C4 numbers below were produced by a CMA-ES engine that **selected the adversary against the same test split it scored and gated on** (a selection-on-test leak, caught by a blind red-team in the γ-sweep follow-on). Under leak-free held-out evaluation (fit on train, select on val, score+gate on test): the γ=0.02 **`retained_adv ≈ 0.544` is biased high by ~+0.057** (honest held-out value **~0.50**), and **5 of 8** "valid in-gate adversaries" here actually **breach the held-out gate** (true gate-pass ≈ 0.38, not 1.0). The qualitative C4 story is unchanged and in fact strengthened — the γ-sweep shows the moat is an **accuracy-tax, not a structure** (`gate_pass_rate(0)=0`; no valid adversary at zero tolerance). The original numbers are left intact below for provenance; cite the corrected values. See `2026-05-25-c4-gamma-sweep-gap-result-note.md` (pre-reg `c413ed9`/OTS `9ab5b84`, result `3c6d2e3`).
+
 **Pre-registration (FROZEN):** `docs/superpowers/specs/2026-05-24-compliant-practice-disparate-impact-V2-preregistration-note.md`, commit `8fa7992` / OTS `cbd4298`. Predictions immutable.
 
 **Artifacts (committed, OTS-stamped):** engine `d3c2e10`; results `247dced` (`runs/compliant_practice_c2_2026-05-24.json`, `runs/compliant_practice_c4_2026-05-24.json`). C1 result was the prior session (`ed54912`).
