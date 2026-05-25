@@ -706,8 +706,10 @@ def run_c4(proxy_grid, seeds, n, out_path, smoke, lever="reweight", gamma=GAMMA_
 C4V1_CARRIER_EXTRA = 2          # low-coef admissible legit carriers added to c_fresh
 
 
-def c4v1_cell(ps, seed, n, smoke, gamma=GAMMA_C4, holdout=False, arm="matched"):
+def c4v1_cell(ps, seed, n, smoke, gamma=GAMMA_C4, holdout=False, arm="matched",
+              corrector_mode="univariate"):
     import cmaes
+    joint = (corrector_mode == "joint")
     fr = dgp.generate_twin_world(ps, "A", n, seed).frame
     sub = twin_to_substrate(fr, seed)
 
@@ -730,11 +732,15 @@ def c4v1_cell(ps, seed, n, smoke, gamma=GAMMA_C4, holdout=False, arm="matched"):
     base_feats = list(V_NAMED)        # admissible legit; declared proxies x6,x7 excluded
     low_coef = sorted(base_feats, key=lambda f: sub.legit_coeffs.get(f, 0.0))[:C4V1_CARRIER_EXTRA]
     carrier_feats = list(CFRESH) + low_coef
-    dim = len(carrier_feats)
+    dim = 1 if joint else len(carrier_feats)
 
     def build_T(w):
-        sw = np.exp(w - w.max()); sw = sw / sw.sum()
-        return fft._build_laundered(M, sub, base_feats, carrier_feats, sw), sw
+        if joint:
+            sw = np.array([float(np.clip(w[0], -C4_SW_CLIP, C4_SW_CLIP))])   # scalar gain
+        else:
+            sw = np.exp(w - w.max()); sw = sw / sw.sum()
+        return fft._build_laundered(M, sub, base_feats, carrier_feats, sw,
+                                    corrector_mode=corrector_mode), sw
 
     def _ae_auc(T, frame, deriv):
         dd, a = _delta_auc(T, sub, frame)
@@ -808,7 +814,9 @@ def c4v1_cell(ps, seed, n, smoke, gamma=GAMMA_C4, holdout=False, arm="matched"):
         "auc_adv": float(auc_adv), "auc_full": float(auc_full),
         "best_adm_auc": float(best_adm_auc),
         "max_cfresh_importance": float(max_cfresh),
-        "routing": {f: float(sw[k]) for k, f in enumerate(carrier_feats)},
+        "corrector_mode": corrector_mode,
+        "routing": ({"joint_gain": float(sw[0])} if joint
+                    else {f: float(sw[k]) for k, f in enumerate(carrier_feats)}),
         "gate_full_pass": gate_full, "gate_admissible_pass": gate_adm,
         "rung1_evade": evade1, "rung3a_catch": catch3a, "rungs_pass": rungs_pass,
         "cmaes_evals": evals, "cmaes_gens": gen,
@@ -816,12 +824,14 @@ def c4v1_cell(ps, seed, n, smoke, gamma=GAMMA_C4, holdout=False, arm="matched"):
     }
 
 
-def run_c4v1(proxy_grid, seeds, n, out_path, smoke, gamma=GAMMA_C4, holdout=False, arm="matched"):
+def run_c4v1(proxy_grid, seeds, n, out_path, smoke, gamma=GAMMA_C4, holdout=False, arm="matched",
+             corrector_mode="univariate"):
     t0 = time.time()
     cells = []
     for ps in proxy_grid:
         for sd in seeds:
-            c = c4v1_cell(ps, sd, n, smoke, gamma=gamma, holdout=holdout, arm=arm)
+            c = c4v1_cell(ps, sd, n, smoke, gamma=gamma, holdout=holdout, arm=arm,
+                          corrector_mode=corrector_mode)
             cells.append(c)
             re = c["retained_excess_adv"]
             print(f"[{time.time()-t0:6.1f}s] ps={ps:.2f} seed={sd} arm={arm} | "
@@ -843,8 +853,8 @@ def run_c4v1(proxy_grid, seeds, n, out_path, smoke, gamma=GAMMA_C4, holdout=Fals
         }
     out_path.write_text(json.dumps({
         "experiment": "compliant-practice (V2) -- C4-V1 explicit-transform adversary (V1!=V2 test)",
-        "pre_reg_commit": "PENDING-FREEZE", "smoke": smoke, "arm": arm, "gamma": float(gamma),
-        "holdout": bool(holdout),
+        "pre_reg_commit": "5cd3648", "smoke": smoke, "arm": arm, "gamma": float(gamma),
+        "holdout": bool(holdout), "corrector_mode": corrector_mode,
         "lever_note": "V1 LaunderedModel: M_full G-residual re-projected onto admissible "
                       "carriers (c_fresh + 2 low-coef V_named), CMA over softmax routing. "
                       "Scored on V2's retained_excess metric for comparability to the c4 cap.",
@@ -874,6 +884,9 @@ def main():
     ap.add_argument("--arm", choices=["matched", "faithful"], default="matched",
                     help="c4v1 adversary objective: matched (max adverse_excess, c4-identical) "
                          "or faithful (V1's min-cfresh-importance recipe)")
+    ap.add_argument("--corrector-mode", choices=["univariate", "joint"], default="univariate",
+                    help="c4v1 laundering corrector: univariate (per-carrier, default) or "
+                         "joint (one multivariate GBR over all carriers -- the capacity probe)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
@@ -911,12 +924,13 @@ def main():
     elif args.mode == "c4v1":
         if args.smoke:
             proxy_grid, seeds, n = (0.55, 0.70), range(2), 2000
-        tag = f"_{args.arm}" + ("_holdout" if args.holdout else "")
+        tag = f"_{args.arm}" + ("_joint" if args.corrector_mode == "joint" else "") \
+            + ("_holdout" if args.holdout else "")
         out_path = (Path(args.out).resolve() if args.out else
                     REPO_runs / (f"compliant_practice_c4v1{tag}_smoke.json" if args.smoke
                                  else f"compliant_practice_c4v1{tag}_2026-05-25.json"))
         run_c4v1(proxy_grid, seeds, n, out_path, args.smoke, gamma=args.gamma,
-                 holdout=args.holdout, arm=args.arm)
+                 holdout=args.holdout, arm=args.arm, corrector_mode=args.corrector_mode)
     else:
         out_path = (Path(args.out).resolve() if args.out else
                     REPO_runs / ("compliant_practice_smoke.json" if args.smoke

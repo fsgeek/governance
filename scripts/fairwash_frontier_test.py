@@ -214,12 +214,13 @@ class LaunderedModel:
     the residual across carriers (uniform = naive; CMA-ES-optimized = adversarial).
     """
 
-    def __init__(self, base, base_feats, correctors, carrier_feats, weights):
+    def __init__(self, base, base_feats, correctors, carrier_feats, weights, joint=False):
         self.base = base
         self.base_feats = list(base_feats)
         self.correctors = list(correctors)
         self.carrier_feats = list(carrier_feats)
         self.weights = np.asarray(weights, dtype=float)
+        self.joint = joint        # joint=True: ONE multivariate corrector over all carriers
         self._feats = list(self.base_feats) + [c for c in self.carrier_feats
                                                if c not in self.base_feats]
         self._bidx = [self._feats.index(f) for f in self.base_feats]
@@ -228,8 +229,12 @@ class LaunderedModel:
     def _p(self, arr):
         arr = np.asarray(arr, dtype=float)
         p = self.base.predict_proba(arr[:, self._bidx])[:, 1]
-        for k, ci in enumerate(self._cidx):
-            p = p + self.weights[k] * self.correctors[k].predict(arr[:, [ci]])
+        if self.joint:
+            # single corrector sees ALL carrier columns jointly; weights[0] = scalar gain
+            p = p + self.weights[0] * self.correctors[0].predict(arr[:, self._cidx])
+        else:
+            for k, ci in enumerate(self._cidx):
+                p = p + self.weights[k] * self.correctors[k].predict(arr[:, [ci]])
         return np.clip(p, 1e-6, 1 - 1e-6)
 
     def predict_proba(self, arr):
@@ -247,15 +252,28 @@ class LaunderedModel:
         bi = self.base.feature_importances_
         for f, v in zip(self.base_feats, bi):
             imp[f] += float(v) * (bspread + 1e-9)
-        for k, c in enumerate(self.carrier_feats):
-            spread = self.weights[k] * float(getattr(self, "_carr_spread", [0.0] * len(self.carrier_feats))[k])
-            imp[c] += spread
+        if self.joint:
+            # distribute the joint corrector's own split-importances across carriers,
+            # scaled by the gain * the joint corrector's output spread
+            jspread = self.weights[0] * float(getattr(self, "_carr_spread", [0.0])[0])
+            for c, v in zip(self.carrier_feats, self.correctors[0].feature_importances_):
+                imp[c] += float(v) * jspread
+        else:
+            for k, c in enumerate(self.carrier_feats):
+                spread = self.weights[k] * float(getattr(self, "_carr_spread", [0.0] * len(self.carrier_feats))[k])
+                imp[c] += spread
         arr = np.array([imp[f] for f in self._feats])
         s = arr.sum()
         return arr / s if s > 0 else arr
 
 
-def _build_laundered(M, sub: Substrate, base_feats, carrier_feats, weights):
+def _build_laundered(M, sub: Substrate, base_feats, carrier_feats, weights,
+                     corrector_mode="univariate"):
+    """corrector_mode='univariate' (default, byte-identical): one low-capacity GBR per
+    carrier (depth-2/80), residual SPREAD across carriers (the D4-evasion architecture).
+    corrector_mode='joint': ONE higher-capacity GBR (depth-3/150) over ALL carriers
+    jointly -- the capacity probe for whether the laundering's dominance vs reweighting
+    is an artifact of the univariate parameterization."""
     from sklearn.ensemble import GradientBoostingRegressor
     tr = sub.train
     target = decisions(M, tr)
@@ -263,13 +281,19 @@ def _build_laundered(M, sub: Substrate, base_feats, carrier_feats, weights):
     base.fit(tr[base_feats].values, target)
     base_p = base.predict_proba(tr[base_feats].values)[:, 1]
     residual = proba(M, tr) - base_p
-    correctors, spreads = [], []
-    for c in carrier_feats:
-        reg = GradientBoostingRegressor(max_depth=2, n_estimators=80, random_state=sub.seed)
-        reg.fit(tr[[c]].values, residual)
-        correctors.append(reg)
-        spreads.append(float(np.std(reg.predict(tr[[c]].values))))
-    T = LaunderedModel(base, base_feats, correctors, carrier_feats, weights)
+    if corrector_mode == "joint":
+        reg = GradientBoostingRegressor(max_depth=3, n_estimators=150, random_state=sub.seed)
+        reg.fit(tr[carrier_feats].values, residual)
+        spreads = [float(np.std(reg.predict(tr[carrier_feats].values)))]
+        T = LaunderedModel(base, base_feats, [reg], carrier_feats, weights, joint=True)
+    else:
+        correctors, spreads = [], []
+        for c in carrier_feats:
+            reg = GradientBoostingRegressor(max_depth=2, n_estimators=80, random_state=sub.seed)
+            reg.fit(tr[[c]].values, residual)
+            correctors.append(reg)
+            spreads.append(float(np.std(reg.predict(tr[[c]].values))))
+        T = LaunderedModel(base, base_feats, correctors, carrier_feats, weights)
     T._base_p_cache = base_p          # noqa: SLF001 -- for importance scaling
     T._carr_spread = spreads          # noqa: SLF001
     return T
