@@ -4,9 +4,14 @@
 **Date:** 2026-05-25.
 **Data:** `runs/compliant_practice_c4v1_matched_holdout_2026-05-25.json`, `runs/compliant_practice_c4v1_faithful_holdout_2026-05-25.json` (ps=0.85, 8 seeds, held-out, γ=0.02). Comparison baselines from `runs/c4_gamma_sweep_ps085.json` (γ=0.02 column).
 
+> **⚠ ERRATUM (2026-05-25, same day) — the BROAD reading is RETRACTED.** The pre-registered capacity probe (`docs/superpowers/specs/2026-05-25-v1-joint-corrector-capacity-probe-result-note.md`, frozen `1fbe124`) confirmed that the dominance below is a **univariate-corrector artifact**. With a *joint* multivariate corrector the same laundering lever climbs to `retained_excess ≈ 0.45` — above honest practice (0.42), just below reweighting (0.50). So:
+> - The **narrow** claim — *the V1 univariate recipe as frozen is dominated (0.26)* — STANDS; the scope section below already hedged to it and named the probe.
+> - The **broad** reading — "explicit transforms are dominated / intentful is *less* harmful than honest practice" — is **FALSE in general**; do not cite it. At capacity, intentful ≈ reweighting, gate-bound.
+> - **§"What this does to the impossibility paper" point 2 is corrected:** the honest reconstructor is NOT the uniquely-larger threat (at capacity the intentful transform reaches the same harm). What survives and strengthens: the accuracy-tax is **lever-invariant** (two structurally distinct adversaries hit the same gate-bound wall), and the V1≠V2 asymmetry is **purely provenance** (magnitude equalizes at capacity; only the construction trail separates intentful from honest). See the probe note for the corrected framing.
+
 ## The finding (one line)
 
-The intentful **explicit fairwash transform** (V1 `T_adv` laundering construction) retains **less** disparate impact than both the optimized admissible-reweighting adversary **and honest compliant practice**, under held-out gating. The fanciest cookbook recipe is *dominated by doing nothing clever*.
+The intentful **explicit fairwash transform** (V1 `T_adv` laundering construction), **as frozen with univariate per-carrier correctors**, retains **less** disparate impact than both the optimized admissible-reweighting adversary **and honest compliant practice**, under held-out gating. *(But see the ERRATUM above: this is a property of the univariate parameterization, not of explicit transforms in general — at corrector capacity the lever recovers to the gate-bound cap.)*
 
 ## The ladder (ps=0.85, γ=0.02, held-out, 8 seeds; retained_excess = adverse excess / `M_full`'s)
 

@@ -1,0 +1,159 @@
+{
+  "experiment": "compliant-practice (V2) -- C4-V1 explicit-transform adversary (V1!=V2 test)",
+  "pre_reg_commit": "5cd3648",
+  "smoke": true,
+  "arm": "matched",
+  "gamma": 0.02,
+  "holdout": true,
+  "corrector_mode": "joint",
+  "lever_note": "V1 LaunderedModel: M_full G-residual re-projected onto admissible carriers (c_fresh + 2 low-coef V_named), CMA over softmax routing. Scored on V2's retained_excess metric for comparability to the c4 cap.",
+  "arm_note": "matched = maximize adverse_excess s.t. admissible AUC gate (same objective as c4); faithful = V1 objective (min max c_fresh imp + retention floor + gate).",
+  "by_proxy_strength": {
+    "0.55": {
+      "n": 2,
+      "retained_excess_adv_mean": 0.03207425587680018,
+      "retained_excess_adv_ci": [
+        0.019262307763715625,
+        0.04488620398988473
+      ],
+      "gate_admissible_pass_rate": 0.5,
+      "success_rate": 0.0
+    },
+    "0.70": {
+      "n": 2,
+      "retained_excess_adv_mean": 0.10170961147839759,
+      "retained_excess_adv_ci": [
+        0.08642481118729747,
+        0.11699441176949771
+      ],
+      "gate_admissible_pass_rate": 0.0,
+      "success_rate": 0.0
+    }
+  },
+  "cells": [
+    {
+      "proxy_strength": 0.55,
+      "seed": 0,
+      "arm": "matched",
+      "gamma": 0.02,
+      "holdout": true,
+      "lever": "v1_launder",
+      "s_sel": -1.0,
+      "s_rep": -1.0,
+      "s_flip": false,
+      "retained_excess_adv": 0.04488620398988473,
+      "r_retained_native": 0.18081972250170195,
+      "ae_adv": 0.030256971177749004,
+      "ae_full": 0.6740817553778333,
+      "auc_adv": 0.7230610385666565,
+      "auc_full": 0.9266039072780645,
+      "best_adm_auc": 0.7277983601579108,
+      "max_cfresh_importance": 0.05987465711895928,
+      "corrector_mode": "joint",
+      "routing": {
+        "joint_gain": 0.6285218750867265
+      },
+      "gate_full_pass": false,
+      "gate_admissible_pass": true,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rungs_pass": null,
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    },
+    {
+      "proxy_strength": 0.55,
+      "seed": 1,
+      "arm": "matched",
+      "gamma": 0.02,
+      "holdout": true,
+      "lever": "v1_launder",
+      "s_sel": -1.0,
+      "s_rep": -1.0,
+      "s_flip": false,
+      "retained_excess_adv": 0.019262307763715625,
+      "r_retained_native": 0.21909724788725451,
+      "ae_adv": 0.01181236835613575,
+      "ae_full": 0.6132374428357275,
+      "auc_adv": 0.7169533219074503,
+      "auc_full": 0.915483415666902,
+      "best_adm_auc": 0.7525173908660148,
+      "max_cfresh_importance": 0.13750578690750645,
+      "corrector_mode": "joint",
+      "routing": {
+        "joint_gain": 2.3142610065867926
+      },
+      "gate_full_pass": false,
+      "gate_admissible_pass": false,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rungs_pass": null,
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    },
+    {
+      "proxy_strength": 0.7,
+      "seed": 0,
+      "arm": "matched",
+      "gamma": 0.02,
+      "holdout": true,
+      "lever": "v1_launder",
+      "s_sel": -1.0,
+      "s_rep": -1.0,
+      "s_flip": false,
+      "retained_excess_adv": 0.08642481118729747,
+      "r_retained_native": 0.2828866329694601,
+      "ae_adv": 0.052937861935404396,
+      "ae_full": 0.612530837014835,
+      "auc_adv": 0.7282794004117344,
+      "auc_full": 0.9278338908903758,
+      "best_adm_auc": 0.7719417460113227,
+      "max_cfresh_importance": 0.1748410024318444,
+      "corrector_mode": "joint",
+      "routing": {
+        "joint_gain": 2.444496302069457
+      },
+      "gate_full_pass": false,
+      "gate_admissible_pass": false,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rungs_pass": null,
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    },
+    {
+      "proxy_strength": 0.7,
+      "seed": 1,
+      "arm": "matched",
+      "gamma": 0.02,
+      "holdout": true,
+      "lever": "v1_launder",
+      "s_sel": -1.0,
+      "s_rep": -1.0,
+      "s_flip": false,
+      "retained_excess_adv": 0.11699441176949771,
+      "r_retained_native": 0.3204694199954864,
+      "ae_adv": 0.06813222262282015,
+      "ae_full": 0.5823545038805289,
+      "auc_adv": 0.7681843084806395,
+      "auc_full": 0.9349610854187144,
+      "best_adm_auc": 0.7904373257706376,
+      "max_cfresh_importance": 0.1655571748483031,
+      "corrector_mode": "joint",
+      "routing": {
+        "joint_gain": 2.327172041750588
+      },
+      "gate_full_pass": false,
+      "gate_admissible_pass": false,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rungs_pass": null,
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    }
+  ]
+}
