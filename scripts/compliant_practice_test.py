@@ -54,6 +54,14 @@ dgp = importlib.util.module_from_spec(_spec)
 sys.modules["fairwash_frontier_dgp"] = dgp
 _spec.loader.exec_module(dgp)
 
+# V1 harness: reuse its Substrate + rung/band primitives verbatim (C2/C4). It
+# self-bootstraps REPO onto sys.path and reuses the dgp already registered above.
+_fspec = importlib.util.spec_from_file_location(
+    "fairwash_frontier_test", REPO / "scripts" / "fairwash_frontier_test.py")
+fft = importlib.util.module_from_spec(_fspec)
+sys.modules["fairwash_frontier_test"] = fft
+_fspec.loader.exec_module(fft)
+
 # --- frozen scalars mirrored from pre-reg §2h --------------------------------
 V_NAMED = [f"x{j}" for j in range(6)]            # x0..x5
 DECLARED_PROXIES = ["x6", "x7"]
@@ -334,12 +342,337 @@ def run_c3(proxy_grid, bisg_grid, seeds, n, out_path, smoke):
     print(f"\nWrote {out_path.relative_to(REPO)} ({len(points)} grid points)")
 
 
+# ---------------------------------------------------------------------------
+# C2 -- does compliant practice PASS the behavioral + set-structural rungs?
+# (P-C2 line 22/80: M_compliant passes rungs 1, 2, 3a; prior 0.85. rung 3b is a
+# C3 instrument, NOT part of C2.) Reuses the V1 rung/band code verbatim via the
+# twin-world -> Substrate adapter; the schemas align (x0..x7 + cfresh, declared
+# proxies x6,x7), so no rung is reimplemented.
+# ---------------------------------------------------------------------------
+def twin_to_substrate(frame, seed):
+    """Wrap one twin-world frame in the V1 Substrate shape (0.4/0.1/0.5 split).
+    proxies = the DECLARED off-limits proxies (x6,x7) -- NOT c_fresh, which is the
+    admissible carrier the audit treats as legitimate. all_protected = proxies + G.
+    legit_coeffs from the DGP's frozen beta (used by rung-3b's control null, C3)."""
+    n = len(frame)
+    ntr, nva = int(0.4 * n), int(0.1 * n)
+    train = frame.iloc[:ntr].reset_index(drop=True)
+    val = frame.iloc[ntr:ntr + nva].reset_index(drop=True)
+    test = frame.iloc[ntr + nva:].reset_index(drop=True)
+    legit = {f"x{j}": float(dgp._LEGIT_BETA[j]) for j in range(dgp.N_LEGIT)}
+    proxies = [p for p in fft.DECLARED_PROXIES if p in fft.BAND_POOL]   # x6, x7
+    return fft.Substrate(train=train, val=val, test=test, legit_coeffs=legit,
+                         channel="twinA", proxies=proxies,
+                         all_protected=proxies + ["G"], seed=seed)
+
+
+def fit_compliant(sub, seed):
+    """M_compliant: standard GBT on admissible features only (no G, no declared
+    proxies). Stash ._feats for the rung primitives' predict path."""
+    feats = V_NAMED + CFRESH
+    m = GradientBoostingClassifier(random_state=seed, **GBT_KW)
+    m.fit(sub.train[feats].values, sub.train["Y"].values.astype(int))
+    m._feats = feats
+    return m
+
+
+def c2_cell(ps, seed, n, smoke):
+    frame = dgp.generate_twin_world(ps, "A", n, seed).frame
+    sub = twin_to_substrate(frame, seed)
+    M = fit_compliant(sub, seed)
+    train_dec = fft.decisions(M, sub.train)
+
+    band_full = fft.build_surrogate_band(sub.train, train_dec, fft.BAND_POOL, seed=seed)
+    prohibited = set(fft.PROHIBITED_IN_POOL)                  # {x6, x7}; G never in pool
+    restricted_pool = [f for f in fft.BAND_POOL if f not in prohibited]
+    band_restr = fft.build_surrogate_band(sub.train, train_dec, restricted_pool, seed=seed)
+
+    r1 = (fft.rung1_shap_lime(M, sub) if not smoke
+          else {"P1_shap_lime_evade": None, "note": "SHAP/LIME skipped in smoke"})
+    r2 = fft.rung2_disagreement(band_full, sub, train_dec, fft.BAND_POOL)
+    r3a = fft.rung3a(band_full, band_restr, prohibited)
+
+    evade1 = r1.get("P1_shap_lime_evade")
+    catch3a = r3a["P3a_reorg_catch"]
+    # Binary pass keys on the two rungs with frozen binary criteria (1 evade + 3a
+    # no-catch). rung 2 has NO frozen threshold in the V1 instrument -> reported as a
+    # continuous diagnostic (documented interpretation owed to the result note, NOT
+    # a silent binarization). In smoke r1 is skipped (None) -> behavioral pass is null.
+    passes = None if evade1 is None else bool(evade1 and not catch3a)
+
+    G_te = sub.test["G"].values
+    delta = fft.dp_gap(fft.decisions(M, sub.test), G_te)
+    auc = float(roc_auc_score(sub.test["Y"].values.astype(int), fft.proba(M, sub.test)))
+    return {
+        "proxy_strength": ps, "seed": seed,
+        "rung1_evade": evade1, "rung1_proxies_present": r1.get("proxies_present", []),
+        "rung2_disagreement": r2["disagreement"], "rung2_n_members": r2["n_members"],
+        "rung3a_catch": catch3a, "rung3a_jaccard_margin": r3a["jaccard"],
+        "behavioral_pass": passes,
+        "compliant_delta": delta, "compliant_auc": auc,
+    }
+
+
+def run_c2(proxy_grid, seeds, n, out_path, smoke):
+    t0 = time.time()
+    cells = []
+    for ps in proxy_grid:
+        for s in seeds:
+            c = c2_cell(ps, s, n, smoke)
+            cells.append(c)
+            print(f"[{time.time()-t0:6.1f}s] ps={ps:.2f} seed={s} | "
+                  f"r1_evade={c['rung1_evade']} r2_disag={c['rung2_disagreement']:.3f} "
+                  f"r3a_catch={c['rung3a_catch']} j={c['rung3a_jaccard_margin']:.3f} | "
+                  f"pass={c['behavioral_pass']} | Δ={c['compliant_delta']:+.3f} "
+                  f"auc={c['compliant_auc']:.3f}", flush=True)
+    # aggregate pass-rate per ps (P-C2: passes on >=90% of seeds at proxy_strength*)
+    by_ps = {}
+    for ps in proxy_grid:
+        sub = [c for c in cells if c["proxy_strength"] == ps]
+        passes = [c["behavioral_pass"] for c in sub if c["behavioral_pass"] is not None]
+        js = [c["rung3a_jaccard_margin"] for c in sub]
+        by_ps[f"{ps:.2f}"] = {
+            "n": len(sub), "n_scored": len(passes),
+            "pass_rate": (float(np.mean(passes)) if passes else None),
+            "rung3a_jaccard_mean": float(np.mean(js)),
+            "rung3a_jaccard_min": float(np.min(js)),
+            "rung2_disagreement_mean": float(np.mean([c["rung2_disagreement"] for c in sub])),
+        }
+    out_path.write_text(json.dumps({
+        "experiment": "compliant-practice disparate impact (V2) -- C2 behavioral rungs",
+        "pre_reg_commit": "8fa7992", "smoke": smoke,
+        "P_C2": "M_compliant passes rungs 1,2,3a on >=90% of seeds at proxy_strength* (prior 0.85)",
+        "rung2_note": "rung 2 (disagreement) has no frozen binary threshold in the V1 "
+                      "instrument; reported as a continuous diagnostic. behavioral_pass "
+                      "keys on rung1 (evade) AND rung3a (no-catch). Documented choice owed "
+                      "to the result note -- predictions NOT edited.",
+        "by_proxy_strength": by_ps, "cells": cells}, indent=2))
+    print(f"\nWrote {out_path.relative_to(REPO)} ({len(cells)} cells)")
+
+
+# ---------------------------------------------------------------------------
+# C4 -- the optimized adversarial upper bound (V2_adv). SECONDARY, intent-by-
+# construction (P-C4 line 84, prior 0.60): CMA-ES over the admissible pool to
+# MAXIMIZE adverse_excess s.t. rungs 1/2/3a pass AND a dual AUC gate.
+#
+# DESIGN CHOICE (load-bearing, documented -- the §2f "weighting/subset" lever).
+# GBTs are invariant to per-feature monotone scaling, so "feature weighting" of a
+# tree ensemble is a literal no-op. The non-vacuous CMA-ES lever over an admissible
+# tree model is therefore SAMPLE-REWEIGHTING: sample_weight_i = exp(w . x_std_i)
+# over the admissible features (x0..x5 + c_fresh), CMA-ES over w. This is a real,
+# intentful analyst move using ONLY admissible inputs (no G, no declared proxies),
+# so rungs 1 and 3a pass by the same structural argument as M_compliant (the model
+# never touches a prohibited feature). The realized feature subset (what the
+# reweighted model splits on) is reported. Feature-scaling excluded for the stated
+# tree-invariance reason -- itself a small result-note finding.
+# ---------------------------------------------------------------------------
+ADMISSIBLE = V_NAMED + CFRESH
+GAMMA_C4 = 0.02                     # dual AUC gate tolerance (pre-reg §2h)
+C4_POP = 16                         # CMA-ES population (pre-reg §2h)
+C4_MAXGEN = 200
+C4_CEILING = 5000                   # hard evaluation ceiling
+C4_CONV_TOL = 1e-3                  # converge if best-objective improves < tol ...
+C4_CONV_PATIENCE = 20               # ... over this many generations
+C4_SW_CLIP = 4.0                    # clip w.x_std into [-clip, clip] before exp
+
+
+def _fit_model(sub, feats, target, seed, sample_weight=None):
+    m = GradientBoostingClassifier(random_state=seed, **GBT_KW)
+    m.fit(sub.train[feats].values, sub.train[target].values.astype(int),
+          sample_weight=sample_weight)
+    m._feats = feats
+    return m
+
+
+def _delta_auc(m, sub):
+    dec = fft.decisions(m, sub.test)
+    delta = fft.dp_gap(dec, sub.test["G"].values)
+    auc = float(roc_auc_score(sub.test["Y"].values.astype(int), fft.proba(m, sub.test)))
+    return delta, auc
+
+
+def c4_cell(ps, seed, n, smoke, lever="reweight"):
+    import cmaes
+    fr = dgp.generate_twin_world(ps, "A", n, seed).frame
+    sub = twin_to_substrate(fr, seed)
+
+    # baselines on the shared split
+    base = {
+        "M_full": _fit_model(sub, OBS + ["G"], "Y", seed),
+        "M_compliant": _fit_model(sub, ADMISSIBLE, "Y", seed),
+        "M_strict": _fit_model(sub, V_NAMED, "Y", seed),
+        "M_oracle": _fit_model(sub, V_NAMED, "Y_clean", seed),
+    }
+    da = {k: _delta_auc(m, sub) for k, m in base.items()}
+    delta_full, auc_full = da["M_full"]
+    delta_oracle, _ = da["M_oracle"]
+    auc_comp, auc_strict = da["M_compliant"][1], da["M_strict"][1]
+    s = float(np.sign(delta_full - delta_oracle)) or 1.0
+    ae_full = s * (delta_full - delta_oracle)
+    best_adm_auc = max(auc_comp, auc_strict)
+    ae_comp = s * (da["M_compliant"][0] - delta_oracle)
+
+    # standardized admissible train matrix (reweighting lever)
+    Xtr = sub.train[ADMISSIBLE].values.astype(float)
+    mu, sd = Xtr.mean(0), Xtr.std(0) + 1e-9
+    Xstd = (Xtr - mu) / sd
+    d = len(ADMISSIBLE)
+    use_rw = lever in ("reweight", "both")     # sample-reweighting half
+    use_sub = lever in ("subset", "both")      # feature-subset half
+    dim = d * (int(use_rw) + int(use_sub))
+
+    def _split(w):
+        i = 0
+        wr = w[i:i + d] if use_rw else None
+        i += d if use_rw else 0
+        ws = w[i:i + d] if use_sub else None
+        return wr, ws
+
+    def make_sw(wr):
+        if wr is None:
+            return None
+        z = np.clip(Xstd @ wr, -C4_SW_CLIP, C4_SW_CLIP)
+        sw = np.exp(z - z.max())
+        return sw * (len(sw) / sw.sum())                 # mean-1 normalized
+
+    def select_feats(ws):
+        if ws is None:
+            return list(ADMISSIBLE)
+        keep = [ADMISSIBLE[i] for i in range(d) if ws[i] > 0.0]   # sigmoid>0.5 == logit>0
+        return keep or [ADMISSIBLE[int(np.argmax(ws))]]           # never empty
+
+    def evaluate(w):
+        wr, ws = _split(w)
+        feats = select_feats(ws)
+        m = _fit_model(sub, feats, "Y", seed, sample_weight=make_sw(wr))
+        dd, a = _delta_auc(m, sub)
+        return m, s * (dd - delta_oracle), a, feats
+
+    def objective(w):
+        # ADMISSIBLE gate enforced as a HARD barrier (§2f's "s.t. dual AUC gate" is a
+        # constraint, not a soft preference -- a probe showed a 5x penalty let CMA buy
+        # gap by trading through the gate). Infeasible points dominated by any feasible
+        # point; deficit term guides CMA back. w=0 == M_compliant is always feasible.
+        # FULL gate is structurally infeasible for an admissible-only model -> reported,
+        # not enforced (pre-reg-interpretation correction; predictions NOT edited).
+        _, ae, a, _ = evaluate(w)
+        deficit = (best_adm_auc - GAMMA_C4) - a
+        if deficit > 0:
+            return float(100.0 + 10.0 * deficit)         # infeasible barrier
+        return float(-ae)                                # feasible: maximize gap
+
+    pop = 6 if smoke else C4_POP
+    ceiling = 60 if smoke else C4_CEILING
+    maxgen = 5 if smoke else C4_MAXGEN
+    # Start the subset logits positive (sigmoid(1.5)=0.82 -> all admissible features
+    # included == ~M_compliant, a feasible point) so CMA optimizes DOWN from a valid
+    # baseline rather than up from the degenerate empty-subset fallback.
+    m0 = np.zeros(dim)
+    if use_sub:
+        m0[(d if use_rw else 0):] = 1.5
+    opt = cmaes.CMA(mean=m0, sigma=1.0, seed=seed, population_size=pop)
+    best_w, best_obj = m0.copy(), float("inf")
+    evals, gen, conv_stall = 0, 0, 0
+    while gen < maxgen and evals + opt.population_size <= ceiling:
+        sols, improved = [], False
+        for _ in range(opt.population_size):
+            w = opt.ask()
+            val = objective(w)
+            sols.append((w, val))
+            evals += 1
+            if val < best_obj - C4_CONV_TOL:
+                best_obj, best_w, improved = val, w, True
+        opt.tell(sols)
+        gen += 1
+        conv_stall = 0 if improved else conv_stall + 1
+        if conv_stall >= C4_CONV_PATIENCE or opt.should_stop():
+            break
+
+    V2_adv, ae_adv, auc_adv, realized_feats = evaluate(best_w)
+    retained = (ae_adv / ae_full) if abs(ae_full) >= EPSILON_EXCESS else None
+
+    # rung validation on the final model (expected structural pass: admissible-only)
+    train_dec = fft.decisions(V2_adv, sub.train)
+    band_full = fft.build_surrogate_band(sub.train, train_dec, fft.BAND_POOL, seed=seed)
+    prohibited = set(fft.PROHIBITED_IN_POOL)
+    restricted_pool = [f for f in fft.BAND_POOL if f not in prohibited]
+    band_restr = fft.build_surrogate_band(sub.train, train_dec, restricted_pool, seed=seed)
+    r1 = (fft.rung1_shap_lime(V2_adv, sub) if not smoke
+          else {"P1_shap_lime_evade": None, "note": "SHAP/LIME skipped in smoke"})
+    r2 = fft.rung2_disagreement(band_full, sub, train_dec, fft.BAND_POOL)
+    r3a = fft.rung3a(band_full, band_restr, prohibited)
+    evade1, catch3a = r1.get("P1_shap_lime_evade"), r3a["P3a_reorg_catch"]
+    rungs_pass = None if evade1 is None else bool(evade1 and not catch3a)
+
+    realized_subset = [f for f, imp in zip(realized_feats, V2_adv.feature_importances_)
+                       if imp > 1e-4]
+    gate_full = bool(auc_adv >= auc_full - GAMMA_C4)
+    gate_adm = bool(auc_adv >= best_adm_auc - GAMMA_C4)
+    # P-C4 success (literal pre-reg text): retained_excess >= 0.80 while passing rungs
+    # 1/2/3a, under the feasible (admissible) gate. gate_full reported, NOT required.
+    success = (retained is not None and retained >= 0.80
+               and (rungs_pass in (True, None)) and gate_adm)
+    return {
+        "proxy_strength": ps, "seed": seed, "lever": lever,
+        "retained_excess_adv": (None if retained is None else float(retained)),
+        "ae_adv": float(ae_adv), "ae_full": float(ae_full), "ae_compliant": float(ae_comp),
+        "auc_adv": auc_adv, "auc_full": auc_full,
+        "auc_compliant": auc_comp, "auc_strict": auc_strict,
+        "gate_full_pass": gate_full, "gate_admissible_pass": gate_adm,
+        "rung1_evade": evade1, "rung3a_catch": catch3a,
+        "rung2_disagreement": r2["disagreement"], "rungs_pass": rungs_pass,
+        "realized_subset": realized_subset,
+        "cmaes_evals": evals, "cmaes_gens": gen,
+        "P_C4_success": bool(success),
+    }
+
+
+def run_c4(proxy_grid, seeds, n, out_path, smoke, lever="reweight"):
+    t0 = time.time()
+    cells = []
+    for ps in proxy_grid:
+        for sd in seeds:
+            c = c4_cell(ps, sd, n, smoke, lever=lever)
+            cells.append(c)
+            re = c["retained_excess_adv"]
+            print(f"[{time.time()-t0:6.1f}s] ps={ps:.2f} seed={sd} | "
+                  f"retained_adv={'None' if re is None else f'{re:+.3f}'} "
+                  f"(comp {c['ae_compliant']/c['ae_full']:+.3f}) | "
+                  f"auc_adv={c['auc_adv']:.3f} (full {c['auc_full']:.3f}) "
+                  f"gates F={c['gate_full_pass']} A={c['gate_admissible_pass']} | "
+                  f"rungs={c['rungs_pass']} | success={c['P_C4_success']} | "
+                  f"evals={c['cmaes_evals']}", flush=True)
+    by_ps = {}
+    for ps in proxy_grid:
+        sub = [c for c in cells if c["proxy_strength"] == ps]
+        ra = [c["retained_excess_adv"] for c in sub if c["retained_excess_adv"] is not None]
+        by_ps[f"{ps:.2f}"] = {
+            "n": len(sub),
+            "retained_excess_adv_mean": (float(np.mean(ra)) if ra else None),
+            "retained_excess_adv_ci": (list(_paired_ci(np.array(ra))) if len(ra) > 1 else None),
+            "success_rate": float(np.mean([c["P_C4_success"] for c in sub])),
+        }
+    out_path.write_text(json.dumps({
+        "experiment": "compliant-practice disparate impact (V2) -- C4 V2_adv upper bound",
+        "pre_reg_commit": "8fa7992", "smoke": smoke, "lever": lever,
+        "P_C4": "V2_adv reaches retained_excess >= 0.80 while passing rungs 1/2/3a (prior 0.60)",
+        "design_note": "lever = admissible SAMPLE-REWEIGHTING via CMA-ES (feature-scaling "
+                       "is vacuous for GBTs); dual AUC gate (full + admissible), gamma=0.02; "
+                       "budget pop=16/<=200gen/<=5000eval. Documented choice, predictions NOT edited.",
+        "by_proxy_strength": by_ps, "cells": cells}, indent=2))
+    print(f"\nWrote {out_path.relative_to(REPO)} ({len(cells)} cells)")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--mode", choices=["c3", "c1"], default="c3")
+    ap.add_argument("--mode", choices=["c3", "c1", "c2", "c4"], default="c3")
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--seeds", type=int, default=N_SEEDS_DEFAULT)
     ap.add_argument("--n", type=int, default=N_DEFAULT)
+    ap.add_argument("--proxy", type=float, default=None,
+                    help="restrict to a single proxy_strength (ps-sharding / single-cell probe)")
+    ap.add_argument("--lever", choices=["reweight", "subset", "both"], default="reweight",
+                    help="C4 adversary lever: sample-reweight / feature-subset / both (the moat)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
@@ -347,6 +680,8 @@ def main():
         proxy_grid, bisg_grid, seeds, n = (0.55, 0.70, 0.85), (0.85,), range(6), 3000
     else:
         proxy_grid, bisg_grid, seeds, n = PROXY_GRID, BISG_GRID, range(args.seeds), args.n
+        if args.proxy is not None:
+            proxy_grid = (args.proxy,)
 
     REPO_runs = REPO / "runs"
     REPO_runs.mkdir(exist_ok=True)
@@ -355,6 +690,22 @@ def main():
                     REPO_runs / ("compliant_practice_c1_smoke.json" if args.smoke
                                  else "compliant_practice_c1_2026-05-24.json"))
         run_c1(proxy_grid, seeds, n, out_path, args.smoke)
+    elif args.mode == "c2":
+        # band-building dominates cost (~16k CART fits/band, x2/cell); smoke uses a
+        # small 2-ps x 2-seed x small-n grid and skips SHAP/LIME.
+        if args.smoke:
+            proxy_grid, seeds, n = (0.55, 0.70), range(2), 2000
+        out_path = (Path(args.out).resolve() if args.out else
+                    REPO_runs / ("compliant_practice_c2_smoke.json" if args.smoke
+                                 else "compliant_practice_c2_2026-05-24.json"))
+        run_c2(proxy_grid, seeds, n, out_path, args.smoke)
+    elif args.mode == "c4":
+        if args.smoke:
+            proxy_grid, seeds, n = (0.55, 0.70), range(2), 2000
+        out_path = (Path(args.out).resolve() if args.out else
+                    REPO_runs / ("compliant_practice_c4_smoke.json" if args.smoke
+                                 else "compliant_practice_c4_2026-05-24.json"))
+        run_c4(proxy_grid, seeds, n, out_path, args.smoke, lever=args.lever)
     else:
         out_path = (Path(args.out).resolve() if args.out else
                     REPO_runs / ("compliant_practice_smoke.json" if args.smoke
