@@ -1,0 +1,208 @@
+{
+  "experiment": "compliant-practice disparate impact (V2) -- C1 dose-response",
+  "pre_reg_commit": "8fa7992",
+  "smoke": false,
+  "note_oracle_blind_x6x7": "M_oracle trains on V_named (x0..x5), blind to x6,x7 legit beta (0.60/0.35) per anchor OPEN subtlety -- implemented as written, may inflate measured excess; flag in result note.",
+  "points": [
+    {
+      "proxy_strength": 0.5,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.03718293712411745,
+      "retained_excess_ci": [
+        0.030871743126955113,
+        0.043406616462723174
+      ],
+      "external_carrier_lift": -0.0009752314844476344,
+      "external_carrier_lift_ci": [
+        -0.0026615174659723804,
+        0.0006744689553190423
+      ],
+      "adverse_excess_full_mean": 0.6558553860018966,
+      "adverse_excess_compliant_mean": 0.024485746616151938,
+      "auc_mean": {
+        "M_full": 0.9379596105269603,
+        "M_compliant": 0.7734203534433157,
+        "M_strict": 0.7738193702151872,
+        "M_oracle": 0.7678807006564282
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.1641402403117731,
+      "auc_decomp_additional_under_compliant": 0.16453925708364459
+    },
+    {
+      "proxy_strength": 0.55,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.04706188172295915,
+      "retained_excess_ci": [
+        0.040242822958690104,
+        0.053547337022414175
+      ],
+      "external_carrier_lift": 0.0037154897258817672,
+      "external_carrier_lift_ci": [
+        0.0014279123622409095,
+        0.005854414701561272
+      ],
+      "adverse_excess_full_mean": 0.6553329417701772,
+      "adverse_excess_compliant_mean": 0.030930744160930022,
+      "auc_mean": {
+        "M_full": 0.9366964847079693,
+        "M_compliant": 0.774234165707188,
+        "M_strict": 0.7737377187180574,
+        "M_oracle": 0.767985046710296
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.16295876598991188,
+      "auc_decomp_additional_under_compliant": 0.16246231900078134
+    },
+    {
+      "proxy_strength": 0.6,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.07246429368572656,
+      "retained_excess_ci": [
+        0.06651936970366726,
+        0.07797411644788148
+      ],
+      "external_carrier_lift": 0.01826285316435101,
+      "external_carrier_lift_ci": [
+        0.015420795341768032,
+        0.021181519201330243
+      ],
+      "adverse_excess_full_mean": 0.6574593978294598,
+      "adverse_excess_compliant_mean": 0.04771716547295288,
+      "auc_mean": {
+        "M_full": 0.9383644144183254,
+        "M_compliant": 0.7789741923094177,
+        "M_strict": 0.7739831458803845,
+        "M_oracle": 0.7678785874996982
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.16438126853794088,
+      "auc_decomp_additional_under_compliant": 0.15939022210890774
+    },
+    {
+      "proxy_strength": 0.65,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.11341140164283967,
+      "retained_excess_ci": [
+        0.1073342241124281,
+        0.11998004808566987
+      ],
+      "external_carrier_lift": 0.048362640592070294,
+      "external_carrier_lift_ci": [
+        0.04503572956917021,
+        0.051803650979062185
+      ],
+      "adverse_excess_full_mean": 0.6538909857104352,
+      "adverse_excess_compliant_mean": 0.07424333421805049,
+      "auc_mean": {
+        "M_full": 0.9371506658993559,
+        "M_compliant": 0.7861136754487086,
+        "M_strict": 0.7743276515572517,
+        "M_oracle": 0.7677447876281726
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.16282301434210422,
+      "auc_decomp_additional_under_compliant": 0.15103699045064733
+    },
+    {
+      "proxy_strength": 0.7,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.1671361292478742,
+      "retained_excess_ci": [
+        0.15963682773249366,
+        0.17524241201785745
+      ],
+      "external_carrier_lift": 0.0834069402649388,
+      "external_carrier_lift_ci": [
+        0.07929838393286417,
+        0.08795199776594041
+      ],
+      "adverse_excess_full_mean": 0.6525466399762152,
+      "adverse_excess_compliant_mean": 0.10911907281175719,
+      "auc_mean": {
+        "M_full": 0.9372106194229157,
+        "M_compliant": 0.79390263923726,
+        "M_strict": 0.7735175589550509,
+        "M_oracle": 0.7679898131157761
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.1636930604678648,
+      "auc_decomp_additional_under_compliant": 0.14330798018565571
+    },
+    {
+      "proxy_strength": 0.75,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.23690346562005052,
+      "retained_excess_ci": [
+        0.23003886661184636,
+        0.2440990431669718
+      ],
+      "external_carrier_lift": 0.12845204563190152,
+      "external_carrier_lift_ci": [
+        0.12395123282113965,
+        0.13305886092063385
+      ],
+      "adverse_excess_full_mean": 0.6503430714962695,
+      "adverse_excess_compliant_mean": 0.15408775649129752,
+      "auc_mean": {
+        "M_full": 0.9378688635876196,
+        "M_compliant": 0.8063447379798879,
+        "M_strict": 0.7740435797856431,
+        "M_oracle": 0.7688836374271225
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.16382528380197647,
+      "auc_decomp_additional_under_compliant": 0.13152412560773163
+    },
+    {
+      "proxy_strength": 0.8,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.32385270747038175,
+      "retained_excess_ci": [
+        0.3161876233904799,
+        0.33140755501511576
+      ],
+      "external_carrier_lift": 0.18898529575064452,
+      "external_carrier_lift_ci": [
+        0.18449017947860635,
+        0.1932951344252442
+      ],
+      "adverse_excess_full_mean": 0.6541766797481695,
+      "adverse_excess_compliant_mean": 0.21189036524686958,
+      "auc_mean": {
+        "M_full": 0.9382846718328459,
+        "M_compliant": 0.821121517178702,
+        "M_strict": 0.7750091413451846,
+        "M_oracle": 0.7694277176242531
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.1632755304876613,
+      "auc_decomp_additional_under_compliant": 0.11716315465414395
+    },
+    {
+      "proxy_strength": 0.85,
+      "n_seeds": 30,
+      "n_valid_seeds": 30,
+      "retained_excess": 0.43126908471987135,
+      "retained_excess_ci": [
+        0.42385217313894064,
+        0.43915341991354584
+      ],
+      "external_carrier_lift": 0.25500867492663754,
+      "external_carrier_lift_ci": [
+        0.24957049303335346,
+        0.26041684257089276
+      ],
+      "adverse_excess_full_mean": 0.6539921396203432,
+      "adverse_excess_compliant_mean": 0.28200955695587454,
+      "auc_mean": {
+        "M_full": 0.9371501914665569,
+        "M_compliant": 0.8380794179504503,
+        "M_strict": 0.7750566872286051,
+        "M_oracle": 0.769105057956578
+      },
+      "auc_decomp_legit_lost_to_prohibition": 0.16209350423795177,
+      "auc_decomp_additional_under_compliant": 0.0990707735161066
+    }
+  ]
+}
