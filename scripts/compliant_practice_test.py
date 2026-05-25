@@ -211,19 +211,108 @@ def score_grid_point(ps, bisg, seeds, n):
     return out
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--smoke", action="store_true")
-    ap.add_argument("--seeds", type=int, default=N_SEEDS_DEFAULT)
-    ap.add_argument("--n", type=int, default=N_DEFAULT)
-    ap.add_argument("--out", default=None)
-    args = ap.parse_args()
+# ---------------------------------------------------------------------------
+# C1 -- the headline dose-response: does compliant practice RETAIN excess
+# disparate impact, rising with proxy_strength? (World A, the contaminated world)
+# ---------------------------------------------------------------------------
+EPSILON_EXCESS = 0.05            # §2h denominator validity floor on adverse_excess(M_full)
 
-    if args.smoke:
-        proxy_grid, bisg_grid, seeds, n = (0.55, 0.85), (0.85,), range(6), 3000
-    else:
-        proxy_grid, bisg_grid, seeds, n = PROXY_GRID, BISG_GRID, range(args.seeds), args.n
+# (feature set, training target). M_oracle trains on Y_clean over V_named -- per the
+# anchor's OPEN subtlety, V_named excludes x6,x7 whose legit beta (0.60/0.35) the oracle
+# is blind to; implemented AS WRITTEN, flagged in the JSON for the result note.
+FAMILY = {
+    "M_full":      (OBS + ["G"], "Y"),          # experimenter-side discriminatory upper baseline
+    "M_compliant": (V_NAMED + CFRESH, "Y"),     # headline test article (no G, no declared proxies)
+    "M_strict":    (V_NAMED, "Y"),              # strictest reading (differs from compliant by c_fresh)
+    "M_oracle":    (V_NAMED, "Y_clean"),        # legitimate baseline (disparate term zeroed)
+}
 
+
+def _dp_gap(decision, G):
+    g0 = decision[G == 0].mean() if (G == 0).any() else 0.0
+    g1 = decision[G == 1].mean() if (G == 1).any() else 0.0
+    return float(g0 - g1)
+
+
+def fit_predict_family(fr, seed):
+    """Fit the four models on a train half, score Δ and AUC on the held-out half."""
+    n = len(fr)
+    perm = np.random.default_rng(seed).permutation(n)
+    te, tr = perm[:n // 2], perm[n // 2:]
+    G_te, Y_te = fr["G"].values[te], fr["Y"].values[te].astype(int)
+    out = {}
+    for name, (feats, tgt) in FAMILY.items():
+        m = GradientBoostingClassifier(random_state=seed, **GBT_KW)
+        m.fit(fr[feats].values[tr], fr[tgt].values[tr].astype(int))
+        p = m.predict_proba(fr[feats].values[te])[:, 1]
+        out[name] = {"delta": _dp_gap((p >= 0.5).astype(int), G_te),
+                     "auc": float(roc_auc_score(Y_te, p))}
+    return out
+
+
+def c1_grid_point(ps, seeds, n):
+    rows = []
+    for s in seeds:
+        fr = dgp.generate_twin_world(ps, "A", n, s).frame
+        r = fit_predict_family(fr, s)
+        d_or = r["M_oracle"]["delta"]
+        sign = np.sign(r["M_full"]["delta"] - d_or) or 1.0
+        ae = {k: float(sign * (v["delta"] - d_or)) for k, v in r.items()}
+        rows.append({"ae": ae, "auc": {k: v["auc"] for k, v in r.items()},
+                     "delta": {k: v["delta"] for k, v in r.items()}})
+
+    ae_full = np.array([x["ae"]["M_full"] for x in rows])
+    ae_comp = np.array([x["ae"]["M_compliant"] for x in rows])
+    ae_strict = np.array([x["ae"]["M_strict"] for x in rows])
+    valid = ae_full >= EPSILON_EXCESS
+    retained = (ae_comp[valid] / ae_full[valid]) if valid.any() else np.array([])
+    ext_lift = ae_comp - ae_strict
+    auc = {k: float(np.mean([x["auc"][k] for x in rows])) for k in FAMILY}
+
+    def mci(a):
+        if len(a) == 0:
+            return None, [None, None]
+        return float(np.mean(a)), list(_paired_ci(a))
+
+    ret_m, ret_ci = mci(retained)
+    ext_m, ext_ci = mci(ext_lift)
+    return {
+        "proxy_strength": ps, "n_seeds": len(seeds), "n_valid_seeds": int(valid.sum()),
+        "retained_excess": ret_m, "retained_excess_ci": ret_ci,
+        "external_carrier_lift": ext_m, "external_carrier_lift_ci": ext_ci,
+        "adverse_excess_full_mean": float(ae_full.mean()),
+        "adverse_excess_compliant_mean": float(ae_comp.mean()),
+        "auc_mean": auc,
+        "auc_decomp_legit_lost_to_prohibition": auc["M_full"] - auc["M_strict"],
+        "auc_decomp_additional_under_compliant": auc["M_full"] - auc["M_compliant"],
+    }
+
+
+def run_c1(proxy_grid, seeds, n, out_path, smoke):
+    t0 = time.time()
+    points = []
+    for ps in proxy_grid:
+        pt = c1_grid_point(ps, list(seeds), n)
+        points.append(pt)
+        re = pt["retained_excess"]
+        print(f"[{time.time()-t0:6.1f}s] ps={ps:.2f} | "
+              f"retained_excess={re if re is None else f'{re:+.3f}'} "
+              f"(valid {pt['n_valid_seeds']}/{pt['n_seeds']}) | "
+              f"ext_carrier_lift={pt['external_carrier_lift']:+.4f} | "
+              f"ae_full={pt['adverse_excess_full_mean']:+.3f} | "
+              f"AUCdecomp legit_lost={pt['auc_decomp_legit_lost_to_prohibition']:+.3f} "
+              f"compliant_extra={pt['auc_decomp_additional_under_compliant']:+.3f}", flush=True)
+    out_path.write_text(json.dumps({
+        "experiment": "compliant-practice disparate impact (V2) -- C1 dose-response",
+        "pre_reg_commit": "8fa7992", "smoke": smoke,
+        "note_oracle_blind_x6x7": "M_oracle trains on V_named (x0..x5), blind to x6,x7 legit beta "
+                                  "(0.60/0.35) per anchor OPEN subtlety -- implemented as written, "
+                                  "may inflate measured excess; flag in result note.",
+        "points": points}, indent=2))
+    print(f"\nWrote {out_path.relative_to(REPO)} ({len(points)} grid points)")
+
+
+def run_c3(proxy_grid, bisg_grid, seeds, n, out_path, smoke):
     t0 = time.time()
     points = []
     for ps in proxy_grid:
@@ -237,17 +326,40 @@ def main():
                   f"bestGfree margin={br['best_Gfree_effect_margin_over_R1']:+.4f} | "
                   f"omnibus={br['omnibus_lowerbound_acc']:.3f} pass={br['gate_passes']} | "
                   f"R1sanity_fires={br['R1_null_sanity_fires']}", flush=True)
-
-    out_path = (Path(args.out).resolve() if args.out else
-                REPO / "runs" / ("compliant_practice_smoke.json" if args.smoke
-                                 else "compliant_practice_c3_2026-05-24.json"))
-    out_path.parent.mkdir(exist_ok=True)
     out_path.write_text(json.dumps({
         "experiment": "compliant-practice disparate impact (V2) -- C3 path",
-        "pre_reg_commit": "8fa7992", "smoke": args.smoke,
+        "pre_reg_commit": "8fa7992", "smoke": smoke,
         "estimator": "cross-fitted GBT AUC-lift (KSG/causal-forest backends pending deps)",
         "points": points}, indent=2))
     print(f"\nWrote {out_path.relative_to(REPO)} ({len(points)} grid points)")
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--mode", choices=["c3", "c1"], default="c3")
+    ap.add_argument("--smoke", action="store_true")
+    ap.add_argument("--seeds", type=int, default=N_SEEDS_DEFAULT)
+    ap.add_argument("--n", type=int, default=N_DEFAULT)
+    ap.add_argument("--out", default=None)
+    args = ap.parse_args()
+
+    if args.smoke:
+        proxy_grid, bisg_grid, seeds, n = (0.55, 0.70, 0.85), (0.85,), range(6), 3000
+    else:
+        proxy_grid, bisg_grid, seeds, n = PROXY_GRID, BISG_GRID, range(args.seeds), args.n
+
+    REPO_runs = REPO / "runs"
+    REPO_runs.mkdir(exist_ok=True)
+    if args.mode == "c1":
+        out_path = (Path(args.out).resolve() if args.out else
+                    REPO_runs / ("compliant_practice_c1_smoke.json" if args.smoke
+                                 else "compliant_practice_c1_2026-05-24.json"))
+        run_c1(proxy_grid, seeds, n, out_path, args.smoke)
+    else:
+        out_path = (Path(args.out).resolve() if args.out else
+                    REPO_runs / ("compliant_practice_smoke.json" if args.smoke
+                                 else "compliant_practice_c3_2026-05-24.json"))
+        run_c3(proxy_grid, bisg_grid, seeds, n, out_path, args.smoke)
 
 
 if __name__ == "__main__":
