@@ -484,33 +484,51 @@ def _fit_model(sub, feats, target, seed, sample_weight=None):
     return m
 
 
-def _delta_auc(m, sub):
-    dec = fft.decisions(m, sub.test)
-    delta = fft.dp_gap(dec, sub.test["G"].values)
-    auc = float(roc_auc_score(sub.test["Y"].values.astype(int), fft.proba(m, sub.test)))
+def _delta_auc(m, sub, frame=None):
+    f = sub.test if frame is None else frame
+    dec = fft.decisions(m, f)
+    delta = fft.dp_gap(dec, f["G"].values)
+    auc = float(roc_auc_score(f["Y"].values.astype(int), fft.proba(m, f)))
     return delta, auc
 
 
-def c4_cell(ps, seed, n, smoke, lever="reweight"):
+def _derive_baselines(da):
+    """Derived scalars from a {model: (delta, auc)} dict scored on one frame."""
+    delta_full, auc_full = da["M_full"]
+    delta_oracle, _ = da["M_oracle"]
+    auc_comp, auc_strict = da["M_compliant"][1], da["M_strict"][1]
+    s = float(np.sign(delta_full - delta_oracle)) or 1.0
+    return {
+        "s": s, "delta_oracle": delta_oracle, "auc_full": auc_full,
+        "auc_comp": auc_comp, "auc_strict": auc_strict,
+        "best_adm_auc": max(auc_comp, auc_strict),
+        "ae_full": s * (delta_full - delta_oracle),
+        "ae_comp": s * (da["M_compliant"][0] - delta_oracle),
+    }
+
+
+def c4_cell(ps, seed, n, smoke, lever="reweight", gamma=GAMMA_C4, holdout=False):
     import cmaes
     fr = dgp.generate_twin_world(ps, "A", n, seed).frame
     sub = twin_to_substrate(fr, seed)
 
-    # baselines on the shared split
+    # Held-out evaluation (leak-free): CMA SELECTS best_w on sel_frame, all reported
+    # metrics + the gate are computed on rep_frame (test). holdout=False reproduces the
+    # committed grid (select==report==test). Fit is always on sub.train.
+    sel_frame = sub.val if holdout else sub.test
+    rep_frame = sub.test
     base = {
         "M_full": _fit_model(sub, OBS + ["G"], "Y", seed),
         "M_compliant": _fit_model(sub, ADMISSIBLE, "Y", seed),
         "M_strict": _fit_model(sub, V_NAMED, "Y", seed),
         "M_oracle": _fit_model(sub, V_NAMED, "Y_clean", seed),
     }
-    da = {k: _delta_auc(m, sub) for k, m in base.items()}
-    delta_full, auc_full = da["M_full"]
-    delta_oracle, _ = da["M_oracle"]
-    auc_comp, auc_strict = da["M_compliant"][1], da["M_strict"][1]
-    s = float(np.sign(delta_full - delta_oracle)) or 1.0
-    ae_full = s * (delta_full - delta_oracle)
-    best_adm_auc = max(auc_comp, auc_strict)
-    ae_comp = s * (da["M_compliant"][0] - delta_oracle)
+    bsel = _derive_baselines({k: _delta_auc(m, sub, sel_frame) for k, m in base.items()})
+    brep = _derive_baselines({k: _delta_auc(m, sub, rep_frame) for k, m in base.items()})
+    # report-frame scalars (the bound the result speaks about)
+    ae_full, auc_full = brep["ae_full"], brep["auc_full"]
+    auc_comp, auc_strict, best_adm_auc = brep["auc_comp"], brep["auc_strict"], brep["best_adm_auc"]
+    ae_comp = brep["ae_comp"]
 
     # standardized admissible train matrix (reweighting lever)
     Xtr = sub.train[ADMISSIBLE].values.astype(float)
@@ -541,22 +559,22 @@ def c4_cell(ps, seed, n, smoke, lever="reweight"):
         keep = [ADMISSIBLE[i] for i in range(d) if ws[i] > 0.0]   # sigmoid>0.5 == logit>0
         return keep or [ADMISSIBLE[int(np.argmax(ws))]]           # never empty
 
-    def evaluate(w):
+    def evaluate(w, frame, deriv):
         wr, ws = _split(w)
         feats = select_feats(ws)
         m = _fit_model(sub, feats, "Y", seed, sample_weight=make_sw(wr))
-        dd, a = _delta_auc(m, sub)
-        return m, s * (dd - delta_oracle), a, feats
+        dd, a = _delta_auc(m, sub, frame)
+        return m, deriv["s"] * (dd - deriv["delta_oracle"]), a, feats
 
     def objective(w):
         # ADMISSIBLE gate enforced as a HARD barrier (§2f's "s.t. dual AUC gate" is a
         # constraint, not a soft preference -- a probe showed a 5x penalty let CMA buy
         # gap by trading through the gate). Infeasible points dominated by any feasible
         # point; deficit term guides CMA back. w=0 == M_compliant is always feasible.
-        # FULL gate is structurally infeasible for an admissible-only model -> reported,
-        # not enforced (pre-reg-interpretation correction; predictions NOT edited).
-        _, ae, a, _ = evaluate(w)
-        deficit = (best_adm_auc - GAMMA_C4) - a
+        # SELECTION is on sel_frame (val under holdout) -- the gate threshold is the
+        # sel-frame best_adm_auc so optimization never peeks at the report frame.
+        _, ae, a, _ = evaluate(w, sel_frame, bsel)
+        deficit = (bsel["best_adm_auc"] - gamma) - a
         if deficit > 0:
             return float(100.0 + 10.0 * deficit)         # infeasible barrier
         return float(-ae)                                # feasible: maximize gap
@@ -588,7 +606,8 @@ def c4_cell(ps, seed, n, smoke, lever="reweight"):
         if conv_stall >= C4_CONV_PATIENCE or opt.should_stop():
             break
 
-    V2_adv, ae_adv, auc_adv, realized_feats = evaluate(best_w)
+    # final metrics on the REPORT frame (test); selection used sel_frame only
+    V2_adv, ae_adv, auc_adv, realized_feats = evaluate(best_w, rep_frame, brep)
     retained = (ae_adv / ae_full) if abs(ae_full) >= EPSILON_EXCESS else None
 
     # rung validation on the final model (expected structural pass: admissible-only)
@@ -606,14 +625,16 @@ def c4_cell(ps, seed, n, smoke, lever="reweight"):
 
     realized_subset = [f for f, imp in zip(realized_feats, V2_adv.feature_importances_)
                        if imp > 1e-4]
-    gate_full = bool(auc_adv >= auc_full - GAMMA_C4)
-    gate_adm = bool(auc_adv >= best_adm_auc - GAMMA_C4)
+    gate_full = bool(auc_adv >= auc_full - gamma)
+    gate_adm = bool(auc_adv >= best_adm_auc - gamma)
     # P-C4 success (literal pre-reg text): retained_excess >= 0.80 while passing rungs
     # 1/2/3a, under the feasible (admissible) gate. gate_full reported, NOT required.
     success = (retained is not None and retained >= 0.80
                and (rungs_pass in (True, None)) and gate_adm)
     return {
-        "proxy_strength": ps, "seed": seed, "lever": lever,
+        "proxy_strength": ps, "seed": seed, "lever": lever, "gamma": float(gamma),
+        "holdout": bool(holdout),
+        "s_sel": bsel["s"], "s_rep": brep["s"], "s_flip": bool(bsel["s"] != brep["s"]),
         "retained_excess_adv": (None if retained is None else float(retained)),
         "ae_adv": float(ae_adv), "ae_full": float(ae_full), "ae_compliant": float(ae_comp),
         "auc_adv": auc_adv, "auc_full": auc_full,
@@ -627,12 +648,12 @@ def c4_cell(ps, seed, n, smoke, lever="reweight"):
     }
 
 
-def run_c4(proxy_grid, seeds, n, out_path, smoke, lever="reweight"):
+def run_c4(proxy_grid, seeds, n, out_path, smoke, lever="reweight", gamma=GAMMA_C4, holdout=False):
     t0 = time.time()
     cells = []
     for ps in proxy_grid:
         for sd in seeds:
-            c = c4_cell(ps, sd, n, smoke, lever=lever)
+            c = c4_cell(ps, sd, n, smoke, lever=lever, gamma=gamma, holdout=holdout)
             cells.append(c)
             re = c["retained_excess_adv"]
             print(f"[{time.time()-t0:6.1f}s] ps={ps:.2f} seed={sd} | "
@@ -654,7 +675,8 @@ def run_c4(proxy_grid, seeds, n, out_path, smoke, lever="reweight"):
         }
     out_path.write_text(json.dumps({
         "experiment": "compliant-practice disparate impact (V2) -- C4 V2_adv upper bound",
-        "pre_reg_commit": "8fa7992", "smoke": smoke, "lever": lever,
+        "pre_reg_commit": "8fa7992", "smoke": smoke, "lever": lever, "gamma": float(gamma),
+        "holdout": bool(holdout),
         "P_C4": "V2_adv reaches retained_excess >= 0.80 while passing rungs 1/2/3a (prior 0.60)",
         "design_note": "lever = admissible SAMPLE-REWEIGHTING via CMA-ES (feature-scaling "
                        "is vacuous for GBTs); dual AUC gate (full + admissible), gamma=0.02; "
@@ -673,6 +695,12 @@ def main():
                     help="restrict to a single proxy_strength (ps-sharding / single-cell probe)")
     ap.add_argument("--lever", choices=["reweight", "subset", "both"], default="reweight",
                     help="C4 adversary lever: sample-reweight / feature-subset / both (the moat)")
+    ap.add_argument("--gamma", type=float, default=GAMMA_C4,
+                    help="C4 admissible AUC-gate tolerance (default 0.02 = frozen pre-reg value; "
+                         "swept for the gap(gamma) operating-curve follow-on)")
+    ap.add_argument("--holdout", action="store_true",
+                    help="C4 leak-free eval: CMA selects on val, metrics+gate on test "
+                         "(default off reproduces the committed test-selected grid)")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
 
@@ -705,7 +733,8 @@ def main():
         out_path = (Path(args.out).resolve() if args.out else
                     REPO_runs / ("compliant_practice_c4_smoke.json" if args.smoke
                                  else "compliant_practice_c4_2026-05-24.json"))
-        run_c4(proxy_grid, seeds, n, out_path, args.smoke, lever=args.lever)
+        run_c4(proxy_grid, seeds, n, out_path, args.smoke, lever=args.lever, gamma=args.gamma,
+               holdout=args.holdout)
     else:
         out_path = (Path(args.out).resolve() if args.out else
                     REPO_runs / ("compliant_practice_smoke.json" if args.smoke
