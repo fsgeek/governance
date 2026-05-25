@@ -1,0 +1,150 @@
+{
+  "experiment": "compliant-practice disparate impact (V2) -- C4 V2_adv upper bound",
+  "pre_reg_commit": "8fa7992",
+  "smoke": true,
+  "lever": "both",
+  "P_C4": "V2_adv reaches retained_excess >= 0.80 while passing rungs 1/2/3a (prior 0.60)",
+  "design_note": "lever = admissible SAMPLE-REWEIGHTING via CMA-ES (feature-scaling is vacuous for GBTs); dual AUC gate (full + admissible), gamma=0.02; budget pop=16/<=200gen/<=5000eval. Documented choice, predictions NOT edited.",
+  "by_proxy_strength": {
+    "0.55": {
+      "n": 2,
+      "retained_excess_adv_mean": 0.06779594262905711,
+      "retained_excess_adv_ci": [
+        0.06453259894173331,
+        0.07105928631638092
+      ],
+      "success_rate": 0.0
+    },
+    "0.70": {
+      "n": 2,
+      "retained_excess_adv_mean": 0.14784577063190468,
+      "retained_excess_adv_ci": [
+        0.10267355284380654,
+        0.19301798842000284
+      ],
+      "success_rate": 0.0
+    }
+  },
+  "cells": [
+    {
+      "proxy_strength": 0.55,
+      "seed": 0,
+      "lever": "both",
+      "retained_excess_adv": 0.07105928631638092,
+      "ae_adv": 0.0478997684560421,
+      "ae_full": 0.6740817553778333,
+      "ae_compliant": 0.04876628265409033,
+      "auc_adv": 0.7091163073185545,
+      "auc_full": 0.9266039072780645,
+      "auc_compliant": 0.7277983601579108,
+      "auc_strict": 0.7263953841481932,
+      "gate_full_pass": false,
+      "gate_admissible_pass": true,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rung2_disagreement": 0.08418204397691577,
+      "rungs_pass": null,
+      "realized_subset": [
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "cfresh_count"
+      ],
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    },
+    {
+      "proxy_strength": 0.55,
+      "seed": 1,
+      "lever": "both",
+      "retained_excess_adv": 0.06453259894173331,
+      "ae_adv": 0.039573805954572105,
+      "ae_full": 0.6132374428357275,
+      "ae_compliant": 0.08398641340442886,
+      "auc_adv": 0.7291218872870251,
+      "auc_full": 0.915483415666902,
+      "auc_compliant": 0.7478253856235507,
+      "auc_strict": 0.7525173908660148,
+      "gate_full_pass": false,
+      "gate_admissible_pass": false,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rung2_disagreement": 0.03806803224248279,
+      "rungs_pass": null,
+      "realized_subset": [
+        "x0",
+        "x1",
+        "x2",
+        "cfresh_cat",
+        "cfresh_count"
+      ],
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    },
+    {
+      "proxy_strength": 0.7,
+      "seed": 0,
+      "lever": "both",
+      "retained_excess_adv": 0.19301798842000284,
+      "ae_adv": 0.11822947000582407,
+      "ae_full": 0.612530837014835,
+      "ae_compliant": 0.07631954013191844,
+      "auc_adv": 0.7547767627380341,
+      "auc_full": 0.9278338908903758,
+      "auc_compliant": 0.7719417460113227,
+      "auc_strict": 0.7499597915594441,
+      "gate_full_pass": false,
+      "gate_admissible_pass": true,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rung2_disagreement": 0.11920726859074553,
+      "rungs_pass": null,
+      "realized_subset": [
+        "x0",
+        "x3",
+        "x4",
+        "x5",
+        "cfresh_cont",
+        "cfresh_cat",
+        "cfresh_count"
+      ],
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    },
+    {
+      "proxy_strength": 0.7,
+      "seed": 1,
+      "lever": "both",
+      "retained_excess_adv": 0.10267355284380654,
+      "ae_adv": 0.05979240592800622,
+      "ae_full": 0.5823545038805289,
+      "ae_compliant": 0.10554279967361802,
+      "auc_adv": 0.7749198343511821,
+      "auc_full": 0.9349610854187144,
+      "auc_compliant": 0.7904373257706376,
+      "auc_strict": 0.7637087287903446,
+      "gate_full_pass": false,
+      "gate_admissible_pass": true,
+      "rung1_evade": null,
+      "rung3a_catch": false,
+      "rung2_disagreement": 0.11511690660321237,
+      "rungs_pass": null,
+      "realized_subset": [
+        "x0",
+        "x2",
+        "x3",
+        "x4",
+        "cfresh_cont",
+        "cfresh_cat",
+        "cfresh_count"
+      ],
+      "cmaes_evals": 30,
+      "cmaes_gens": 5,
+      "P_C4_success": false
+    }
+  ]
+}

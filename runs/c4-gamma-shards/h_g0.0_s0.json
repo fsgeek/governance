@@ -1,0 +1,55 @@
+{
+  "shard": true,
+  "proxy_strength": 0.85,
+  "gammas": [
+    0.0
+  ],
+  "seeds": [
+    0
+  ],
+  "holdout": true,
+  "budget_maxgen": 70,
+  "cells": [
+    {
+      "proxy_strength": 0.85,
+      "seed": 0,
+      "lever": "reweight",
+      "gamma": 0.0,
+      "holdout": true,
+      "s_sel": -1.0,
+      "s_rep": -1.0,
+      "s_flip": false,
+      "retained_excess_adv": 0.45199331699167067,
+      "ae_adv": 0.2791414046318961,
+      "ae_full": 0.6175786104311806,
+      "ae_compliant": 0.23664846544906804,
+      "auc_adv": 0.8155086857059224,
+      "auc_full": 0.9331329271730485,
+      "auc_compliant": 0.8288692500687146,
+      "auc_strict": 0.7757526484368144,
+      "gate_full_pass": false,
+      "gate_admissible_pass": false,
+      "rung1_evade": true,
+      "rung3a_catch": false,
+      "rung2_disagreement": 0.05766770457992601,
+      "rungs_pass": true,
+      "realized_subset": [
+        "x0",
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "cfresh_cont",
+        "cfresh_cat",
+        "cfresh_count"
+      ],
+      "cmaes_evals": 1120,
+      "cmaes_gens": 70,
+      "P_C4_success": false,
+      "retained_compliant": 0.38318759984877876,
+      "gap": 0.06880571714289191,
+      "degenerate_start": false
+    }
+  ]
+}

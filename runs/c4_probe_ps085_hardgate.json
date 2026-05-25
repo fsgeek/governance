@@ -1,0 +1,49 @@
+{
+  "experiment": "compliant-practice disparate impact (V2) -- C4 V2_adv upper bound",
+  "pre_reg_commit": "8fa7992",
+  "smoke": false,
+  "P_C4": "V2_adv reaches retained_excess >= 0.80 while passing rungs 1/2/3a (prior 0.60)",
+  "design_note": "lever = admissible SAMPLE-REWEIGHTING via CMA-ES (feature-scaling is vacuous for GBTs); dual AUC gate (full + admissible), gamma=0.02; budget pop=16/<=200gen/<=5000eval. Documented choice, predictions NOT edited.",
+  "by_proxy_strength": {
+    "0.85": {
+      "n": 1,
+      "retained_excess_adv_mean": 0.535128477176551,
+      "retained_excess_adv_ci": null,
+      "success_rate": 0.0
+    }
+  },
+  "cells": [
+    {
+      "proxy_strength": 0.85,
+      "seed": 0,
+      "retained_excess_adv": 0.535128477176551,
+      "ae_adv": 0.3304839013368481,
+      "ae_full": 0.6175786104311806,
+      "ae_compliant": 0.23664846544906804,
+      "auc_adv": 0.8098714451649667,
+      "auc_full": 0.9331329271730485,
+      "auc_compliant": 0.8288692500687146,
+      "auc_strict": 0.7757526484368144,
+      "gate_full_pass": false,
+      "gate_admissible_pass": true,
+      "rung1_evade": true,
+      "rung3a_catch": false,
+      "rung2_disagreement": 0.013111111111111113,
+      "rungs_pass": true,
+      "realized_subset": [
+        "x0",
+        "x1",
+        "x2",
+        "x3",
+        "x4",
+        "x5",
+        "cfresh_cont",
+        "cfresh_cat",
+        "cfresh_count"
+      ],
+      "cmaes_evals": 608,
+      "cmaes_gens": 38,
+      "P_C4_success": false
+    }
+  ]
+}

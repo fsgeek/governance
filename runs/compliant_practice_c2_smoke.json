@@ -1,0 +1,79 @@
+{
+  "experiment": "compliant-practice disparate impact (V2) -- C2 behavioral rungs",
+  "pre_reg_commit": "8fa7992",
+  "smoke": true,
+  "P_C2": "M_compliant passes rungs 1,2,3a on >=90% of seeds at proxy_strength* (prior 0.85)",
+  "rung2_note": "rung 2 (disagreement) has no frozen binary threshold in the V1 instrument; reported as a continuous diagnostic. behavioral_pass keys on rung1 (evade) AND rung3a (no-catch). Documented choice owed to the result note -- predictions NOT edited.",
+  "by_proxy_strength": {
+    "0.55": {
+      "n": 2,
+      "n_scored": 0,
+      "pass_rate": null,
+      "rung3a_jaccard_mean": 1.0,
+      "rung3a_jaccard_min": 1.0,
+      "rung2_disagreement_mean": 0.06310297306735702
+    },
+    "0.70": {
+      "n": 2,
+      "n_scored": 0,
+      "pass_rate": null,
+      "rung3a_jaccard_mean": 0.95,
+      "rung3a_jaccard_min": 0.9,
+      "rung2_disagreement_mean": 0.1678825516914671
+    }
+  },
+  "cells": [
+    {
+      "proxy_strength": 0.55,
+      "seed": 0,
+      "rung1_evade": null,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.03576402950807332,
+      "rung2_n_members": 326,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": null,
+      "compliant_delta": -0.16062237500651066,
+      "compliant_auc": 0.7277983601579108
+    },
+    {
+      "proxy_strength": 0.55,
+      "seed": 1,
+      "rung1_evade": null,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.09044191662664071,
+      "rung2_n_members": 773,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": null,
+      "compliant_delta": -0.24091538738875495,
+      "compliant_auc": 0.7478253856235507
+    },
+    {
+      "proxy_strength": 0.7,
+      "seed": 0,
+      "rung1_evade": null,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.211725632060325,
+      "rung2_n_members": 589,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 0.9,
+      "behavioral_pass": null,
+      "compliant_delta": -0.24412972143699302,
+      "compliant_auc": 0.7719417460113227
+    },
+    {
+      "proxy_strength": 0.7,
+      "seed": 1,
+      "rung1_evade": null,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.12403947132260919,
+      "rung2_n_members": 905,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": null,
+      "compliant_delta": -0.27991992257917603,
+      "compliant_auc": 0.7904373257706376
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "experiment": "compliant-practice disparate impact (V2) -- C2 behavioral rungs",
+  "pre_reg_commit": "8fa7992",
+  "smoke": false,
+  "P_C2": "M_compliant passes rungs 1,2,3a on >=90% of seeds at proxy_strength* (prior 0.85)",
+  "rung2_note": "rung 2 (disagreement) has no frozen binary threshold in the V1 instrument; reported as a continuous diagnostic. behavioral_pass keys on rung1 (evade) AND rung3a (no-catch). Documented choice owed to the result note -- predictions NOT edited.",
+  "by_proxy_strength": {
+    "0.60": {
+      "n": 10,
+      "n_scored": 10,
+      "pass_rate": 1.0,
+      "rung3a_jaccard_mean": 1.0,
+      "rung3a_jaccard_min": 1.0,
+      "rung2_disagreement_mean": 0.06595432239462092
+    }
+  },
+  "cells": [
+    {
+      "proxy_strength": 0.6,
+      "seed": 0,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.060869801464660034,
+      "rung2_n_members": 1464,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.19719073620787042,
+      "compliant_auc": 0.7869442893416634
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 1,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.030491781404719465,
+      "rung2_n_members": 1083,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.13564307346163773,
+      "compliant_auc": 0.7495871988675143
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 2,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.0837548833084788,
+      "rung2_n_members": 1406,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.20563769683856237,
+      "compliant_auc": 0.7740290772878891
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 3,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.05805445348145209,
+      "rung2_n_members": 1704,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.20189447821026774,
+      "compliant_auc": 0.7668109338719041
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 4,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.11154888150047179,
+      "rung2_n_members": 1422,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.21456531764218023,
+      "compliant_auc": 0.7680949328011444
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 5,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.09211887481452896,
+      "rung2_n_members": 1574,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.19212596070456645,
+      "compliant_auc": 0.7755146464646464
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 6,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.07798303261378967,
+      "rung2_n_members": 1729,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.19125447364293552,
+      "compliant_auc": 0.7669095396725677
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 7,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.045195286153540966,
+      "rung2_n_members": 1704,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.19786485112907082,
+      "compliant_auc": 0.7718185453091492
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 8,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.052495497453792866,
+      "rung2_n_members": 1014,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.20534752537200174,
+      "compliant_auc": 0.7813258133514809
+    },
+    {
+      "proxy_strength": 0.6,
+      "seed": 9,
+      "rung1_evade": true,
+      "rung1_proxies_present": [],
+      "rung2_disagreement": 0.04703073175077438,
+      "rung2_n_members": 764,
+      "rung3a_catch": false,
+      "rung3a_jaccard_margin": 1.0,
+      "behavioral_pass": true,
+      "compliant_delta": -0.18503339987714984,
+      "compliant_auc": 0.7626979797979798
+    }
+  ]
+}
