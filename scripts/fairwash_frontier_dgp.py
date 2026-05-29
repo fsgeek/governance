@@ -275,7 +275,7 @@ def _bisg_estimate(G: np.ndarray, g_latent: np.ndarray, target_auc: float,
 
 
 def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
-                        *, bisg_auc: float = 0.85) -> TwinWorldResult:
+                        *, bisg_auc: float = 0.85, decouple: float = 0.0) -> TwinWorldResult:
     """One (proxy_strength, world, seed) latent-G twin-world substrate.
 
     World A and World B share inputs (x0..x7, c_fresh) deterministically given
@@ -284,9 +284,19 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
       World B: Y ~ Bernoulli(p_obs(observables))                  (c_fresh drives Y)
     where p_obs is World A's observable regression E[Y_A | x0..x7, c_fresh],
     so the observable joint matches by construction and Y_B _||_ G | observables.
+
+    World P (positive-control, pre-reg 2026-05-29): a fraction `decouple` of the
+    disparate term is routed through a c_fresh-borne channel RESIDUALIZED against
+    legit_logit (moves the gap, adds ~0 legit predictive content); (1-decouple)
+    stays on the original Gz channel. At decouple=0, world P == World A (negative
+    control). At decouple=1, the disparity is carried by a channel orthogonal to
+    Y's legitimate predictability -- so honest proxy-removal (drop c_fresh) sheds
+    the gap WITHOUT shedding Y-accuracy, while laundering (suppress legit) sheds
+    gap ONLY by killing Y-predictive signal. The observable SHOULD separate them.
+    `decouple` is ignored for worlds A and B.
     """
-    if world not in ("A", "B"):
-        raise ValueError("world must be 'A' or 'B'")
+    if world not in ("A", "B", "P"):
+        raise ValueError("world must be 'A', 'B', or 'P'")
     rng = np.random.default_rng(seed)
     X, G, g_latent = _twin_base(rng, n)
     Gz = (G - G.mean()) / (G.std() + 1e-12)
@@ -300,7 +310,31 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     YA = rng.binomial(1, pA)
     y_clean = rng.binomial(1, 1.0 / (1.0 + np.exp(-legit_logit)))
 
-    if world == "A":
+    if world == "P":
+        # The pure-impact channel: the c_fresh portfolio's component ORTHOGONAL to
+        # legit_logit. Project c_fresh onto [1, legit_logit], take residuals -> a
+        # G-correlated direction (c_fresh is G-coupled) carrying ~0 legit signal.
+        cf_mat = np.column_stack([cf[k] for k in CFRESH_PORTFOLIO])
+        Z = np.column_stack([np.ones(n), legit_logit])
+        beta, *_ = np.linalg.lstsq(Z, cf_mat, rcond=None)
+        cf_resid = cf_mat - Z @ beta                      # legit-orthogonal part
+        # collapse to a single standardized pure-impact score (mean over carriers),
+        # sign-aligned with Gz so it adds (not cancels) disparate impact.
+        imp = cf_resid.mean(axis=1)
+        imp_z = (imp - imp.mean()) / (imp.std() + 1e-12)
+        imp_z *= np.sign(np.dot(imp_z, Gz)) or 1.0         # align G-direction
+        # Route `decouple` of the disparate term through imp_z (legit-orthogonal,
+        # c_fresh-borne) and (1-decouple) through Gz. NOTE: imp_z is a noisier
+        # G-proxy than Gz, so the realized |gap| DECREASES with decouple (validity
+        # probe: -0.70 @0 -> -0.23 @1). This is fine: the apparatus matches H/L on
+        # |gap| WITHIN each world (covariate-adjustment), so a decouple-varying
+        # baseline gap is not a cross-world confound -- the channel-routing invariant
+        # (AUC(Y~legit) flat, AUC(Y~c_fresh) rising) is what the planted signal needs,
+        # and it holds. Gap @1 (-0.23) ~ the §5 ps=0.70 baseline where the test worked.
+        disp_logit = _TWIN_DISP * ((1.0 - decouple) * Gz + decouple * imp_z)
+        pP = 1.0 / (1.0 + np.exp(-(legit_logit + disp_logit)))
+        Y = rng.binomial(1, pP)
+    elif world == "A":
         Y = YA
     else:
         # World B: draw Y from World A's OBSERVABLE regression (no G).

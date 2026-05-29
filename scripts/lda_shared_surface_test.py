@@ -141,17 +141,20 @@ def _arm_families(fr, tr, te, seed):
     return H + L
 
 
-def cell(ps, seed, n):
+def cell(ps, seed, n, world="A", decouple=0.0):
     """One (ps, seed) cell: generate both arm families (H, L), each a list of
     models with (abs_gap, A_obs, CAL, A_clean, ...). The covariate-adjusted
-    comparison happens in aggregate() across pooled cells."""
-    fr = dgp.generate_twin_world(ps, "A", n, seed).frame
+    comparison happens in aggregate() across pooled cells. world/decouple default
+    to the §5 behavior (World A); world='P' + decouple>0 runs the positive control
+    (pre-reg 2026-05-29) -- discriminator logic is UNCHANGED."""
+    fr = dgp.generate_twin_world(ps, world, n, seed, decouple=decouple).frame
     tr, te = _split(len(fr), seed)
     _, _, gap0 = _fit_on(fr, tr, te, ADMISSIBLE, seed)
     models = _arm_families(fr, tr, te, seed)
     for m in models:
         m["seed"] = seed
-    return {"ps": ps, "seed": seed, "abs_gap0": float(abs(gap0)), "models": models}
+    return {"ps": ps, "seed": seed, "world": world, "decouple": decouple,
+            "abs_gap0": float(abs(gap0)), "models": models}
 
 
 DISCRIMS = ["A_obs", "CAL", "A_obs_g0", "A_obs_g1", "A_clean"]
@@ -258,6 +261,50 @@ def run(ps_grid, seeds, n, out_path, smoke):
     print(f"\nWrote {out_path.relative_to(REPO)} ({len(cells)} cells)")
 
 
+DECOUPLE_GRID = (0.0, 0.25, 0.50, 0.75, 1.0)
+
+
+def run_positive_control(ps, decouple_grid, seeds, n, out_path, smoke):
+    """Positive-control substrate validation (pre-reg 2026-05-29). Sweep world='P'
+    over `decouple`; per value, the apparatus's feature-count-controlled A_obs is_L
+    coefficient is the test statistic. PASS = detects (neg, CI-excl-0) at high
+    decouple; negative control = no detection at decouple=0 (=World A)."""
+    t0 = time.time()
+    cells = []
+    summary = {}
+    for dc in decouple_grid:
+        dc_cells = []
+        for s in seeds:
+            c = cell(ps, s, n, world="P", decouple=dc)
+            dc_cells.append(c); cells.append(c)
+        agg = aggregate(dc_cells)
+        summary[f"decouple_{dc:.2f}"] = agg
+        ao = agg["discrim"]["A_obs"]; gr = agg["abs_gap_range"]
+        # the test statistic: k-controlled, must be NEGATIVE + CI-excl-0 to "detect"
+        detects = bool(ao and ao["separates_kctl"] and ao["coef_is_L_kctl"] < 0)
+        ao_s = ("n/a" if ao is None else
+                f"k-ctl={ao['coef_is_L_kctl']:+.4f}(sep={ao['separates_kctl']}) "
+                f"naive={ao['coef_is_L']:+.4f}")
+        print(f"[{time.time()-t0:6.1f}s] decouple={dc:.2f} | |gap|range=[{gr[0]:.3f},{gr[1]:.3f}] "
+              f"| A_obs {ao_s} | DETECTS={detects}", flush=True)
+
+    out_path.write_text(json.dumps({
+        "experiment": "positive-control substrate validation (pre-reg 2026-05-29)",
+        "pre_reg_commit": "a0dfd23", "smoke": smoke, "ps": ps,
+        "test_statistic": "feature-count-controlled A_obs is_L coefficient (coef_is_L_kctl); "
+            "DETECTS = sign negative AND CI excludes 0 AND |coef|>=0.01.",
+        "pass_fail": "P1 negative control: decouple=0.00 should NOT detect (=World A). "
+            "P2 positive control: decouple=1.00 SHOULD detect (planted observable signal). "
+            "P3: detection floor interior (graded detection curve in decouple).",
+        "channel_invariant_note": "world=P routes `decouple` of the disparate term through "
+            "the c_fresh-borne legit-orthogonal channel; validity probe confirmed AUC(Y~legit) "
+            "flat (~0.78) and AUC(Y~c_fresh) rising (0.60->0.82) in decouple. Baseline |gap| "
+            "falls with decouple (imp_z noisier G-proxy than Gz); not a confound -- H/L matched "
+            "on |gap| within-world by covariate-adjustment.",
+        "summary": summary, "cells": cells}, indent=2))
+    print(f"\nWrote {out_path.relative_to(REPO)} ({len(cells)} cells)")
+
+
 def selftest():
     """Invariants: (1) observable-input audit -- model feats subset OBSERVABLE,
     O excludes Y_clean and G; (2) both arm families span a non-degenerate |gap|
@@ -280,6 +327,15 @@ def selftest():
               f"L |gap|=[{min(gL):.3f},{max(gL):.3f}] ({len(L)} models) | "
               f"overlap={'[%.3f,%.3f]' % overlap if has_overlap else 'NONE (extrapolation!)'}")
         assert len(H) >= 2 and len(L) >= 2, "arm family too small"
+    # Positive-control precondition: at decouple=1, world P must STILL admit H/L
+    # families with common support in |gap| (else the detection test is extrapolation).
+    cP = cell(0.70, 0, 4000, world="P", decouple=1.0)
+    H = [m for m in cP["models"] if m["arm"] == "H"]; L = [m for m in cP["models"] if m["arm"] == "L"]
+    gH = [m["abs_gap"] for m in H]; gL = [m["abs_gap"] for m in L]
+    ov = (max(min(gH), min(gL)), min(max(gH), max(gL)))
+    print(f"selftest world=P decouple=1.0 ps=0.70: gap0={cP['abs_gap0']:.4f} | "
+          f"H |gap|=[{min(gH):.3f},{max(gH):.3f}] | L |gap|=[{min(gL):.3f},{max(gL):.3f}] | "
+          f"overlap={'[%.3f,%.3f]' % ov if ov[0] <= ov[1] else 'NONE (extrapolation!)'}")
     print("selftest OK")
 
 
@@ -287,6 +343,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--smoke", action="store_true")
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--positive-control", action="store_true",
+                    help="run the world=P decouple sweep (pre-reg 2026-05-29) instead of §5")
     ap.add_argument("--seeds", type=int, default=N_SEEDS_DEFAULT)
     ap.add_argument("--n", type=int, default=N_DEFAULT)
     ap.add_argument("--out", default=None)
@@ -294,6 +352,18 @@ def main():
 
     if args.selftest:
         selftest()
+        return
+
+    if args.positive_control:
+        if args.smoke:
+            decouple_grid, seeds, n = (0.0, 1.0), range(4), 3000
+        else:
+            decouple_grid, seeds, n = DECOUPLE_GRID, range(args.seeds), args.n
+        (REPO / "runs").mkdir(exist_ok=True)
+        out_path = (Path(args.out).resolve() if args.out else
+                    REPO / "runs" / ("positive_control_smoke.json" if args.smoke
+                                     else "positive_control_2026-05-29.json"))
+        run_positive_control(0.70, decouple_grid, seeds, n, out_path, args.smoke)
         return
 
     if args.smoke:
