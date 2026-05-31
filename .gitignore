@@ -19,3 +19,5 @@ data/
 .claude-flow/
 .claude/
 CLAUDE.md
+.serena/
+draft-paper.txt
