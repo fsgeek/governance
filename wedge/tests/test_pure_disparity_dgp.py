@@ -31,9 +31,26 @@ def _abs_gap(fr):
     g0 = fr[fr["G"] == 0]["Y"].mean(); g1 = fr[fr["G"] == 1]["Y"].mean()
     return float(abs(g0 - g1))
 
-def test_pd_baserate_hits_target_gap():
-    fr = dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=0.20).frame
-    assert abs(_abs_gap(fr) - 0.20) < 0.03, f"realized gap {_abs_gap(fr):.3f} off target 0.20"
+def test_pd_baserate_plants_excess_gap_in_disparate_direction():
+    # clean baseline gap is legit-driven (~+0.10, G=1 higher). target_gap=0.20 plants
+    # 0.20 of ADDITIONAL gap beyond baseline in the disparate direction (net signed gap
+    # should be baseline - 0.20 ~ -0.10, i.e. |net| meaningfully negative-shifted).
+    clean = dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=0.0).frame
+    plant = dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=0.20).frame
+    def signed(fr):
+        return fr[fr["G"]==1]["Y"].mean() - fr[fr["G"]==0]["Y"].mean()
+    excess = signed(clean) - signed(plant)     # how much we pushed G=1 down
+    assert abs(excess - 0.20) < 0.04, f"excess gap {excess:.3f} off target 0.20"
+
+def test_pd_baserate_unreachable_target_raises():
+    import pytest
+    with pytest.raises(ValueError):
+        dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=5.0).frame  # impossible
+
+def test_pd_noise_not_yet_a_valid_world():
+    import pytest
+    with pytest.raises(ValueError):
+        dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.20).frame
 
 def test_pd_baserate_passes_validity_gate():
     clean = dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=0.0).frame

@@ -255,11 +255,17 @@ def _coupling_for_proxy_strength(target: float, seed: int) -> float:
     return 0.5 * (lo + hi)
 
 
-def _bisect_shift(gap_fn, target, lo=0.0, hi=8.0, iters=40):
-    """Bisect a scalar shift so realized |gap| ≈ target (gap_fn monotone increasing in shift)."""
+def _bisect_signed(signed_fn, target, lo=0.0, hi=12.0, iters=50, tol=1e-3):
+    """Bisect a scalar shift so signed_fn(shift) ≈ target. signed_fn must be
+    monotone DECREASING in the shift. Raises if target is out of the [signed_fn(hi),
+    signed_fn(lo)] reachable range (no silent wrong-answer return)."""
+    hi_val, lo_val = signed_fn(hi), signed_fn(lo)   # hi_val < lo_val (decreasing)
+    if not (hi_val - tol <= target <= lo_val + tol):
+        raise ValueError(f"target {target:.4f} unreachable in signed range "
+                         f"[{hi_val:.4f}, {lo_val:.4f}] over shift [{lo},{hi}]")
     for _ in range(iters):
         mid = 0.5 * (lo + hi)
-        if gap_fn(mid) < target:
+        if signed_fn(mid) > target:   # gap still too high (positive side) -> increase shift
             lo = mid
         else:
             hi = mid
@@ -307,8 +313,8 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     gap ONLY by killing Y-predictive signal. The observable SHOULD separate them.
     `decouple` is ignored for worlds A and B.
     """
-    if world not in ("A", "B", "P", "PD_baserate", "PD_noise"):
-        raise ValueError("world must be 'A','B','P','PD_baserate','PD_noise'")
+    if world not in ("A", "B", "P", "PD_baserate"):
+        raise ValueError("world must be 'A','B','P','PD_baserate'")
     rng = np.random.default_rng(seed)
     X, G, g_latent = _twin_base(rng, n)
     Gz = (G - G.mean()) / (G.std() + 1e-12)
@@ -323,14 +329,18 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     y_clean = rng.binomial(1, 1.0 / (1.0 + np.exp(-legit_logit)))
 
     if world == "PD_baserate":
-        # group-conditional CONSTANT logit offset for G=1: moves base rate by group,
-        # not slope. Pure disparity by construction (no individual signal added).
-        rng_gap = np.random.default_rng(seed + 991)
-        def _gap_for_c(c):
+        # Pure disparity: a group-conditional CONSTANT logit offset for G=1. Adds NO
+        # individual slope. target_gap = absolute gap planted IN EXCESS of the clean
+        # baseline (G is x0-correlated, so the c=0 world already has a legit baseline
+        # gap; we plant disparity beyond it, in the disparate-impact direction G=1-down).
+        def _signed_gap_p(c):                       # deterministic; monotone DECREASING in c
             p = 1.0 / (1.0 + np.exp(-(legit_logit - c * G)))
-            yy = rng_gap.binomial(1, p)
-            return abs(yy[G == 0].mean() - yy[G == 1].mean())
-        c = 0.0 if not target_gap else _bisect_shift(_gap_for_c, target_gap)
+            return float(p[G == 1].mean() - p[G == 0].mean())
+        baseline = _signed_gap_p(0.0)               # legit-driven gap at c=0 (~+0.10)
+        if not target_gap:
+            c = 0.0
+        else:
+            c = _bisect_signed(_signed_gap_p, baseline - target_gap)
         Y = rng.binomial(1, 1.0 / (1.0 + np.exp(-(legit_logit - c * G))))
     elif world == "P":
         # The pure-impact channel: the c_fresh portfolio's component ORTHOGONAL to
