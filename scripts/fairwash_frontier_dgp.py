@@ -255,6 +255,17 @@ def _coupling_for_proxy_strength(target: float, seed: int) -> float:
     return 0.5 * (lo + hi)
 
 
+def _bisect_shift(gap_fn, target, lo=0.0, hi=8.0, iters=40):
+    """Bisect a scalar shift so realized |gap| ≈ target (gap_fn monotone increasing in shift)."""
+    for _ in range(iters):
+        mid = 0.5 * (lo + hi)
+        if gap_fn(mid) < target:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
 def _bisg_estimate(G: np.ndarray, g_latent: np.ndarray, target_auc: float,
                    rng: np.random.Generator) -> np.ndarray:
     """Ĝ_BISG: continuous regulator estimate of G with AUC(Ĝ ~ G) ≈ target_auc.
@@ -275,7 +286,8 @@ def _bisg_estimate(G: np.ndarray, g_latent: np.ndarray, target_auc: float,
 
 
 def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
-                        *, bisg_auc: float = 0.85, decouple: float = 0.0) -> TwinWorldResult:
+                        *, bisg_auc: float = 0.85, decouple: float = 0.0,
+                        target_gap: float | None = None) -> TwinWorldResult:
     """One (proxy_strength, world, seed) latent-G twin-world substrate.
 
     World A and World B share inputs (x0..x7, c_fresh) deterministically given
@@ -295,8 +307,8 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     gap ONLY by killing Y-predictive signal. The observable SHOULD separate them.
     `decouple` is ignored for worlds A and B.
     """
-    if world not in ("A", "B", "P"):
-        raise ValueError("world must be 'A', 'B', or 'P'")
+    if world not in ("A", "B", "P", "PD_baserate", "PD_noise"):
+        raise ValueError("world must be 'A','B','P','PD_baserate','PD_noise'")
     rng = np.random.default_rng(seed)
     X, G, g_latent = _twin_base(rng, n)
     Gz = (G - G.mean()) / (G.std() + 1e-12)
@@ -310,7 +322,17 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     YA = rng.binomial(1, pA)
     y_clean = rng.binomial(1, 1.0 / (1.0 + np.exp(-legit_logit)))
 
-    if world == "P":
+    if world == "PD_baserate":
+        # group-conditional CONSTANT logit offset for G=1: moves base rate by group,
+        # not slope. Pure disparity by construction (no individual signal added).
+        rng_gap = np.random.default_rng(seed + 991)
+        def _gap_for_c(c):
+            p = 1.0 / (1.0 + np.exp(-(legit_logit - c * G)))
+            yy = rng_gap.binomial(1, p)
+            return abs(yy[G == 0].mean() - yy[G == 1].mean())
+        c = 0.0 if not target_gap else _bisect_shift(_gap_for_c, target_gap)
+        Y = rng.binomial(1, 1.0 / (1.0 + np.exp(-(legit_logit - c * G))))
+    elif world == "P":
         # The pure-impact channel: the c_fresh portfolio's component ORTHOGONAL to
         # legit_logit. Project c_fresh onto [1, legit_logit], take residuals -> a
         # G-correlated direction (c_fresh is G-coupled) carrying ~0 legit signal.
