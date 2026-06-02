@@ -47,13 +47,32 @@ def test_pd_baserate_unreachable_target_raises():
     with pytest.raises(ValueError):
         dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=5.0).frame  # impossible
 
-def test_pd_noise_not_yet_a_valid_world():
-    import pytest
-    with pytest.raises(ValueError):
-        dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.20).frame
-
 def test_pd_baserate_passes_validity_gate():
     clean = dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=0.0).frame
     plant = dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=0.20).frame
     base = _within_g_auc(clean); pl = _within_g_auc(plant)
     assert abs(pl - base) < 0.02, f"within-G AUC moved {base:.3f}->{pl:.3f} (>0.02: not pure)"
+
+def test_pd_noise_plants_excess_gap_in_disparate_direction():
+    clean = dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.0).frame
+    plant = dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.15).frame
+    def signed(fr):
+        return fr[fr["G"]==1]["Y"].mean() - fr[fr["G"]==0]["Y"].mean()
+    excess = signed(clean) - signed(plant)
+    assert abs(excess - 0.15) < 0.04, f"excess gap {excess:.3f} off target 0.15"
+
+def test_pd_noise_validity_gate_is_HONEST():
+    # The gate is ALLOWED to reject this family (the design permits it). Assert the
+    # within-G AUC delta is computed and finite; do NOT force it to pass. A label-flip
+    # that leaks individual signal (delta>0.02) is a genuine scientific outcome, not a bug.
+    clean = dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.0).frame
+    plant = dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.15).frame
+    import numpy as np
+    delta = abs(_within_g_auc(plant) - _within_g_auc(clean))
+    assert np.isfinite(delta)
+    print(f"\nPD_noise within-G AUC delta = {delta:.4f} "
+          f"({'PASSES gate' if delta < 0.02 else 'REJECTED by gate'})")
+
+def test_pd_noise_now_valid_world():
+    fr = dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.15).frame
+    assert (fr["world"] == "PD_noise").all()

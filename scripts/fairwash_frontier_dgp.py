@@ -313,8 +313,8 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     gap ONLY by killing Y-predictive signal. The observable SHOULD separate them.
     `decouple` is ignored for worlds A and B.
     """
-    if world not in ("A", "B", "P", "PD_baserate"):
-        raise ValueError("world must be 'A','B','P','PD_baserate'")
+    if world not in ("A", "B", "P", "PD_baserate", "PD_noise"):
+        raise ValueError("world must be 'A','B','P','PD_baserate','PD_noise'")
     rng = np.random.default_rng(seed)
     X, G, g_latent = _twin_base(rng, n)
     Gz = (G - G.mean()) / (G.std() + 1e-12)
@@ -342,6 +342,26 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
         else:
             c = _bisect_signed(_signed_gap_p, baseline - target_gap)
         Y = rng.binomial(1, 1.0 / (1.0 + np.exp(-(legit_logit - c * G))))
+    elif world == "PD_noise":
+        # Pure disparity via heteroskedastic label-flip by G. Draw Y from the CLEAN
+        # logit, then flip G=1 positives to 0 with prob f (post-draw => no observable
+        # predicts the flip). target_gap = excess absolute gap beyond the legit baseline,
+        # planted G=1-down. f bisected on the expected signed gap (deterministic).
+        p_clean = 1.0 / (1.0 + np.exp(-legit_logit))
+        base_g1, base_g0 = p_clean[G == 1].mean(), p_clean[G == 0].mean()
+        baseline = float(base_g1 - base_g0)                 # legit signed gap (~+0.13)
+        def _signed_gap_flip(f):
+            # E[Y|G=1] after flipping positives down by factor (1-f); G=0 unchanged.
+            # monotone DECREASING in f.
+            return float(base_g1 * (1.0 - f) - base_g0)
+        if not target_gap:
+            f = 0.0
+        else:
+            f = _bisect_signed(_signed_gap_flip, baseline - target_gap, lo=0.0, hi=1.0)
+        Y = rng.binomial(1, p_clean).astype(int)
+        flip = (G == 1) & (Y == 1) & (rng.random(n) < f)
+        Y = Y.copy()
+        Y[flip] = 0
     elif world == "P":
         # The pure-impact channel: the c_fresh portfolio's component ORTHOGONAL to
         # legit_logit. Project c_fresh onto [1, legit_logit], take residuals -> a
