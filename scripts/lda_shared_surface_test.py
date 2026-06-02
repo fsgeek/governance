@@ -107,11 +107,16 @@ def _eval_model(fr, tr, te, feats, seed):
     pc = np.clip(p, 1e-6, 1 - 1e-6)
     a_g0 = accuracy_score(Y_te[G_te == 0], dec[G_te == 0]) if (G_te == 0).any() else float("nan")
     a_g1 = accuracy_score(Y_te[G_te == 1], dec[G_te == 1]) if (G_te == 1).any() else float("nan")
+    ghat_te = fr["Ghat_bisg"].values[te]
+    ghat_hi = ghat_te >= np.median(ghat_te)        # noisy-G stratifier (deployable BISG)
+    a_gh0 = accuracy_score(Y_te[~ghat_hi], dec[~ghat_hi]) if (~ghat_hi).any() else float("nan")
+    a_gh1 = accuracy_score(Y_te[ghat_hi], dec[ghat_hi]) if ghat_hi.any() else float("nan")
     return {
         "abs_gap": float(abs(gap)),
         "A_obs": float(accuracy_score(Y_te, dec)),          # OBSERVABLE
         "CAL": float(log_loss(Y_te, pc, labels=[0, 1])),    # OBSERVABLE
         "A_obs_g0": float(a_g0), "A_obs_g1": float(a_g1),   # OBSERVABLE (G as stratifier)
+        "A_obs_ghat0": float(a_gh0), "A_obs_ghat1": float(a_gh1),  # OBSERVABLE (noisy BISG stratifier)
         "A_clean": float(accuracy_score(Yc_te, dec)),       # ORACLE (grading-only)
     }
 

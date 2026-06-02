@@ -76,3 +76,17 @@ def test_pd_noise_validity_gate_is_HONEST():
 def test_pd_noise_now_valid_world():
     fr = dgp.generate_twin_world(0.70, "PD_noise", N, 0, target_gap=0.15).frame
     assert (fr["world"] == "PD_noise").all()
+
+def test_eval_model_emits_ghat_stratified_accuracy():
+    import importlib.util as iu
+    s = iu.spec_from_file_location("lda", Path(__file__).resolve().parents[2]
+                                   / "scripts" / "lda_shared_surface_test.py")
+    lda = iu.module_from_spec(s); sys.modules["lda"] = lda; s.loader.exec_module(lda)
+    fr = dgp.generate_twin_world(0.70, "PD_baserate", N, 0, target_gap=0.20).frame
+    tr, te = lda._split(len(fr), 0)
+    out = lda._eval_model(fr, tr, te, lda.ADMISSIBLE, 0)
+    assert "A_obs_ghat0" in out and "A_obs_ghat1" in out
+    assert 0.0 <= out["A_obs_ghat0"] <= 1.0 and 0.0 <= out["A_obs_ghat1"] <= 1.0
+    # both true-G and ghat stratifiers present (distinct keys)
+    assert "A_obs_g0" in out and "A_obs_ghat0" in out
+    print(f"\nA_obs_ghat0={out['A_obs_ghat0']:.4f} A_obs_ghat1={out['A_obs_ghat1']:.4f}")
