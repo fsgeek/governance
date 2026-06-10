@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from wedge.band_disagreement import band_disagreement_summary
+from wedge.band_disagreement import band_disagreement_summary, per_case_flip_fraction
 from wedge.rashomon import EpsilonAdmissibleSet
 
 
@@ -48,6 +48,21 @@ def test_degenerate_band_single_member():
     assert out["degenerate"] is True
     assert out["flip_rate"] == 0.0
     assert out["n_members"] == 1
+
+
+def test_per_case_flip_fraction_grant_share():
+    yt = [1, 1, 0, 0]
+    m1 = _FakeMember([1, 0, 0, 0], yt)
+    m2 = _FakeMember([1, 1, 0, 1], yt)
+    frac = per_case_flip_fraction(_band([m1, m2]))
+    assert frac is not None
+    # row0: both grant -> 1.0 ; row1: 0,1 -> 0.5 ; row2: both deny -> 0.0 ; row3: 0,1 -> 0.5
+    assert list(frac) == [1.0, 0.5, 0.0, 0.5]
+
+
+def test_per_case_flip_fraction_none_when_degenerate_or_count_only():
+    assert per_case_flip_fraction(_band([_FakeMember([1, 0], [1, 0])])) is None  # <2 members
+    assert per_case_flip_fraction(_band([1, 2])) is None  # no predictions
 
 
 def test_count_only_band_reports_unavailable_not_crash():

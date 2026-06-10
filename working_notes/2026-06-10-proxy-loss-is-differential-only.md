@@ -50,15 +50,37 @@ NOT "the apparatus stands on the floor, declare a loss." Instead, precisely:
 > The protected-blindness of the shuffle-set is ROBUST to non-differential proxy error (the dominant,
 > well-characterised BISG error mode) and threatened ONLY by proxy error that is DIFFERENTIAL in flip
 > status — i.e., only if BISG/HMDA accuracy systematically differs for borrowers near vs far from the
-> lender's model-disagreement boundary. That is a specific, checkable, bounded condition. There is no
-> obvious mechanism for it: BISG error is driven by surname/geography, which have no evident reason to
-> correlate with a particular lender's between-model disagreement boundary. The burden it imposes is
-> "show your proxy's error is not differential in flip status," not "abandon the claim."
+> lender's model-disagreement boundary. That is a specific, checkable, bounded condition. The burden
+> it imposes is "show your proxy's error is not differential in flip status," not "abandon the claim."
+
+## ⚠ CORRECTION (2026-06-10, Fable's margin-pathway counter — accepted): there IS one obvious mechanism
+
+The first draft of this note said "there is no obvious mechanism" for differential-in-flip-status
+proxy error. **That is WRONG, and the mechanism is in this project's own headline result.** Fable's
+counter, accepted in full:
+
+The shuffle-set is MARGIN-DRIVEN (flips concentrate where the score sits near threshold). And BISG
+error is driven by surname/GEOGRAPHY. Geography correlates with the score distribution — redlining's
+residue guarantees this in any real lending dataset. So the pathway is:
+
+> BISG accuracy varies by zip → zip correlates with score distribution → score determines margin →
+> margin determines flips. ∴ BISG accuracy correlates with MARGIN, and margin determines FLIP-STATUS.
+
+So BISG error is differential in flip-status THROUGH THE MARGIN PATHWAY — exactly the structure this
+project's own result establishes. This is not exotic coupling; it is the EXPECTED one, and it is the
+same pathway as the "differential-in-race" caveat below, upgraded from "flagged, not resolved" to
+**"this is the first thing the real-data phase must test."** Revise "no obvious mechanism" →
+**"one obvious mechanism, named, testable, magnitude unknown."**
+
+**The good news (Fable's, kept): it is concretely checkable.** BISG emits posterior confidences, so
+calibration-by-margin is directly measurable; HMDA-linked subsamples give ground truth for the
+differential test. **FROZEN PREDICTION for the port:** BISG confidence WILL correlate with margin
+through geography; the open question is MAGNITUDE, not existence. Small → blindness claim armored.
+Large → the ±0.11 fabrication regime is live, found before a referee finds it.
 
 This converts Fable's hand-waved reflexive-impossibility into a measurement-error analysis with a
-NAMED, FALSIFIABLE failure condition. It does NOT dissolve the loss (differential error is a real
-threat and BISG error CAN be differential in protected status itself, which interacts) — it LOCATES
-it. Most honest paragraph AND most precise.
+NAMED, FALSIFIABLE failure condition AND a named mechanism. It does NOT dissolve the loss — it
+LOCATES it, and now names the pathway by which it bites. Most honest paragraph AND most precise.
 
 ## Caveats on this rebuttal (do not over-rebut)
 

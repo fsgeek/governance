@@ -71,6 +71,24 @@ def band_disagreement_summary(band: EpsilonAdmissibleSet) -> dict[str, Any]:
     }
 
 
+def per_case_flip_fraction(band: EpsilonAdmissibleSet) -> "np.ndarray | None":
+    """Per-holdout-case fraction of band members that GRANT (the within-band,
+    single-sampler version of the P(flip) score).
+
+    For each holdout row, the fraction of band members predicting grant. 0 or 1
+    = unanimous (no choice); intermediate = the choice of band member decides
+    this applicant. The full audited quantity is P(flip) OVER THE SAMPLER
+    (scripts/pflip_score_probe.py: bimodal, margin-tracking, protected-blind);
+    this is the one-band slice the manifest can emit without the sampler loop.
+    Returns None when members lack predictions or the band is degenerate.
+    """
+    members = band.within_epsilon
+    if len(members) < 2 or any(getattr(m, "holdout_y_pred", None) is None for m in members):
+        return None
+    preds = np.vstack([np.asarray(m.holdout_y_pred) for m in members])
+    return preds.mean(axis=0)
+
+
 def _holdout_len(members: list) -> int:
     if not members:
         return 0

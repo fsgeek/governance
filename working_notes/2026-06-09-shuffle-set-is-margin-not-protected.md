@@ -44,6 +44,12 @@ that in one sentence; Fable caught it before the sentence.
   across member pairs — a stable arbitrarily-treated population, not random churn. So "make the
   shuffle-set a first-class audited quantity" still stands; what changed is WHO it is (margin, not
   protected).
+  > ⚠ CORRECTION (2026-06-10, Fable): this bullet is WRONG twice. (1) `mean_pairwise_jaccard`
+  > measures WITHIN-band member-pair overlap, NOT across-seed membership — so "the same people
+  > across seeds" was unmeasured and asserted. (2) Across-seed flip-SET membership is only weakly
+  > conserved (Jaccard ~0.5 even restricted to common rows): the set whose outcome is arbitrary is
+  > itself seed-arbitrary. What IS stable is the per-applicant P(flip) SCORE (bimodal, margin-tracking,
+  > G-blind). The audited quantity is the SCORE, not the SET. See [[2026-06-10-set-to-score-pflip]].
 
 ## SCOPE / LOSSES BANKED (Fable points 2–4 — honest limits, declare in any write-up)
 
