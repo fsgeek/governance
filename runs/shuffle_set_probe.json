@@ -1,0 +1,45 @@
+{
+  "args": {
+    "channels": [
+      "D2",
+      "D4"
+    ],
+    "epsilon_frac": 0.01,
+    "max_k": 3,
+    "n": 20000,
+    "out": "runs/shuffle_set_probe.json",
+    "seed": 20260609
+  },
+  "rows": [
+    {
+      "boundary_dist_flip": 0.2636,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D2",
+      "flip_rate": 0.3527,
+      "g_ratio": 0.95,
+      "mean_pairwise_jaccard": 0.2521,
+      "n_band_members": 25,
+      "n_flip": 2116,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 294,
+      "p_flip_G0": 0.3581,
+      "p_flip_G1": 0.3404,
+      "tol_cases": 60.0
+    },
+    {
+      "boundary_dist_flip": 0.1927,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D4",
+      "flip_rate": 0.295,
+      "g_ratio": 0.983,
+      "mean_pairwise_jaccard": 0.3037,
+      "n_band_members": 12,
+      "n_flip": 1770,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 63,
+      "p_flip_G0": 0.2965,
+      "p_flip_G1": 0.2915,
+      "tol_cases": 60.0
+    }
+  ]
+}

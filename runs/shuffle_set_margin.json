@@ -1,0 +1,253 @@
+{
+  "args": {
+    "channels": [
+      "D1",
+      "D2",
+      "D3",
+      "D4"
+    ],
+    "epsilon_frac": 0.01,
+    "max_k": 3,
+    "n": 20000,
+    "out": "runs/shuffle_set_margin.json",
+    "seed": 20260609
+  },
+  "rows": [
+    {
+      "boundary_dist_flip": 0.3,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D1",
+      "flip_direction_corr_G": -0.0099,
+      "flip_rate": 0.2785,
+      "g_ratio": 1.09,
+      "g_ratio_near_boundary": 1.0,
+      "grant_lean_flip_G0": 0.5017,
+      "grant_lean_flip_G1": 0.4948,
+      "margin_bins": [
+        {
+          "bin": "[0.0,0.2)",
+          "diff": 0.054,
+          "n": 3284,
+          "p_flip_G0": 0.125,
+          "p_flip_G1": 0.179
+        },
+        {
+          "bin": "[0.2,0.4)",
+          "diff": 0.0,
+          "n": 288,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.4,0.6)",
+          "diff": 0.0,
+          "n": 221,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.6,0.8)",
+          "diff": 0.0,
+          "n": 181,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.8,1.0)",
+          "diff": -0.072,
+          "n": 2026,
+          "p_flip_G0": 0.286,
+          "p_flip_G1": 0.213
+        }
+      ],
+      "margin_pooled_g_diff": 0.0052,
+      "mean_pairwise_jaccard": 0.2511,
+      "n_band_members": 9,
+      "n_flip": 1671,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 35,
+      "p_flip_G0": 0.2712,
+      "p_flip_G0_near": 1.0,
+      "p_flip_G1": 0.2957,
+      "p_flip_G1_near": 1.0,
+      "tol_cases": 60.0
+    },
+    {
+      "boundary_dist_flip": 0.2636,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D2",
+      "flip_direction_corr_G": -0.0903,
+      "flip_rate": 0.3527,
+      "g_ratio": 0.95,
+      "g_ratio_near_boundary": 1.0,
+      "grant_lean_flip_G0": 0.539,
+      "grant_lean_flip_G1": 0.4804,
+      "margin_bins": [
+        {
+          "bin": "[0.0,0.2)",
+          "diff": -0.05,
+          "n": 2266,
+          "p_flip_G0": 0.189,
+          "p_flip_G1": 0.14
+        },
+        {
+          "bin": "[0.2,0.4)",
+          "diff": 0.0,
+          "n": 401,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.4,0.6)",
+          "diff": 0.0,
+          "n": 337,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.6,0.8)",
+          "diff": 0.0,
+          "n": 407,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.8,1.0)",
+          "diff": 0.049,
+          "n": 2589,
+          "p_flip_G0": 0.217,
+          "p_flip_G1": 0.266
+        }
+      ],
+      "margin_pooled_g_diff": 0.0023,
+      "mean_pairwise_jaccard": 0.2521,
+      "n_band_members": 25,
+      "n_flip": 2116,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 294,
+      "p_flip_G0": 0.3581,
+      "p_flip_G0_near": 1.0,
+      "p_flip_G1": 0.3404,
+      "p_flip_G1_near": 1.0,
+      "tol_cases": 60.0
+    },
+    {
+      "boundary_dist_flip": 0.2637,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D3",
+      "flip_direction_corr_G": 0.0868,
+      "flip_rate": 0.4087,
+      "g_ratio": 1.049,
+      "g_ratio_near_boundary": 1.0,
+      "grant_lean_flip_G0": 0.4858,
+      "grant_lean_flip_G1": 0.5429,
+      "margin_bins": [
+        {
+          "bin": "[0.0,0.2)",
+          "diff": 0.044,
+          "n": 2658,
+          "p_flip_G0": 0.2,
+          "p_flip_G1": 0.244
+        },
+        {
+          "bin": "[0.2,0.4)",
+          "diff": 0.0,
+          "n": 384,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.4,0.6)",
+          "diff": 0.0,
+          "n": 567,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.6,0.8)",
+          "diff": 0.0,
+          "n": 358,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.8,1.0)",
+          "diff": -0.041,
+          "n": 2033,
+          "p_flip_G0": 0.303,
+          "p_flip_G1": 0.263
+        }
+      ],
+      "margin_pooled_g_diff": 0.0057,
+      "mean_pairwise_jaccard": 0.2477,
+      "n_band_members": 22,
+      "n_flip": 2452,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 230,
+      "p_flip_G0": 0.4028,
+      "p_flip_G0_near": 1.0,
+      "p_flip_G1": 0.4227,
+      "p_flip_G1_near": 1.0,
+      "tol_cases": 60.0
+    },
+    {
+      "boundary_dist_flip": 0.1927,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D4",
+      "flip_direction_corr_G": 0.0617,
+      "flip_rate": 0.295,
+      "g_ratio": 0.983,
+      "g_ratio_near_boundary": 1.0,
+      "grant_lean_flip_G0": 0.5197,
+      "grant_lean_flip_G1": 0.5523,
+      "margin_bins": [
+        {
+          "bin": "[0.0,0.2)",
+          "diff": 0.005,
+          "n": 2264,
+          "p_flip_G0": 0.083,
+          "p_flip_G1": 0.088
+        },
+        {
+          "bin": "[0.2,0.4)",
+          "diff": 0.0,
+          "n": 277,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.4,0.6)",
+          "diff": 0.0,
+          "n": 696,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.6,0.8)",
+          "diff": 0.0,
+          "n": 267,
+          "p_flip_G0": 1.0,
+          "p_flip_G1": 1.0
+        },
+        {
+          "bin": "[0.8,1.0)",
+          "diff": 0.011,
+          "n": 2496,
+          "p_flip_G0": 0.132,
+          "p_flip_G1": 0.143
+        }
+      ],
+      "margin_pooled_g_diff": 0.0066,
+      "mean_pairwise_jaccard": 0.3037,
+      "n_band_members": 12,
+      "n_flip": 1770,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 63,
+      "p_flip_G0": 0.2965,
+      "p_flip_G0_near": 1.0,
+      "p_flip_G1": 0.2915,
+      "p_flip_G1_near": 1.0,
+      "tol_cases": 60.0
+    }
+  ]
+}
