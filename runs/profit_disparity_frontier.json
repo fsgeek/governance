@@ -1,0 +1,146 @@
+{
+  "args": {
+    "channels": [
+      "D1",
+      "D2",
+      "D3",
+      "D4"
+    ],
+    "eps_frac": 0.01,
+    "max_k": 3,
+    "n": 20000,
+    "out": "runs/profit_disparity_frontier.json",
+    "r": 0.25,
+    "seed": 20260610
+  },
+  "rows": [
+    {
+      "absdisp_range": [
+        0.0412,
+        0.1523
+      ],
+      "channel": "D1",
+      "corr_profit_absdisparity": -0.2041,
+      "floor_member": {
+        "absdisp": 0.0412,
+        "profit": -438.8
+      },
+      "floor_profit_vs_random": 23.0,
+      "max_profit_member": {
+        "absdisp": 0.1,
+        "profit": -306.5
+      },
+      "n_band": 56,
+      "n_members_dominating_random": 13,
+      "profit_range": [
+        -564.2,
+        -306.5
+      ],
+      "r": 0.25,
+      "random_pick": {
+        "absdisp": 0.1252,
+        "profit": -461.7
+      },
+      "selectable_corner_near_floor": {
+        "absdisp": 0.0412,
+        "profit": -438.8
+      }
+    },
+    {
+      "absdisp_range": [
+        0.1605,
+        0.1832
+      ],
+      "channel": "D2",
+      "corr_profit_absdisparity": -0.9199,
+      "floor_member": {
+        "absdisp": 0.1605,
+        "profit": -122.0
+      },
+      "floor_profit_vs_random": 43.8,
+      "max_profit_member": {
+        "absdisp": 0.1605,
+        "profit": -122.0
+      },
+      "n_band": 4,
+      "n_members_dominating_random": 2,
+      "profit_range": [
+        -229.2,
+        -122.0
+      ],
+      "r": 0.25,
+      "random_pick": {
+        "absdisp": 0.1666,
+        "profit": -165.8
+      },
+      "selectable_corner_near_floor": {
+        "absdisp": 0.1605,
+        "profit": -122.0
+      }
+    },
+    {
+      "absdisp_range": [
+        0.1189,
+        0.1816
+      ],
+      "channel": "D3",
+      "corr_profit_absdisparity": -0.7018,
+      "floor_member": {
+        "absdisp": 0.1189,
+        "profit": -517.2
+      },
+      "floor_profit_vs_random": -51.7,
+      "max_profit_member": {
+        "absdisp": 0.1449,
+        "profit": -385.5
+      },
+      "n_band": 18,
+      "n_members_dominating_random": 12,
+      "profit_range": [
+        -567.5,
+        -385.5
+      ],
+      "r": 0.25,
+      "random_pick": {
+        "absdisp": 0.1463,
+        "profit": -465.6
+      },
+      "selectable_corner_near_floor": {
+        "absdisp": 0.129,
+        "profit": -427.0
+      }
+    },
+    {
+      "absdisp_range": [
+        0.0096,
+        0.0215
+      ],
+      "channel": "D4",
+      "corr_profit_absdisparity": 1.0,
+      "floor_member": {
+        "absdisp": 0.0096,
+        "profit": -327.2
+      },
+      "floor_profit_vs_random": -6.7,
+      "max_profit_member": {
+        "absdisp": 0.0215,
+        "profit": -317.2
+      },
+      "n_band": 3,
+      "n_members_dominating_random": 0,
+      "profit_range": [
+        -327.2,
+        -317.2
+      ],
+      "r": 0.25,
+      "random_pick": {
+        "absdisp": 0.0176,
+        "profit": -320.6
+      },
+      "selectable_corner_near_floor": {
+        "absdisp": 0.0215,
+        "profit": -317.2
+      }
+    }
+  ]
+}
