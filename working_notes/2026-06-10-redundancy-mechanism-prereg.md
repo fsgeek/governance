@@ -1,5 +1,10 @@
 # PRE-REG: redundancy of encoding is the common cause of detection-difficulty AND floor-multiplicity
 
+> ⚠ RESULT 2026-06-10: **P1 REFUTED** — at FIXED disparity, floor flip-rate is flat across k. The
+> apparent k=5 jump was an effect-size confound (caught by the probe's own guard), gone once disparity
+> was held k-invariant. The "fairwash canary" reframe dies. See
+> [[2026-06-10-redundancy-canary-REFUTED]]. Conjecture excellent, sharp, and wrong.
+
 **FROZEN 2026-06-10 before any k-sweep is run. Fable's conjecture (document 2), adopted as a
 falsifiable pre-registration. If it holds, the shuffle-set is reborn as a distributed-signal
 detector — a fairwash canary, not a court.**
