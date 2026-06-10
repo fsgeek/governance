@@ -22,6 +22,12 @@ with zero arbitrariness collapses the band to a single model, which re-hides the
 ([[project_pick_one_hides_choice]]). So there is no data-driven ε that both (a) admits a genuine
 band and (b) minimizes arbitrariness — they trade off continuously.
 
+## ⚠ CORRECTION (2026-06-10, seed check): the "unique vs born-contradictory" dichotomy below was
+SEED-SPECIFIC. On other seeds D2/D3 also have band=2 at the floor (flip 0–1.5%), not band=1. The
+honest claim is a GRADIENT (concentrated→near-zero, distributed→substantial floor arbitrariness),
+not the sharp dichotomy in the table below. Direction survives; sharp form does not. See
+[[2026-06-10-shuffle-set-sampler-robustness]] for the corrected statement.
+
 ## The floor is CHANNEL-DEPENDENT (do NOT overclaim "16% at the floor")
 
 At the tightest ε (eps_frac=0.001), across channels:
