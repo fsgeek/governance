@@ -1,0 +1,965 @@
+{
+  "args": {
+    "bisg_auc": 0.85,
+    "channels": [
+      "D1",
+      "D3",
+      "D4"
+    ],
+    "eps_frac": 0.01,
+    "max_k": 3,
+    "n": 20000,
+    "out": "runs/attestation_d3_multiseed.json",
+    "r": 0.25,
+    "seeds": [
+      101,
+      202,
+      303,
+      404,
+      505,
+      606,
+      707,
+      808
+    ]
+  },
+  "runs": {
+    "D1": [
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0153,
+        "bankP_member": {
+          "absdisp": 0.1454,
+          "i": 11,
+          "profit": -319.8
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.0229,
+        "floor_member_trueG": {
+          "absdisp": 0.1225,
+          "i": 2,
+          "profit": -529.5
+        },
+        "n_band": 17,
+        "profit_gain_bankP_over_floor": 209.8,
+        "rank_agreement_trueG_vs_Ghat": 0.777,
+        "receipt_bankF": {
+          "band_size": 17,
+          "member_index": 2,
+          "self_reported_disparity_trueG": 0.1225,
+          "self_reported_profit": -529.5,
+          "within_band_flip_rate": 0.4975
+        },
+        "receipt_bankP": {
+          "band_size": 17,
+          "member_index": 11,
+          "self_reported_disparity_trueG": 0.1454,
+          "self_reported_profit": -319.8,
+          "within_band_flip_rate": 0.4975
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0233,
+        "bankP_member": {
+          "absdisp": 0.1246,
+          "i": 6,
+          "profit": -379.2
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.047,
+        "floor_member_trueG": {
+          "absdisp": 0.0777,
+          "i": 7,
+          "profit": -422.8
+        },
+        "n_band": 17,
+        "profit_gain_bankP_over_floor": 43.5,
+        "rank_agreement_trueG_vs_Ghat": 0.7966,
+        "receipt_bankF": {
+          "band_size": 17,
+          "member_index": 7,
+          "self_reported_disparity_trueG": 0.0777,
+          "self_reported_profit": -422.8,
+          "within_band_flip_rate": 0.387333
+        },
+        "receipt_bankP": {
+          "band_size": 17,
+          "member_index": 6,
+          "self_reported_disparity_trueG": 0.1246,
+          "self_reported_profit": -379.2,
+          "within_band_flip_rate": 0.387333
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": true,
+        "auditor_measured_gap_for_bankP": 0.0367,
+        "bankP_member": {
+          "absdisp": 0.1306,
+          "i": 10,
+          "profit": -321.8
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.0442,
+        "floor_member_trueG": {
+          "absdisp": 0.0864,
+          "i": 6,
+          "profit": -440.8
+        },
+        "n_band": 22,
+        "profit_gain_bankP_over_floor": 119.0,
+        "rank_agreement_trueG_vs_Ghat": 0.8792,
+        "receipt_bankF": {
+          "band_size": 22,
+          "member_index": 6,
+          "self_reported_disparity_trueG": 0.0864,
+          "self_reported_profit": -440.8,
+          "within_band_flip_rate": 0.500667
+        },
+        "receipt_bankP": {
+          "band_size": 22,
+          "member_index": 10,
+          "self_reported_disparity_trueG": 0.1306,
+          "self_reported_profit": -321.8,
+          "within_band_flip_rate": 0.500667
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0007,
+        "bankP_member": {
+          "absdisp": 0.1017,
+          "i": 15,
+          "profit": -336.0
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.0,
+        "floor_member_trueG": {
+          "absdisp": 0.1017,
+          "i": 15,
+          "profit": -336.0
+        },
+        "n_band": 21,
+        "profit_gain_bankP_over_floor": 0.0,
+        "rank_agreement_trueG_vs_Ghat": 0.3857,
+        "receipt_bankF": {
+          "band_size": 21,
+          "member_index": 15,
+          "self_reported_disparity_trueG": 0.1017,
+          "self_reported_profit": -336.0,
+          "within_band_flip_rate": 0.4915
+        },
+        "receipt_bankP": {
+          "band_size": 21,
+          "member_index": 15,
+          "self_reported_disparity_trueG": 0.1017,
+          "self_reported_profit": -336.0,
+          "within_band_flip_rate": 0.4915
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0087,
+        "bankP_member": {
+          "absdisp": 0.0903,
+          "i": 19,
+          "profit": -321.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.052,
+        "floor_member_trueG": {
+          "absdisp": 0.0383,
+          "i": 5,
+          "profit": -546.2
+        },
+        "n_band": 42,
+        "profit_gain_bankP_over_floor": 224.8,
+        "rank_agreement_trueG_vs_Ghat": 0.9298,
+        "receipt_bankF": {
+          "band_size": 42,
+          "member_index": 5,
+          "self_reported_disparity_trueG": 0.0383,
+          "self_reported_profit": -546.2,
+          "within_band_flip_rate": 0.594833
+        },
+        "receipt_bankP": {
+          "band_size": 42,
+          "member_index": 19,
+          "self_reported_disparity_trueG": 0.0903,
+          "self_reported_profit": -321.5,
+          "within_band_flip_rate": 0.594833
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0213,
+        "bankP_member": {
+          "absdisp": 0.1405,
+          "i": 5,
+          "profit": -321.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.024,
+        "floor_member_trueG": {
+          "absdisp": 0.1165,
+          "i": 6,
+          "profit": -356.2
+        },
+        "n_band": 7,
+        "profit_gain_bankP_over_floor": 34.8,
+        "rank_agreement_trueG_vs_Ghat": 0.6786,
+        "receipt_bankF": {
+          "band_size": 7,
+          "member_index": 6,
+          "self_reported_disparity_trueG": 0.1165,
+          "self_reported_profit": -356.2,
+          "within_band_flip_rate": 0.320667
+        },
+        "receipt_bankP": {
+          "band_size": 7,
+          "member_index": 5,
+          "self_reported_disparity_trueG": 0.1405,
+          "self_reported_profit": -321.5,
+          "within_band_flip_rate": 0.320667
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0183,
+        "bankP_member": {
+          "absdisp": 0.1242,
+          "i": 13,
+          "profit": -337.2
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.018,
+        "floor_member_trueG": {
+          "absdisp": 0.1061,
+          "i": 21,
+          "profit": -424.0
+        },
+        "n_band": 29,
+        "profit_gain_bankP_over_floor": 86.8,
+        "rank_agreement_trueG_vs_Ghat": 0.5601,
+        "receipt_bankF": {
+          "band_size": 29,
+          "member_index": 21,
+          "self_reported_disparity_trueG": 0.1061,
+          "self_reported_profit": -424.0,
+          "within_band_flip_rate": 0.557333
+        },
+        "receipt_bankP": {
+          "band_size": 29,
+          "member_index": 13,
+          "self_reported_disparity_trueG": 0.1242,
+          "self_reported_profit": -337.2,
+          "within_band_flip_rate": 0.557333
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.001,
+        "bankP_member": {
+          "absdisp": 0.0905,
+          "i": 2,
+          "profit": -305.8
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D1",
+        "disparity_gap_bankP_minus_floor": 0.0049,
+        "floor_member_trueG": {
+          "absdisp": 0.0856,
+          "i": 11,
+          "profit": -334.5
+        },
+        "n_band": 13,
+        "profit_gain_bankP_over_floor": 28.8,
+        "rank_agreement_trueG_vs_Ghat": 0.5769,
+        "receipt_bankF": {
+          "band_size": 13,
+          "member_index": 11,
+          "self_reported_disparity_trueG": 0.0856,
+          "self_reported_profit": -334.5,
+          "within_band_flip_rate": 0.401167
+        },
+        "receipt_bankP": {
+          "band_size": 13,
+          "member_index": 2,
+          "self_reported_disparity_trueG": 0.0905,
+          "self_reported_profit": -305.8,
+          "within_band_flip_rate": 0.401167
+        }
+      }
+    ],
+    "D3": [
+      {
+        "auditor_floor_recovered_from_Ghat": true,
+        "auditor_measured_gap_for_bankP": 0.018,
+        "bankP_member": {
+          "absdisp": 0.0996,
+          "i": 9,
+          "profit": -395.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.0812,
+        "floor_member_trueG": {
+          "absdisp": 0.0184,
+          "i": 21,
+          "profit": -483.5
+        },
+        "n_band": 39,
+        "profit_gain_bankP_over_floor": 88.0,
+        "rank_agreement_trueG_vs_Ghat": 0.835,
+        "receipt_bankF": {
+          "band_size": 39,
+          "member_index": 21,
+          "self_reported_disparity_trueG": 0.0184,
+          "self_reported_profit": -483.5,
+          "within_band_flip_rate": 0.508833
+        },
+        "receipt_bankP": {
+          "band_size": 39,
+          "member_index": 9,
+          "self_reported_disparity_trueG": 0.0996,
+          "self_reported_profit": -395.5,
+          "within_band_flip_rate": 0.508833
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.016,
+        "bankP_member": {
+          "absdisp": 0.1507,
+          "i": 37,
+          "profit": -340.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.0092,
+        "floor_member_trueG": {
+          "absdisp": 0.1415,
+          "i": 45,
+          "profit": -412.5
+        },
+        "n_band": 50,
+        "profit_gain_bankP_over_floor": 72.0,
+        "rank_agreement_trueG_vs_Ghat": 0.6705,
+        "receipt_bankF": {
+          "band_size": 50,
+          "member_index": 45,
+          "self_reported_disparity_trueG": 0.1415,
+          "self_reported_profit": -412.5,
+          "within_band_flip_rate": 0.280833
+        },
+        "receipt_bankP": {
+          "band_size": 50,
+          "member_index": 37,
+          "self_reported_disparity_trueG": 0.1507,
+          "self_reported_profit": -340.5,
+          "within_band_flip_rate": 0.280833
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": true,
+        "auditor_measured_gap_for_bankP": 0.0093,
+        "bankP_member": {
+          "absdisp": 0.1181,
+          "i": 3,
+          "profit": -347.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.03,
+        "floor_member_trueG": {
+          "absdisp": 0.0882,
+          "i": 4,
+          "profit": -411.2
+        },
+        "n_band": 12,
+        "profit_gain_bankP_over_floor": 63.8,
+        "rank_agreement_trueG_vs_Ghat": 0.9021,
+        "receipt_bankF": {
+          "band_size": 12,
+          "member_index": 4,
+          "self_reported_disparity_trueG": 0.0882,
+          "self_reported_profit": -411.2,
+          "within_band_flip_rate": 0.260167
+        },
+        "receipt_bankP": {
+          "band_size": 12,
+          "member_index": 3,
+          "self_reported_disparity_trueG": 0.1181,
+          "self_reported_profit": -347.5,
+          "within_band_flip_rate": 0.260167
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": true,
+        "auditor_measured_gap_for_bankP": 0.0193,
+        "bankP_member": {
+          "absdisp": 0.137,
+          "i": 1,
+          "profit": -310.0
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.0344,
+        "floor_member_trueG": {
+          "absdisp": 0.1026,
+          "i": 4,
+          "profit": -399.8
+        },
+        "n_band": 6,
+        "profit_gain_bankP_over_floor": 89.8,
+        "rank_agreement_trueG_vs_Ghat": 0.7714,
+        "receipt_bankF": {
+          "band_size": 6,
+          "member_index": 4,
+          "self_reported_disparity_trueG": 0.1026,
+          "self_reported_profit": -399.8,
+          "within_band_flip_rate": 0.321167
+        },
+        "receipt_bankP": {
+          "band_size": 6,
+          "member_index": 1,
+          "self_reported_disparity_trueG": 0.137,
+          "self_reported_profit": -310.0,
+          "within_band_flip_rate": 0.321167
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": true,
+        "auditor_measured_gap_for_bankP": 0.0217,
+        "bankP_member": {
+          "absdisp": 0.1168,
+          "i": 6,
+          "profit": -352.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.0339,
+        "floor_member_trueG": {
+          "absdisp": 0.0829,
+          "i": 4,
+          "profit": -400.2
+        },
+        "n_band": 10,
+        "profit_gain_bankP_over_floor": 47.8,
+        "rank_agreement_trueG_vs_Ghat": 0.5636,
+        "receipt_bankF": {
+          "band_size": 10,
+          "member_index": 4,
+          "self_reported_disparity_trueG": 0.0829,
+          "self_reported_profit": -400.2,
+          "within_band_flip_rate": 0.347167
+        },
+        "receipt_bankP": {
+          "band_size": 10,
+          "member_index": 6,
+          "self_reported_disparity_trueG": 0.1168,
+          "self_reported_profit": -352.5,
+          "within_band_flip_rate": 0.347167
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.012,
+        "bankP_member": {
+          "absdisp": 0.1085,
+          "i": 46,
+          "profit": -407.2
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.0774,
+        "floor_member_trueG": {
+          "absdisp": 0.0311,
+          "i": 37,
+          "profit": -459.0
+        },
+        "n_band": 57,
+        "profit_gain_bankP_over_floor": 51.8,
+        "rank_agreement_trueG_vs_Ghat": 0.7321,
+        "receipt_bankF": {
+          "band_size": 57,
+          "member_index": 37,
+          "self_reported_disparity_trueG": 0.0311,
+          "self_reported_profit": -459.0,
+          "within_band_flip_rate": 0.3955
+        },
+        "receipt_bankP": {
+          "band_size": 57,
+          "member_index": 46,
+          "self_reported_disparity_trueG": 0.1085,
+          "self_reported_profit": -407.2,
+          "within_band_flip_rate": 0.3955
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.008,
+        "bankP_member": {
+          "absdisp": 0.0986,
+          "i": 13,
+          "profit": -389.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.0,
+        "floor_member_trueG": {
+          "absdisp": 0.0986,
+          "i": 13,
+          "profit": -389.5
+        },
+        "n_band": 15,
+        "profit_gain_bankP_over_floor": 0.0,
+        "rank_agreement_trueG_vs_Ghat": 0.7571,
+        "receipt_bankF": {
+          "band_size": 15,
+          "member_index": 13,
+          "self_reported_disparity_trueG": 0.0986,
+          "self_reported_profit": -389.5,
+          "within_band_flip_rate": 0.312833
+        },
+        "receipt_bankP": {
+          "band_size": 15,
+          "member_index": 13,
+          "self_reported_disparity_trueG": 0.0986,
+          "self_reported_profit": -389.5,
+          "within_band_flip_rate": 0.312833
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": true,
+        "auditor_measured_gap_for_bankP": 0.0083,
+        "bankP_member": {
+          "absdisp": 0.1372,
+          "i": 4,
+          "profit": -329.0
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D3",
+        "disparity_gap_bankP_minus_floor": 0.0207,
+        "floor_member_trueG": {
+          "absdisp": 0.1165,
+          "i": 5,
+          "profit": -458.0
+        },
+        "n_band": 8,
+        "profit_gain_bankP_over_floor": 129.0,
+        "rank_agreement_trueG_vs_Ghat": 0.5476,
+        "receipt_bankF": {
+          "band_size": 8,
+          "member_index": 5,
+          "self_reported_disparity_trueG": 0.1165,
+          "self_reported_profit": -458.0,
+          "within_band_flip_rate": 0.2935
+        },
+        "receipt_bankP": {
+          "band_size": 8,
+          "member_index": 4,
+          "self_reported_disparity_trueG": 0.1372,
+          "self_reported_profit": -329.0,
+          "within_band_flip_rate": 0.2935
+        }
+      }
+    ],
+    "D4": [
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0067,
+        "bankP_member": {
+          "absdisp": 0.0265,
+          "i": 15,
+          "profit": -249.2
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0173,
+        "floor_member_trueG": {
+          "absdisp": 0.0092,
+          "i": 17,
+          "profit": -378.2
+        },
+        "n_band": 25,
+        "profit_gain_bankP_over_floor": 129.0,
+        "rank_agreement_trueG_vs_Ghat": 0.4731,
+        "receipt_bankF": {
+          "band_size": 25,
+          "member_index": 17,
+          "self_reported_disparity_trueG": 0.0092,
+          "self_reported_profit": -378.2,
+          "within_band_flip_rate": 0.471167
+        },
+        "receipt_bankP": {
+          "band_size": 25,
+          "member_index": 15,
+          "self_reported_disparity_trueG": 0.0265,
+          "self_reported_profit": -249.2,
+          "within_band_flip_rate": 0.471167
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0027,
+        "bankP_member": {
+          "absdisp": 0.0266,
+          "i": 0,
+          "profit": -221.0
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0263,
+        "floor_member_trueG": {
+          "absdisp": 0.0004,
+          "i": 1,
+          "profit": -377.2
+        },
+        "n_band": 9,
+        "profit_gain_bankP_over_floor": 156.2,
+        "rank_agreement_trueG_vs_Ghat": -0.0833,
+        "receipt_bankF": {
+          "band_size": 9,
+          "member_index": 1,
+          "self_reported_disparity_trueG": -0.0004,
+          "self_reported_profit": -377.2,
+          "within_band_flip_rate": 0.309333
+        },
+        "receipt_bankP": {
+          "band_size": 9,
+          "member_index": 0,
+          "self_reported_disparity_trueG": 0.0266,
+          "self_reported_profit": -221.0,
+          "within_band_flip_rate": 0.309333
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0057,
+        "bankP_member": {
+          "absdisp": 0.0617,
+          "i": 11,
+          "profit": -261.2
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0474,
+        "floor_member_trueG": {
+          "absdisp": 0.0143,
+          "i": 13,
+          "profit": -298.5
+        },
+        "n_band": 18,
+        "profit_gain_bankP_over_floor": 37.2,
+        "rank_agreement_trueG_vs_Ghat": -0.4262,
+        "receipt_bankF": {
+          "band_size": 18,
+          "member_index": 13,
+          "self_reported_disparity_trueG": 0.0143,
+          "self_reported_profit": -298.5,
+          "within_band_flip_rate": 0.297167
+        },
+        "receipt_bankP": {
+          "band_size": 18,
+          "member_index": 11,
+          "self_reported_disparity_trueG": 0.0617,
+          "self_reported_profit": -261.2,
+          "within_band_flip_rate": 0.297167
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0127,
+        "bankP_member": {
+          "absdisp": 0.0127,
+          "i": 4,
+          "profit": -328.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0068,
+        "floor_member_trueG": {
+          "absdisp": 0.0059,
+          "i": 0,
+          "profit": -398.2
+        },
+        "n_band": 11,
+        "profit_gain_bankP_over_floor": 69.8,
+        "rank_agreement_trueG_vs_Ghat": 0.7,
+        "receipt_bankF": {
+          "band_size": 11,
+          "member_index": 0,
+          "self_reported_disparity_trueG": 0.0059,
+          "self_reported_profit": -398.2,
+          "within_band_flip_rate": 0.314667
+        },
+        "receipt_bankP": {
+          "band_size": 11,
+          "member_index": 4,
+          "self_reported_disparity_trueG": 0.0127,
+          "self_reported_profit": -328.5,
+          "within_band_flip_rate": 0.314667
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0057,
+        "bankP_member": {
+          "absdisp": 0.0011,
+          "i": 7,
+          "profit": -204.2
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0005,
+        "floor_member_trueG": {
+          "absdisp": 0.0005,
+          "i": 2,
+          "profit": -298.0
+        },
+        "n_band": 17,
+        "profit_gain_bankP_over_floor": 93.8,
+        "rank_agreement_trueG_vs_Ghat": 0.7402,
+        "receipt_bankF": {
+          "band_size": 17,
+          "member_index": 2,
+          "self_reported_disparity_trueG": -0.0005,
+          "self_reported_profit": -298.0,
+          "within_band_flip_rate": 0.4015
+        },
+        "receipt_bankP": {
+          "band_size": 17,
+          "member_index": 7,
+          "self_reported_disparity_trueG": -0.0011,
+          "self_reported_profit": -204.2,
+          "within_band_flip_rate": 0.4015
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0087,
+        "bankP_member": {
+          "absdisp": 0.0063,
+          "i": 1,
+          "profit": -286.2
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0011,
+        "floor_member_trueG": {
+          "absdisp": 0.0052,
+          "i": 6,
+          "profit": -298.0
+        },
+        "n_band": 24,
+        "profit_gain_bankP_over_floor": 11.8,
+        "rank_agreement_trueG_vs_Ghat": 0.3574,
+        "receipt_bankF": {
+          "band_size": 24,
+          "member_index": 6,
+          "self_reported_disparity_trueG": 0.0052,
+          "self_reported_profit": -298.0,
+          "within_band_flip_rate": 0.531333
+        },
+        "receipt_bankP": {
+          "band_size": 24,
+          "member_index": 1,
+          "self_reported_disparity_trueG": 0.0063,
+          "self_reported_profit": -286.2,
+          "within_band_flip_rate": 0.531333
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": false,
+        "auditor_measured_gap_for_bankP": 0.0197,
+        "bankP_member": {
+          "absdisp": 0.0142,
+          "i": 15,
+          "profit": -221.8
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0122,
+        "floor_member_trueG": {
+          "absdisp": 0.002,
+          "i": 7,
+          "profit": -451.8
+        },
+        "n_band": 23,
+        "profit_gain_bankP_over_floor": 230.0,
+        "rank_agreement_trueG_vs_Ghat": 0.0287,
+        "receipt_bankF": {
+          "band_size": 23,
+          "member_index": 7,
+          "self_reported_disparity_trueG": 0.002,
+          "self_reported_profit": -451.8,
+          "within_band_flip_rate": 0.508333
+        },
+        "receipt_bankP": {
+          "band_size": 23,
+          "member_index": 15,
+          "self_reported_disparity_trueG": 0.0142,
+          "self_reported_profit": -221.8,
+          "within_band_flip_rate": 0.508333
+        }
+      },
+      {
+        "auditor_floor_recovered_from_Ghat": true,
+        "auditor_measured_gap_for_bankP": 0.021,
+        "bankP_member": {
+          "absdisp": 0.0033,
+          "i": 13,
+          "profit": -239.5
+        },
+        "bisg_auc_target": 0.85,
+        "channel": "D4",
+        "disparity_gap_bankP_minus_floor": 0.0011,
+        "floor_member_trueG": {
+          "absdisp": 0.0022,
+          "i": 8,
+          "profit": -274.0
+        },
+        "n_band": 21,
+        "profit_gain_bankP_over_floor": 34.5,
+        "rank_agreement_trueG_vs_Ghat": 0.8597,
+        "receipt_bankF": {
+          "band_size": 21,
+          "member_index": 8,
+          "self_reported_disparity_trueG": -0.0022,
+          "self_reported_profit": -274.0,
+          "within_band_flip_rate": 0.424333
+        },
+        "receipt_bankP": {
+          "band_size": 21,
+          "member_index": 13,
+          "self_reported_disparity_trueG": 0.0033,
+          "self_reported_profit": -239.5,
+          "within_band_flip_rate": 0.424333
+        }
+      }
+    ]
+  },
+  "summaries": [
+    {
+      "P_ATTACK_frac": 0.625,
+      "band_size_range": [
+        7,
+        42
+      ],
+      "channel": "D1",
+      "disparity_gap_median": 0.0234,
+      "disparity_gap_range": [
+        0.0,
+        0.052
+      ],
+      "floor_recovered_frac": 0.125,
+      "has_real_choice_frac": 0.75,
+      "n_seeds": 8,
+      "per_seed_p_attack": [
+        true,
+        true,
+        false,
+        false,
+        true,
+        true,
+        true,
+        false
+      ],
+      "per_seed_recovered": [
+        false,
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false
+      ],
+      "profit_gain_median": 65.2,
+      "rank_agreement_median": 0.728
+    },
+    {
+      "P_ATTACK_frac": 0.125,
+      "band_size_range": [
+        6,
+        57
+      ],
+      "channel": "D3",
+      "disparity_gap_median": 0.0319,
+      "disparity_gap_range": [
+        0.0,
+        0.0812
+      ],
+      "floor_recovered_frac": 0.625,
+      "has_real_choice_frac": 0.75,
+      "n_seeds": 8,
+      "per_seed_p_attack": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        false,
+        false
+      ],
+      "per_seed_recovered": [
+        true,
+        false,
+        true,
+        true,
+        true,
+        false,
+        false,
+        true
+      ],
+      "profit_gain_median": 67.9,
+      "rank_agreement_median": 0.745
+    },
+    {
+      "P_ATTACK_frac": 0.5,
+      "band_size_range": [
+        9,
+        25
+      ],
+      "channel": "D4",
+      "disparity_gap_median": 0.0095,
+      "disparity_gap_range": [
+        0.0005,
+        0.0474
+      ],
+      "floor_recovered_frac": 0.125,
+      "has_real_choice_frac": 0.5,
+      "n_seeds": 8,
+      "per_seed_p_attack": [
+        true,
+        true,
+        true,
+        false,
+        false,
+        false,
+        true,
+        false
+      ],
+      "per_seed_recovered": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true
+      ],
+      "profit_gain_median": 81.8,
+      "rank_agreement_median": 0.415
+    }
+  ]
+}
