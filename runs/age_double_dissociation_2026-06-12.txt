@@ -1,0 +1,24 @@
+N=40994  P(age>62)=0.195  approve overall=0.769
+  raw approval: >62=0.743  <=62=0.775  raw disparity=+0.032
+(1) AUC(G ~ transferable proxies): GBT=0.771±0.003  LR=0.735
+    [pre-reg P1: expect 0.62-0.74; collapse if <0.58]
+(2) AUC(Y=action_taken ~ same proxies): GBT=0.806±0.003
+    AUC(Y ~ lawful covariates)        = 0.765
+    AUC(Y ~ lawful + reconstructed-age)= 0.769
+    age-channel marginal to Y         = +0.0040
+    [dissociation: age_score reconstructs G well but adds ~0 to Y]
+(4) RFOA control (disparity within income x LTV strata):
+    raw approval gap (<=62 minus >62) = +0.032
+    covariate-adjusted gap            = +0.027
+    [if adj_gap -> 0, RFOA alibi explains it; residual is the forensic target]
+(3) Steered band (approval models tied on AUC(Y) within eps):
+    40 models built; best AUC(Y)=0.813; band(eps=0.01)=7 members
+    band AUC range: [0.803, 0.813]  (tied on accuracy)
+    age-disparity across band: min=+0.102  max=+0.109  SPREAD=0.007
+    [pre-reg P3: spread >= 2x noise => harm CHOSEN at selection; collapse if ~0]
+======================================================================
+VERDICT CHECK against pre-reg:
+  P1 G-reconstructs:  AUC(G~proxy)=0.771  HOLD
+  P2 Y-blind on age:  age-marginal-to-Y=+0.0040  dissociation
+  P3 steered gap:     spread=0.007
+  P4 RFOA residual:   raw=+0.032 adj=+0.027
