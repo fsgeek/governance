@@ -1,0 +1,77 @@
+{
+  "args": {
+    "channels": [
+      "D1",
+      "D2",
+      "D3",
+      "D4"
+    ],
+    "epsilon_frac": 0.01,
+    "max_k": 3,
+    "n": 20000,
+    "out": "runs/shuffle_set_all.json",
+    "seed": 20260609
+  },
+  "rows": [
+    {
+      "boundary_dist_flip": 0.3,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D1",
+      "flip_rate": 0.2785,
+      "g_ratio": 1.09,
+      "mean_pairwise_jaccard": 0.2511,
+      "n_band_members": 9,
+      "n_flip": 1671,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 35,
+      "p_flip_G0": 0.2712,
+      "p_flip_G1": 0.2957,
+      "tol_cases": 60.0
+    },
+    {
+      "boundary_dist_flip": 0.2636,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D2",
+      "flip_rate": 0.3527,
+      "g_ratio": 0.95,
+      "mean_pairwise_jaccard": 0.2521,
+      "n_band_members": 25,
+      "n_flip": 2116,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 294,
+      "p_flip_G0": 0.3581,
+      "p_flip_G1": 0.3404,
+      "tol_cases": 60.0
+    },
+    {
+      "boundary_dist_flip": 0.2637,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D3",
+      "flip_rate": 0.4087,
+      "g_ratio": 1.049,
+      "mean_pairwise_jaccard": 0.2477,
+      "n_band_members": 22,
+      "n_flip": 2452,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 230,
+      "p_flip_G0": 0.4028,
+      "p_flip_G1": 0.4227,
+      "tol_cases": 60.0
+    },
+    {
+      "boundary_dist_flip": 0.1927,
+      "boundary_dist_noflip": 0.5,
+      "channel": "D4",
+      "flip_rate": 0.295,
+      "g_ratio": 0.983,
+      "mean_pairwise_jaccard": 0.3037,
+      "n_band_members": 12,
+      "n_flip": 1770,
+      "n_holdout": 6000,
+      "n_member_pairs_with_flips": 63,
+      "p_flip_G0": 0.2965,
+      "p_flip_G1": 0.2915,
+      "tol_cases": 60.0
+    }
+  ]
+}

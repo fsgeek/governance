@@ -180,8 +180,7 @@
   month        = {4},
   day          = {17},
   howpublished = {Client memorandum},
-  url          = {https://www.sullcrom.com/insights/memo/2026/April/OCC-Fed-FDIC-Issue-Revised-Guidance-Model-Risk-Management},
-  note         = {VERIFIED: April 17, 2026 revised guidance, \$30B threshold, GenAI exclusion, promised RFI. Confirm exact memo title and URL.}
+  url          = {https://www.sullcrom.com/insights/memo/2026/April/OCC-Fed-FDIC-Issue-Revised-Guidance-Model-Risk-Management}
 }
 
 % VERIFIED --- Turpin et al. 2023; widely cited in interpretability work.
@@ -408,4 +407,35 @@ year         = {2026},
 month        = feb,
 howpublished = {Lowenstein Sandler LLP Client Alert},
 url          = {https://www.lowenstein.com/news-insights/publications/client-alerts/financial-services-ai-risk-management-framework-operationalizing-the-230-control-objectives-before-the-market-wakes-up-data-privacy}
+}
+
+% Pre-registered, timestamped empirical results supporting Section 6's
+% bounded-empirical claims. Cited by commit hash so the freeze-before-data
+% discipline is independently verifiable (the prediction precedes the data
+% touch in the commit graph). Repo: github.com/fsgeek/governance.
+@misc{prereg2026expandedvintage,
+  author       = {Mason, Tony},
+  title        = {Expanded-Vintage Replication of Manufactured Silence on {Fannie Mae} Mortgage Data: Pre-Registration and Result},
+  year         = {2026},
+  month        = may,
+  howpublished = {Pre-registered, timestamped experiment; \texttt{governance} repository, commits \texttt{24e20f8} (pre-registration, frozen before data access) and \texttt{6b23516} (result)},
+  note         = {OpenTimestamps-stamped; pre-registration commit precedes the result commit in the repository history. github.com/fsgeek/governance}
+}
+
+@misc{prereg2026hmdatrimodal,
+  author       = {Mason, Tony},
+  title        = {Cross-Substrate Replication of Demographic-Saturation Reorganization on {HMDA} {Rhode Island} Lending Data: Pre-Registration and Result},
+  year         = {2026},
+  month        = may,
+  howpublished = {Pre-registered, timestamped experiment; \texttt{governance} repository, commits \texttt{97fcd6f} (pre-registration) and \texttt{b1c7ddc} (result)},
+  note         = {OpenTimestamps-stamped; predictions frozen before data access. github.com/fsgeek/governance}
+}
+
+@misc{prereg2026knobrobustness,
+  author       = {Mason, Tony},
+  title        = {Threshold-Sensitivity of the Manufactured-Silence Cell Count: Adequacy-Knob Robustness},
+  year         = {2026},
+  month        = may,
+  howpublished = {Pre-registered, timestamped experiment; \texttt{governance} repository, commits \texttt{02fc921} (pre-registration, frozen before data access) and \texttt{e2b66dc} (result)},
+  note         = {OpenTimestamps-stamped; establishes that the silence-cell count is threshold-dependent and must be reported as an operating curve. github.com/fsgeek/governance}
 }

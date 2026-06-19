@@ -26,6 +26,7 @@ from typing import Any
 
 from policy.encoder import PolicyConstraints
 from wedge.rashomon import EpsilonAdmissibleSet
+from wedge.band_disagreement import band_disagreement_summary
 
 
 def emit_manifest(
@@ -69,6 +70,16 @@ def emit_manifest(
         "epsilon_F": R_F.epsilon,
         "n_R_T": len(R_T.within_epsilon),
         "n_R_F": len(R_F.within_epsilon),
+        # First-class audited quantity for SELECTION discretion: the within-band
+        # flip-rate. n_R is a tie-COUNT and near-meaningless under the current
+        # absolute-loss ε (working_notes/2026-06-09-band-epsilon-inert); the
+        # flip-rate is the fraction of cases on which tied members DISAGREE --
+        # the unaudited "pick one" discretion made visible. Read as an (ε,
+        # flip_rate) pair; sweep ε for the curve. Protected-blind & margin-driven
+        # (working_notes/2026-06-10-*): the harm is arbitrariness toward marginal
+        # applicants, not protected disparity.
+        "within_band_disagreement_T": band_disagreement_summary(R_T),
+        "within_band_disagreement_F": band_disagreement_summary(R_F),
         "score_label_T": R_T.score_label,
         "score_label_F": R_F.score_label,
         "global_best_value_T": R_T.global_best_value,

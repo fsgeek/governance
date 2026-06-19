@@ -1,0 +1,33 @@
+LC age-default U-shape + pricing-monotonicity divergence (2026-06-12)
+Source: data/accepted_2007_to_2018Q4.csv, full file, N=1,345,310 resolved loans (Fully Paid|Charged Off)
+est_age = 18 + (issue_d - earliest_cr_line) in years  [credit-tenure floor; pins young, partial-censors old]
+Overall default = 0.200. est_age range 21..101.
+
+AGE BAND DEFAULT CURVE (the U the linear corr -0.044 hid):
+  [18,25)  n= 91691  default=0.229±0.001  rate=14.5%
+  [25,30)  n=315850  default=0.217±0.001  rate=13.8%
+  [30,35)  n=435410  default=0.200±0.001  rate=13.3%
+  [35,40)  n=248570  default=0.188±0.001  rate=12.9%
+  [40,45)  n=127982  default=0.177±0.001  rate=12.6%
+  [45,50)  n= 71781  default=0.175±0.001  rate=12.3%
+  [50,55)  n= 31001  default=0.174±0.002  rate=12.1%   <- TROUGH
+  [55,60)  n= 14281  default=0.184±0.003  rate=11.8%
+  [60,70)  n=  8015  default=0.221±0.005  rate=11.9%
+  [70,120) n=   729  default=0.294±0.017  rate=12.3%   <- default 29.4% > youngest band
+
+KEY FINDINGS:
+1. Default is U-SHAPED in age (trough ~0.174 at 50-55; rises to 0.294 at 70+). A linear corr (-0.044)
+   reports only the NET TILT and ERASES the curvature. Tony flagged this before the run: "age could predict
+   default either direction; we might need band-level analysis." Confirmed — both tails default high, for
+   different reasons (young=thin file/income instability; old=mortality/income shock/retirement).
+2. PRICING (int_rate) is MONOTONE DECREASING in age across the ENTIRE range (14.5% -> 11.9%), INCLUDING the
+   up-slope where realized default RISES. At 70+: priced 12.3% but defaults 29.4%; at 18-25: priced 14.5%
+   but defaults LESS (22.9%). The discretionary lever (rate) and the lawful target (default) DIVERGE in sign
+   for the entire 55+ population.
+3. FORENSIC IMPLICATION: an auditor checking "does pricing track default in the right direction" GLOBALLY
+   sees a sensible monotone gradient and MISSES that it is wrong-signed for 55+. The model carries an age
+   DIRECTION the default data does not support at the tails. This is a NON-MONOTONE-target / monotone-lever
+   gap — a forensic signature distinct from simple disparate impact, and invisible to a linear/global audit.
+4. CAVEAT: est_age is a credit-tenure floor, not true age; old tail partially censored (a 70yo and 45yo with
+   25+yr history collapse), so the up-slope is UNDERSTATED if anything. Sign of divergence is robust; exact
+   magnitude at the old tail is a floor estimate. Pricing reflects LC's grade model, not a counterfactual.

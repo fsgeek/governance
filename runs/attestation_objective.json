@@ -1,0 +1,155 @@
+{
+  "args": {
+    "bisg_auc": 0.85,
+    "channels": [
+      "D1",
+      "D2",
+      "D3",
+      "D4"
+    ],
+    "eps_frac": 0.01,
+    "max_k": 3,
+    "n": 20000,
+    "out": "runs/attestation_objective.json",
+    "r": 0.25,
+    "seed": 20260610
+  },
+  "rows": [
+    {
+      "auditor_floor_recovered_from_Ghat": true,
+      "auditor_measured_gap_for_bankP": 0.033,
+      "bankP_member": {
+        "absdisp": 0.1,
+        "i": 50,
+        "profit": -306.5
+      },
+      "bisg_auc_target": 0.85,
+      "channel": "D1",
+      "disparity_gap_bankP_minus_floor": 0.0588,
+      "floor_member_trueG": {
+        "absdisp": 0.0412,
+        "i": 38,
+        "profit": -438.8
+      },
+      "n_band": 56,
+      "profit_gain_bankP_over_floor": 132.2,
+      "rank_agreement_trueG_vs_Ghat": 0.4573,
+      "receipt_bankF": {
+        "band_size": 56,
+        "member_index": 38,
+        "self_reported_disparity_trueG": 0.0412,
+        "self_reported_profit": -438.8,
+        "within_band_flip_rate": 0.557333
+      },
+      "receipt_bankP": {
+        "band_size": 56,
+        "member_index": 50,
+        "self_reported_disparity_trueG": 0.1,
+        "self_reported_profit": -306.5,
+        "within_band_flip_rate": 0.557333
+      }
+    },
+    {
+      "auditor_floor_recovered_from_Ghat": true,
+      "auditor_measured_gap_for_bankP": 0.0,
+      "bankP_member": {
+        "absdisp": 0.1605,
+        "i": 0,
+        "profit": -122.0
+      },
+      "bisg_auc_target": 0.85,
+      "channel": "D2",
+      "disparity_gap_bankP_minus_floor": 0.0,
+      "floor_member_trueG": {
+        "absdisp": 0.1605,
+        "i": 0,
+        "profit": -122.0
+      },
+      "n_band": 4,
+      "profit_gain_bankP_over_floor": 0.0,
+      "rank_agreement_trueG_vs_Ghat": 1.0,
+      "receipt_bankF": {
+        "band_size": 4,
+        "member_index": 0,
+        "self_reported_disparity_trueG": -0.1605,
+        "self_reported_profit": -122.0,
+        "within_band_flip_rate": 0.224
+      },
+      "receipt_bankP": {
+        "band_size": 4,
+        "member_index": 0,
+        "self_reported_disparity_trueG": -0.1605,
+        "self_reported_profit": -122.0,
+        "within_band_flip_rate": 0.224
+      }
+    },
+    {
+      "auditor_floor_recovered_from_Ghat": false,
+      "auditor_measured_gap_for_bankP": 0.012,
+      "bankP_member": {
+        "absdisp": 0.1449,
+        "i": 5,
+        "profit": -385.5
+      },
+      "bisg_auc_target": 0.85,
+      "channel": "D3",
+      "disparity_gap_bankP_minus_floor": 0.026,
+      "floor_member_trueG": {
+        "absdisp": 0.1189,
+        "i": 8,
+        "profit": -517.2
+      },
+      "n_band": 18,
+      "profit_gain_bankP_over_floor": 131.8,
+      "rank_agreement_trueG_vs_Ghat": 0.808,
+      "receipt_bankF": {
+        "band_size": 18,
+        "member_index": 8,
+        "self_reported_disparity_trueG": 0.1189,
+        "self_reported_profit": -517.2,
+        "within_band_flip_rate": 0.441833
+      },
+      "receipt_bankP": {
+        "band_size": 18,
+        "member_index": 5,
+        "self_reported_disparity_trueG": 0.1449,
+        "self_reported_profit": -385.5,
+        "within_band_flip_rate": 0.441833
+      }
+    },
+    {
+      "auditor_floor_recovered_from_Ghat": true,
+      "auditor_measured_gap_for_bankP": 0.0127,
+      "bankP_member": {
+        "absdisp": 0.0215,
+        "i": 1,
+        "profit": -317.2
+      },
+      "bisg_auc_target": 0.85,
+      "channel": "D4",
+      "disparity_gap_bankP_minus_floor": 0.0119,
+      "floor_member_trueG": {
+        "absdisp": 0.0096,
+        "i": 0,
+        "profit": -327.2
+      },
+      "n_band": 3,
+      "profit_gain_bankP_over_floor": 10.0,
+      "rank_agreement_trueG_vs_Ghat": 1.0,
+      "receipt_bankF": {
+        "band_size": 3,
+        "member_index": 0,
+        "self_reported_disparity_trueG": 0.0096,
+        "self_reported_profit": -327.2,
+        "within_band_flip_rate": 0.055667
+      },
+      "receipt_bankP": {
+        "band_size": 3,
+        "member_index": 1,
+        "self_reported_disparity_trueG": 0.0215,
+        "self_reported_profit": -317.2,
+        "within_band_flip_rate": 0.055667
+      }
+    }
+  ]
+}

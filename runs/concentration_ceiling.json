@@ -1,0 +1,68 @@
+{
+  "args": {
+    "channels": [
+      "D1",
+      "D4"
+    ],
+    "n": 25000,
+    "out": "runs/concentration_ceiling.json",
+    "seeds": [
+      101,
+      202
+    ]
+  },
+  "rows": [
+    {
+      "BAND_envelope_blind": 0.1172,
+      "CEILING_Gaware": 0.2404,
+      "CEILING_unconstrained_blind": 0.027,
+      "_per_seed": [
+        {
+          "BAND_envelope_blind": 0.1337,
+          "CEILING_Gaware": 0.238,
+          "CEILING_unconstrained_blind": 0.0283,
+          "channel": "D1",
+          "label_DP_gap": 0.1816,
+          "seed": 101
+        },
+        {
+          "BAND_envelope_blind": 0.1006,
+          "CEILING_Gaware": 0.2429,
+          "CEILING_unconstrained_blind": 0.0257,
+          "channel": "D1",
+          "label_DP_gap": 0.1819,
+          "seed": 202
+        }
+      ],
+      "channel": "D1",
+      "label_DP_gap": 0.1818,
+      "n_seeds": 2
+    },
+    {
+      "BAND_envelope_blind": 0.0977,
+      "CEILING_Gaware": 0.1442,
+      "CEILING_unconstrained_blind": 0.0579,
+      "_per_seed": [
+        {
+          "BAND_envelope_blind": 0.1356,
+          "CEILING_Gaware": 0.1402,
+          "CEILING_unconstrained_blind": 0.0583,
+          "channel": "D4",
+          "label_DP_gap": 0.1177,
+          "seed": 101
+        },
+        {
+          "BAND_envelope_blind": 0.0597,
+          "CEILING_Gaware": 0.1481,
+          "CEILING_unconstrained_blind": 0.0575,
+          "channel": "D4",
+          "label_DP_gap": 0.124,
+          "seed": 202
+        }
+      ],
+      "channel": "D4",
+      "label_DP_gap": 0.1208,
+      "n_seeds": 2
+    }
+  ]
+}

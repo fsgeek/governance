@@ -1,0 +1,78 @@
+{
+  "args": {
+    "eps_frac": 0.001,
+    "ks": [
+      1,
+      2,
+      3,
+      5,
+      8
+    ],
+    "max_subset_k": 3,
+    "n": 12000,
+    "out": "runs/redundancy_canary_probe.json",
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "total_disparity": 2.0
+  },
+  "rows": [
+    {
+      "flip_rates": [
+        0.0,
+        0.0225,
+        0.0
+      ],
+      "k": 1,
+      "mean_band": 1.7,
+      "mean_flip_rate": 0.0075,
+      "mean_realized_gap_G": 0.3579
+    },
+    {
+      "flip_rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "k": 2,
+      "mean_band": 1.3,
+      "mean_flip_rate": 0.0,
+      "mean_realized_gap_G": 0.353
+    },
+    {
+      "flip_rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "k": 3,
+      "mean_band": 1.0,
+      "mean_flip_rate": 0.0,
+      "mean_realized_gap_G": 0.3435
+    },
+    {
+      "flip_rates": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "k": 5,
+      "mean_band": 1.0,
+      "mean_flip_rate": 0.0,
+      "mean_realized_gap_G": 0.3575
+    },
+    {
+      "flip_rates": [
+        0.022222,
+        0.0,
+        0.0
+      ],
+      "k": 8,
+      "mean_band": 1.7,
+      "mean_flip_rate": 0.0074,
+      "mean_realized_gap_G": 0.3528
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "all_structural_breaks": [
+    "n_R_T"
+  ],
+  "frozen_innocent": {
+    "epsilon_F": 0.02,
+    "epsilon_T": 0.02,
+    "global_best_value_F": 1750.5,
+    "global_best_value_T": 1740.5,
+    "hypothesis_space": "CART subsets<=k3",
+    "mandatory_features": [],
+    "n_R_F": 1,
+    "n_R_T": 1,
+    "policy_name": "manifest_blindness_probe",
+    "policy_status": "active",
+    "policy_version": "1",
+    "prohibited_features": [
+      "G"
+    ],
+    "run_id": "probe-frozen-innocent",
+    "schema_version": "v1",
+    "score_label_F": "L_F(w_F=1.5)",
+    "score_label_T": "L_T(w_T=1.5)",
+    "surprise_model_id": "none",
+    "surprise_model_training_sample": "frozen-innocent",
+    "training_sample_id": "frozen-innocent",
+    "v1_1_deferred": [
+      "OD-10 substrate-axis",
+      "OD-15 sensitivity reporting"
+    ],
+    "w_F": 1.5,
+    "w_T": 1.5
+  },
+  "frozen_laundered": {
+    "epsilon_F": 0.02,
+    "epsilon_T": 0.02,
+    "global_best_value_F": 1859.0,
+    "global_best_value_T": 1896.0,
+    "hypothesis_space": "CART subsets<=k3",
+    "mandatory_features": [],
+    "n_R_F": 1,
+    "n_R_T": 1,
+    "policy_name": "manifest_blindness_probe",
+    "policy_status": "active",
+    "policy_version": "1",
+    "prohibited_features": [
+      "G"
+    ],
+    "run_id": "probe-frozen-laundered",
+    "schema_version": "v1",
+    "score_label_F": "L_F(w_F=1.5)",
+    "score_label_T": "L_T(w_T=1.5)",
+    "surprise_model_id": "none",
+    "surprise_model_training_sample": "frozen-laundered",
+    "training_sample_id": "frozen-laundered",
+    "v1_1_deferred": [
+      "OD-10 substrate-axis",
+      "OD-15 sensitivity reporting"
+    ],
+    "w_F": 1.5,
+    "w_T": 1.5
+  },
+  "frozen_structural_breaks": [],
+  "set_size_only": true,
+  "toy_innocent": {
+    "epsilon_F": 0.02,
+    "epsilon_T": 0.02,
+    "global_best_value_F": 764.0,
+    "global_best_value_T": 734.5,
+    "hypothesis_space": "CART subsets<=k3",
+    "mandatory_features": [],
+    "n_R_F": 1,
+    "n_R_T": 4,
+    "policy_name": "manifest_blindness_probe",
+    "policy_status": "active",
+    "policy_version": "1",
+    "prohibited_features": [
+      "G"
+    ],
+    "run_id": "probe-toy-innocent",
+    "schema_version": "v1",
+    "score_label_F": "L_F(w_F=1.5)",
+    "score_label_T": "L_T(w_T=1.5)",
+    "surprise_model_id": "none",
+    "surprise_model_training_sample": "toy-innocent",
+    "training_sample_id": "toy-innocent",
+    "v1_1_deferred": [
+      "OD-10 substrate-axis",
+      "OD-15 sensitivity reporting"
+    ],
+    "w_F": 1.5,
+    "w_T": 1.5
+  },
+  "toy_laundered": {
+    "epsilon_F": 0.02,
+    "epsilon_T": 0.02,
+    "global_best_value_F": 694.5,
+    "global_best_value_T": 712.0,
+    "hypothesis_space": "CART subsets<=k3",
+    "mandatory_features": [],
+    "n_R_F": 1,
+    "n_R_T": 2,
+    "policy_name": "manifest_blindness_probe",
+    "policy_status": "active",
+    "policy_version": "1",
+    "prohibited_features": [
+      "G"
+    ],
+    "run_id": "probe-toy-laundered",
+    "schema_version": "v1",
+    "score_label_F": "L_F(w_F=1.5)",
+    "score_label_T": "L_T(w_T=1.5)",
+    "surprise_model_id": "none",
+    "surprise_model_training_sample": "toy-laundered",
+    "training_sample_id": "toy-laundered",
+    "v1_1_deferred": [
+      "OD-10 substrate-axis",
+      "OD-15 sensitivity reporting"
+    ],
+    "w_F": 1.5,
+    "w_T": 1.5
+  },
+  "toy_structural_breaks": [
+    "n_R_T"
+  ]
+}

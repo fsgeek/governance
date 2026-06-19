@@ -1,0 +1,51 @@
+{
+  "args": {
+    "channels": [
+      "D1",
+      "D2",
+      "D3",
+      "D4"
+    ],
+    "n": 30000,
+    "out": "runs/lawful_leak_diagnosis.json",
+    "seed": 20260610
+  },
+  "rows": [
+    {
+      "AUC_G_from_lawful_score": 0.3476,
+      "base_default_rate_G0": 0.463,
+      "base_default_rate_G1": 0.2927,
+      "base_rate_gap": -0.1703,
+      "channel": "D1",
+      "corr_score_G": -0.231,
+      "grant_disparity_from_pure_lawful_threshold": 0.2014
+    },
+    {
+      "AUC_G_from_lawful_score": 0.4127,
+      "base_default_rate_G0": 0.5426,
+      "base_default_rate_G1": 0.4123,
+      "base_rate_gap": -0.1303,
+      "channel": "D2",
+      "corr_score_G": -0.1319,
+      "grant_disparity_from_pure_lawful_threshold": 0.1081
+    },
+    {
+      "AUC_G_from_lawful_score": 0.407,
+      "base_default_rate_G0": 0.4643,
+      "base_default_rate_G1": 0.3315,
+      "base_rate_gap": -0.1328,
+      "channel": "D3",
+      "corr_score_G": -0.1499,
+      "grant_disparity_from_pure_lawful_threshold": 0.095
+    },
+    {
+      "AUC_G_from_lawful_score": 0.4086,
+      "base_default_rate_G0": 0.5366,
+      "base_default_rate_G1": 0.408,
+      "base_rate_gap": -0.1287,
+      "channel": "D4",
+      "corr_score_G": -0.142,
+      "grant_disparity_from_pure_lawful_threshold": 0.1248
+    }
+  ]
+}

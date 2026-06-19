@@ -255,6 +255,23 @@ def _coupling_for_proxy_strength(target: float, seed: int) -> float:
     return 0.5 * (lo + hi)
 
 
+def _bisect_signed(signed_fn, target, lo=0.0, hi=12.0, iters=50, tol=1e-3):
+    """Bisect a scalar shift so signed_fn(shift) ≈ target. signed_fn must be
+    monotone DECREASING in the shift. Raises if target is out of the [signed_fn(hi),
+    signed_fn(lo)] reachable range (no silent wrong-answer return)."""
+    hi_val, lo_val = signed_fn(hi), signed_fn(lo)   # hi_val < lo_val (decreasing)
+    if not (hi_val - tol <= target <= lo_val + tol):
+        raise ValueError(f"target {target:.4f} unreachable in signed range "
+                         f"[{hi_val:.4f}, {lo_val:.4f}] over shift [{lo},{hi}]")
+    for _ in range(iters):
+        mid = 0.5 * (lo + hi)
+        if signed_fn(mid) > target:   # gap still too high (positive side) -> increase shift
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
 def _bisg_estimate(G: np.ndarray, g_latent: np.ndarray, target_auc: float,
                    rng: np.random.Generator) -> np.ndarray:
     """Ĝ_BISG: continuous regulator estimate of G with AUC(Ĝ ~ G) ≈ target_auc.
@@ -275,7 +292,8 @@ def _bisg_estimate(G: np.ndarray, g_latent: np.ndarray, target_auc: float,
 
 
 def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
-                        *, bisg_auc: float = 0.85, decouple: float = 0.0) -> TwinWorldResult:
+                        *, bisg_auc: float = 0.85, decouple: float = 0.0,
+                        target_gap: float | None = None) -> TwinWorldResult:
     """One (proxy_strength, world, seed) latent-G twin-world substrate.
 
     World A and World B share inputs (x0..x7, c_fresh) deterministically given
@@ -295,8 +313,8 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     gap ONLY by killing Y-predictive signal. The observable SHOULD separate them.
     `decouple` is ignored for worlds A and B.
     """
-    if world not in ("A", "B", "P"):
-        raise ValueError("world must be 'A', 'B', or 'P'")
+    if world not in ("A", "B", "P", "PD_baserate", "PD_noise"):
+        raise ValueError("world must be 'A','B','P','PD_baserate','PD_noise'")
     rng = np.random.default_rng(seed)
     X, G, g_latent = _twin_base(rng, n)
     Gz = (G - G.mean()) / (G.std() + 1e-12)
@@ -310,7 +328,41 @@ def generate_twin_world(proxy_strength: float, world: str, n: int, seed: int,
     YA = rng.binomial(1, pA)
     y_clean = rng.binomial(1, 1.0 / (1.0 + np.exp(-legit_logit)))
 
-    if world == "P":
+    if world == "PD_baserate":
+        # Pure disparity: a group-conditional CONSTANT logit offset for G=1. Adds NO
+        # individual slope. target_gap = absolute gap planted IN EXCESS of the clean
+        # baseline (G is x0-correlated, so the c=0 world already has a legit baseline
+        # gap; we plant disparity beyond it, in the disparate-impact direction G=1-down).
+        def _signed_gap_p(c):                       # deterministic; monotone DECREASING in c
+            p = 1.0 / (1.0 + np.exp(-(legit_logit - c * G)))
+            return float(p[G == 1].mean() - p[G == 0].mean())
+        baseline = _signed_gap_p(0.0)               # legit-driven gap at c=0 (~+0.10)
+        if not target_gap:
+            c = 0.0
+        else:
+            c = _bisect_signed(_signed_gap_p, baseline - target_gap)
+        Y = rng.binomial(1, 1.0 / (1.0 + np.exp(-(legit_logit - c * G))))
+    elif world == "PD_noise":
+        # Pure disparity via heteroskedastic label-flip by G. Draw Y from the CLEAN
+        # logit, then flip G=1 positives to 0 with prob f (post-draw => no observable
+        # predicts the flip). target_gap = excess absolute gap beyond the legit baseline,
+        # planted G=1-down. f bisected on the expected signed gap (deterministic).
+        p_clean = 1.0 / (1.0 + np.exp(-legit_logit))
+        base_g1, base_g0 = p_clean[G == 1].mean(), p_clean[G == 0].mean()
+        baseline = float(base_g1 - base_g0)                 # legit signed gap (~+0.13)
+        def _signed_gap_flip(f):
+            # E[Y|G=1] after flipping positives down by factor (1-f); G=0 unchanged.
+            # monotone DECREASING in f.
+            return float(base_g1 * (1.0 - f) - base_g0)
+        if not target_gap:
+            f = 0.0
+        else:
+            f = _bisect_signed(_signed_gap_flip, baseline - target_gap, lo=0.0, hi=1.0)
+        Y = rng.binomial(1, p_clean).astype(int)
+        flip = (G == 1) & (Y == 1) & (rng.random(n) < f)
+        Y = Y.copy()
+        Y[flip] = 0
+    elif world == "P":
         # The pure-impact channel: the c_fresh portfolio's component ORTHOGONAL to
         # legit_logit. Project c_fresh onto [1, legit_logit], take residuals -> a
         # G-correlated direction (c_fresh is G-coupled) carrying ~0 legit signal.
