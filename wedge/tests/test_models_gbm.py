@@ -15,6 +15,7 @@ def test_monotone_gbm_satisfies_protocol_and_respects_monotone_sign():
     assert isinstance(m, FittedModel)
     used = m.used_features()
     assert "f0" in used
+    assert "f1" not in used, f"used_features fallback may have fired (got {used}); f1 is noise and should not be a split feature"
     assert used.issubset({"f0", "f1"})
     # monotone +1 on f0: increasing f0 (others fixed) must not DECREASE P(approve)
     lo = pd.DataFrame({"f0": [0], "f1": [4]})
