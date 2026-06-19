@@ -6,6 +6,7 @@ Three-phase construction pipeline per spec §2.7 OD-9b / OD-12:
 
 from __future__ import annotations
 
+import numpy as np
 import pytest
 
 from policy.encoder import PolicyConstraints
@@ -16,10 +17,12 @@ from wedge.rashomon import (
     HyperparameterSpec,
     PolicyAdmissibleSet,
     SweepConfig,
+    SweepResult,
     build_dual_set,
     evaluate_policy,
     filter_to_epsilon,
     filter_to_epsilon_under_loss,
+    filter_to_epsilon_under_loss_relative,
     hyperparameter_sweep,
     select_diverse_members,
 )
@@ -179,6 +182,117 @@ def test_filter_to_epsilon_under_loss_empty_admissible_returns_empty():
     )
     assert result.within_epsilon == []
     assert result.out_of_epsilon == []
+
+
+# ---------------------------------------------------------------------------
+# filter_to_epsilon_under_loss_relative — RELATIVE-ε band (pre-reg §5)
+#   membership: (loss - admissible_best) / admissible_best <= epsilon
+# ---------------------------------------------------------------------------
+
+
+def _admissible_with_losses(losses: list[float]) -> tuple[PolicyAdmissibleSet, object]:
+    """Build a PolicyAdmissibleSet of len(losses) models plus a loss_fn that
+    returns the i-th preset loss for the i-th model.
+
+    The filters call loss_fn(sr.holdout_y_true, sr.holdout_y_pred) per model;
+    we make each model's holdout_y_pred uniquely encode its index (via the
+    pred array length) so the loss_fn can map back to the preset.
+    """
+    srs = []
+    for i, lv in enumerate(losses):
+        sr = SweepResult(
+            spec=HyperparameterSpec(
+                max_depth=i, min_samples_leaf=1, feature_subset=("f",)
+            ),
+            holdout_auc=0.5,
+            fitted_model=None,
+            # pred array length = i+1 uniquely identifies this model's index.
+            holdout_y_true=np.zeros(i + 1, dtype=int),
+            holdout_y_pred=np.zeros(i + 1, dtype=int),
+        )
+        srs.append(sr)
+    loss_map = {i + 1: lv for i, lv in enumerate(losses)}
+
+    def loss_fn(y_true, y_pred):
+        return loss_map[len(y_pred)]
+
+    pa = PolicyAdmissibleSet(admissible=srs, excluded=[], total_swept=len(srs))
+    return pa, loss_fn
+
+
+def _losses_in_band(result: EpsilonAdmissibleSet, loss_fn) -> set[float]:
+    return {loss_fn(sr.holdout_y_true, sr.holdout_y_pred) for sr in result.within_epsilon}
+
+
+def test_filter_relative_admits_within_relative_band_excludes_beyond():
+    """Relative ε: a model is in-band iff (loss-best)/best <= eps."""
+    # best=1.0; second=1.05 (rel gap .05); third=1.20 (rel gap .20).
+    pa, loss_fn = _admissible_with_losses([1.0, 1.05, 1.20])
+    res = filter_to_epsilon_under_loss_relative(
+        pa, loss_fn=loss_fn, loss_label="L_T", epsilon=0.10
+    )
+    assert isinstance(res, EpsilonAdmissibleSet)
+    assert res.global_best_value == pytest.approx(1.0)
+    in_band = _losses_in_band(res, loss_fn)
+    assert in_band == {1.0, 1.05}  # 1.20 excluded (rel gap .20 > .10)
+    out = {loss_fn(sr.holdout_y_true, sr.holdout_y_pred) for sr in res.out_of_epsilon}
+    assert out == {1.20}
+
+
+def test_filter_relative_disagrees_with_absolute():
+    """The crux: relative and absolute give DIFFERENT membership.
+
+    best=0.40, second=0.42. Absolute gap = 0.02; relative gap = 0.05.
+      eps=0.03: absolute would ADMIT (0.02<=0.03); relative EXCLUDES (0.05>0.03).
+      eps=0.06: both ADMIT.
+    """
+    pa, loss_fn = _admissible_with_losses([0.40, 0.42])
+
+    # eps=0.03 — absolute admits the second model, relative does not.
+    abs_03 = filter_to_epsilon_under_loss(
+        pa, loss_fn=loss_fn, loss_label="L_T", epsilon=0.03
+    )
+    rel_03 = filter_to_epsilon_under_loss_relative(
+        pa, loss_fn=loss_fn, loss_label="L_T", epsilon=0.03
+    )
+    assert _losses_in_band(abs_03, loss_fn) == {0.40, 0.42}  # absolute admits both
+    assert _losses_in_band(rel_03, loss_fn) == {0.40}        # relative admits only best
+    assert len(rel_03.within_epsilon) == 1
+    assert len(rel_03.out_of_epsilon) == 1
+
+    # eps=0.06 — both admit both.
+    rel_06 = filter_to_epsilon_under_loss_relative(
+        pa, loss_fn=loss_fn, loss_label="L_T", epsilon=0.06
+    )
+    assert _losses_in_band(rel_06, loss_fn) == {0.40, 0.42}
+    assert len(rel_06.within_epsilon) == 2
+
+
+def test_filter_relative_empty_admissible_returns_empty():
+    pa = PolicyAdmissibleSet(admissible=[], excluded=[], total_swept=0)
+    res = filter_to_epsilon_under_loss_relative(
+        pa, loss_fn=lambda yt, yp: 1.0, loss_label="L_T", epsilon=0.05
+    )
+    assert res.within_epsilon == []
+    assert res.out_of_epsilon == []
+    assert np.isnan(res.global_best_value)
+
+
+def test_filter_relative_guards_nonpositive_best_falls_back_to_absolute():
+    """If admissible_best <= 0 the relative ratio is undefined; the function
+    falls back to the absolute window (sr_loss - best <= eps)."""
+    # best=0.0 (a model with zero loss); second=0.03.
+    pa, loss_fn = _admissible_with_losses([0.0, 0.03])
+    res = filter_to_epsilon_under_loss_relative(
+        pa, loss_fn=loss_fn, loss_label="L_T", epsilon=0.05
+    )
+    # Absolute fallback: 0.03 - 0.0 = 0.03 <= 0.05 -> admitted.
+    assert _losses_in_band(res, loss_fn) == {0.0, 0.03}
+    # And at a tighter eps the second drops out under the absolute fallback.
+    res2 = filter_to_epsilon_under_loss_relative(
+        pa, loss_fn=loss_fn, loss_label="L_T", epsilon=0.01
+    )
+    assert _losses_in_band(res2, loss_fn) == {0.0}
 
 
 # ---------------------------------------------------------------------------

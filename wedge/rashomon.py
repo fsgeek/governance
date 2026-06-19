@@ -450,6 +450,80 @@ def filter_to_epsilon_under_loss(
     )
 
 
+def filter_to_epsilon_under_loss_relative(
+    admissible_set: PolicyAdmissibleSet,
+    *,
+    loss_fn: Callable[[np.ndarray, np.ndarray], float],
+    loss_label: str,
+    epsilon: float,
+) -> EpsilonAdmissibleSet:
+    """Phase 3b (loss-based, RELATIVE ε): partition the admissible set by the
+    model's *relative* loss excess over the admissible best (lower loss = better).
+
+    A model is in `within_epsilon` iff
+    ``(sr.loss - admissible_best) / admissible_best <= epsilon``.
+
+    This is the RELATIVE-band membership the band-opening pre-reg froze (§5:
+    "relative band width ... `(loss − best)/best ≤ ε`", NOT absolute loss
+    units). It differs from `filter_to_epsilon_under_loss` (which uses the
+    absolute window `sr.loss - best <= epsilon`); the absolute function is kept
+    unchanged because `build_dual_set` and prior committed results depend on its
+    semantics.
+
+    EDGE CASE — non-positive best: when `admissible_best <= 0` the relative
+    ratio is undefined / unstable (division by zero or sign flip), so the
+    membership test falls back to the ABSOLUTE window `sr.loss - best <= epsilon`
+    for that band. The losses used here are positive cost-asymmetric losses
+    (`grant_emphasis_loss` / `deny_emphasis_loss`), so a zero best loss means a
+    perfectly-classifying member and the absolute fallback is the sane behavior;
+    this guard exists to keep the function total.
+
+    Requires that SweepResults have `holdout_y_true` and `holdout_y_pred`
+    populated (default for results from `hyperparameter_sweep`).
+    """
+    if not admissible_set.admissible:
+        return EpsilonAdmissibleSet(
+            within_epsilon=[],
+            out_of_epsilon=[],
+            global_best_value=float("nan"),
+            epsilon=epsilon,
+            score_label=loss_label,
+        )
+
+    scored: list[tuple[SweepResult, float]] = []
+    for sr in admissible_set.admissible:
+        if sr.holdout_y_true is None or sr.holdout_y_pred is None:
+            raise ValueError(
+                "filter_to_epsilon_under_loss_relative requires SweepResult."
+                "holdout_y_true and holdout_y_pred to be populated. Did "
+                "hyperparameter_sweep run successfully?"
+            )
+        scored.append((sr, float(loss_fn(sr.holdout_y_true, sr.holdout_y_pred))))
+
+    best = min(s for _, s in scored)
+    tol = epsilon + 1e-9
+    within: list[SweepResult] = []
+    out: list[SweepResult] = []
+    for sr, s in scored:
+        if best > 0:
+            in_band = (s - best) / best <= tol
+        else:
+            # Relative ratio undefined for non-positive best; fall back to the
+            # absolute window (documented edge case above).
+            in_band = s - best <= tol
+        if in_band:
+            within.append(sr)
+        else:
+            out.append(sr)
+    return EpsilonAdmissibleSet(
+        within_epsilon=within,
+        out_of_epsilon=out,
+        global_best_value=best,
+        epsilon=epsilon,
+        score_label=loss_label,
+    )
+
+
 def build_dual_set(
     admissible_set: PolicyAdmissibleSet,
     *,
