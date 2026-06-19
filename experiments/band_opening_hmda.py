@@ -45,7 +45,7 @@ from policy.encoder import PolicyConstraints
 from wedge.band_outcomes import approval_rate_gap, band_outcomes
 from wedge.collectors.hmda import filter_to_regime, load_dataframe
 from wedge.losses import grant_emphasis_loss
-from wedge.rashomon import evaluate_policy, filter_to_epsilon_under_loss
+from wedge.rashomon import evaluate_policy, filter_to_epsilon_under_loss_relative
 from wedge.sweep_families import sweep_family
 
 # -- frozen constants (spec §5) --------------------------------------------
@@ -237,7 +237,7 @@ def run_hmda(*, random_state: int = 0) -> dict:
             pa = evaluate_policy(swept, policy_constraints=policy)
             fam_out: dict = {"n_swept": len(swept), "n_admissible": len(pa.admissible)}
             for eps in EPS_SWEEP:
-                band = filter_to_epsilon_under_loss(
+                band = filter_to_epsilon_under_loss_relative(
                     pa, loss_fn=partial(grant_emphasis_loss),
                     loss_label="L_T", epsilon=eps,
                 )
