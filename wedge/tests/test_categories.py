@@ -32,7 +32,7 @@ def _make_sweep_and_model(
 ):
     """Helper: build a (SweepResult, CartModel) pair for tests. The sweep
     result here is synthetic — we only need its spec for set comparison; the
-    fitted_tree mirrors the refit model so feature-usage queries work."""
+    fitted_model mirrors the refit model so feature-usage queries work."""
     model = fit_model(
         df[list(feature_subset)],
         df["label"],
@@ -47,7 +47,7 @@ def _make_sweep_and_model(
         min_samples_leaf=min_samples_leaf,
         feature_subset=feature_subset,
     )
-    sr = SweepResult(spec=spec, holdout_auc=0.9, fitted_tree=model.tree)
+    sr = SweepResult(spec=spec, holdout_auc=0.9, fitted_model=model)
     return sr, model
 
 

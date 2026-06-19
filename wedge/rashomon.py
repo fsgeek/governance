@@ -48,8 +48,6 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-
 from policy.encoder import PolicyConstraints
 from wedge.losses import (
     deny_emphasis_loss,
@@ -57,7 +55,7 @@ from wedge.losses import (
     grant_emphasis_loss,
     grant_emphasis_loss_weighted,
 )
-from wedge.models import CartModel, fit_model
+from wedge.models import CartModel, FittedModel, fit_model
 
 
 @dataclass(frozen=True)
@@ -71,10 +69,9 @@ class HyperparameterSpec:
 class SweepResult:
     """One hyperparameter combo with its fit outcome.
 
-    `fitted_tree` is populated by `hyperparameter_sweep` so downstream phases
-    (policy evaluation, post-fit inspection) can read `tree_.feature` without
-    re-fitting. The wedge re-fits selected members on the full training set
-    in `refit_members`; the sweep's tree is for inspection only.
+    `fitted_model` is a FittedModel (CART, sparse-linear, or monotone-GBM).
+    `fitted_tree` remains as a read-only convenience for tree-only consumers
+    (categories, attribution); it is None for non-tree families.
 
     `holdout_y_true` and `holdout_y_pred` retain the model's holdout-set
     predictions and true labels so cost-asymmetric losses (L_T, L_F) can be
@@ -86,9 +83,16 @@ class SweepResult:
 
     spec: HyperparameterSpec
     holdout_auc: float
-    fitted_tree: Optional[DecisionTreeClassifier] = None
+    fitted_model: Optional["FittedModel"] = None
     holdout_y_true: Optional[np.ndarray] = None
     holdout_y_pred: Optional[np.ndarray] = None
+
+    @property
+    def fitted_tree(self):
+        from wedge.models import CartModel
+        if isinstance(self.fitted_model, CartModel):
+            return self.fitted_model.tree
+        return None
 
 
 @dataclass
@@ -207,7 +211,7 @@ def hyperparameter_sweep(
                             feature_subset=subset,
                         ),
                         holdout_auc=auc,
-                        fitted_tree=model.tree,
+                        fitted_model=model,
                         holdout_y_true=y_true,
                         holdout_y_pred=y_pred,
                     )
@@ -298,15 +302,15 @@ def evaluate_policy(
             )
             continue
 
-        # Gate 2 requires the fitted tree.
-        if sr.fitted_tree is None:
+        # Gate 2 requires the fitted model.
+        if sr.fitted_model is None:
             raise ValueError(
                 "evaluate_policy with non-None policy_constraints requires "
-                "SweepResult.fitted_tree to be populated. Did hyperparameter_sweep "
+                "SweepResult.fitted_model to be populated. Did hyperparameter_sweep "
                 "run successfully?"
             )
 
-        used = _used_features(sr.fitted_tree, feature_names)
+        used = sr.fitted_model.used_features()
 
         # Gate 2a: every mandatory feature actually split on (spec §2.7 OD-12).
         unused_mandatory = [

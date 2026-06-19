@@ -590,3 +590,19 @@ def test_refit_members_deterministic_with_random_state():
     preds_a = fitted_a[0].predict(df[FEATURE_COLS])
     preds_b = fitted_b[0].predict(df[FEATURE_COLS])
     assert np.array_equal(preds_a, preds_b)
+
+
+def test_sweepresult_carries_fitted_model_satisfying_protocol():
+    from wedge.models import FittedModel
+    from wedge.rashomon import SweepConfig, hyperparameter_sweep
+    from wedge.tests.fixtures import FEATURE_COLS, tiny_noisy_dataset
+    df = tiny_noisy_dataset()
+    cfg = SweepConfig(max_depths=(2,), min_samples_leafs=(1,),
+                      feature_subsets=(tuple(FEATURE_COLS),))
+    results = hyperparameter_sweep(df[FEATURE_COLS], df["label"], config=cfg)
+    assert results
+    sr = results[0]
+    assert isinstance(sr.fitted_model, FittedModel)
+    assert callable(sr.fitted_model.used_features)
+    # backwards-compat property still yields the raw tree for CART
+    assert sr.fitted_tree is not None
