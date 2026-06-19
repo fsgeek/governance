@@ -11,6 +11,7 @@ import pytest
 
 from experiments.band_opening_control import (
     assert_gate,
+    run_control,
     run_dirty_arm,
     run_full_control,
 )
@@ -54,17 +55,38 @@ def test_dirty_arm_exclusion_reason_mentions_proxy():
 
 def test_assert_gate_raises_on_failure():
     """assert_gate must raise RuntimeError when gate_passed is False."""
-    fake_result = {"gate_passed": False, "clean_arm_passed": False, "dirty": {
-        "excluded_proxy_users": False, "dirty_gap_max": 0.0, "dirty_arm_valid": False,
-    }}
+    fake_result = {
+        "gate_passed": False,
+        "clean_arm_passed": False,
+        "both_arms": True,  # sentinel required for full-control result
+        "dirty": {
+            "excluded_proxy_users": False,
+            "dirty_gap_max": 0.0,
+            "dirty_arm_valid": False,
+        }
+    }
     with pytest.raises(RuntimeError, match="STAGE-1 CONTROL GATE FAILED"):
         assert_gate(fake_result)
 
 
 def test_assert_gate_passes_on_success():
     """assert_gate must not raise when gate_passed is True."""
-    fake_result = {"gate_passed": True}
+    fake_result = {"gate_passed": True, "both_arms": True}
     assert_gate(fake_result)  # should not raise
+
+
+def test_assert_gate_rejects_partial_result():
+    """assert_gate must reject a clean-arm-only result (missing both_arms sentinel)."""
+    # Simulate what run_control returns (no both_arms key)
+    partial_result = {"gate_passed": True, "cart": {}, "linear": {}, "gbm": {}}
+    with pytest.raises(RuntimeError, match="requires a full-control result"):
+        assert_gate(partial_result)
+
+    # Also test an explicitly clean-arm result from run_control()
+    clean_only = run_control(random_state=0)
+    assert "both_arms" not in clean_only, "run_control must not include both_arms sentinel"
+    with pytest.raises(RuntimeError, match="requires a full-control result"):
+        assert_gate(clean_only)
 
 
 def test_full_control_gate_passes():

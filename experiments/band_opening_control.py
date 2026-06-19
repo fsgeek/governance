@@ -42,6 +42,10 @@ def run_control(random_state: int = 0) -> dict:
 
     Behavior is unchanged from the original; dirty arm is computed separately
     in run_dirty_arm() and combined in run_full_control().
+
+    WARNING: returns a clean-arm-only result; do NOT pass to assert_gate
+    (which requires run_full_control's both-arms result). Use run_full_control()
+    for the real gate.
     """
     X, y, protected, mono, policy = make_planted_dataset(random_state=random_state)
     feature_subsets = (("legit_a", "legit_b"),)  # the clean subset (proxy excluded)
@@ -108,6 +112,19 @@ def run_dirty_arm(random_state: int = 0) -> dict:
          (protected_proxy,) alone and verify |approval_rate_gap| > TAU.
          Also collect any multi-feature swept models that did use the proxy
          and record the max gap across all of them.
+
+    ⚠ SEMANTICS OF dirty_gap_max:
+      The forced-proxy model (CART on protected_proxy alone, gap ~0.29) demonstrates
+      the proxy's CAPACITY to discriminate — which justifies prohibiting it. It does
+      NOT show that a naturally-swept proxy-using model would exceed tau: in this DGP
+      the legitimate features carry the signal, so a model handed all features weights
+      the proxy near-zero (gap ~0.0075 < tau). The exclusion gate therefore enforces a
+      CATEGORICAL prohibition (you used a banned feature), not an observed-disparity
+      threshold. Laundering through the proxy requires STEERING a model onto it; it
+      does not happen by accident when legitimate signal is available.
+      DO NOT cite this dirty-arm result as 'exclusion prevented disparity' — cite it
+      as 'exclusion enforces the prohibition; the proxy has capacity to discriminate
+      if steered.'
 
     Returns:
       excluded_proxy_users  bool  -- all swept proxy-users excluded from admissible
@@ -211,6 +228,7 @@ def run_full_control(random_state: int = 0) -> dict:
         "dirty": dirty,
         "clean_arm_passed": clean_arm_passed,
         "gate_passed": gate_passed,
+        "both_arms": True,  # sentinel: assert_gate requires this key
     }
 
 
@@ -219,7 +237,17 @@ def assert_gate(result: dict) -> None:
 
     Call after run_full_control(). Safe to call from CI, tests, or any
     script that must not proceed to Stage 2 on a broken harness.
+
+    ⚠ GUARDS AGAINST FOOTGUN: raises RuntimeError if called with a clean-arm-only
+    result (from run_control). The sentinel key "both_arms" must be present to
+    confirm that both arms were evaluated.
     """
+    if "both_arms" not in result:
+        raise RuntimeError(
+            "assert_gate requires a full-control result (run_full_control), "
+            "got a partial result — refusing to certify the gate on the clean arm alone."
+        )
+
     if not result.get("gate_passed", False):
         dirty = result.get("dirty", {})
         clean_arm = result.get("clean_arm_passed", False)
