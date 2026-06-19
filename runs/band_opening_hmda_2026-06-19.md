@@ -63,6 +63,15 @@ for CART and linear, and ε now does work (more members enter as ε widens). GBM
 **for a separate reason** — its grid has a single config (`max_iters=(100,)`, n_swept=1),
 so it can never exceed one member; that is a grid/harness limit, not a band result.
 
+> **C-ceiling = grid, not model space (critical framing caveat):** C's ceiling is the GRID
+> size, not the model space. The per-family grids swept 4/4/1 configs, and the HMDA policy
+> excludes nothing (see §4 caveat below), so n_admissible = n_swept in every cell. "C=3–4"
+> therefore means "3–4 of the 4 swept models fall within the relative-ε band" — NOT "the
+> policy-admissible model space is rich." The defensible claim is precise: the relative-ε
+> filter admits a genuine MULTI-MEMBER band where the absolute-ε filter admitted exactly ONE
+> — i.e. the prior C=1 pinning was a filter+model-class artifact, now removed. This is NOT a
+> claim about the absolute richness of the Rashomon set.
+
 ### Race axis (PRIMARY — verdict hangs here)
 
 | family | n_adm | C (min→max over ε) | A_plain (max) | min_gap_plain | B_plain | A_margin | B_margin |
@@ -125,6 +134,15 @@ band, constructed with the pre-registered relative-ε filter, opens (C=3–4) an
 clean member on both protected axes for both constructable model classes. The neutral
 constructor has both a band to choose among and a lawful model to choose to.
 
+> **IMPORTANT — HMDA policy is EMPTY (critical framing caveat):** On HMDA the policy is
+> EMPTY (prohibited_features=(), mandatory_features=(), monotonicity={}), so the admissibility
+> filter does ZERO work on the real-data run — n_admissible = n_swept in every cell. The
+> policy-CONSTRAINT demonstration lives entirely in the Stage-1 SYNTHETIC gate (where the
+> prohibited proxy was actually excluded and shown to carry real disparity capacity). The HMDA
+> result demonstrates that the multi-family construction machinery runs end-to-end and that a
+> clean member exists in the swept set; it does NOT demonstrate policy constraints shaping the
+> band on real data. Do not read the HMDA band as policy-filtered.
+
 Caveat carried forward (does not change the row): the **plain spread A is small** (≤0.0048),
 so the danger this instrument surfaces is modest on the aggregate metric — but the
 **margin-aware spread is large** (race/cart A_margin 0.1749), so the adversarial-selection
@@ -172,7 +190,28 @@ exactly making that margin headroom legible.
    filter, this path worked.
 5. Metric contrast: no prediction. (n/a)
 
-## 6. Headline
+## 6. Framing caveats for any downstream / paper use
+
+The following caveats are **non-negotiable for paper or expert-witness use**. They do not
+change the §7 prediction scores or the §6 row determination — they bound what the result
+can defensibly claim.
+
+- **C ceiling = grid, not model space.** "C=3–4" means 3–4 of the 4 swept configs fall
+  within ε — not that the Rashomon set is rich. The HMDA policy is empty so n_admissible =
+  n_swept; the filter adds nothing on the real-data run.
+- **HMDA policy is EMPTY.** prohibited_features=(), mandatory_features=(), monotonicity={}.
+  The admissibility filter does zero work here. Policy constraints shaping the band are
+  demonstrated only in the Stage-1 synthetic gate, not in the HMDA real-data run.
+- **GBM C=1 is a 1-config-grid limitation, not a GBM finding.** The grid sweeps a single
+  `max_iters` value; GBM cannot produce C>1 regardless of ε. No inference about GBM's
+  Rashomon set is warranted.
+- **The race/CART clean member (gap 0.016 vs τ=0.020) is marginal.** The comfortable clean
+  member is the linear arm (gap 0.0010). Downstream claims should foreground linear, not
+  race/CART.
+- **Single substrate, single vintage.** HMDA-RI 2022 only. No cross-substrate generalization
+  claimed.
+
+## 7. Headline
 
 - **§6 row landed on: Row 1 — "Construction-as-audit WORKS."**
 - **Race axis (primary) headline under relative ε:** C = **3–4** (CART, linear; GBM pinned
