@@ -94,3 +94,17 @@ def test_feature_subset_restricts_features():
     e_b = model.emit_for_case(case_b)
     assert e_a["T"] == e_b["T"]
     assert e_a["F"] == e_b["F"]
+
+
+def test_cartmodel_used_features_returns_split_features():
+    import pandas as pd
+    from wedge.models import fit_model
+    # y depends only on f0; f1 is noise the tree may ignore.
+    X = pd.DataFrame({"f0": [0, 0, 1, 1, 0, 1, 1, 0], "f1": [0, 1, 0, 1, 1, 0, 1, 0]})
+    y = pd.Series([0, 0, 1, 1, 0, 1, 1, 0])
+    m = fit_model(X, y, model_id="t", max_depth=2, min_samples_leaf=1,
+                  feature_subset=("f0", "f1"))
+    used = m.used_features()
+    assert isinstance(used, set)
+    assert "f0" in used  # the tree must split on the signal feature
+    assert used.issubset({"f0", "f1"})
