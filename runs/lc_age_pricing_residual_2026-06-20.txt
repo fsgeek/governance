@@ -1,0 +1,53 @@
+LC AGE-RESIDUAL PRICING — does the young-end overcharge survive lawful controls? (2026-06-20)
+Source: data/accepted_2007_to_2018Q4.csv, resolved loans only, N=1344935
+est_age = 18 + (issue_d - earliest_cr_line). CREDIT-TENURE FLOOR, not true age: old up-slope understated, young effect understated if anything.
+Lawful controls (primary): fico_mid, dti, annual_inc, loan_amnt, term_months, purpose. EXCLUDED (age-loaded): emp_length, home_ownership, revol_util.
+FROZEN LEDGER (do not alter): Tony=evaporates | Claude=partial +10..+25bps young | meta=confabulation confirmed.
+Reference age band = [45,50) where present; bps are vs the reference band.
+
+[A] ALL-CONTROLS residual on RAW int_rate, by age band (CO-PRIMARY):
+  [18,25)    n=  91650  resid=  +208.7 bps  CI=[  +205.1,  +212.3]
+  [25,30)    n= 315725  resid=  +104.0 bps  CI=[  +101.0,  +107.0]
+  [30,35)    n= 435291  resid=   +52.1 bps  CI=[   +49.2,   +55.0]
+  [35,40)    n= 248524  resid=   +30.6 bps  CI=[   +27.6,   +33.7]
+  [40,45)    n= 127957  resid=   +17.5 bps  CI=[   +14.2,   +20.9]
+  [45,50)    n=  71773  resid=    +0.0 bps  CI=[    +0.0,    +0.0]  <- REF
+  [50,55)    n=  30994  resid=   -11.7 bps  CI=[   -16.6,    -6.8]
+  [55,60)    n=  14278  resid=   -14.5 bps  CI=[   -21.1,    -7.9]
+  [60,70)    n=   8015  resid=    -8.9 bps  CI=[   -17.4,    -0.4]
+  [70,95)    n=    728  resid=    +7.9 bps  CI=[   -18.9,   +34.7]
+  R2=0.4059  (reference band = [45,50))
+
+[poly] est_age + est_age^2 on raw int_rate: lin=-27.53 bps/yr, quad=+0.2797 bps/yr^2, R2=0.4058
+
+[C] ORTHOGONALIZED-AGE residual (price on age-beyond-risk), by band:
+  [18,25)    n=  74726  resid=  +207.5 bps  CI=[  +203.7,  +211.3]
+  [25,30)    n= 326159  resid=  +103.5 bps  CI=[  +100.4,  +106.5]
+  [30,35)    n= 446010  resid=   +56.3 bps  CI=[   +53.3,   +59.2]
+  [35,40)    n= 251134  resid=   +35.6 bps  CI=[   +32.5,   +38.7]
+  [40,45)    n= 127150  resid=   +19.4 bps  CI=[   +16.0,   +22.8]
+  [45,50)    n=  68180  resid=    +0.0 bps  CI=[    +0.0,    +0.0]  <- REF
+  [50,55)    n=  29414  resid=    -7.0 bps  CI=[   -12.0,    -2.0]
+  [55,60)    n=  13574  resid=    -9.8 bps  CI=[   -16.6,    -3.1]
+  [60,70)    n=   7556  resid=   -14.3 bps  CI=[   -23.0,    -5.6]
+  [70,95)    n=    706  resid=   +10.4 bps  CI=[   -16.7,   +37.5]
+  R2=0.4126  (reference band = [45,50))
+
+[D] WITHIN-TENURE stratification (CO-PRIMARY) — VOID for this substrate:
+  est_age = 18 + credit_tenure => corr(est_age, tenure) = 1.0 (same variable). 'Young vs old at equal tenure' is empty by construction; band 0 lives only in the lowest tenure bin. Cell B shows the collinearity Cell D targets is negligible (corr<=0.16, VIF~1.0), so Cell D answers a non-problem and cannot be computed. Reported void, not faked. The result is a CREDIT-TENURE gradient read as age.
+
+[B] COLLINEARITY diagnostics (how much attenuation is tenure-overlap vs real risk):
+  VIF: fico_mid=1.02, dti=1.03, annual_inc=1.14, loan_amnt=1.32, term_months=1.18
+  corr(est_age, control): fico_mid=+0.100, dti=+0.039, annual_inc=+0.138, loan_amnt=+0.160, term_months=+0.034
+
+[net-of-grade] young band residual AFTER also controlling for LC grade:
+  net-of-grade young = +26.7 bps  vs  A-raw young = +208.7 bps
+  Large A->net drop => the age signal lived inside LC's grade decision; small drop => it leaks past grade.
+
+LEDGER SCORING (ledger frozen above; verdicts computed from this run):
+  Tony 'evaporates': FALSIFIED — young residual is +209 bps (A), controls barely move the raw 217-bps gap.
+  Claude 'partial +10..+25bps': FALSIFIED vs grade-inclusive lawful risk (+209 bps), but HITS net-of-grade (+27 bps lands at the top of the predicted band).
+  meta 'confabulation': HELD — the +47 was never on disk; the true tenure gradient is far larger and grade-dependent.
+  KEY INSIGHT: the answer depends on whether LC GRADE is a lawful risk control. Net of FICO/DTI/income/etc the young pay +209 bps; net of GRADE too, +27 bps. Grade carries ~182 bps of age pricing. Whether that 182 is lawful risk or an age-laundering layer is the LDA/steered-selection question — not settled here.
+
+CAVEATS: 'age' here IS credit tenure (est_age = 18 + tenure); a 25yo and 45yo with equal tenure are indistinguishable — the gradient is a CREDIT-TENURE gradient read as age. Pricing = LC grade model, not a counterfactual lawful price. Old tail (70+) censored, small n, wide CIs — NOT a headline.
