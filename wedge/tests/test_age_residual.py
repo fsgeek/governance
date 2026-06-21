@@ -8,6 +8,10 @@ from wedge.age_residual import (
     AGE_BANDS,
     REFERENCE_BAND_INDEX,
     fit_band_residuals,
+    fit_poly_age,
+    within_tenure_residuals,
+    collinearity_diagnostics,
+    orthogonalized_age_residual,
 )
 
 
@@ -64,3 +68,46 @@ def test_positive_control_recovers_planted_young_premium():
     assert abs(res.band_bps[4]) < 8.0, f"unplanted band should be ~0, got {res.band_bps[4]:.1f}"
     # reference band residual is identically 0 by construction
     assert res.band_bps[REFERENCE_BAND_INDEX] == 0.0
+
+
+def test_poly_age_runs_and_returns_finite_bps():
+    df = _synth(planted_young_bps=30.0)
+    df["est_age"] = df["age"]
+    out = fit_poly_age(df)
+    # A single planted band is not a true parabola; we only assert the quadratic model RUNS
+    # and returns finite coefficients. Curvature is read in the artifact, not unit-asserted.
+    assert np.isfinite(out["est_age_coef_bps"])
+    assert np.isfinite(out["est_age_sq_coef_bps"])
+    assert 0.0 <= out["r2"] <= 1.0
+
+
+def test_within_tenure_returns_a_result_per_bin():
+    df = _synth(planted_young_bps=30.0)
+    df["est_age"] = df["age"]
+    bins = within_tenure_residuals(df, n_tenure_bins=4)
+    # qcut with duplicates="drop" may yield fewer than n_tenure_bins if tenure has ties at
+    # quantile boundaries; assert we get multiple strata, each a usable BandResult.
+    assert len(bins) >= 2
+    for r in bins.values():
+        assert hasattr(r, "band_bps")
+        assert hasattr(r, "reference_band")
+
+
+def test_collinearity_reports_vif_and_corr():
+    df = _synth()
+    df["est_age"] = df["age"]
+    diag = collinearity_diagnostics(df)
+    assert set(diag["vif"]).issuperset({"fico_mid", "dti"})
+    assert "fico_mid" in diag["corr_with_est_age"]
+    # synthetic controls are independent of age -> low corr
+    assert abs(diag["corr_with_est_age"]["fico_mid"]) < 0.1
+
+
+def test_orthogonalized_age_recovers_planted_young_premium():
+    # Cell C: residualize est_age on controls, then price-on-age-residual by band.
+    # With age independent of controls (synthetic), orthogonalization changes little and the
+    # planted +30bps on the young band must still surface.
+    df = _synth(planted_young_bps=30.0)
+    df["est_age"] = df["age"]
+    res = orthogonalized_age_residual(df)
+    assert abs(res.band_bps[0] - 30.0) < 8.0, f"expected ~30bps, got {res.band_bps[0]:.1f}"
