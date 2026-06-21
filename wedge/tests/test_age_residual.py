@@ -111,3 +111,36 @@ def test_orthogonalized_age_recovers_planted_young_premium():
     df["est_age"] = df["age"]
     res = orthogonalized_age_residual(df)
     assert abs(res.band_bps[0] - 30.0) < 8.0, f"expected ~30bps, got {res.band_bps[0]:.1f}"
+
+
+def test_orthogonalized_age_is_not_a_noop_when_age_correlates_with_controls():
+    # Regression test for the no-op bug: the original Cell C added the fitted age-component as
+    # an extra CONTROL (a linear combo of existing controls), so OLS left the band coefs
+    # bit-identical to the all-controls fit. Build data where est_age IS correlated with a
+    # control, so a correct orthogonalization (banding the age RESIDUAL) must differ from the
+    # plain all-controls band fit.
+    rng = np.random.default_rng(1)
+    n = 40000
+    age = rng.uniform(18, 95, n)
+    # fico correlated with age (older -> higher fico), so risk-control overlaps age
+    fico_mid = 640 + (age - 18) * 1.5 + rng.normal(0, 15, n)
+    dti = rng.uniform(0, 35, n)
+    annual_inc = rng.uniform(20000, 200000, n)
+    loan_amnt = rng.uniform(1000, 40000, n)
+    term_months = rng.choice([36, 60], n)
+    purpose = rng.choice(["debt_consolidation", "credit_card"], n)
+    int_rate = 5.0 + (820 - fico_mid) * 0.02 + dti * 0.05 + rng.normal(0, 0.5, n)
+    band = np.array([assign_age_band(a) for a in age])
+    df = pd.DataFrame(dict(age=age, est_age=age, fico_mid=fico_mid, dti=dti,
+                           annual_inc=annual_inc, loan_amnt=loan_amnt, term_months=term_months,
+                           purpose=purpose, int_rate=int_rate, age_band=band))
+    plain = fit_band_residuals(df)
+    orth = orthogonalized_age_residual(df)
+    # When age is correlated with a control, banding the age RESIDUAL reshuffles band membership,
+    # so Cell C must differ from the plain all-controls fit. The no-op bug produced a difference
+    # of EXACTLY 0.0; any non-trivial difference (>0.1 bp, far above float epsilon) proves the
+    # orthogonalization actually re-bands rather than collapsing back to the all-controls fit.
+    assert abs(plain.band_bps[0] - orth.band_bps[0]) > 0.1, (
+        f"Cell C is a no-op — identical to all-controls fit "
+        f"(plain={plain.band_bps[0]:.3f}, orth={orth.band_bps[0]:.3f})"
+    )

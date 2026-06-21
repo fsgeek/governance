@@ -162,25 +162,27 @@ def collinearity_diagnostics(df: pd.DataFrame, controls: list[str] | None = None
 
 
 def orthogonalized_age_residual(df: pd.DataFrame, outcome: str = "int_rate",
-                                controls: list[str] | None = None,
-                                age_band_col: str = "age_band") -> BandResult:
+                                controls: list[str] | None = None) -> BandResult:
     """Cell C (literal orthogonalization): regress est_age on the lawful controls, take the
-    residual (age-not-explained-by-risk), then run the band residual of price on bands defined
-    over that orthogonalized age. Isolates the age signal beyond what risk predicts.
+    residual (age-not-explained-by-risk), BAND that residual, and price on the residual-bands.
+    Isolates the age signal beyond what risk predicts.
 
-    The age bands are recomputed on the ORIGINAL est_age (so band membership is unchanged); the
-    orthogonalization enters by adding the age-residual as a control, removing the part of price
-    explained by the risk-predictable component of age. This keeps band labels interpretable
-    while pricing only the age-beyond-risk component.
+    Note on a fixed bug: an earlier version added the FITTED age-component as an extra control.
+    That is a linear combination of controls already in the model, so OLS leaves the band
+    coefficients bit-identical to the all-controls fit (a no-op). The correct orthogonalization
+    re-bands the age RESIDUAL. When est_age is nearly orthogonal to the controls (as in real LC
+    data, R^2~0.04), the residual ~= est_age and Cell C ~= Cell A — that near-equality is then a
+    genuine finding (age is orthogonal to lawful risk), not a degenerate artifact.
     """
     controls = list(DEFAULT_CONTROLS if controls is None else controls)
     d = df.copy()
     numeric = " + ".join(controls)
     age_model = smf.ols(f"est_age ~ {numeric} + C(purpose)", data=d).fit()
-    d["_age_resid"] = d["est_age"] - age_model.fittedvalues
-    # price on age-bands, controlling for the risk-predictable age component implicitly removed:
-    # add _age_resid is NOT what we want (that re-adds age); instead we band on est_age but
-    # control for the FITTED (risk-predictable) age so only age-beyond-risk drives band coefs.
-    d["_age_riskpart"] = age_model.fittedvalues
+    age_resid = d["est_age"] - age_model.fittedvalues
+    # map the residual back onto the age scale (mean est_age + residual) so the same band
+    # cutpoints and reference band remain interpretable, then band and price on it.
+    pseudo_age = float(d["est_age"].mean()) + age_resid
+    d["_resid_band"] = pseudo_age.map(assign_age_band)
+    d = d[d["_resid_band"] >= 0].copy()
     return fit_band_residuals(d, outcome=outcome, controls=controls,
-                              age_band_col=age_band_col, extra_terms="_age_riskpart")
+                              age_band_col="_resid_band")
