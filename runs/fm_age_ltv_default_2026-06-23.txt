@@ -34,3 +34,35 @@ H0 SCORING (frozen pre-reg; isotonic primary):
   => H0 SURVIVES: high-LTV cohort excess +17 bps does not clear the frozen falsifier (+25.0 bps, CI-excludes-0, monotone). On FM-via-LTV the LC gradient does NOT reproduce. (A null here is about the LTV proxy on FM, not proof LC is artifactual — Arm C already showed the LC machinery is sound.)
 
 CAVEATS: FM 'age' is LTV-cohort, a weaker/different proxy than LC credit-tenure. No income control (FM gap). Pricing = FM note rate. A null does not prove LC artifactual; it shows the LTV proxy doesn't carry the gradient on this FM vintage.
+
+================================================================================
+ADVERSARY ADDENDUM (blind refutation, independently re-verified 2026-06-23)
+================================================================================
+A blind adversary (charged to REFUTE) broke the "directional generality, attenuated"
+reading. VERDICT: REFUTED. H0 (LC is an outlier) SURVIVES — confirmed, not merely "by the
++25 bar." The earlier commit's "same-signed gradient present" gloss was a POST-HOC
+reinterpretation of a frozen null and is WITHDRAWN.
+
+THE KILL (re-verified directly from the feature frame, numbers below):
+  LTV band | MI-share | FTHB-share | realized-default | excess
+    0 (<=60)   0.0%      3.7%        0.19%            -4.1
+    1          0.0%      4.9%        0.27%            -6.2
+    2          0.0%      6.9%        0.36%            -3.2
+    3 (75-80)  0.0%     18.2%        0.42%            -0.6
+    4 (80-85) 99.8%     11.6%        0.60%            +9.9
+    5         99.8%     30.9%        0.48%            +5.2
+    6         99.8%     47.2%        0.78%            +6.2
+    7 (95-100)92.4%     90.5%        1.08%           +17.0
+The "sign flip" is a STEP FUNCTION at the LTV-80 PMI threshold: every subsidized band has
+~0% mortgage insurance, every "past-default" band ~99%. The excess is MORTGAGE-INSURANCE
+premium loaded into the note rate (+ a 90% first-time-homebuyer top band) — pricing facts
+bundled with high LTV, ORTHOGONAL TO AGE. The tautology-break nets out LTV's DEFAULT content
+but not MI's RATE-LOADING content; adding MI to the yardstick barely moves the excess because
+MI's effect is on price not default. Adversary's MI==0 top-band subgroup: +81bps while
+defaulting LESS — pure rate-bundling, the opposite of "past realized default."
+
+Also conceded: "monotone" was an artifact of a +5bps slack in the runner's monotonicity test
+(strict reading: 2 of 7 steps decrease); top band rests on only ~51 default events.
+
+WHAT ACTUALLY SURVIVES: nothing about age. On FM-2015Q1 the LTV-as-age proxy carries no age
+gradient; the apparent excess is a PMI-threshold + FTHB-composition pricing artifact. H0 holds.
