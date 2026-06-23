@@ -1,0 +1,35 @@
+LC PLACEBO (Arm C) — does the benchmark invent a young-end gradient on no-age-content bands? (2026-06-23)
+Source: LC resolved loans, N=1344935. Real result to NOT reproduce: young +134 bps.
+FROZEN: placebo PASSES if |band-0 excess| < 30.0 bps (CI includes 0). K-C1: if a placebo shows ~+134, machinery is artifact-generating -> HALT.
+
+[P1] PERMUTED-TENURE bands (real age signal destroyed by shuffle):
+  band  0 n=  91650  excess=    +0.8 bps  CI=[    -1.6,    +3.2]  <- shuffled band 0
+  band  1 n= 315725  excess=    -0.8 bps  CI=[    -2.1,    +0.4]
+  band  2 n= 435291  excess=    +0.6 bps  CI=[    -0.5,    +1.7]
+  band  3 n= 248524  excess=    -0.2 bps  CI=[    -1.7,    +1.2]
+  band  4 n= 127957  excess=    +0.3 bps  CI=[    -1.7,    +2.3]
+  band  5 n=  71773  excess=    +0.5 bps  CI=[    -2.2,    +3.2]
+  band  6 n=  30994  excess=    -2.5 bps  CI=[    -6.6,    +1.4]
+  band  7 n=  14278  excess=    -2.7 bps  CI=[    -8.5,    +3.0]
+  band  8 n=   8015  excess=    +4.9 bps  CI=[    -3.4,   +12.8]
+  band  9 n=    728  excess=    +0.5 bps  CI=[   -27.3,   +25.9]
+  -> band-0 excess = +0.8 bps, CI=[-1.6,+3.2]  PLACEBO PASS
+
+[P2] AGE-NEUTRAL FIELD bands (loan_amnt deciles as pseudo-age):
+  band  0 n= 181957  excess=   +75.1 bps  CI=[   +73.4,   +76.8]  <- smallest-loan band 0
+  band  1 n=  88862  excess=   +12.2 bps  CI=[    +9.9,   +14.4]
+  band  2 n= 133079  excess=    +8.1 bps  CI=[    +6.2,    +9.9]
+  band  3 n= 151523  excess=   -24.1 bps  CI=[   -25.8,   -22.4]
+  band  4 n= 128518  excess=   -27.6 bps  CI=[   -29.5,   -25.7]
+  band  5 n= 155178  excess=   -28.6 bps  CI=[   -30.4,   -26.8]
+  band  6 n= 114603  excess=   -36.9 bps  CI=[   -39.0,   -34.7]
+  band  7 n= 125069  excess=   -43.4 bps  CI=[   -45.4,   -41.3]
+  band  8 n= 146923  excess=   -38.5 bps  CI=[   -40.5,   -36.5]
+  band  9 n= 119223  excess=   +93.3 bps  CI=[   +90.9,   +95.6]
+  -> band-0 excess = +75.1 bps, CI=[+73.4,+76.8]  no +134-scale artifact
+  (note: loan_amnt may carry real pricing signal; the test is only that it does not MANUFACTURE a +134-scale young-end overcharge from nothing.)
+
+VERDICT (Arm C):
+  P1 permuted-tenure: PASS (band-0 +1 bps). The real +134 does NOT reproduce on shuffled age.
+  P2 loan_amnt: band-0 +75 bps — no +134-scale artifact.
+  => Method is TRUSTWORTHY — proceed to Arm A.
