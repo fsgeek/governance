@@ -1,0 +1,36 @@
+FM ARM A — does the LC age/pricing-past-default gradient appear on Fannie Mae? (LTV-cohort age proxy, 2026-06-23)
+Source: data/fanniemae/2015Q1.csv (cache), eligible loans N=378484, defaults=1631 (0.43%).
+H0 (Tony, frozen): LC is an outlier; gradient will NOT appear. This run tries to falsify it.
+Age proxy = LTV cohort: band 0 = LOW LTV (OLD-analog), band 9 = HIGH LTV (YOUNG-analog).
+Tautology break: LTV is IN the predicted-default yardstick, so a surviving high-LTV excess is NOT LTV-risk rerouted. Risk controls: fico_range_low, dti, ltv, loan_term_months, purpose (no income — FM doesn't release it).
+FROZEN falsifier: YOUNG-analog (band 9) excess > +25.0 bps, CI excludes 0, AND monotone decline toward band 0. H0 survives if band-9 excess ~ 0.
+
+[K-A1] corr(LTV-cohort, predicted-default) = +0.255  => OK, cohort separable from its risk
+
+=== MAP = ISOTONIC ===  (LTV-cohort excess over default-justified rate)
+  LTV-band  0 n=  68691  excess=    -4.1 bps  CI=[    -4.4,    -3.7]  SUBSIDIZED  OLD-analog (low LTV)
+  LTV-band  1 n=  49160  excess=    -6.2 bps  CI=[    -6.6,    -5.8]  SUBSIDIZED  
+  LTV-band  2 n=  42214  excess=    -3.2 bps  CI=[    -3.6,    -2.8]  SUBSIDIZED  
+  LTV-band  3 n= 106842  excess=    -0.6 bps  CI=[    -0.8,    -0.3]  SUBSIDIZED  
+  LTV-band  4 n=  17227  excess=    +9.9 bps  CI=[    +9.3,   +10.6]  PAST default  
+  LTV-band  5 n=  29861  excess=    +5.2 bps  CI=[    +4.8,    +5.6]  PAST default  
+  LTV-band  6 n=  59750  excess=    +6.2 bps  CI=[    +5.9,    +6.5]  PAST default  
+  LTV-band  7 n=   4739  excess=   +17.0 bps  CI=[   +15.8,   +18.2]  PAST default  YOUNG-analog (high LTV)
+
+=== MAP = DECILE ===  (LTV-cohort excess over default-justified rate)
+  LTV-band  0 n=  68691  excess=    -5.2 bps  CI=[    -5.5,    -4.9]  SUBSIDIZED  OLD-analog (low LTV)
+  LTV-band  1 n=  49160  excess=    -5.2 bps  CI=[    -5.6,    -4.9]  SUBSIDIZED  
+  LTV-band  2 n=  42214  excess=    -2.1 bps  CI=[    -2.5,    -1.7]  SUBSIDIZED  
+  LTV-band  3 n= 106842  excess=    +0.6 bps  CI=[    +0.4,    +0.8]  PAST default  
+  LTV-band  4 n=  17227  excess=   +11.0 bps  CI=[   +10.4,   +11.6]  PAST default  
+  LTV-band  5 n=  29861  excess=    +6.4 bps  CI=[    +6.0,    +6.8]  PAST default  
+  LTV-band  6 n=  59750  excess=    +7.8 bps  CI=[    +7.5,    +8.0]  PAST default  
+  LTV-band  7 n=   4739  excess=   +19.0 bps  CI=[   +17.8,   +20.2]  PAST default  YOUNG-analog (high LTV)
+
+H0 SCORING (frozen pre-reg; isotonic primary):
+  YOUNG-analog (band 9, high LTV) excess = +17.0 bps, CI=[+15.8,+18.2]
+  OLD-analog (band 0, low LTV) excess = -4.1 bps
+  rises-with-LTV (young>old, monotone): True
+  => H0 SURVIVES: high-LTV cohort excess +17 bps does not clear the frozen falsifier (+25.0 bps, CI-excludes-0, monotone). On FM-via-LTV the LC gradient does NOT reproduce. (A null here is about the LTV proxy on FM, not proof LC is artifactual — Arm C already showed the LC machinery is sound.)
+
+CAVEATS: FM 'age' is LTV-cohort, a weaker/different proxy than LC credit-tenure. No income control (FM gap). Pricing = FM note rate. A null does not prove LC artifactual; it shows the LTV proxy doesn't carry the gradient on this FM vintage.
