@@ -1,0 +1,100 @@
+LC AGE GRADE-vs-DEFAULT — does grade price the young PAST realized default? (2026-06-22)
+Source: scripts.age_pricing_residual loader, resolved loans, N=1344935, defaults=268488 (20.0%).
+Yardstick = DEFAULT-justified price (Tony's reframe): the rate a loan's realized-default risk maps to, estimated empirically. NOT normalized to LC's own price.
+CORPUS map = age-blind whole-population (primary; young thin-file default baked in => surviving young excess is CONSERVATIVE). WITHIN-GRADE map = per-grade (foil).
+Predicted default: logistic on FICO/DTI/income/loan/term/purpose — NOT age.
+FROZEN LEDGER (do not alter): {"claude_corpus_excess": "young [18,25) corpus excess SURVIVES, +40..+100 bps (positive, conservative, smaller than the raw 182)", "claude_grade_laundering": "within-grade young excess drops to under half the corpus excess (grade is where the age pricing hides)", "claude_old_end_sign": "old priced BELOW default-justified (subsidized) through 50-60; 70+ too censored to sign (genuinely uncertain \u2014 the fun)", "tony_caveat": "corpus benchmark biases AGAINST the young (short histories -> higher-default categories), so young excess ATTENUATED vs raw 182; a chunk is defensible risk"}
+CAVEAT: 'age' IS credit tenure (est_age=18+tenure). Pricing = LC grade model. Old tail (70+) censored, small n.
+
+[map:isotonic] justified rate ranges 7.53% .. 30.99% (monotone non-decreasing — guard passed).
+[map:decile] justified rate ranges 8.35% .. 19.01% (monotone non-decreasing — guard passed).
+
+=== MAP = ISOTONIC ===
+[CORPUS] per-band excess over DEFAULT-justified rate (primary; conservative):
+  [18,25)    n=  91650  excess=  +134.0 bps  CI=[  +131.5,  +136.4]  PAST default
+  [25,30)    n= 315725  excess=   +33.2 bps  CI=[   +31.9,   +34.5]  PAST default
+  [30,35)    n= 435291  excess=    -9.3 bps  CI=[   -10.4,    -8.3]  SUBSIDIZED
+  [35,40)    n= 248524  excess=   -26.1 bps  CI=[   -27.6,   -24.7]  SUBSIDIZED
+  [40,45)    n= 127957  excess=   -35.5 bps  CI=[   -37.5,   -33.5]  SUBSIDIZED
+  [45,50)    n=  71773  excess=   -53.5 bps  CI=[   -56.2,   -50.8]  SUBSIDIZED
+  [50,55)    n=  30994  excess=   -66.4 bps  CI=[   -70.3,   -62.6]  SUBSIDIZED
+  [55,60)    n=  14278  excess=   -77.7 bps  CI=[   -83.5,   -71.7]  SUBSIDIZED
+  [60,70)    n=   8015  excess=   -75.9 bps  CI=[   -83.3,   -68.5]  SUBSIDIZED
+  [70,95)    n=    728  excess=   -64.9 bps  CI=[   -92.8,   -35.6]  SUBSIDIZED
+[WITHIN-GRADE] per-band excess (foil; grade-internal yardstick):
+  [18,25)    n=  91650  excess=   +14.4 bps  CI=[   +13.4,   +15.4]  PAST default
+  [25,30)    n= 315725  excess=    +3.9 bps  CI=[    +3.4,    +4.4]  PAST default
+  [30,35)    n= 435291  excess=    +0.3 bps  CI=[    -0.1,    +0.8]  PAST default  (CI crosses 0)
+  [35,40)    n= 248524  excess=    -4.0 bps  CI=[    -4.6,    -3.5]  SUBSIDIZED
+  [40,45)    n= 127957  excess=    -3.8 bps  CI=[    -4.5,    -3.0]  SUBSIDIZED
+  [45,50)    n=  71773  excess=    -8.9 bps  CI=[    -9.9,    -7.9]  SUBSIDIZED
+  [50,55)    n=  30994  excess=    -9.4 bps  CI=[   -10.9,    -8.0]  SUBSIDIZED
+  [55,60)    n=  14278  excess=   -13.4 bps  CI=[   -15.6,   -11.1]  SUBSIDIZED
+  [60,70)    n=   8015  excess=   -13.0 bps  CI=[   -15.7,   -10.3]  SUBSIDIZED
+  [70,95)    n=    728  excess=    -4.3 bps  CI=[   -14.3,    +6.0]  SUBSIDIZED  (CI crosses 0)
+[GRADE-LAUNDERING gap] corpus excess − within-grade excess, per band (large young-end gap = grade absorbed the age pricing):
+  [18,25)    corpus=  +134.0  within=   +14.4  gap=  +119.5 bps
+  [25,30)    corpus=   +33.2  within=    +3.9  gap=   +29.3 bps
+  [30,35)    corpus=    -9.3  within=    +0.3  gap=    -9.7 bps
+  [35,40)    corpus=   -26.1  within=    -4.0  gap=   -22.1 bps
+  [40,45)    corpus=   -35.5  within=    -3.8  gap=   -31.8 bps
+  [45,50)    corpus=   -53.5  within=    -8.9  gap=   -44.6 bps
+  [50,55)    corpus=   -66.4  within=    -9.4  gap=   -57.0 bps
+  [55,60)    corpus=   -77.7  within=   -13.4  gap=   -64.3 bps
+  [60,70)    corpus=   -75.9  within=   -13.0  gap=   -62.9 bps
+  [70,95)    corpus=   -64.9  within=    -4.3  gap=   -60.6 bps
+
+=== MAP = DECILE ===
+[CORPUS] per-band excess over DEFAULT-justified rate (primary; conservative):
+  [18,25)    n=  91650  excess=  +136.2 bps  CI=[  +133.8,  +138.7]  PAST default
+  [25,30)    n= 315725  excess=   +36.6 bps  CI=[   +35.3,   +37.8]  PAST default
+  [30,35)    n= 435291  excess=    -6.8 bps  CI=[    -7.9,    -5.8]  SUBSIDIZED
+  [35,40)    n= 248524  excess=   -24.7 bps  CI=[   -26.2,   -23.3]  SUBSIDIZED
+  [40,45)    n= 127957  excess=   -35.7 bps  CI=[   -37.7,   -33.7]  SUBSIDIZED
+  [45,50)    n=  71773  excess=   -54.4 bps  CI=[   -57.1,   -51.7]  SUBSIDIZED
+  [50,55)    n=  30994  excess=   -68.2 bps  CI=[   -72.0,   -64.4]  SUBSIDIZED
+  [55,60)    n=  14278  excess=   -79.7 bps  CI=[   -85.6,   -73.7]  SUBSIDIZED
+  [60,70)    n=   8015  excess=   -78.0 bps  CI=[   -85.3,   -70.7]  SUBSIDIZED
+  [70,95)    n=    728  excess=   -64.8 bps  CI=[   -92.8,   -35.6]  SUBSIDIZED
+[WITHIN-GRADE] per-band excess (foil; grade-internal yardstick):
+  [18,25)    n=  91650  excess=    +9.4 bps  CI=[    +8.4,   +10.4]  PAST default
+  [25,30)    n= 315725  excess=    -0.4 bps  CI=[    -0.9,    +0.1]  SUBSIDIZED  (CI crosses 0)
+  [30,35)    n= 435291  excess=    -3.5 bps  CI=[    -3.9,    -3.1]  SUBSIDIZED
+  [35,40)    n= 248524  excess=    -7.5 bps  CI=[    -8.1,    -7.0]  SUBSIDIZED
+  [40,45)    n= 127957  excess=    -7.0 bps  CI=[    -7.7,    -6.2]  SUBSIDIZED
+  [45,50)    n=  71773  excess=   -11.8 bps  CI=[   -12.8,   -10.8]  SUBSIDIZED
+  [50,55)    n=  30994  excess=   -12.0 bps  CI=[   -13.6,   -10.6]  SUBSIDIZED
+  [55,60)    n=  14278  excess=   -16.0 bps  CI=[   -18.1,   -13.7]  SUBSIDIZED
+  [60,70)    n=   8015  excess=   -15.5 bps  CI=[   -18.3,   -12.7]  SUBSIDIZED
+  [70,95)    n=    728  excess=    -6.9 bps  CI=[   -16.7,    +3.0]  SUBSIDIZED  (CI crosses 0)
+[GRADE-LAUNDERING gap] corpus excess − within-grade excess, per band (large young-end gap = grade absorbed the age pricing):
+  [18,25)    corpus=  +136.2  within=    +9.4  gap=  +126.9 bps
+  [25,30)    corpus=   +36.6  within=    -0.4  gap=   +37.0 bps
+  [30,35)    corpus=    -6.8  within=    -3.5  gap=    -3.4 bps
+  [35,40)    corpus=   -24.7  within=    -7.5  gap=   -17.2 bps
+  [40,45)    corpus=   -35.7  within=    -7.0  gap=   -28.7 bps
+  [45,50)    corpus=   -54.4  within=   -11.8  gap=   -42.6 bps
+  [50,55)    corpus=   -68.2  within=   -12.0  gap=   -56.2 bps
+  [55,60)    corpus=   -79.7  within=   -16.0  gap=   -63.8 bps
+  [60,70)    corpus=   -78.0  within=   -15.5  gap=   -62.5 bps
+  [70,95)    corpus=   -64.8  within=    -6.9  gap=   -57.9 bps
+
+[RAIL] age-in-grade vs age-in-default standardized loading, per band (positive grade−default = grade prices age the default data doesn't justify):
+  [18,25)    grade_load=+0.4143  default_load=+0.1440  grade−default=+0.2703
+  [25,30)    grade_load=+0.2025  default_load=+0.0784  grade−default=+0.1242
+  [30,35)    grade_load=+0.0954  default_load=+0.0287  grade−default=+0.0666
+  [35,40)    grade_load=+0.0576  default_load=+0.0065  grade−default=+0.0511
+  [40,45)    grade_load=+0.0285  default_load=-0.0071  grade−default=+0.0356
+  [45,50)    grade_load=+0.0000  default_load=+0.0000  grade−default=+0.0000
+  [50,55)    grade_load=-0.0253  default_load=+0.0060  grade−default=-0.0313
+  [55,60)    grade_load=-0.0242  default_load=+0.0429  grade−default=-0.0671
+  [60,70)    grade_load=-0.0127  default_load=+0.1349  grade−default=-0.1475
+  [70,95)    grade_load=+0.0019  default_load=+0.3001  grade−default=-0.2982
+
+LEDGER SCORING (ledger frozen above; verdicts computed from this run; isotonic map):
+  Claude 'corpus excess +40..+100 survives': young [18,25) corpus excess = +134 bps -> SURVIVES; in predicted band: False.
+  Claude 'within-grade drops to <half corpus': within=+14 vs corpus=+134 (gap +120); <half: True.
+  Claude 'old-end subsidized through 50-60': {'[50,55)': 'subsidized', '[55,60)': 'subsidized', '[60,70)': 'subsidized'}.
+  Tony 'attenuated vs raw 182': raw grade wedge was ~182 bps; corpus young excess is +134 bps (attenuated).
+
+READ: corpus young excess = how much the young pay past what their OWN realized default justifies (conservative — thin-file risk already netted). within-grade young excess = what survives once grade defines the yardstick. The gap = grade's age-laundering. Old-end negative excess = subsidized by the same instrument.

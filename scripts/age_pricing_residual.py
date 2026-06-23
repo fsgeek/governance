@@ -25,16 +25,33 @@ from wedge.age_residual import (  # noqa: E402
 )
 
 CSV = "data/accepted_2007_to_2018Q4.csv"
+PARQUET = "data/accepted_2007_to_2018Q4.parquet"  # column-subset cache; built once from CSV
 OUT_TXT = "runs/lc_age_pricing_residual_2026-06-20.txt"
 OUT_JSON = "runs/lc_age_pricing_residual_2026-06-20.json"
 RESOLVED = {"Fully Paid", "Charged Off"}
+USECOLS = ["int_rate", "fico_range_low", "fico_range_high", "dti", "annual_inc",
+           "loan_amnt", "term", "purpose", "issue_d", "earliest_cr_line",
+           "loan_status", "grade", "sub_grade"]
+
+
+def _load_raw():
+    """Read the needed columns. Re-parsing the 1.6 GB CSV every run was the runtime wedge; we
+    cache a column-subset parquet on first use and read that thereafter (seconds, not minutes).
+    The parquet holds RAW columns only — every downstream transform in load() is unchanged, so
+    the cache is provably equivalent to the CSV path (regression-tested)."""
+    import os
+    if os.path.exists(PARQUET):
+        return pd.read_parquet(PARQUET, columns=USECOLS)
+    df = pd.read_csv(CSV, usecols=USECOLS, low_memory=False)
+    try:
+        df.to_parquet(PARQUET, index=False)
+    except Exception:
+        pass  # cache is an optimization; a write failure must not break the run
+    return df
 
 
 def load(sample=None, seed=0):
-    usecols = ["int_rate", "fico_range_low", "fico_range_high", "dti", "annual_inc",
-               "loan_amnt", "term", "purpose", "issue_d", "earliest_cr_line",
-               "loan_status", "grade", "sub_grade"]
-    df = pd.read_csv(CSV, usecols=usecols, low_memory=False)
+    df = _load_raw()
     df = df[df["loan_status"].isin(RESOLVED)].copy()
     df["int_rate"] = pd.to_numeric(df["int_rate"], errors="coerce")
     df["fico_mid"] = (pd.to_numeric(df["fico_range_low"], errors="coerce")
