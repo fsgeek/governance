@@ -1,0 +1,77 @@
+LC AGE x REALIZED LENDER RETURN — did the young-end overcharge PAY OFF? (2026-06-23)
+Source: data/accepted_2007_to_2018Q4.csv, resolved loans only, N=1344935. Loss-positive loans: 267332 (19.9%).
+realized_return = (total_pymnt + recoveries - funded_amnt) / funded_amnt  (REALIZED, not modeled).
+Lawful controls: fico_mid, dti, annual_inc, loan_amnt, term_months, purpose. Reference band [45,50).
+FROZEN LEDGER: Claude = young excess NEGATIVE or ~0 (in [-8,+2]pp), < [25,30); bias-against-LENDER present.  Tony = lenders PROFIT from the young; the bigger the profit gradient, the more likely it is DELIBERATE (vs unnoticed).
+
+[guard] median |out_prncp| = 0.0000 (must be < 1.0 for complete cashflow) => PASS
+
+[A] REALIZED RETURN by age band, lawful controls (PRIMARY; pp of funded principal):
+  [18,25)    n=  91650  coef=   -2.79 pp  CI=[   -3.05,   -2.52]
+  [25,30)    n= 315725  coef=   -1.75 pp  CI=[   -1.98,   -1.53]
+  [30,35)    n= 435291  coef=   -0.81 pp  CI=[   -1.03,   -0.60]
+  [35,40)    n= 248524  coef=   +0.04 pp  CI=[   -0.19,   +0.26]
+  [40,45)    n= 127957  coef=   +0.33 pp  CI=[   +0.08,   +0.58]
+  [45,50)    n=  71773  coef=   +0.00 pp  CI=[   +0.00,   +0.00]  <- REF
+  [50,55)    n=  30994  coef=   -0.17 pp  CI=[   -0.53,   +0.19]
+  [55,60)    n=  14278  coef=   -1.10 pp  CI=[   -1.59,   -0.62]
+  [60,70)    n=   8015  coef=   -3.67 pp  CI=[   -4.29,   -3.04]
+  [70,95)    n=    728  coef=   -9.36 pp  CI=[  -11.34,   -7.38]
+  R2=0.0059  (reference band = [45,50))
+
+[pos-control] plant +5pp on 30% of [18,25) (expect ~+1.5pp recovery at that band):
+  young base=-2.79pp  ->  with-plant=-1.29pp  recovered=+1.50pp  =>  PASS
+
+[B] NET-OF-GRADE realized return by band (does grade internalize the economics?):
+  [18,25)    n=  91650  coef=   -2.58 pp  CI=[   -2.85,   -2.31]
+  [25,30)    n= 315725  coef=   -1.65 pp  CI=[   -1.87,   -1.42]
+  [30,35)    n= 435291  coef=   -0.77 pp  CI=[   -0.98,   -0.55]
+  [35,40)    n= 248524  coef=   +0.06 pp  CI=[   -0.17,   +0.28]
+  [40,45)    n= 127957  coef=   +0.34 pp  CI=[   +0.09,   +0.59]
+  [45,50)    n=  71773  coef=   +0.00 pp  CI=[   +0.00,   +0.00]  <- REF
+  [50,55)    n=  30994  coef=   -0.18 pp  CI=[   -0.54,   +0.19]
+  [55,60)    n=  14278  coef=   -1.10 pp  CI=[   -1.58,   -0.61]
+  [60,70)    n=   8015  coef=   -3.66 pp  CI=[   -4.29,   -3.04]
+  [70,95)    n=    728  coef=   -9.38 pp  CI=[  -11.36,   -7.40]
+  R2=0.0068  (reference band = [45,50))
+  young A=-2.79pp  ->  net-of-grade=-2.58pp  (large drop => grade carries the realized-return gradient too)
+
+[C] DECOMPOSITION — interest collected rate by band (the overcharge, realized):
+  [18,25)    n=  91650  coef=   +1.18 pp  CI=[   +1.09,   +1.27]
+  [25,30)    n= 315725  coef=   +0.39 pp  CI=[   +0.32,   +0.47]
+  [30,35)    n= 435291  coef=   -0.01 pp  CI=[   -0.08,   +0.06]
+  [35,40)    n= 248524  coef=   +0.15 pp  CI=[   +0.08,   +0.23]
+  [40,45)    n= 127957  coef=   +0.12 pp  CI=[   +0.03,   +0.20]
+  [45,50)    n=  71773  coef=   +0.00 pp  CI=[   +0.00,   +0.00]  <- REF
+  [50,55)    n=  30994  coef=   -0.05 pp  CI=[   -0.17,   +0.07]
+  [55,60)    n=  14278  coef=   -0.02 pp  CI=[   -0.19,   +0.15]
+  [60,70)    n=   8015  coef=   -0.44 pp  CI=[   -0.66,   -0.22]
+  [70,95)    n=    728  coef=   -1.62 pp  CI=[   -2.30,   -0.94]
+  R2=0.2130  (reference band = [45,50))
+[C] DECOMPOSITION — loss rate by band (default severity, realized):
+  [18,25)    n=  91650  coef=   +4.37 pp  CI=[   +4.12,   +4.63]
+  [25,30)    n= 315725  coef=   +2.35 pp  CI=[   +2.14,   +2.56]
+  [30,35)    n= 435291  coef=   +0.87 pp  CI=[   +0.67,   +1.07]
+  [35,40)    n= 248524  coef=   +0.16 pp  CI=[   -0.05,   +0.37]
+  [40,45)    n= 127957  coef=   -0.21 pp  CI=[   -0.45,   +0.02]
+  [45,50)    n=  71773  coef=   +0.00 pp  CI=[   +0.00,   +0.00]  <- REF
+  [50,55)    n=  30994  coef=   +0.11 pp  CI=[   -0.23,   +0.46]
+  [55,60)    n=  14278  coef=   +1.14 pp  CI=[   +0.68,   +1.60]
+  [60,70)    n=   8015  coef=   +3.50 pp  CI=[   +2.90,   +4.09]
+  [70,95)    n=    728  coef=   +8.36 pp  CI=[   +6.48,  +10.24]
+  R2=0.0728  (reference band = [45,50))
+  read: realized_return ~= interest_collected - loss. young coef on each tells which wins.
+
+[gradient] Tony's deliberateness instrument on Cell A (profit-by-age):
+  slope = -0.454 pp/band (negative = profit rises toward young)
+  slope_R2 = 0.222  (high => clean monotone => steering, not noise)
+  monotone = non_monotone
+  spearman(coef, band_idx) = -0.273
+
+LEDGER SCORING (ledger frozen above; verdicts computed from this run):
+  Claude 'young excess NEGATIVE/~0 in [-8,+2]pp, < [25,30)': young=-2.79pp, [25,30)=-1.75pp  => HELD (sign NEGATIVE/~0).
+  Tony 'lenders PROFIT from the young': young realized return = -2.79pp => LOSS (FALSIFIED).
+  Tony 'gradient indexes deliberateness': slope_R2=0.222, monotone=non_monotone — the cleaner/steeper, the stronger the deliberateness read.
+  Cell C mechanism: young interest collected=+1.18pp, young loss=+4.37pp => loss wins net -2.79pp.
+
+CAVEATS: 'age' IS credit tenure (est_age=18+tenure). Survivorship: resolved-only excludes in-flight loans; if young default FASTER they're over-represented in resolved-early => realized return biased DOWN at young end (runs WITH a negative finding => flag). The priced-out-profitable young who never borrowed are in NO file => realized return UNDERSTATES the empty-chair harm. Old tail (70+) censored, small n.
