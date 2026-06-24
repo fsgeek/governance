@@ -1,0 +1,46 @@
+DO THE YOUNG DEFAULT ABOVE THEIR GRADE? — the L2(launder)-vs-L3(honest) discriminant on real LC (2026-06-23)
+
+Resolves the confound from runs/steering_l3_honest_risk_2026-06-23.txt: realized-return sign alone
+cannot separate laundering (young over-priced past risk) from honest pricing of latently-riskier young.
+The discriminant the price gradient can't supply: do the young default MORE than their assigned grade
+predicts (under-graded => over-priced relative to grade => L2) or AT their grade (honest => L3)?
+
+Matured vintages 2011-2014 (>=95% resolved; survivorship-robust per the realized-return correction).
+default proxy = loss>0.01. young = [18,25); compared within grade to [45+) and via net-of-grade OLS.
+N matured = 432,994.
+
+WITHIN-GRADE default rate, young [18,25) vs reference-and-older [45+):
+  grade  young   old    gap_pp   n_young  n_old
+  A      7.52%   5.62%  +1.90    2754     7904
+  B     12.68%  10.66%  +2.02    8248    11532
+  C     19.43%  17.39%  +2.04    8624     9251
+  D     24.74%  24.52%  +0.23    6297     5013
+  E     30.92%  31.77%  -0.85    2490     2197
+  F     35.90%  35.26%  +0.64    1078      743
+  G     46.73%  36.84%  +9.89     214      190   <- n~200, NOISE, ignore
+
+POOLED net-of-grade young default coefficient: +0.70pp  CI[+0.26,+1.13]  (excludes 0).
+  Statistically L2: the young default ABOVE their grade. But small, and NOT uniform across grades.
+
+THE REAL FINDING — the harm is CONDITIONAL ON GRADE, concentrated in PRIME:
+  PRIME  A/B/C : young net-of-grade = +1.39pp  CI[+0.91,+1.86]  n=315,782  (REPLICATES 2012-13: +1.33)
+  SUBPRIME D-G : young net-of-grade = -0.68pp  CI[-1.60,+0.24]  n=117,212  (crosses 0 => honest)
+
+READ: grade UNDER-grades the good-credit young (A/B/C) by ~1.4pp of realized default — it treats them
+as low-risk but they default ~1.4pp more than their grade-mates. In the subprime bands grade prices
+young risk HONESTLY. So it is NOT a clean L2 or L3: it is BOTH, partitioned by grade. The empty-chair
+harm is SPECIFICALLY THE PRIME YOUNG — the ones grade calls safe.
+
+CONSEQUENCE for [[project_age_realized_return_result]] (the -1.8pp matured young realized-return loss):
+  Most of that loss is HONEST latent risk (the young genuinely default more, and grade mostly captures
+  it). A real but MODEST sliver (~1.4pp of default in prime grades) is grade UNDER-grading the good-
+  credit young. The "overcharge doesn't pay off / bias against interest" frame is RIGHT-SIGNED but
+  SMALL and PRIME-SPECIFIC, not the large general harm the price gradient (+209bps) suggested.
+  The L2 launder reading HOLDS but only in A/B/C and only at ~1.4pp; the L3 honest reading holds in D-G.
+
+NEXT: is the prime-young under-grading bias-AGAINST-INTEREST (does LC lose money on prime young because
+it under-grades -> under-prices -> they default above grade)? That is the clean empty-chair P&L test now
+that the harm is localized. Also: HMDA real-age port (kills the tenure-as-age caveat) for the prime split.
+
+CAVEAT: 'age' IS credit tenure (est_age=18+tenure). default proxy = loss>0.01 (charge-off mass).
+Grade G excluded as noise (n~200). Prime concentration replicates across two matured windows.
