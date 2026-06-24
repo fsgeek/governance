@@ -1,0 +1,25 @@
+HMDA-RI 2022 REAL-AGE PRICING DISPARITY — does the LC young-pay-more gradient survive on OBSERVED age? (2026-06-23)
+Source: data/hmda/processed/hmda_2022_RI.parquet, originated first-lien owner-occupied purchase/refi, N=18218.
+Outcome: interest_rate (%). Lawful controls: applicant_income, loan_amount, ltv, loan_term_months, purpose. HMDA has NO credit score => fewer risk controls than LC => surviving disparity is LESS risk-purged (caution caveat).
+Age = OBSERVED applicant_age bands (removes the LC tenure-as-age assumption). Reference = 45-54.
+FROZEN LEDGER: Claude = young (<25) POSITIVE but attenuated vs LC +209bps, predicted +10..+90bps. Flat/negative => LC gradient was tenure, not age.
+DECOMPOSITION: UNAVAILABLE — HMDA has no realized loan outcome (no default/loss). Reported absent, NOT proxied (Tony's (i): a proxy benchmark here is theater).
+
+[A] interest_rate residual by OBSERVED age band, lawful controls:
+  <25      n=   395  resid=    -6.6 bps  CI=[   -18.3,    +5.2]
+  25-34    n=  4604  resid=    -5.8 bps  CI=[   -11.0,    -0.7]
+  35-44    n=  4433  resid=    -3.8 bps  CI=[    -8.8,    +1.2]
+  45-54    n=  3474  resid=    +0.0 bps  CI=[    +0.0,    +0.0]  <- REF
+  55-64    n=  3070  resid=    -4.4 bps  CI=[    -9.8,    +1.1]
+  65-74    n=  1664  resid=    -7.1 bps  CI=[   -13.8,    -0.5]
+  >74      n=   578  resid=    -2.9 bps  CI=[   -12.9,    +7.1]
+  R2=0.1903  (reference band = 45-54)
+
+[pos-control] +30bps on 50% of <25 (expect ~+15bps recovery): base=-6.6 -> with-plant=+8.4  recovered=+15.0bps  => PASS
+
+LEDGER SCORING (ledger frozen above; verdicts from this run):
+  Claude 'young <25 positive, +10..+90bps': <25 = -6.6bps (NEGATIVE) => FALSIFIED. 25-34 = -5.8bps.
+  Tenure-vs-age: does NOT survive => LC gradient was substantially tenure.
+  meta 'decomposition unavailable': HELD — no realized outcome on HMDA; reported absent.
+
+CAVEATS: observed age is BANDED (coarse); <25 is the young proxy. Fewer risk controls than LC (no credit score) => an UPPER reading of the lawful-residual, not magnitude-comparable to LC's grade-inclusive number. Single state/year, originated-only. DISPARITY ONLY — whether any is risk-justified is UNANSWERABLE on HMDA, by design.

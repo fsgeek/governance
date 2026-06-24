@@ -227,6 +227,45 @@ def load_hmda(
     return cases
 
 
+# HMDA native applicant_age bands, young -> old. 8888/9999 are missing codes (excluded).
+HMDA_AGE_BANDS = ["<25", "25-34", "35-44", "45-54", "55-64", "65-74", ">74"]
+HMDA_AGE_MISSING = {"8888", "9999"}
+HMDA_AGE_REFERENCE = "45-54"  # closest analog to LC's [45,50) reference
+
+
+def load_pricing_frame(parquet_path: Path | str) -> pd.DataFrame:
+    """Load HMDA as a PRICING frame: originated first-lien owner-occupied purchase/refi loans with a
+    realized interest_rate, REAL observed applicant_age, and lawful controls. This is the real-age
+    port of the LC age-pricing analysis (see docs .../2026-06-23-hmda-real-age-pricing-design.md).
+
+    Unlike load_dataframe (origination label), this keeps `interest_rate` and `applicant_age` and
+    restricts to originated loans (rate exists only for originated). NO realized loan outcome exists
+    in HMDA, so the risk-decomposition is NOT computable here and is reported unavailable upstream.
+
+    Returns a DataFrame with: interest_rate, applicant_income, loan_amount, ltv, dti,
+    loan_term_months, purpose, age_band_str (HMDA native band), plus a numeric age_band index
+    (0=<25 .. 6=>74) for the band-residual machinery. Rows with missing rate/age/controls dropped.
+    """
+    p = _resolve_path(parquet_path)
+    df = pd.read_parquet(p)
+    df = filter_to_regime(df)
+    df = df[df["action_taken"] == ACTION_ORIGINATED].copy()
+    out = map_features(df)  # applicant_income, loan_amount, loan_to_income, dti, ltv, loan_term_months
+    out["interest_rate"] = _parse_numeric(df["interest_rate"])
+    out["purpose"] = df["loan_purpose"].astype(str).values
+    age = df["applicant_age"].astype(str).str.strip()
+    out["age_band_str"] = age.values
+    out = out[~out["age_band_str"].isin(HMDA_AGE_MISSING)].copy()
+    band_index = {b: i for i, b in enumerate(HMDA_AGE_BANDS)}
+    out["age_band"] = out["age_band_str"].map(band_index)
+    out = out[out["age_band"].notna()].copy()
+    out["age_band"] = out["age_band"].astype(int)
+    need = ["interest_rate", "applicant_income", "loan_amount", "ltv", "loan_term_months",
+            "purpose", "age_band"]
+    out = out.dropna(subset=need).copy()
+    return out
+
+
 def load_dataframe(parquet_path: Path | str) -> pd.DataFrame:
     """Load HMDA as a DataFrame, filtered and feature-mapped, with a ``label``
     column. Useful for tests and quick exploration without going through Case
