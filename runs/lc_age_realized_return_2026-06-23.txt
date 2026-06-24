@@ -68,6 +68,22 @@ FROZEN LEDGER: Claude = young excess NEGATIVE or ~0 (in [-8,+2]pp), < [25,30); b
   monotone = non_monotone
   spearman(coef, band_idx) = -0.273
 
+[MATURED 2011-2014] realized return by band (>=95% resolved => survivorship-robust; N=432994):
+  [18,25)    n=  29705  coef=   -1.76 pp  CI=[   -2.20,   -1.32]
+  [25,30)    n= 103962  coef=   -1.91 pp  CI=[   -2.28,   -1.55]
+  [30,35)    n= 142052  coef=   -1.26 pp  CI=[   -1.61,   -0.90]
+  [35,40)    n=  79583  coef=   -0.31 pp  CI=[   -0.68,   +0.06]
+  [40,45)    n=  40862  coef=   +0.04 pp  CI=[   -0.37,   +0.45]
+  [45,50)    n=  21421  coef=   +0.00 pp  CI=[   +0.00,   +0.00]  <- REF
+  [50,55)    n=   9189  coef=   +0.25 pp  CI=[   -0.35,   +0.85]
+  [55,60)    n=   4026  coef=   -0.50 pp  CI=[   -1.33,   +0.33]
+  [60,70)    n=   2055  coef=   -2.61 pp  CI=[   -3.73,   -1.50]
+  [70,95)    n=    139  coef=   -3.45 pp  CI=[   -7.56,   +0.66]
+  R2=0.0138  (reference band = [45,50))
+  decomposition: young interest=+1.11pp, young loss=+3.27pp
+  gradient: slope_R2=0.046, monotone=non_monotone, spearman=-0.127
+  SURVIVORSHIP VERDICT: pooled young=-2.79pp, matured young=-1.76pp => SURVIVES (headline real).
+
 LEDGER SCORING (ledger frozen above; verdicts computed from this run):
   Claude 'young excess NEGATIVE/~0 in [-8,+2]pp, < [25,30)': young=-2.79pp, [25,30)=-1.75pp  => HELD (sign NEGATIVE/~0).
   Tony 'lenders PROFIT from the young': young realized return = -2.79pp => LOSS (FALSIFIED).

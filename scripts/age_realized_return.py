@@ -48,6 +48,7 @@ def load():
                          .str.replace(" months", "", regex=False).astype(float))
     issue = pd.to_datetime(df["issue_d"], format="%b-%Y", errors="coerce")
     earliest = pd.to_datetime(df["earliest_cr_line"], format="%b-%Y", errors="coerce")
+    df["issue_year"] = issue.dt.year
     df["est_age"] = 18.0 + (issue - earliest).dt.days / 365.25
     df = df[(df["est_age"] >= 18) & (df["est_age"] <= 95)]
     need = ["fico_mid", "dti", "annual_inc", "loan_amnt", "funded_amnt", "term_months",
@@ -157,6 +158,37 @@ def main():
     out.append(f"  monotone = {g['monotone']}")
     out.append(f"  spearman(coef, band_idx) = {g['spearman']:+.3f}")
     payload["gradient"] = g
+    out.append("")
+
+    # ---- MATURED-VINTAGE robustness (the load-bearing survivorship test) ----
+    # resolved-only pooling enriches young loans for early-defaulters (young default faster ->
+    # resolve earlier), biasing realized return DOWN at the young end. 2016-18 vintages are only
+    # 11-67% resolved (half the data, worst bias). Restrict to 2011-2014 (>=95% resolved across the
+    # full sample) so the in-flight exclusion cannot tilt the young cohort. If young<0 SURVIVES here,
+    # survivorship is not the cause and the headline is real; if it collapses, the headline was an artifact.
+    MATURED = (2011, 2014)
+    dm = df[(df["issue_year"] >= MATURED[0]) & (df["issue_year"] <= MATURED[1])].copy()
+    am = fit_band_return(dm, outcome="realized_ret")
+    am_int = fit_band_return(dm, outcome="int_rate_collected")
+    am_loss = fit_band_return(dm, outcome="loss")
+    gm = gradient_characterization(am)
+    young_m = am.band_val.get(0, float("nan"))
+    out.append(f"[MATURED {MATURED[0]}-{MATURED[1]}] realized return by band (>=95% resolved => "
+               f"survivorship-robust; N={len(dm)}):")
+    out.append(fmt_band(am))
+    out.append(f"  decomposition: young interest={am_int.band_val.get(0,float('nan')):+.2f}pp, "
+               f"young loss={am_loss.band_val.get(0,float('nan')):+.2f}pp")
+    out.append(f"  gradient: slope_R2={gm['slope_r2']:.3f}, monotone={gm['monotone']}, "
+               f"spearman={gm['spearman']:+.3f}")
+    out.append(f"  SURVIVORSHIP VERDICT: pooled young={a.band_val.get(0,float('nan')):+.2f}pp, "
+               f"matured young={young_m:+.2f}pp => "
+               f"{'SURVIVES (headline real)' if young_m < -0.5 else 'COLLAPSES (headline was artifact)' if young_m > -0.5 and young_m < 0.5 else 'INVERTS' if young_m >= 0.5 else 'SURVIVES'}.")
+    payload["matured_vintage"] = {
+        "years": MATURED, "n": int(len(dm)),
+        "A_band_val": am.band_val, "A_band_ci": am.band_ci,
+        "interest_band_val": am_int.band_val, "loss_band_val": am_loss.band_val,
+        "gradient": gm, "young_pooled": a.band_val.get(0, float("nan")), "young_matured": young_m,
+    }
     out.append("")
 
     # ---- ledger scoring (computed from the data; ledger frozen) ----
