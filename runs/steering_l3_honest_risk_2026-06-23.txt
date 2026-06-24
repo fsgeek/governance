@@ -1,0 +1,54 @@
+L3 HONEST-RISK-PRICER vs L2 LAUNDERER — does the realized-return argument survive a latent-risk confound? (2026-06-23, synthetic)
+
+Frozen pre-reg addendum in docs/superpowers/specs/2026-06-23-steering-detectability-design.md.
+The L0/L1/L2 result assumed age _|_ true_risk. L3 drops that: the young are GENUINELY riskier
+(honest_young_risk added to their latent risk), grade HONESTLY tracks it, NO steering.
+
+FOUR-LENDER TABLE (n=120000, seed=1, verified explicit fit, ref [45,50)):
+  lender         raw_bps   net_bps  collapse  launder_sig   young_realized_return
+  blind            +3.6      +2.4     0.676      False              +0.04 pp
+  overt          +403.6    +402.4     0.997      False              +3.54 pp
+  launder        +801.1      +1.2     0.001       True              +7.21 pp
+  honest_risk    +801.1      +1.2     0.001       True             -15.37 pp
+
+PART (a) — PRICE-GRADIENT FINGERPRINT FAILS TO SEPARATE L2 FROM L3 (Claude's bet HELD, ~70%):
+  L3 honest-risk is bit-identical to L2 laundered on the PRICE side: +801bps raw, collapses to
+  +1.2bps net-of-grade, trips the laundering signature. An honest lender pricing GENUINE young risk
+  produces the IDENTICAL net-of-grade collapse as a launderer. => the net-of-grade collapse fingerprint
+  ALONE proves NOTHING. The prior experiment's "real LC +209->+27 MATCHES the launder signature" claim
+  is TOO STRONG and must be walked back to "matches BOTH the launder AND the honest-risk signature."
+
+PART (b) — REALIZED-RETURN SEPARATES THEM, BUT THE SIGN INVERTS CLAUDE'S PREDICTION (bet FALSIFIED):
+  Predicted: L2 laundered NEGATIVE (overcharge eaten by loss), L3 honest ~0.
+  Actual:    L2 laundered +7.21pp (PROFITS — over-prices young who are NOT actually riskier, keeps it),
+             L3 honest   -15.37pp (LOSES — young genuinely default more; price is correct but loss is real).
+  Robust across seeds 1-5 (launder +6..+8, honest -14..-15). Monotone in young risk:
+    honest_young_risk 0.0->-1.1pp, 0.1->-5.3, 0.2->-9.7, 0.3->-15.4, 0.5->-28.2.
+
+THE CONSEQUENCE FOR TONIGHT'S HEADLINE (a partial retraction):
+  Real LC's young show NEGATIVE realized return (-1.8pp matured, project_age_realized_return_result).
+  In THIS synthetic, negative young realized return is the HONEST-RISK-PRICER's signature (L3), NOT the
+  launderer's (L2 is positive). => the "bias against the lender's own interest / overcharge doesn't pay
+  off" reading may have the SIGN BACKWARDS: negative young return is exactly what honest pricing of
+  genuinely-riskier young borrowers looks like.
+
+THE SEAM (why it is not a total collapse — stated as the open confound, not a rescue):
+  The synthetic makes the young riskier on a LATENT true_risk the lawful controls cannot see. The
+  residual experiment (project_age_residual_result) found real age is ORTHOGONAL to the OBSERVABLE
+  controls (FICO/DTI corr<=0.16) — so the real young are NOT riskier on observables. If real young
+  excess loss is LATENT (unobserved-by-controls) risk, LC looks like L3 (honest) and the headline is
+  wrong; if it is genuine over-pricing, LC looks like L2 (launder) and the headline holds. The
+  realized-return regression controlled for OBSERVABLES only => it CANNOT separate latent-risk-honest
+  from over-pricing-launder. This is a genuine confound that was NOT under control when the headline
+  was committed.
+
+VERDICT: the realized-return SIGN is not a clean laundering tell. Negative young return is consistent
+with honest risk-pricing of latently-riskier young. The empty-chair "bias against interest" frame needs
+a discriminant that the current data does not supply: a way to bound LATENT young risk beyond observables
+(e.g. an instrument, or matured-default-rate-by-grade showing the young default MORE than their grade
+predicts -> over-priced -> launder; or AT their grade -> honest). That is the next real experiment.
+
+CAVEAT: synthetic. Proves the realized-return sign is CONFOUNDED by latent risk, not that LC is honest.
+The honest reading of the whole age-realized-return arc is now: young pay more and the lender's realized
+return on them is negative; WHETHER that is illegitimate over-pricing or legitimate latent-risk pricing
+is UNRESOLVED on the current data.

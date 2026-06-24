@@ -61,3 +61,33 @@ net-of-grade; (d) verdict: is the gradient a valid steering detector, or does la
 Synthetic — establishes only what the instrument CAN detect in principle, not what LC did. A "laundering
 defeats it" result does not prove LC laundered; it proves the gradient CANNOT RULE laundering OUT, which is
 enough to force the retraction of the "not deliberate" claim to the weaker, honest "unobservable."
+
+---
+
+## ADDENDUM — L3 the honest-risk-pricer (added 2026-06-23, after L0/L1/L2 resolved)
+
+The L0/L1/L2 result rests on age ⊥ true_risk BY CONSTRUCTION. That isolated steering but is a fiction: real
+young borrowers ARE somewhat riskier (thin files). The net-of-grade COLLAPSE fingerprint that flagged L2 as
+laundering may be an artifact of that too-clean setup. The stress test:
+
+**L3 — HONEST RISK-PRICER:** the young carry GENUINELY higher default risk (p_default rises for the young,
+for real), grade HONESTLY tracks that risk (grade = g(true_risk_incl_young_excess)), NO steering. An honest
+lender pricing real risk WILL push the young to worse grades — so L3's young-price ALSO collapses net-of-grade.
+
+THE COIN (frozen, ~70%): **L3 collapses net-of-grade just like L2** ⇒ the net-of-grade fingerprint ALONE
+CANNOT separate honest risk-grading from laundering (both route the young signal through grade). If so, the
+"LC matches the launder signature" claim from [[project_steering_detectability_result]] is TOO STRONG on the
+price-gradient alone — the discriminant that breaks the L2/L3 tie must be the REALIZED-RETURN sign:
+- L2 laundered: young over-priced past risk ⇒ realized return NEGATIVE (overcharge eaten by a loss the price
+  didn't earn) — the [[project_age_realized_return_result]] signature.
+- L3 honest: young priced TO their real risk ⇒ realized return ≈ 0 net of risk (the higher price is earned by
+  the higher loss; no excess either way).
+
+So the test is two-part: (a) does L3 collapse net-of-grade like L2 (killing the price-gradient-alone claim)?
+and (b) does the REALIZED-RETURN sign separate them (rescuing the claim via the P&L tell, where the real LC
+−1.8pp lands on the L2 side)? Prediction: (a) YES collapses, (b) YES realized-return separates. If (b) FAILS
+— if honest-risk-pricing ALSO shows negative young realized return — then the whole realized-return argument
+is confounded and tonight's headline is in trouble. That's the real stake.
+
+Scoring: L3 collapse_ratio (expect <0.3, like L2); L3 young realized-return sign (expect ≈0, UNLIKE L2's
+negative); verdict on whether realized-return is the necessary tie-breaker the price-gradient can't supply.

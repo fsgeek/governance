@@ -60,8 +60,32 @@ def test_explicit_fit_matches_raw_band_means():
     assert abs(coef_bps - mean_diff_bps) < 50, f"coef {coef_bps:.1f} vs raw mean {mean_diff_bps:.1f}"
 
 
+def test_l3_honest_risk_collapses_like_launder():
+    """L3 (young genuinely riskier, grade honest): price side is INDISTINGUISHABLE from L2 launder —
+    both collapse net-of-grade and trip the laundering signature. This is the whole point: the
+    net-of-grade fingerprint ALONE cannot separate honest risk-grading from laundering."""
+    l2 = evaluate_lender(build_lender("launder", n=120000, seed=1))
+    l3 = evaluate_lender(build_lender("honest_risk", n=120000, seed=1))
+    assert l3["laundering_signature"] is True, "honest-risk should ALSO trip the price fingerprint"
+    assert l3["collapse_ratio"] < 0.3, "honest-risk young price should collapse net-of-grade like launder"
+    # the price side cannot tell them apart:
+    assert abs(l2["young_net_bps"] - l3["young_net_bps"]) < 10
+
+
+def test_l2_l3_separated_only_by_realized_return_sign():
+    """The discriminant the price gradient can't supply: realized-return SIGN. L2 laundered PROFITS
+    on the young (over-priced, not actually riskier); L3 honest LOSES (genuinely riskier). Opposite
+    signs, robustly. NB: real LC's young show NEGATIVE realized return -> the L3 (honest) side, which
+    is why the 'bias against interest' reading is confounded by latent risk (see the L3 run note)."""
+    l2 = evaluate_lender(build_lender("launder", n=120000, seed=1))
+    l3 = evaluate_lender(build_lender("honest_risk", n=120000, seed=1))
+    assert l2["young_realized_return_pp"] > 2.0, "laundered should profit on the young"
+    assert l3["young_realized_return_pp"] < -5.0, "honest-risk should lose on the genuinely-riskier young"
+
+
 def test_construction_age_orthogonal_to_risk():
-    """Guard: true_risk ~ independent of age in all three (else 'excess' is real risk, not steering)."""
+    """Guard: true_risk ~ independent of age in the NON-honest lenders (else 'excess' is real risk,
+    not steering). honest_risk is EXCLUDED — there the young ARE riskier by design."""
     for kind in ["blind", "overt", "launder"]:
         df = build_lender(kind, n=40000, seed=7)
         c = np.corrcoef(df["true_risk"].astype(float), df["age"].astype(float))[0, 1]

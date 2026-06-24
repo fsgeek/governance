@@ -74,7 +74,8 @@ def _price_from_grade(grade: np.ndarray, noise: float = 0.0,
 
 def build_lender(kind: str, n: int = 120000, seed: int = 0,
                  overt_delta_pp: float = 4.0, launder_grade_shift: float = 0.30,
-                 grade_noise: float = 0.12, price_noise: float = 0.015) -> pd.DataFrame:
+                 grade_noise: float = 0.12, price_noise: float = 0.015,
+                 honest_young_risk: float = 0.30) -> pd.DataFrame:
     """Construct one synthetic lender's book.
 
     kind='blind'    : grade = g(true_risk); price = f(grade). No age signal.
@@ -91,6 +92,9 @@ def build_lender(kind: str, n: int = 120000, seed: int = 0,
 
     risk = np.asarray(df["true_risk"], dtype=float)
     young = np.asarray(df["is_young"], dtype=float)
+    # effective default risk: for L0/L1/L2 the young are NOT riskier (excess = steering). For L3 the
+    # young carry GENUINE excess risk (honest_young_risk added to their risk), and grade tracks it.
+    eff_risk = risk.copy()
     if kind == "blind":
         grade = _assign_grade(risk, noise=grade_noise, rng=rng)
         rate = _price_from_grade(grade, noise=price_noise, rng=rng)
@@ -98,7 +102,15 @@ def build_lender(kind: str, n: int = 120000, seed: int = 0,
         grade = _assign_grade(risk, noise=grade_noise, rng=rng)
         rate = _price_from_grade(grade, noise=price_noise, rng=rng) + young * (overt_delta_pp / 100.0)
     elif kind == "launder":
+        # young pushed to worse grades BEYOND their (unchanged) risk: steering inside grade.
         grade = _assign_grade(risk + launder_grade_shift * young, noise=grade_noise, rng=rng)
+        rate = _price_from_grade(grade, noise=price_noise, rng=rng)
+    elif kind == "honest_risk":
+        # L3: the young are GENUINELY riskier; grade HONESTLY tracks the real risk; NO steering. Grade
+        # uses the SAME eff_risk that drives default, so the worse young grade is EARNED. The key
+        # contrast with L2: there grade-shift does NOT change default (over-pricing); here it does.
+        eff_risk = np.clip(risk + honest_young_risk * young, 0, 1)
+        grade = _assign_grade(eff_risk, noise=grade_noise, rng=rng)
         rate = _price_from_grade(grade, noise=price_noise, rng=rng)
     else:
         raise ValueError(f"unknown kind {kind!r}")
@@ -106,11 +118,11 @@ def build_lender(kind: str, n: int = 120000, seed: int = 0,
     df["grade"] = pd.Categorical([chr(ord("A") + int(g)) for g in grade])
     df["int_rate"] = rate * 100.0  # percentage points, like real LC
 
-    # realized cashflow: default prob from true_risk only; default => lose a fraction of principal,
-    # paid => collect interest over the (simplified single-period) term. Young are NOT riskier by
-    # construction (default ~ true_risk), so excess young loss can only come from being pushed into a
-    # worse-priced grade that does not change their actual default.
-    p_default = np.clip(df["true_risk"].values * 0.9, 0, 0.95)
+    # realized cashflow: default prob from EFFECTIVE risk (L3's young really do default more; for the
+    # others eff_risk == true_risk so the young are not riskier). default => lose principal severity;
+    # paid => collect interest. For L0/L1/L2 any excess young loss comes only from grade-pricing that
+    # does NOT change actual default; for L3 the excess young loss is REAL and the price EARNS it.
+    p_default = np.clip(eff_risk * 0.9, 0, 0.95)
     defaulted = rng.random(n) < p_default
     # severity of loss given default (fraction of principal lost), independent of age
     sev = np.clip(rng.beta(5, 2, n), 0, 1)
@@ -178,6 +190,12 @@ def evaluate_lender(df: pd.DataFrame) -> dict:
     g_net = gradient_characterization(net)
     young_raw = raw.band_val.get(YOUNG_BAND, float("nan"))
     young_net = net.band_val.get(YOUNG_BAND, float("nan"))
+    # realized-return read: the L2-vs-L3 discriminant the price gradient CANNOT supply. Laundered
+    # (L2) over-prices past risk => young realized return NEGATIVE; honest-risk (L3) prices TO risk
+    # => young realized return ~0 net of controls. int_rate coef is in pp -> *100 for bps; realized
+    # return coef is a fraction -> *100 for pp ("return points").
+    ret = _explicit_band_fit(d, "realized_ret", extra="")
+    young_ret = ret.band_val.get(YOUNG_BAND, float("nan"))
     # net-of-grade collapse ratio: |young_net| / |young_raw|. ~0 => the signal lives INSIDE grade
     # (the laundering fingerprint: honest/overt lenders keep their price signal net-of-grade; a
     # lender that steers THROUGH grade loses it). This is the L2-vs-{L0,L1} discriminant.
@@ -191,6 +209,7 @@ def evaluate_lender(df: pd.DataFrame) -> dict:
         "young_net_bps": young_net * 100.0,
         "collapse_ratio": collapse_ratio,
         "laundering_signature": laundering_signature,
+        "young_realized_return_pp": young_ret * 100.0,   # realized-return coef (fraction) -> return pts
         "gradient_raw": g_raw,
         "gradient_net": g_net,
         "steering_detected": bool(detected),
