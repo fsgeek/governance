@@ -78,7 +78,8 @@ Per resolved loan, realized net return to the lender as a **rate of return on fu
    were losing money, they'd adjust for it.  But if their own data shows they are making money from the young,
    they'll do so because it makes good business sense.  What I can't predict is if they do it deliberately
    or simply because they're not searching their data to notice it. I'd suggest the higher the profit, the
-   more likely it's deliberate.
+   more likely it's deliberate.  So 15 basis points or less, just noise, 30 basis points or more, suggests
+   it is known but ignored.  60 basis points or more, I'd argue it is deliberate.
 - **Meta:** realized return is computable from `total_pymnt + recoveries − funded_amnt` on resolved loans
   without a duration model; the metric is well-defined (out_prncp≈0 guard passes).
 
