@@ -1,0 +1,63 @@
+{
+  "n": 120000,
+  "seed": 1,
+  "results": {
+    "blind": {
+      "young_raw_bps": 3.60218415112697,
+      "young_net_bps": 2.4355387613134964,
+      "collapse_ratio": 0.6761283319042755,
+      "laundering_signature": false,
+      "gradient_raw": {
+        "slope_pp_per_band": -0.004375851387298343,
+        "slope_r2": 0.0643607257986547,
+        "monotone": "non_monotone",
+        "spearman": -0.09999999999999999
+      },
+      "gradient_net": {
+        "slope_pp_per_band": -0.0006257272222157689,
+        "slope_r2": 0.008371591817460278,
+        "monotone": "non_monotone",
+        "spearman": -0.11666666666666665
+      },
+      "steering_detected": false
+    },
+    "overt": {
+      "young_raw_bps": 403.602184151069,
+      "young_net_bps": 402.4355387616244,
+      "collapse_ratio": 0.9971094175520915,
+      "laundering_signature": false,
+      "gradient_raw": {
+        "slope_pp_per_band": -0.2710425180539265,
+        "slope_r2": 0.3063812504713255,
+        "monotone": "non_monotone",
+        "spearman": -0.35
+      },
+      "gradient_net": {
+        "slope_pp_per_band": -0.26729239388908216,
+        "slope_r2": 0.2992587690812618,
+        "monotone": "non_monotone",
+        "spearman": -0.31666666666666665
+      },
+      "steering_detected": false
+    },
+    "launder": {
+      "young_raw_bps": 801.1275348341211,
+      "young_net_bps": 1.1791894722094969,
+      "collapse_ratio": 0.0014719122997734137,
+      "laundering_signature": true,
+      "gradient_raw": {
+        "slope_pp_per_band": -0.5357880980916553,
+        "slope_r2": 0.3040678064807537,
+        "monotone": "non_monotone",
+        "spearman": -0.38333333333333336
+      },
+      "gradient_net": {
+        "slope_pp_per_band": 0.00021087343493208979,
+        "slope_r2": 0.001014649951599167,
+        "monotone": "non_monotone",
+        "spearman": -0.13333333333333333
+      },
+      "steering_detected": false
+    }
+  }
+}

@@ -1,0 +1,35 @@
+STEERING-DETECTABILITY — can the gradient/price instrument catch grade-LAUNDERED young-steering? (2026-06-23, synthetic)
+N=120000/lender, seed=1. Each lender assigns a grade then prices off it. age _|_ true_risk by construction (excess => steering, not risk).
+L0 blind: grade=g(risk).  L1 overt: price += 4pp on young.  L2 launder: young pushed to worse GRADES beyond risk, price honest off grade.
+FROZEN BET (Claude, ~65%): L2 reads flat like L0 (laundering invisible) => would force retraction of the realized-return 'not deliberate' line. RESULT BELOW.
+
+[BLIND]
+  young price RAW          =     +3.6 bps
+  young price NET-OF-GRADE =     +2.4 bps
+  collapse ratio |net|/|raw| = 0.676  (~0 => signal lives INSIDE grade = laundering fingerprint)
+  laundering signature     = False
+  raw gradient: slope_R2=0.064, monotone=non_monotone
+
+[OVERT]
+  young price RAW          =   +403.6 bps
+  young price NET-OF-GRADE =   +402.4 bps
+  collapse ratio |net|/|raw| = 0.997  (~0 => signal lives INSIDE grade = laundering fingerprint)
+  laundering signature     = False
+  raw gradient: slope_R2=0.306, monotone=non_monotone
+
+[LAUNDER]
+  young price RAW          =   +801.1 bps
+  young price NET-OF-GRADE =     +1.2 bps
+  collapse ratio |net|/|raw| = 0.001  (~0 => signal lives INSIDE grade = laundering fingerprint)
+  laundering signature     = True
+  raw gradient: slope_R2=0.304, monotone=non_monotone
+
+VERDICT:
+  L0 blind young raw=+3.6bps (flat, no false positive: True).
+  L1 overt detected=True, SURVIVES net-of-grade (collapse=1.00) => steering in PRICE, not a launder signature.
+  L2 launder detected=True, COLLAPSES net-of-grade (collapse=0.00) => laundering FINGERPRINT.
+
+  COIN: Claude bet L2 would be INVISIBLE (read flat like L0) => FALSIFIED. Laundered steering is NOT invisible — it shows a LARGE raw young-price excess that COLLAPSES net-of-grade, a signature distinct from both blind (no signal) and overt (survives net-of-grade). The instrument DISTINGUISHES laundering by the collapse fingerprint.
+  IMPLICATION for real LC: the real +209bps->+27bps (collapse ratio 0.13) MATCHES the L2 laundering signature, NOT the L0/L1 honest signatures. The net-of-grade collapse is itself evidence TOWARD grade-laundering, because honest lenders don't produce it.
+
+CAVEAT: synthetic — shows what the instrument CAN detect, not what LC did. 'LC matches the laundering signature' means the gradient cannot RULE laundering OUT; combined with the realized-return result (overcharge eaten by loss), the honest reading shifts from 'un-audited, not deliberate' toward 'consistent with grade-laundering, intent still unproven'. A harness note: wedge.fit_band_return's Categorical path was unstable on this synthetic; evaluate_lender uses an explicit verified fit (real-LC runs unaffected).
