@@ -1,0 +1,247 @@
+{
+  "experiment": "sba_businessage_pricing",
+  "substrate": "SBA 7(a) FOIA, HEADLINE matured FY2010-2014 (FY2010-2016 = inflated comparison)",
+  "n_headline": 226131,
+  "n_full_2016": 344767,
+  "realized_params_adversary_corrected": {
+    "lgd_realized": 0.6740558233835451,
+    "term_years_realized": 9.857560072111593,
+    "guarantee_share": 0.6587580969438069
+  },
+  "young_band": "New (<1yr)",
+  "startup_band": "Startup (pre-revenue)",
+  "reference_band": "Existing 5+ years",
+  "B1_price_pooled_band1_New": {
+    "premium_bps_no_timing": 36.1,
+    "premium_bps_with_timing": 36.57,
+    "ci_with_timing": [
+      34.99,
+      38.15
+    ],
+    "bands_with_timing": {
+      "Startup (pre-revenue)": {
+        "coef": 9.325,
+        "ci": [
+          7.933,
+          10.716
+        ],
+        "n": 33428
+      },
+      "New (<1yr)": {
+        "coef": 36.571,
+        "ci": [
+          34.989,
+          38.154
+        ],
+        "n": 23798
+      },
+      "2-3 years": {
+        "coef": 36.887,
+        "ci": [
+          34.929,
+          38.844
+        ],
+        "n": 14521
+      },
+      "3-4 years": {
+        "coef": 18.89,
+        "ci": [
+          17.252,
+          20.528
+        ],
+        "n": 22566
+      },
+      "4-5 years": {
+        "coef": 32.005,
+        "ci": [
+          29.796,
+          34.215
+        ],
+        "n": 11029
+      },
+      "Existing 5+ years": {
+        "coef": 0.0,
+        "ci": [
+          0.0,
+          0.0
+        ],
+        "n": 120789
+      }
+    }
+  },
+  "B2_default_bands": {
+    "Startup (pre-revenue)": {
+      "coef": 1.578,
+      "ci": [
+        1.279,
+        1.877
+      ],
+      "n": 33428
+    },
+    "New (<1yr)": {
+      "coef": 2.759,
+      "ci": [
+        2.419,
+        3.099
+      ],
+      "n": 23798
+    },
+    "2-3 years": {
+      "coef": 2.025,
+      "ci": [
+        1.605,
+        2.445
+      ],
+      "n": 14521
+    },
+    "3-4 years": {
+      "coef": 0.234,
+      "ci": [
+        -0.117,
+        0.586
+      ],
+      "n": 22566
+    },
+    "4-5 years": {
+      "coef": 1.502,
+      "ci": [
+        1.028,
+        1.977
+      ],
+      "n": 11029
+    },
+    "Existing 5+ years": {
+      "coef": 0.0,
+      "ci": [
+        0.0,
+        0.0
+      ],
+      "n": 120789
+    }
+  },
+  "per_subgroup_decomposition": {
+    "Startup": {
+      "price_premium_bps": 9.32,
+      "price_ci_bps": [
+        7.93,
+        10.72
+      ],
+      "default_gap_pp": 1.578,
+      "justified_bps_corrected": 10.79,
+      "over_under_bps": -1.47,
+      "classification": "honestly-priced",
+      "n": 33428
+    },
+    "New(<1yr)": {
+      "price_premium_bps": 36.57,
+      "price_ci_bps": [
+        34.99,
+        38.15
+      ],
+      "default_gap_pp": 2.759,
+      "justified_bps_corrected": 18.86,
+      "over_under_bps": 17.71,
+      "classification": "OVER-priced",
+      "n": 23798
+    }
+  },
+  "verdict": {
+    "B1": {
+      "verdict": "WIN",
+      "reason": "matured New(<1yr) premium 36.6bps, CI excludes 0 -> premium exists",
+      "headline_window": "FY2010-2014 (matured; adversary Attack-5)"
+    },
+    "B2": {
+      "verdict": "PARTIAL",
+      "reason": "SPLIT (adversary Attack-3): New(<1yr) +36.6bps vs justified 18.9 => OVER-priced; Startup +9.3bps vs 10.8 => honestly-priced. Empty-chair OVER-priced prior holds for New(<1yr) ONLY, NOT thin-history generally (startups are the counterexample).",
+      "new_classification": "OVER-priced",
+      "startup_classification": "honestly-priced"
+    }
+  },
+  "b2_sensitivity_lgd_term_guarantee": {
+    "lgd0.3_T7_share1.0": {
+      "justified_bps": 11.82,
+      "over_under_bps": 24.75,
+      "over_priced": true
+    },
+    "lgd0.3_T7_share0.35": {
+      "justified_bps": 4.14,
+      "over_under_bps": 32.43,
+      "over_priced": true
+    },
+    "lgd0.3_T10_share1.0": {
+      "justified_bps": 8.28,
+      "over_under_bps": 28.29,
+      "over_priced": true
+    },
+    "lgd0.3_T10_share0.35": {
+      "justified_bps": 2.9,
+      "over_under_bps": 33.67,
+      "over_priced": true
+    },
+    "lgd0.5_T7_share1.0": {
+      "justified_bps": 19.71,
+      "over_under_bps": 16.86,
+      "over_priced": true
+    },
+    "lgd0.5_T7_share0.35": {
+      "justified_bps": 6.9,
+      "over_under_bps": 29.67,
+      "over_priced": true
+    },
+    "lgd0.5_T10_share1.0": {
+      "justified_bps": 13.79,
+      "over_under_bps": 22.77,
+      "over_priced": true
+    },
+    "lgd0.5_T10_share0.35": {
+      "justified_bps": 4.83,
+      "over_under_bps": 31.74,
+      "over_priced": true
+    },
+    "lgd0.7_T7_share1.0": {
+      "justified_bps": 27.59,
+      "over_under_bps": 8.98,
+      "over_priced": true
+    },
+    "lgd0.7_T7_share0.35": {
+      "justified_bps": 9.66,
+      "over_under_bps": 26.91,
+      "over_priced": true
+    },
+    "lgd0.7_T10_share1.0": {
+      "justified_bps": 19.31,
+      "over_under_bps": 17.26,
+      "over_priced": true
+    },
+    "lgd0.7_T10_share0.35": {
+      "justified_bps": 6.76,
+      "over_under_bps": 29.81,
+      "over_priced": true
+    }
+  },
+  "adversarial_arms": {
+    "positive_control": {
+      "price_recovered_bps": 14.99379471373063,
+      "price_planted_bps": 15.0,
+      "default_recovered_pp": 3.0041192503167826,
+      "default_planted_pp": 3.0
+    },
+    "negative_control": {
+      "fake_young_bps": -1.0053482972556653
+    },
+    "window_sensitivity": {
+      "FY2010_2016": 52.51,
+      "FY2010_2014_headline": 36.57,
+      "FY2010_2013": 30.77,
+      "FY2010_2012": 26.82
+    },
+    "naics_confound": {
+      "price_bps_with_naics": 36.44041055472294,
+      "default_gap_pp_with_naics": 2.6054152195377593
+    }
+  },
+  "adversary_note": "Blind adversary (scientific-integrity-auditor) ruled the FIRST cut OVERSTATED: pooled +28.6bps was window-inflated (-> matured +20.8) and pooled Startup with New(<1yr), masking that Startup is honestly priced. This run incorporates all three corrections (matured headline, split subgroups, LGD/term/guarantee sensitivity).",
+  "frozen_ledger": "docs/superpowers/specs/2026-06-29-sba-businessage-pricing-prereg.md",
+  "seed": 20260629
+}

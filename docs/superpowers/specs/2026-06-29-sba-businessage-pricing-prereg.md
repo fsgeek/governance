@@ -88,4 +88,63 @@ launder / honest / subsidy exactly as the LC arc's L2/L3 lattice. I commit to re
    substrate-agnostic given an (age-band, default, grade/band) triple; SBA's band IS the grade analog.
 3. Runner writes `runs/sba_businessage_pricing_2026-06-29.json` with frozen-bet outcomes + all controls.
 
+## AMENDMENT 2026-06-29 (build-time, before any data was analyzed — method change, bet unchanged)
+
+While building `wedge/collectors/sba.py` I confirmed on disk that **SBA has NO credit grade
+field** (verified: the FOIA schema has no grade/risk-tier column). The frozen build-plan step
+"reuse young_default_vs_grade.py net-of-GRADE OLS" therefore does NOT port — there is no
+lender-supplied within-stratum risk yardstick to net out, and aliasing grade:=age_band is
+circular. This was discovered by reading the schema, NOT by running any analysis (no bet peek).
+
+**Method change (B2):** the SBA decomposition is RESIDUAL-based, not grade-based. Fit the same
+age-band-on-lawful-controls residual (`wedge/age_residual.fit_band_residuals`) for PRICE and for
+realized DEFAULT, then compare:
+  - price-gap > default-gap  => New/Startup OVER-priced (the empty-chair over-pricing harm)
+  - price-gap ~= default-gap => honestly priced
+  - price-gap < default-gap  => subsidized
+This is CLEANER than the LC grade version (it never launders the risk judgment through a lender
+black box; price and ground-truth charge-off sit on the same lawful-control footing) and it is the
+instrument-with-declared-model in its purest form.
+
+**The frozen BETS are UNCHANGED.** B1 (pricing premium for New/Startup, ~55%, small, null is real)
+and B2 (over-priced vs honest — genuinely 50/50, now read as price-gap vs default-gap) stand exactly
+as frozen. Only the B2 ESTIMATOR changed, forced by a missing field, named here before any run.
+
+**Added control (build-time, named before any run): RATE-TIMING.** Confirmed on disk that 79% of
+7(a) loans are VARIABLE-rate (V=430k vs F=116k), so `initialinterestrate` depends on the base-rate
+environment at origination — and base rates moved across FY2010-2016. If New/Startup firms cluster in
+different approval years than Existing firms, a raw rate-gap could be a base-rate-TIMING artifact, not
+a firm-age premium (the SAME shape as the FM PMI-threshold confound the blind adversary caught and the
+whole instrument exists to localize). B1 therefore absorbs `C(approval_fy) + C(rate_type)` fixed
+effects. Reporting the disparity WITH and WITHOUT these is itself a declared sensitivity.
+
+Also confirmed at build time: the FY2010-2019 file carries the FINE-GRAINED businessage ladder
+(New<1yr / 2-3 / 3-4 / 4-5 / Existing 5+); the FY2020+ file collapses to 3 coarse buckets. The
+matured window (FY2010-2016) sits ENTIRELY inside the fine-grained file — the rich axis and the
+matured-outcome window coincide, so excluding FY2017+ costs no axis resolution.
+
+## ADVERSARY DISPOSITION 2026-06-29 (blind scientific-integrity-auditor ran BEFORE the result memo)
+
+Per the standing "adversarial review before stamp" invariant — and because this result flattered my
+empty-chair prior — a blind adversary (no narrative, told to REFUTE) audited the first-cut result. It
+ruled the first cut **OVERSTATED** (not broken: data/code/replication clean, no fabrication, the LGD
+conversion dimensionally sound). Three corrections, all CONCEDED and folded into the committed runner:
+
+1. **Attack-3 (CONCEDE FULLY): Startup/New pooling.** Band 0 pooled pre-revenue "Startup" with "New
+   <1yr"; the adversary showed Startup pays ~no premium (HONEST) while New(<1yr) is strongly over-
+   priced. Pooling produced a blended headline describing NEITHER, and the empty-chair "thin-history"
+   framing is REFUTED by the thinnest firms (startups). FIX: bands split (0=Startup, 1=New<1yr);
+   B2 scored PER SUBGROUP.
+2. **Attack-5 (CONCEDE FULLY): window inflation.** FY2015-16 inflated the premium ~30%. FIX: headline
+   is now matured FY2010-2014; FY2010-2016 kept only as the inflated comparison.
+3. **Attack-1 (CONCEDE PARTIALLY): justified-spread params.** My LGD=0.5/term=7 was a coincidence of
+   offsetting errors and the grid varied only LGD. FIX: use REALIZED LGD (0.67) + term (9.9yr) +
+   guarantee-share (0.66), and sweep LGD x term x loss-bearer (12 cells).
+
+CORRECTED VERDICT (committed): **B1 WIN** (New<1yr +36.6bps matured, CI excludes 0, survives NAICS).
+**B2 PARTIAL** — New(<1yr) OVER-priced (+36.6 vs ~18.9 justified, robust across ALL 12 sensitivity
+cells incl. worst-case) but Startup HONESTLY priced (+9.3 vs ~10.8). The empty-chair over-pricing harm
+is REAL and robust for New(<1yr) ONLY, not thin-history firms generally. B2-as-pooled-OVER-priced is a
+PARTIAL LOSS on my prior — recorded as such, not softened (criterion 5).
+
 Pre-reg before any code touches data.

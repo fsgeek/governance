@@ -1,0 +1,95 @@
+{
+  "experiment": "lc_young_default_vs_grade",
+  "reemit_note": "JSON re-emit of the 2026-06-23 txt-only result (provenance debt cleared 2026-06-29). Method matches runs/lc_young_default_vs_grade_2026-06-23.txt.",
+  "source": "data/accepted_2007_to_2018Q4.csv, resolved, matured issue_year 2011-2014",
+  "default_proxy": "loss > 0.01",
+  "young_band": "[18,25) (age_band 0)",
+  "n_matured": 432994,
+  "pooled_net_of_grade": {
+    "young_above_grade_pp": 0.6961289599441017,
+    "ci": [
+      0.26463816983615296,
+      1.1276197500520506
+    ],
+    "n": 432994,
+    "excludes_zero": true
+  },
+  "prime_ABC": {
+    "young_above_grade_pp": 1.387098084689722,
+    "ci": [
+      0.9118213017664207,
+      1.8623748676130234
+    ],
+    "n": 315782,
+    "excludes_zero": true
+  },
+  "subprime_DG": {
+    "young_above_grade_pp": -0.6809903919869847,
+    "ci": [
+      -1.600557869076673,
+      0.23857708510270367
+    ],
+    "n": 117212,
+    "excludes_zero": false
+  },
+  "prime_ABC_2012_13_replication": {
+    "young_above_grade_pp": 1.3336679236220608,
+    "ci": [
+      0.6744416088030081,
+      1.9928942384411132
+    ],
+    "n": 141207,
+    "excludes_zero": true
+  },
+  "within_grade_gap": {
+    "A": {
+      "young_rate": 0.07516339869281045,
+      "old_rate": 0.056174089068825914,
+      "gap_pp": 1.898930962398454,
+      "n_young": 2754,
+      "n_old": 7904
+    },
+    "B": {
+      "young_rate": 0.12681862269641125,
+      "old_rate": 0.10657301422129727,
+      "gap_pp": 2.024560847511399,
+      "n_young": 8248,
+      "n_old": 11532
+    },
+    "C": {
+      "young_rate": 0.19434137291280149,
+      "old_rate": 0.1739271430115663,
+      "gap_pp": 2.0414229901235177,
+      "n_young": 8624,
+      "n_old": 9251
+    },
+    "D": {
+      "young_rate": 0.24741940606638083,
+      "old_rate": 0.24516257729902255,
+      "gap_pp": 0.22568287673582765,
+      "n_young": 6297,
+      "n_old": 5013
+    },
+    "E": {
+      "young_rate": 0.3092369477911647,
+      "old_rate": 0.31770596267637685,
+      "gap_pp": -0.8469014885212178,
+      "n_young": 2490,
+      "n_old": 2197
+    },
+    "F": {
+      "young_rate": 0.3589981447124304,
+      "old_rate": 0.35262449528936746,
+      "gap_pp": 0.6373649423062955,
+      "n_young": 1078,
+      "n_old": 743
+    },
+    "G": {
+      "young_rate": 0.4672897196261682,
+      "old_rate": 0.3684210526315789,
+      "gap_pp": 9.88686669945893,
+      "n_young": 214,
+      "n_old": 190
+    }
+  }
+}

@@ -1,0 +1,36 @@
+SBA 7(a) FIRM-AGE PRICING + CHARGE-OFF DECOMPOSITION (2026-06-29, POST-ADVERSARY)
+HEADLINE window: matured FY2010-2014, N=226,131  (FY2010-2016 N=344,767 = inflated)
+realized params (adversary-corrected): LGD=0.67, term=9.9yr, guarantee_share=0.66
+
+PER-SUBGROUP DECOMPOSITION (Startup and New split — adversary Attack-3):
+  Startup      price   +9.3bps  default +1.58pp  justified  10.8bps  => honestly-priced  (n=33,428)
+  New(<1yr)    price  +36.6bps  default +2.76pp  justified  18.9bps  => OVER-priced  (n=23,798)
+
+WINDOW SENSITIVITY (adversary Attack-5 — premium deflates as window matures):
+  FY2010_2016            +52.5bps
+  FY2010_2014_headline   +36.6bps
+  FY2010_2013            +30.8bps
+  FY2010_2012            +26.8bps
+
+NEW(<1yr) B2 SENSITIVITY over LGD x term x loss-bearer (over-priced? Y/N):
+  lgd0.3_T7_share1.0       justified   11.8  over_under  +24.8  Y
+  lgd0.3_T7_share0.35      justified    4.1  over_under  +32.4  Y
+  lgd0.3_T10_share1.0      justified    8.3  over_under  +28.3  Y
+  lgd0.3_T10_share0.35     justified    2.9  over_under  +33.7  Y
+  lgd0.5_T7_share1.0       justified   19.7  over_under  +16.9  Y
+  lgd0.5_T7_share0.35      justified    6.9  over_under  +29.7  Y
+  lgd0.5_T10_share1.0      justified   13.8  over_under  +22.8  Y
+  lgd0.5_T10_share0.35     justified    4.8  over_under  +31.7  Y
+  lgd0.7_T7_share1.0       justified   27.6  over_under   +9.0  Y
+  lgd0.7_T7_share0.35      justified    9.7  over_under  +26.9  Y
+  lgd0.7_T10_share1.0      justified   19.3  over_under  +17.3  Y
+  lgd0.7_T10_share0.35     justified    6.8  over_under  +29.8  Y
+
+ADVERSARIAL ARMS:
+  positive control: price recovered +15.0bps (planted +15.0), default recovered +3.00pp (planted +3.0)
+  negative control: -1.01bps (expect ~0)
+  NAICS confound: New price +36.4bps with C(naics2)
+
+SCORED VERDICT (vs frozen bet):
+  B1: WIN — matured New(<1yr) premium 36.6bps, CI excludes 0 -> premium exists
+  B2: PARTIAL — SPLIT (adversary Attack-3): New(<1yr) +36.6bps vs justified 18.9 => OVER-priced; Startup +9.3bps vs 10.8 => honestly-priced. Empty-chair OVER-priced prior holds for New(<1yr) ONLY, NOT thin-history generally (startups are the counterexample).
