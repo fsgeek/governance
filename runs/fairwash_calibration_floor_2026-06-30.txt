@@ -1,0 +1,17 @@
+FAIRWASH-DETECTION CALIBRATION FLOOR (2026-06-30, CONTROLLED SYNTHETIC)
+Q: does an attribute-free lawful-axis footprint detector resolve laundering, and at what floor?
+DGP: default~R; grade=coarse_bin(R+lambda*P); price off grade. spillover EMERGENT. N=60000, coarse_bins=5
+
+ lambda footprint(unprot)               CI  CI≠0  direct(P) fine-grade fp fine≠0
+   0.00             +50.2    [+49.0,+51.5]   yes       -0.1        +386.5    yes
+   0.05            +100.2   [+99.0,+101.4]   yes      +11.8        +970.9    yes
+   0.10             +98.7    [+97.5,+99.8]   yes      +23.7        +931.2    yes
+   0.15             +97.3    [+96.1,+98.4]   yes      +35.8        +895.6    yes
+   0.20             +95.7    [+94.4,+96.8]   yes      +47.7        +863.5    yes
+   0.30             +91.8    [+90.7,+93.0]   yes      +70.9        +810.8    yes
+   0.40             +86.7    [+85.5,+87.8]   yes      +88.8        +771.2    yes
+
+sensitivity floor lambda* = 0.05    footprint monotone in lambda: False
+GUARD 1 (fine-grade kills footprint @ max lambda): False    GUARD 2 (lambda=0 null held): False
+
+VERDICT: PARTIAL — footprint resolves but not cleanly monotone or a guard tripped; report partial.

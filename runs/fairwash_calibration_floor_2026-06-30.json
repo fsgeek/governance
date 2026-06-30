@@ -1,0 +1,127 @@
+{
+  "experiment": "fairwash_calibration_floor",
+  "grade": "CONTROLLED synthetic, hypothetical-scenario validity \u2014 NOT a back-test",
+  "dgp": "default~Bernoulli(R); G=coarse_bin(R+lambda*P); price=base+loading*G; spillover EMERGENT not planted",
+  "n": 60000,
+  "coarse_bins": 5,
+  "fine_bins": 50,
+  "per_lambda": [
+    {
+      "lambda": 0.0,
+      "footprint_unprotected_bps": 50.19,
+      "footprint_ci": [
+        48.99,
+        51.48
+      ],
+      "ci_excludes_zero": true,
+      "direct_protected_disparity_bps": -0.1,
+      "footprint_FINE_grade_bps": 386.53,
+      "footprint_FINE_ci": [
+        358.12,
+        418.31
+      ],
+      "fine_ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.05,
+      "footprint_unprotected_bps": 100.18,
+      "footprint_ci": [
+        98.97,
+        101.4
+      ],
+      "ci_excludes_zero": true,
+      "direct_protected_disparity_bps": 11.79,
+      "footprint_FINE_grade_bps": 970.94,
+      "footprint_FINE_ci": [
+        958.92,
+        983.28
+      ],
+      "fine_ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.1,
+      "footprint_unprotected_bps": 98.67,
+      "footprint_ci": [
+        97.47,
+        99.84
+      ],
+      "ci_excludes_zero": true,
+      "direct_protected_disparity_bps": 23.73,
+      "footprint_FINE_grade_bps": 931.18,
+      "footprint_FINE_ci": [
+        919.09,
+        943.62
+      ],
+      "fine_ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.15,
+      "footprint_unprotected_bps": 97.28,
+      "footprint_ci": [
+        96.1,
+        98.42
+      ],
+      "ci_excludes_zero": true,
+      "direct_protected_disparity_bps": 35.83,
+      "footprint_FINE_grade_bps": 895.57,
+      "footprint_FINE_ci": [
+        883.71,
+        907.87
+      ],
+      "fine_ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.2,
+      "footprint_unprotected_bps": 95.7,
+      "footprint_ci": [
+        94.43,
+        96.82
+      ],
+      "ci_excludes_zero": true,
+      "direct_protected_disparity_bps": 47.72,
+      "footprint_FINE_grade_bps": 863.45,
+      "footprint_FINE_ci": [
+        851.68,
+        875.4
+      ],
+      "fine_ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.3,
+      "footprint_unprotected_bps": 91.84,
+      "footprint_ci": [
+        90.69,
+        92.99
+      ],
+      "ci_excludes_zero": true,
+      "direct_protected_disparity_bps": 70.93,
+      "footprint_FINE_grade_bps": 810.78,
+      "footprint_FINE_ci": [
+        799.52,
+        822.2
+      ],
+      "fine_ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.4,
+      "footprint_unprotected_bps": 86.71,
+      "footprint_ci": [
+        85.53,
+        87.84
+      ],
+      "ci_excludes_zero": true,
+      "direct_protected_disparity_bps": 88.8,
+      "footprint_FINE_grade_bps": 771.23,
+      "footprint_FINE_ci": [
+        760.62,
+        781.97
+      ],
+      "fine_ci_excludes_zero": true
+    }
+  ],
+  "sensitivity_floor_lambda": 0.05,
+  "footprint_monotone_in_lambda": false,
+  "guard1_fine_grade_kills_footprint_at_max_lambda": false,
+  "guard2_lambda0_null_held": false,
+  "verdict": "PARTIAL \u2014 footprint resolves but not cleanly monotone or a guard tripped; report partial."
+}
