@@ -1,0 +1,16 @@
+SBA 7(a) FIRM-AGE PRICING — DECOUPLING TEST (2026-06-30)
+Q: does the young-firm price tax track realized risk, or exceed it across the ladder?
+window matured FY2010-2014, N=226131, ref default-rate=0.055
+justified-bps multiplier (06-29 realized LGD=0.67/term=9.9/gshare=0.66): 4.50 bps per pp default-gap
+
+band                         n price_tax def_gap_pp justified    WEDGE         wedge_CI  CI≠0
+Startup (pre-revenue)    33428      +9.3      +2.95     +13.3     -4.0          [-5,-3]   yes
+New (<1yr)               23798     +36.6      +3.09     +13.9    +22.6        [+21,+24]   yes
+2-3 years                14521     +36.9      +2.88     +13.0    +23.9        [+22,+26]   yes
+3-4 years                22566     +18.9      +1.19      +5.3    +13.6        [+12,+15]   yes
+4-5 years                11029     +32.0      +2.11      +9.5    +22.5        [+20,+24]   yes
+
+median over-justified wedge (operating bands 1-4): +22.6bps
+[secondary weak diagnostic] binary-flag young-block Wald survives: F=679 p=0.0e+00 — OVERSTATES decoupling, not the verdict
+
+VERDICT: OVER-JUSTIFIED ACROSS ALL 4 OPERATING BANDS — price exceeds realized-risk justification by a median +23bps, every band's wedge CI excludes 0. The tax does NOT track realized default. Re-reading HOLDS (flat-ish over-pricing, not a thin-end story).

@@ -1,0 +1,119 @@
+{
+  "experiment": "sba_businessage_decoupling",
+  "question": "Does the young-firm price tax track REALIZED risk, or exceed it across the band ladder?",
+  "framing_note": "Primary test = per-band price tax vs realized-risk-justified bps (06-29 over/under formula, bootstrap CI on the wedge). The binary-flag kept-fraction is a WEAK secondary diagnostic \u2014 a 0/1 default flag has near-zero cross-band variance and OVERSTATES decoupling; do not headline it.",
+  "declared_limitation": "The wedge bootstrap resamples ONLY the realized default-rate gap; the price-tax point is held at its OLS estimate, so reported wedge CIs UNDERSTATE total uncertainty (they omit the price-coef SE, ~\u00b11.5bps per band, and the realized-param LGD/term/guarantee uncertainty, which is declared-not-estimated). The wedge SIGN and the all-4-bands-over-justified pattern are robust to this; the exact bps are CI-floored, read as lower bounds on uncertainty.",
+  "window": "matured FY2010-2014",
+  "n": 226131,
+  "realized_params_from_0629": {
+    "LGD": 0.6740558233835451,
+    "term_yr": 9.857560072111593,
+    "guarantee_share": 0.6587580969438069,
+    "justified_bps_per_pp_gap": 4.505
+  },
+  "reference_default_rate": 0.0552,
+  "per_band": [
+    {
+      "band": "Startup (pre-revenue)",
+      "idx": 0,
+      "n": 33428,
+      "price_tax_bps": 9.32,
+      "realized_default_gap_pp": 2.953,
+      "justified_bps": 13.3,
+      "over_justified_wedge_bps": -3.98,
+      "wedge_ci": [
+        -5.35,
+        -2.59
+      ],
+      "wedge_excludes_zero": true,
+      "binary_flag_kept_fraction": 0.929
+    },
+    {
+      "band": "New (<1yr)",
+      "idx": 1,
+      "n": 23798,
+      "price_tax_bps": 36.57,
+      "realized_default_gap_pp": 3.091,
+      "justified_bps": 13.92,
+      "over_justified_wedge_bps": 22.65,
+      "wedge_ci": [
+        20.98,
+        24.18
+      ],
+      "wedge_excludes_zero": true,
+      "binary_flag_kept_fraction": 0.968
+    },
+    {
+      "band": "2-3 years",
+      "idx": 2,
+      "n": 14521,
+      "price_tax_bps": 36.89,
+      "realized_default_gap_pp": 2.876,
+      "justified_bps": 12.96,
+      "over_justified_wedge_bps": 23.93,
+      "wedge_ci": [
+        21.82,
+        25.79
+      ],
+      "wedge_excludes_zero": true,
+      "binary_flag_kept_fraction": 0.977
+    },
+    {
+      "band": "3-4 years",
+      "idx": 3,
+      "n": 22566,
+      "price_tax_bps": 18.89,
+      "realized_default_gap_pp": 1.186,
+      "justified_bps": 5.34,
+      "over_justified_wedge_bps": 13.55,
+      "wedge_ci": [
+        12.21,
+        15.1
+      ],
+      "wedge_excludes_zero": true,
+      "binary_flag_kept_fraction": 0.995
+    },
+    {
+      "band": "4-5 years",
+      "idx": 4,
+      "n": 11029,
+      "price_tax_bps": 32.01,
+      "realized_default_gap_pp": 2.107,
+      "justified_bps": 9.49,
+      "over_justified_wedge_bps": 22.52,
+      "wedge_ci": [
+        20.19,
+        24.44
+      ],
+      "wedge_excludes_zero": true,
+      "binary_flag_kept_fraction": 0.98
+    }
+  ],
+  "median_over_justified_wedge_operating_1to4_bps": 22.59,
+  "startup_band0": {
+    "price_tax_bps": 9.32,
+    "wedge_bps": -3.98,
+    "wedge_ci": [
+      -5.35,
+      -2.59
+    ]
+  },
+  "secondary_binary_flag_diagnostic": {
+    "note": "weak; near-zero-variance regressor. Reported for completeness, NOT the verdict.",
+    "defaulted_loading_bps_per_unit_prob": {
+      "M_risk_no_bands": 44.0,
+      "M_full_with_bands": 42.06
+    },
+    "young_block_joint_wald": {
+      "band_only": {
+        "F": 709.31,
+        "p": 0.0
+      },
+      "with_defaulted": {
+        "F": 679.38,
+        "p": 0.0
+      }
+    }
+  },
+  "verdict": "OVER-JUSTIFIED ACROSS ALL 4 OPERATING BANDS \u2014 price exceeds realized-risk justification by a median +23bps, every band's wedge CI excludes 0. The tax does NOT track realized default. Re-reading HOLDS (flat-ish over-pricing, not a thin-end story)."
+}
