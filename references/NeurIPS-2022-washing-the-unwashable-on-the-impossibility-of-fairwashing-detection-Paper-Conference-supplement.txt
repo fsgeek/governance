@@ -1,0 +1,3198 @@
+Broader Impact Statement
+
+FRAUD-Detect may be used to provide evaluations of the fairness of model explanations, resulting in
+increased trust in explanations, public expectation of model fairness, and model owner accountability.
+Since FRAUD-Detect is non-cooperative and resists evasion even against an informed adversary, it
+empowers auditors, protects the intellectual property and ownership of the model owners, and may
+resist gamiﬁcation into a new arms-race system between fairwashing and auditor detection methods.
+By empowering auditors, FRAUD-Detect also enforces democratic ideals of equality by providing
+an avenue for users to receive fairness-vetted model explanations for high-stakes decisions, further
+increasing public trust in AI and model auditing.
+
+The potential risks of this work revolve around the fairness deﬁnition and datasets used in this
+paper. Demographic parity, while beﬁtting our setting (as discussed in Section 2.1) is not always
+an appropriate fairness deﬁnition, depending on the model’s domain and application. We recognise
+that continual focus on a concept reinforces it and it’s ideology’s normalcy, and that our focus
+on demographic parity also reinforces the political and philosophical ideologies underlying it and
+deprives alternate deﬁnitions of due attention. Likewise, as noted in Appendix E, our evaluation of
+FRAUD-Detect on the current popular fairness benchmark datasets normalizes these applications of
+AI. We draw speciﬁc attention to the use of the COMPAS recidivism prediction dataset [5], and note
+that we do not necessarily condone the use of AI models for this application.
+
+To mitigate these societal risks, we advocate for similar auditing measures for second-order failures
+with respect to other fairness deﬁnitions (see Section 7). We also acknowledge the importance of
+investigating the impact of FRAUD-Detect in real-world scenarios, especially where the group of
+users suing for model explanations represents minority or sensitive demographics.
+
+Checklist
+
+1. For all authors...
+
+(a) Do the main claims made in the abstract and introduction accurately reﬂect the paper’s
+
+contributions and scope? [Yes]
+
+(b) Did you describe the limitations of your work? [Yes] See Section 7.
+(c) Did you discuss any potential negative societal impacts of your work? [Yes] In the
+
+Societal Impact Statement
+
+(d) Have you read the ethics review guidelines and ensured that your paper conforms to
+
+them? [Yes]
+
+2. If you are including theoretical results...
+
+(a) Did you state the full set of assumptions of all theoretical results? [Yes] See Assump-
+
+tion 1.
+
+(b) Did you include complete proofs of all theoretical results? [Yes] See Appendix D
+
+3. If you ran experiments...
+
+(a) Did you include the code, data, and instructions needed to reproduce the main experi-
+mental results (either in the supplemental material or as a URL)? [Yes] See supplemen-
+tal material.
+
+(b) Did you specify all the training details (e.g., data splits, hyperparameters, how they
+
+were chosen)? [Yes] See supplemental material.
+
+(c) Did you report error bars (e.g., with respect to the random seed after running experi-
+
+ments multiple times)? [Yes]
+
+(d) Did you include the total amount of compute and the type of resources used (e.g., type
+
+of GPUs, internal cluster, or cloud provider)? [Yes]
+
+4. If you are using existing assets (e.g., code, data, models) or curating/releasing new assets...
+
+(a) If your work uses existing assets, did you cite the creators? [Yes]
+(b) Did you mention the license of the assets? [Yes] See supplemental material.
+(c) Did you include any new assets either in the supplemental material or as a URL? [Yes]
+
+See supplemental material.
+
+14
+
+(d) Did you discuss whether and how consent was obtained from people whose data you’re
+
+using/curating? [Yes] See supplemental material.
+
+(e) Did you discuss whether the data you are using/curating contains personally identiﬁable
+
+information or offensive content? [Yes] See supplemental material.
+5. If you used crowdsourcing or conducted research with human subjects...
+
+(a) Did you include the full text of instructions given to participants and screenshots, if
+
+applicable? [N/A]
+
+(b) Did you describe any potential participant risks, with links to Institutional Review
+
+Board (IRB) approvals, if applicable? [N/A]
+
+(c) Did you include the estimated hourly wage paid to participants and the total amount
+
+spent on participant compensation? [N/A]
+
+15
+
+A Explanation methods
+
+Methods to facilitate the understanding of machine learning models are usually classiﬁed into two
+main categories: transparent-box design and black-box model explanation [27]. Transparent-box
+design concerns methods that produce inherently interpretable models such as logistic regressors and
+decision trees [12, 32]. Black-box model explanation corresponds to approaches designed to explain
+how black-box models produce their outcomes. For instance, global explanations techniques (e.g.,
+TREPAN [20] and DECTEXT [11]) focus on explaining the whole logic of black-box models by
+training an inherently interpretable surrogate model. On the other hand, local explanations aim at
+explaining black-box models decisions on single data points (e.g., LIME [38], and GRADCAM [40]).
+For simplicity, in this paper, we focus on fairwashing performed with global explanation models.
+
+B Related Work
+
+We highlight some of the differences in settings, assumptions and solutions between our work and
+[44, 25]:
+
+Setting We rely on explainer models while they use a published data subset for fairness auditing. In
+particular, they reveal some subset of the training data and their predictions. We follow the setting
+considered in the literature introducing fairwashing [2, 3]. Slack et al. explanations require input
+perturbations while ours require the model owner to provide an interpretable model.
+
+Assumptions Slack et al. assume that fairness auditing is performed via model-agnostic local
+explanations (e.g., LIME and SHAP) [44]. Both [44] and [25] assume an ideal detector with
+knowledge of the underlying training distribution of the model; and query access to the black-box
+model. However, we only assume access to black-box model predictions on the suing set. We stress
+that this dataset is available before any formal audit takes place (in the form of asking for model
+explanations). This does not constitute query access to the black-box model; in fact it is only dataset
+access, which here is the predictions on the suing set.
+
+Solutions [44, 25] attempt to detect fairwashing using a Kolmogorov-Smirnov (KS) test over the
+underlying and company-provided subset distribution to determine if the data subset was honestly
+provided. More precisely, they show that detection is difﬁcult when fairwashing is conducted
+by minimizing the Wasserstein distance between the distributions while subject to fairness; this
+optimization also minimizes the upper-bound of the advantage (i.e., distinguishability) of the KS test.
+This differs from our setting in which an informed malicious company must optimize the fairness
+subject to both ﬁdelity (loss) and the detection threshold. Explanation methods like LIME and SHAP
+perturb inputs to gauge feature relevance, inadvertently querying with synthetic data that may be
+detected with out-of-distribution detection. Queries determined to originate from explainers are
+fed to a fair model whereas in-distribution points are given to the biased model. In contrast, our
+detection method is non-cooperative (we require no additional information from the black-box model
+as the auditor already has the predictions on the suing set) and therefore does not rely on input
+perturbations.
+
+C Fidelity
+
+Deﬁnition 6 (Fidelity [20]). The ﬁdelity of an interpretable model I(
+model B(
+
+) is deﬁned as the relative accuracy of I(
+
+·
+
+·
+
+·
+Fidelity(I, B) = Pr
+D
+⇠
+
+X
+
+) with respect to B(
+[ ˆYB = ˆYI |
+
+X],
+
+) with respect to a black-box
+
+):
+
+·
+
+(12)
+
+where D is a data distribution, ˆYI is the prediction of the interpretable model and ˆYB is the prediction
+of black-box model. ˆYI and ˆYB are assumed to be both binary-valued random variables.
+
+D Additional Proofs
+
+Below we iterate the full proof for Theorem 1, the main theorem in the paper.
+
+16
+
+Proof. Deﬁne T +
+a , the true-positive rate of I(
+·
+denotes the distribution over data with attribute a
+respect to B(
+
+) on X
+
+Da:
+
+2
+
+a = Pr[ ˆYI = 1
+T +
+
+|
+
+·
+
+⇠
+ˆYB = 1, A = a], F +
+
+) with respect to B(
+A. Deﬁne F +
+
+⇠
+a , the false-positive rate of I(
+
+Da, in which Da
+) with
+
+) on X
+
+·
+
+·
+
+ˆYB = 0, A = a]
+
+a = Pr[ ˆYI = 1
+
+.
+}
+(13)
+[0, 1]. We denote ˜ ,   0 > 0 as the difference in value between
+0 + ˜  and
+
+a 2
+1 , respectively. Without loss of generality, let T +
+[0, 1].
+
+1 = T +
+
+For a
+
+0, 1
+
+2{
+
+|
+
+ I , we ﬁrst express  I and  B in terms of ˜ ,  0, T +
+
+A. Recall from Deﬁnition 3 that we deﬁne  I := Pr
+
+0 , T +
+1 , F +
+Pr
+
+0 , and F +
+ˆYI = 1
+
+1 , and
+A = 1
+.
+
+i
+i
+in terms of the aforemen-
+
+h
+
+|
+
+ˆYI = 1
+
+A = 0
+
+|
+A =
+
+0, 1
+}
+{
+
+ 
+
+ˆYI = 1
+
+|
+
+h
+
+A = a
+
+h
+, a
+
+i
+
+2
+
+a , F +
+0 and F +
+
+Note that by deﬁnition, T +
+1 , and F +
+T +
+0 and T +
+0 +  0 where ˜ ,   0
+1 = F +
+F +
+To characterize   =  B  
+YB|
+We use Bayes’ formula to re-write Pr
+tioned variables. For a
+
+2
+
+:
+
+0, 1
+}
+
+2{
+A = a
+
+Pr
+
+ˆYI = 1
+
+h
+
+|
+
+= Pr
+
+ˆYB = 1
+
+i
+
++ Pr
+
+h
+ˆYB = 0
+
+ˆYB = 1
+
+= Pr
+
+h
+
+h
+
+|
+
+|
+
+|
+
+A = a
+
+Pr
+
+ˆYI = 1
+
+A = a
+
+i
+
+Pr
+
+h
+ˆYI = 1
+
+ˆYB = 1, A = a
+
+|
+
+ˆYB = 0, A = a
+
+i
+
+i
+A = a
+
+i
+
+h
+T +
+a + Pr
+
+·
+
+h
+
+A = a
+
+|
+
+F +
+a
+
+i
+
+i
+
+·
+
+(14)
+
+|
+ˆYB = 0
+
+Given our derivation above, we continue by substituting terms into  I :
+
+ I = Pr
+
+ˆYB = 1
+
+T +
+0 + Pr
+
+ˆYB = 0
+
+A = 0
+
+|
+
+·
+
+i
+
+|
+
+A = 1
+
+·
+ˆYB = 1
+
+i
+
+Pr
+
+T +
+1  
+A = 0
+
+h
++
+
+|
+
+h
+ˆYB = 0
+
+F +
+0
+
+A = 0
+
+|
+
+A = 1
+
+·
+
+i
+
+F +
+1
+
+·
+i
+ˆYB = 0
+
+Pr
+
+|
+1 +  0
+
+F +
+
+h
+ˆYB = 1
+
+Pr
+
+ 
+
+=
+
+Pr
+
+h
+1 + ˜ 
+T +
+⌘
+h
+ˆYB = 1
+
+⇣
+T +
+1 Pr
+
+ 
+= T +
+1
+
+|
+ˆYB = 1
+
+h
+Pr
+
++ F +
+1
+
+⇣
+
+Pr
+
+h
+ˆYB = 0
+
+⇣
++ ˜  Pr
+
+h
+ˆYB = 1
+
+A = 1
+
+i
+A = 0
+
+A = 0
+
+|
+
+|
+
+ 
+
+ 
+
+i
+
+ 
+
+i
+F +
+1 Pr
+
+ 
+ˆYB = 0
+
+h
+ 
+A = 1
+|
+
+h
+ˆYB = 1
+
+Pr
+
+h
+ˆYB = 0
+
+Pr
+
+A = 1
+
+A = 1
+
+|
+
+|
+
+i
+
+i⌘
+
+i⌘
+
+i
++  0 Pr
+
+h
+ˆYB = 0
+
+A = 0
+
+|
+
+= T +
+
+h
+1  B
+
+i
+1  B + ˜  Pr
+F +
+
+h
+ˆYB = 1
+
+ 
+T +
+1  
+
+ 
+
+F +
+1
+
++
+
+˜ 
+
+⇣
+
+ 
+
+h
+ 0
+
+ 
+
+Pr
+
+⌘
+
+h
+
+=  B
+
+A = 0
+
+|
+ˆYB = 1
+
+A = 0
+
+|
+
++  0
+
+i
+1
+
+i
+⇣
+A = 0
+|
+
+i
+
+A = 0
+
+|
+
+i
+
+Pr
+
+ˆYB = 1
+
+ 
+
++  0
+
+h
+
+A = 0
+
+|
+
+i⌘
+
+Now that we have derived  I in terms of our desired terms and  B, we eliminate  I from the equation
+for  :
+
+  =  B
+
+ 
+
+ I
+
+( B(T +
+
+=  B
+
+ 
+=  B(1 + F +
+
+1 ) + (˜ 
+F +
+
+1  
+T +
+1 ) + ( 0
+
+ 
+˜ ) Pr
+
+1  
+
+ 
+
+=  B(1 + F +
+
+1  
+
+=  B(1 + F +
+
+1  
+
+T +
+1 )
+
+T +
+1 )
+
+ 
+
+ 
+
+ 0
+
+·
+
+⇣
+ 0 Pr
+
+1
+
+h
+
+ 0) Pr
+
+ˆYB = 1
+
+A = 0
+
++  0)
+
+h
+ˆYB = 1
+
+|
+ˆYB = 1
+
+|
+
+A = 0
+
+i
+A = 0
+
+|
+
+i
+ 
+
+ 0
+
+A = 0
+
+|
+
+ 
+
+i
+
+i⌘
+˜  Pr
+
+h
+
+h
+Pr
+
+ 
+h
+ˆYB = 0
+
+˜  Pr
+
+ˆYB = 1
+
+A = 0
+
+|
+
+ 
+h
+ˆYB = 1
+|
+
+A = 0
+
+.
+
+i
+
+i
+
+(15)
+
+Corollary 1. Let T +
+
+1 , F +
+
+1 as deﬁned in Section 3. Then:
+
+1 + F +
+
+1  
+
+T +
+1 > 0.
+
+Proof. Note that F +
+1 , T +
+if and only if T + = 1 and F + = 0, i.e.
+
+[0, 1], therefore 1 + F +
+
+1 2
+
+1  
+) has perfect ﬁdelity w.r.t. B(
+
+0. We will show 1 + F +
+
+T +
+1 = 0
+). We re-arrange
+
+1  
+
+T +
+1  
+
+·
+
+if I(
+
+·
+
+17
+
+Table 1: The accuracy (Acc.) and demographic parity gap (Gap) of the black-box models–AdaBoost,
+Deep Neural Networks (DNN), Random Forests (RF) and Gradient Boosted Decision Trees (XgBoost)
+evaluated on the suing set.
+
+Dataset
+
+AdaBoost
+Acc. Gap Acc. Gap Acc. Gap Acc. Gap
+
+XgBoost
+
+DNN
+
+RF
+
+COMPAS
+Adult Income
+Bank Marketing
+
+0.68
+0.85
+0.91
+
+0.21
+0.12
+0.07
+
+0.68
+0.85
+0.91
+
+0.25
+0.16
+0.09
+
+0.67
+0.86
+0.91
+
+0.25
+0.17
+0.10
+
+0.68
+0.86
+0.91
+
+0.27
+0.17
+0.10
+
+1 + F +
+
+1  
+
+T +
+1 = 0 as:
+
+T +
+1  
+
+F +
+
+1 = 1
+
+Since F +
+1 2
+endpoints 1 and 0, respectively.
+
+1 , T +
+
+[0, 1] and the size of interval [0, 1] is 1
+
+0 = 1 = T +
+
+1  
+
+ 
+
+1 , T +
+F +
+
+1 and F +
+
+1 must be
+
+E Details on Experimental Setup of FRAUD-Detect
+
+In this section, we provide additional details on our experimental setup.
+
+Datasets. COMPAS [5] is a recidivism dataset released by ProPublica that includes data on 6, 167
+offenders in prison from Broward County (Florida), with the classiﬁcation task consisting in pre-
+dicting whether an inmate will re-offend in the two years after their release.3 We consider race
+(African-American, Caucasian) as the sensitive attribute in COMPAS. Adult Income [22] in-
+cludes 48,842 proﬁles of individuals, each characterized by 13 attributes, drawn from the U.S census.
+The Adult Income binary classiﬁcation task is to predict whether an individual’s income will ex-
+ceed $50,000 a year. We use gender (Female, Male) as the sensitive attribute in Adult Income.
+Finally, Bank Marketing [34] constitutes information collected from a direct marketing campaign
+of a Portuguese banking institution between 2008 to 2013. This dataset contains 41,188 proﬁles
+of individuals, each described by 20 attributes with the classiﬁcation task being the prediction of
+subscription to a term deposit. We consider age (between 30-60 or not between 30-60) as the
+sensitive attribute in Bank Marketing.
+
+Training of black-box and interpretable models. For each experiment, the dataset is split randomly
+into three partitions: the training set (67%), the suing set (16.5%) and the testing set (16.5%),
+following the same procedure as in [3]. Each experiment is repeated with 10 separate random seeds.
+The black-box models are learned from the training data points with their associated true labels.
+However, the interpretable models are trained from the suing set, which has been labelled by the
+black-box model. More precisely, we use the exponentiated gradient algorithm [1] subject to the
+fairwashing constraint from the FairLearn Library [9] to learn the fairwashed interpretable model.
+The exponentiated gradient algorithm when applied for fairness identiﬁes the saddle point solution
+jointly maximizing the fairness and minimizing the loss. To learn the fairwashed interpretable
+model of the informed adversary, we extend the Fairness In The Rashomon Set (FaiRS) [19]
+framework by adding an additional constraint on
+CKL. FaiRS reduces the problem of minimizing the
+CKL to a saddle point problem, which is solved
+unfairness under two constraints on the ﬁdelity and
+with the exponentiated gradient technique [1]. Table 1 summarizes the performance of the considered
+black-box models on each suing set.
+
+Implementation. FRAUD-Detect solely requires the confusion matrices from the interpretable
+model for both the majority and minority group. These matrices are ﬂattened, then compared via KL
+as outlined in Equation 10. Experiments were conducted on Intel Xeon Silver 4110 CPUs (2.10 GHz,
+8GB RAM) and the KL divergence detector implemented in Python 3.8 using scikit-learn [36]. Given
+that the KL divergence constraint is not a linear constraint on the confusion matrices, the extended
+version of FaiRS may fail to obtain the global minimum of the demographic parity gap on the set
+
+3We note that considerable bias and confounding exists in the true labels for recidivism datasets at large.
+We do not necessarily condone use of recidivism datasets. However, COMPAS exists as a standard fairness
+benchmark and thus, we use COMPAS to validate our method.
+
+18
+
+CKL and
+Figure 4: Kullback–Leibler divergence between confusion matrices of subpopulations,
+demographic parity gap as a function of ✏ fairwashing in interpretable models explaining black-box
+models using Adult Income dataset. We use Logistic Regression (LR) and Decision Tree (DT) as
+interpretable models, while AdaBoost, Deep Neural Network (DNN), Random Forest (RF) and
+Gradient Boosted Decision Trees (XgBoost) are used as black-box models.
+
+CKL and
+Figure 5: Kullback–Leibler divergence between confusion matrices of subpopulations,
+demographic parity gap as a function of ✏ fairwashing in interpretable models explaining black-box
+models using Marketing dataset. We use Logistic Regression (LR) and Decision Tree (DT) as
+interpretable models, while AdaBoost, Deep Neural Network (DNN), Random Forest (RF) and
+Gradient Boosted Decision Trees (XgBoost) are used as black-box models.
+
+of high-ﬁdelity interpretable models. In our experiments, our approach converges for two datasets,
+namely COMPAS and Marketing, but does not achieve the global minimum of the demographic
+parity gap for Adult Income. We are planning to address this in future work by focusing on detecting
+fairwashing using linear constraints.
+
+F Additional results
+
+FRAUD-Detect successfully detects fairwashing. Figures 4 and 5 illustrate both the demographic
+CKL of interpretable models as a function of ✏ for two datasets (Adult income and
+parity gap and
+Bank marketing), respectively.
+
+19
+
+0.100.150.200.250.300.35CKLAdaBoostandDTXgBoostandDTDNNandDTRFandDT0.00.20.40.60.81.01  0.100.150.200.250.300.35CKLAdaBoostandLR0.00.20.40.60.81.01  XgBoostandLR0.00.20.40.60.81.01  DNNandLR0.00.20.40.60.81.01  RFandLR0.000.050.100.15ParitygapofI(·)0.000.050.100.15ParitygapofI(·)0.020.040.060.08CKLAdaBoostandDTXgBoostandDTDNNandDTRFandDT0.00.20.40.60.81.01  0.020.040.060.08CKLAdaBoostandLR0.00.20.40.60.81.01  XgBoostandLR0.00.20.40.60.81.01  DNNandLR0.00.20.40.60.81.01  RFandLR0.000.020.040.060.080.100.12ParitygapofI(·)0.000.020.040.060.080.100.12ParitygapofI(·)FRAUD-Detect is robust to the informed adversary. Figures 6 and 7 show the range of the
+demographic parity gap of high-ﬁdelity fairwashed interpretable models subjected to a constraint
+on the
+CKL by solving the optimization problem of Equation (11). We use four types of black-box
+models (AdaBoost, XgBoost, DNN and Random Forest).
+
+G Fairwashing Detection Thresholds
+
+Table 2 reports several fairwashing detection thresholds observed in Figures 2, 4 and 5.
+
+Table 2:
+chosen from average KL divergence values at 5% and 50% fairwashing.
+
+CKL values for each dataset, black-box model, and interpretable model. These values are
+
+Dataset
+
+IM
+
+AdaBoost
+
+5%
+
+50%
+
+DNN
+
+5%
+
+50%
+
+COMPAS
+
+Adult Income
+
+Bank Marketing
+
+DT
+0.105
+LR 0.101
+0.128
+DT
+LR 0.132
+DT
+0.035
+LR 0.033
+
+±
+±
+±
+±
+±
+±
+
+Dataset
+
+IM
+
+0.035
+0.029
+0.067
+0.069
+0.022
+0.018
+
+0.206
+0.164
+0.148
+0.170
+0.034
+0.036
+
+RF
+
+0.078
+0.075
+0.086
+0.117
+0.025
+0.022
+
+±
+±
+±
+±
+±
+±
+
+0.136
+0.143
+0.134
+0.128
+0.045
+0.042
+
+±
+±
+±
+±
+±
+±
+
+0.037
+0.044
+0.015
+0.017
+0.017
+0.015
+
+0.185
+0.231
+0.154
+0.213
+0.046
+0.049
+
+XgBoost
+
+0.065
+0.104
+0.029
+0.048
+0.018
+0.020
+
+±
+±
+±
+±
+±
+±
+
+5%
+
+50%
+
+5%
+
+50%
+
+COMPAS
+
+Adult Income
+
+Bank Marketing
+
+DT
+0.149
+LR 0.145
+DT
+0.154
+LR 0.151
+DT
+0.048
+LR 0.045
+
+0.040
+0.043
+0.017
+0.016
+0.013
+0.014
+
+±
+±
+±
+±
+±
+±
+
+0.227
+0.215
+0.170
+0.207
+0.054
+0.048
+
+±
+±
+±
+±
+±
+±
+
+0.095
+0.088
+0.024
+0.044
+0.014
+0.015
+
+0.170
+0.164
+0.153
+0.148
+0.053
+0.052
+
+±
+±
+±
+±
+±
+±
+
+0.041
+0.044
+0.011
+0.012
+0.015
+0.014
+
+0.248
+0.261
+0.196
+0.200
+0.059
+0.053
+
+±
+±
+±
+±
+±
+±
+
+0.119
+0.124
+0.036
+0.041
+0.016
+0.015
+
+H Per seed ﬁne grain CKL versus fairness
+
+Figures 8, 9, and 10 show the per-seed results aggregated to form ﬁgures 2, 4, and 5, respectively.
+In these ﬁgures (especially in 8 and 10), the order of increasing black-box fairnesses across the
+10 seeds is often replicated in the order of decreasing interpretable model
+CKL values across the
+same seeds; thus a seed with a low black-box fairness has higher
+CKL values than a seed with high
+black-box fairness.
+
+Some seeds from the logistic regression interpretable model (e.g. Figure 9 AdaBoost and logistic
+regression green and grey lines) show discontinuities at high epsilons where fairwashing is signiﬁcant.
+There, the
+CKL values jump to inﬁnity due to a division by zero in the KL log term when there are 0s
+in the minority subpopulation confusion matrix.
+
+We also observe that for several seeds across all datasets and models, the fairness of the honest
+interpretable model is imperfectly aligned and usually higher than the black-box fairness. This is
+unintentional fairwashing, which may arise from the relatively small capacity of the interpretable
+model compared to the black-box model.
+
+I Bounds for KL Divergence of the Confusion Matrices
+
+1 ) and similarly  0 =  B(F  0 + F +
+1 ) =  B(F  1 + F +
+First, denote  1 =  B(1 + F +
+T +
+0 ).
+Depending on the context of the problem either subgroup could be the more sensitive subgroup, so
+in Equation (6) we implicitly assumed that subgroup is z = 1:   =  1. Equation (10) deﬁnes the
+detector based on the ﬂattened confusion matrix, but since for a binary classiﬁcation problem, the
+
+1  
+
+20
+
+rank of the confusion matrix is 2, it is enough to consider KL
+
+F +
+1
+F  1  ◆
+
+upper and lower bounds on this divergence measure in terms of  0,  1, F +
+0, 1
+i , F  i ; i
+. First,
+}
+note that  1 is the sum of type I F  1 and type II F +
+1 detection errors; scaled by the unfairness of the
+black-box model  B. In a detection problem, typically, we bound the type I error and minimize the
+type II error. The particular choice of type I and type II error is context-dependent (are false positives
+a bigger concern than false negatives or not?). In the context of fairwashing, a reasonable choice is
+that
+
+.4 We will derive
+
+F +
+0
+F  0  
+
+✓
+
+2{
+
+,
+
+F +
+F +
+
+1 
+0 
+
+F  1 ,
+F  0
+
+(16)
+
+That is, the cost of falsely detecting a fairwashed model is larger than missing fairwashing—due to
+the legal and liability considerations, for instance.
+
+We can bound the irreducible fairwashing gap  i:
+
+2 bF +
+2 bF +
+
+1 
+0 
+
+ 1 
+ 0 
+
+2 bF  1 ,
+2 bF  0
+
+Using this we bound the aforementioned KL divergence:
+
++ F  0 log
+
+F  0
+F  1 ◆
+
+✓
+
+KL
+
+F +
+0
+F  0  
+
+,
+
+F +
+1
+F  1  ◆
+
+
+
+✓
+
+= F +
+
+0 log
+
+F  0 log
+
+
+
+= F  0 log
+
+F  0 log
+
+
+
+= F  0 log
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓
+
+F  0
+F  1 ◆
+F  0
+F +
+
+F +
+0
+F +
+1 ◆
+F +
+0
+F +
+1 ·
+F +
+0
+F  1 ·
+ 0/2 B
+ 1/2 B ·
+F  0
+ 0
+F +
+ 1 ·
+
+1 ◆
+
+1 ◆
+
+F  0
+F +
+
+1 ◆
+
+Similarly,
+
+KL
+
+F +
+0
+F  0  
+
+,
+
+F +
+1
+F  1  ◆
+
+
+
+ 
+
+✓
+
+F +
+
+0 log
+
+= F +
+
+0 log
+
+F +
+
+0 log
+
+ 
+
+= F +
+
+0 log
+
+F +
+0
+F +
+1 ·
+F +
+0
+F  1 ·
+F +
+0
+F  1 ·
+F +
+0
+F  1 ·
+
+✓
+
+✓
+
+✓
+
+✓
+
+F  0
+F  1 ◆
+F  0
+F +
+1 ◆
+ 0/2 B
+ 1/2 B ◆
+ 0
+ 1 ◆
+
+Therefore,  := KL
+
+F +
+0
+F  0  
+
+,
+
+
+
+✓
+
+F +
+1
+F  1  ◆
+F +
+0
+F  1 ·
+
+✓
+
+F +
+
+0 log
+
+is bounded from below and above by:
+
+ 0
+ 1 ◆
+
+
+
+
+
+
+
+F  0 log
+
+ 0
+ 1 ·
+
+F  0
+F +
+
+1 ◆
+
+✓
+
+(17)
+
+(18)
+
+(19)
+
+(20)
+
+(21)
+
+(22)
+
+(23)
+
+(24)
+
+(25)
+
+(26)
+
+(27)
+
+4That is to say, any two rates from the confusion matrix is enough to construct the full matrix. We note that
+in this section, we work with false positive rate F + and false negative rate F   to simplify the presentation. The
+rest of the paper uses the entire confusion matrix which as we have pointed out in Theorem 1 is not necessary
+but is also harmless.
+
+21
+
+Equivalently, we can re-write these bounds in terms of F + and T + to match Theorem 1 (using the
+fact that F   = 1
+
+T +):
+
+ 
+
+F +
+
+0 log
+
+F +
+0
+T +
+0 ·
+
+ 
+
+ 0
+ 1 ◆
+
+1
+
+✓
+
+
+
+
+
+
+
+(1
+
+ 
+
+T +
+0 ) log
+
+1
+
+ 0
+ 1 ·
+
+✓
+
+T +
+0
+
+ 
+F +
+
+1 ◆
+
+(28)
+
+F +
+Therefore any choice between min := F +
+is valid.
+0
+F  1
+ = min is the most conservative choice which increases the risk of false discovery (of fairwashing),
+while  = max is a permissive choice that minimizes the risk of false discovery at the expense of
+increase in the false negatives (not detecting fairwashing). A balanced choice for threshold could be
+the intermediate point:
+
+and max := F  0 log
+
+ 0
+ 1 ·
+
+0 log
+
+F  0
+F +
+1
+
+ 0
+ 1
+
+⌘
+
+⇣
+
+⇣
+
+⌘
+
+·
+
+¯ =
+
+=
+
+=
+
+=
+
+=
+
+=
+
+=
+
+=
+
+=
+
+=
+
+ 0
+ 1 ◆
+F  0
+F +
+
+✓
+
+1 ◆
+
+F  0
+F +
+
+1 ◆
+
+✓
+
+F  0
+F +
+
+1 ◆
+
+✓
+F +
+0
+
++ F  0 log
+
+ 0
+ 1 ·
+
+✓
+
+F  0
+F +
+
+1 ◆◆
+
+F +
+
+0 +F  0
+
+ 0/ B
+
+1
+
+A
+
+1
+
+F  0
+
+F  0
+
+ 0
+ 1 ◆
+
+✓
+
+ 0
+ 1 ◆
+
+✓
+
+F +
+
+0  
+
+ 0/ B
+
+A
+
+ 0/ B
+
+ 0
+ 1 ◆
+
+✓
+
+1
+
+A
+
+ 0/ B
+
+1
+
+ 0/ B
+
+ 
+
+ 0
+ 1 ◆
+
+✓
+
+F +
+0
+F  1 ·
+F +
+0
+
+✓
+F +
+0
+F  1 ◆
+
+F +
+0
+
+F +
+0
+
+F +
+0
+F  1 ◆
+
+F +
+0
+F  1 ◆
+
+F +
+0 F  0
+F  1 F +
+
+1 ◆
+F +
+0
+
+F +
+0
+F +
+
+F +
+
+0 log
+
+1
+2
+
+1
+2
+
+1
+2
+
+1
+2
+
+1
+2
+
+1
+2
+
+1
+2
+
+✓
+
+log
+
+log
+
+log
+
+log
+
+log
+
+log
+
+✓
+
+✓
+
+✓
+
+✓
+
+✓
+
+0
+
+@
+
+0
+
+@
+
+0
+
+@
+
+0
+
+@
+
+0
+
+@
+
+0
+
+✓
+
+F  0
+F +
+
+✓
+
+1 ◆
+F +
+0
+
+F  0
+F  1 ◆
+
+✓
+
+F +
+0
+
+1 ◆
+
+✓
+
+F +
+0
+
+F +
+0
+F +
+
+1 ◆
+
+F  0
+F  1 ◆
+
+✓
+
+1
+
+A
+ 0/ B
+
+1
+
+A
+
+ 0/ B
+
+ 
+
+F  0
+F +
+
+1 ◆
+
+✓
+
+A
+
+ 0
+ 1 ◆
+
+ 0/ B
+
+ 1
+ B  
+
+✓
+ 0
+2 B
+ 0
+2 B
+
+log
+
+log
+
+ 0
+2 B
+
+log
+
+ 0/ B
+
+ 0
+ 1 ◆
+
+F  1
+F  0 ◆
+ 0
+ B  
+ 0
+ B ◆
+ 0
+ B ◆
+
+✓
+
+✓
+
+✓
+
++
+
+ 
+
+ 0
+ 1
+
+✓
+F  1
+F  0 ◆
+ 0
+log
+2 B
+
+ 0
+2 B ✓
+
+1
+
+ 
+
+ B
+ 1
+
+F  1
+F  0 ◆
+
+F  1
+F  0 ◆
+
+O
+
+ 
+
+ 2
+B
+ 2
+1 ✓
+
+F  1
+F  0 ◆
+
+✓
+ B
+ 1
+
+ 0
+2 B
+
+log
+
+ 0
+ B ◆
+
+✓
+
+ 
+
+1
+2
+
+ 0
+ 1 ✓
+
+F  1
+F  0 ◆
+
+O
+
+ 
+
+2
+
+ 2
+B
+ 2
+1 ✓
+
+F  1
+F  0 ◆
+
+!
+
+F0
+2
+
+F0
+2
+
+F0
+2
+
+@
+ l(F +) +  l(F  )
+
+ l(F +) +  l(F  )
+
+ l(F +) +  l(F  )
+
++
+
++
+
++
+
+ 
+
+ 
+
+ 
+
+ l(F +) +  l(F  )
+
++
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+=
+
+F0
+2
+
+(29)
+
+(30)
+
+(31)
+
+(32)
+
+(33)
+
+(34)
+
+(35)
+
+(36)
+
+(37)
+
+2
+
+!
+(38)
+
+(39)
+
+¯ =
+
+F0
+2
+
+ 
+
+ l(F +) +  l(F  )
+
++
+
+ 
+
+ 0
+2 B
+
+log
+
+ 0
+ B ◆
+
+✓
+
+1
+2
+
+ 0
+ 1
+
+1
+ (F  )  
+
+O
+
+ 
+
+2
+
+ 2
+B
+ 2
+1 ✓
+
+F  1
+F  0 ◆
+
+!
+
+(40)
+
+where  (R) = R0/R1 and  l(R) = log  (R). In the last equation, we have used the taylor
+expansion of log(1
+
+x) at x = 0.
+
+ 
+
+22
+
+ 
+ 
+ 
+J Experimental results with two independent variables
+
+In this section, we repeat experiments shown in Section 6 with the following adjustment:
+
+CKL = KL([T +
+
+0 , F +
+
+0 ], [T +
+
+1 , F +
+
+1 ]),
+
+in which we use only two independent variables of true-positive rate T + and false-positive rate F +.
+Figures 11, 12 and 13 show similar results as Figures 2, 4 and 5.
+
+Figure 12: KL among altered confusion matrices of subgroups versus demographic parity unfairness
+of two explainable models, namely Logistic Regression (LR) and Decision Tree (DT), approximating
+four black-box models, namely AdaBoost, Deep Neural Network (DNN), Random Forest (RF), and
+Gradient Boosted Decision Trees (XgBoost) using Adult dataset. We consider 10 split of the dataset
+to the training set for the black-box model and suing set for the interpretable model.
+
+Figure 13: KL among altered confusion matrices of subgroups versus demographic parity unfairness
+of two explainable models, namely Logistic Regression (LR) and Decision Tree (DT), approximating
+four black-box models, namely AdaBoost, Deep Neural Network (DNN), Random Forest (RF), and
+Gradient Boosted Decision Trees (XgBoost), using Marketing dataset. We consider 10 split of the
+dataset to the training set for the black-box model and suing set for the interpretable model.
+
+23
+
+0.00.20.40.60.8CKLAdaBoostandDTXgBoostandDTDNNandDTRFandDT0.00.20.40.60.81.01  0.00.20.40.60.8CKLAdaBoostandLR0.00.20.40.60.81.01  XgBoostandLR0.00.20.40.60.81.01  DNNandLR0.00.20.40.60.81.01  RFandLR0.000.050.100.15ParitygapofI(·)0.000.050.100.15ParitygapofI(·)0.000.050.100.150.20CKLAdaBoostandDTXgBoostandDTDNNandDTRFandDT0.00.20.40.60.81.01  0.000.050.100.150.20CKLAdaBoostandLR0.00.20.40.60.81.01  XgBoostandLR0.00.20.40.60.81.01  DNNandLR0.00.20.40.60.81.01  RFandLR0.000.020.040.060.080.100.12ParitygapofI(·)0.000.020.040.060.080.100.12ParitygapofI(·)K Perfect Fairwashing is impossible
+
+Theorem 2. Consider binary-valued random variables ˆYB black-box model predictions, ˆYI proxy
+(interpretable) model predictions, and A a sensitive attribute; then these conditions cannot be satisﬁed
+simultaneously:
+
+1. Interpretable Model Demographic Parity
+
+Pr
+
+ˆYI = 1
+
+h
+
+|
+
+A = 0
+
+=
+
+ˆYI = 1
+
+i
+
+h
+
+|
+
+A = 1
+
+i
+
+,
+
+2. Non-detectable
+
+Pr [YI = 1
+Pr [YI = 1
+
+|
+
+YB = 1, A = 0] = Pr [YI = 1
+|
+YB = 0, A = 0] = Pr [YI = 1
+
+|
+
+YB = 1, A = 1] := T +
+|
+YB = 0, A = 1] := F +.
+
+(41)
+
+(42)
+
+Proof. Let Equation (41) be equal to T +, and Equation (42) to F +. Deﬁne the base rates of the
+black-box model on subpopulations 0 and 1 as:
+
+µ0 = Pr[ ˆYB = 1
+|
+µ1 = Pr[ ˆYB = 1
+|
+
+A = 0]
+
+A = 1].
+
+Using the rule of total probabilities, for a
+
+[0, 1],
+
+Pr
+
+ˆYI = 1
+
+A = a
+
+|
+
+2
+= Pr[ ˆYB = 1
+|
+A = a] Pr
+
+A = a] Pr
+
+i
+
+h
+
++ Pr[ ˆYB = 0
+|
+= µa ·
+Fairness according to parity requires that
+
+T + + (1
+
+µa)
+
+·
+
+ 
+
+ˆYI = 1
+
+h
+ˆYI = 1
+h
+F +
+
+|
+
+|
+
+ˆYB = 1, A = a
+
+ˆYB = 0, A = a
+
+i
+
+i
+
+Pr
+
+ˆYI = 1
+
+A = 0
+
+?= Pr
+
+ˆYI = 1
+
+A = 1
+
+.
+
+|
+
+|
+
+i
+Substituting Equation (43) and Equation (45) and re-organizing we have:
+
+i
+
+h
+
+h
+
+(µ0  
+
+µ1)
+
+·
+
+T + + ((1
+
+µ0)
+
+(1
+
+ 
+
+ 
+
+ 
+
+µ1))
+
+·
+
+F + ?= 0
+
+(43)
+
+(44)
+
+(45)
+
+(46)
+
+Case 1: If T + = F +, by eliminating both and recognizing that (1
+equality Equation (45) reduces to 0 = 0 which is trivially correct.
+Case 2: T +
+
+= F + Simplifying Equation (46) further and eliminating T +
+
+µ0) = 1
+
+ 
+
+ 
+
+µ0, we see that the
+
+µ0(T +
+
+F +)
+ 
+?= 1 + µ1.
+
+µ0
+
+,
+
+µ1 ·
+
+ 
+
+(T +
+
+ 
+
+F +) ?= (T +
+
+ 
+
+F +
+
+= 0
+
+ 
+F +)
+
+But these are probabilities, for Equation (45) to hold we must have that
+
+µ1 = 0
+µ0 = 1,
+
+(47)
+
+which means that the black-box predictions exclusively depend on the sensitive attribute. In other
+words, for demographic parity to hold for the interpretable model, the black-box models predictions
+all samples of one subpopulation A = 0 and reject the others A = 0. Clearly, this is unfair to one
+subpopulation.
+
+To establish the impossibility result, we further show that such an assumption is equivalent to requiring
+completely inaccurate black-box models with maximum error rates.
+
+24
+
+6
+6
+Consider the “true” base rates for each subpopulation:
+
+Pr[Y = 1
+
+Pr[Y = 1
+
+|
+
+|
+
+A = 0] = Pr
+
+Y = 1
+
+A = 1] = Pr[Y = 1
+
+h
+
+|
+
+ˆYB = 1, A = 0
+i
+
+|
+ˆYB = 1, A = 1]µ1 + Pr
+
+µ0 + Pr
+
+Y = 1
+
+h
+Y = 1
+
+|
+
+h
+
+Pr
+
+ˆYB = 0
+
+ˆYB = 0, A = 0
+i
+(1
+
+|
+ˆYB = 1, A = 1
+i
+
+h
+µ1)
+
+ 
+
+|
+
+A = 0
+
+i
+
+If interpretable demographic parity Equation (47) holds then, these base rates reduce to:
+
+Pr[Y = 1
+
+Pr[Y = 1
+
+|
+
+|
+
+A = 0] = Pr
+
+Y = 1
+
+A = 1] = Pr
+
+Y = 1
+
+h
+
+h
+
+|
+
+|
+
+ˆYB = 1, A = 0
+i
+ˆYB = 0, A = 1
+i
+
+Y
+
+=
+
+)
+
+ˆYB |
+
+?
+
+A =
+
+)
+
+ˆYB ?
+
+Y
+
+|
+
+A.
+
+In other words, the black-box model predictions is completely independent of the true label and
+exclusively dependent on the sensitive attribute A.
+
+25
+
+Figure 6: Range of the demographic parity gap of high-ﬁdelity fairwashed logistic regression
+0.01, 0.03, 0.05, 0.07, 0.10, 0.20
+interpretable models subjected to a constraint on the
+),
+}
+explaining AdaBoost, Deep Neural Network (DNN), Random Forest (RF) and Gradient Boosted
+Decision Trees (XgBoost) black-box models trained on Adult Income dataset. Horizontal lines denote
+the demographic parity gap of the black-box models.
+
+CKL ( 
+
+2{
+
+Figure 7: Range of the demographic parity gap of high-ﬁdelity fairwashed logistic regression
+0.01, 0.03, 0.05, 0.07, 0.10, 0.20
+interpretable models subjected to a constraint on the
+),
+}
+explaining AdaBoost, Deep Neural Network (DNN), Random Forest (RF) and Gradient Boosted
+Decision Trees (XgBoost) black-box models trained on Marketing dataset. Horizontal lines denote
+the demographic parity gap of the black-box models.
+
+CKL ( 
+
+2{
+
+26
+
+.897.906.911.919.929.937.940.944.952.956-.20AdultIncome-AdaBoost.904.906.909.919.925.932.937.937.943.951AdultIncome-XgBoost.907.916.923.930.935.939.942.946.948.950-.20AdultIncome-DNN.901.914.916.919.926.926.937.941.948.959AdultIncome-RFFidelityParitygapofI(·) :0.010.030.050.070.10.2.960.965.968.971.975.977.980-.10.1.2Marketing-AdaBoost.956.959.961.962.965.967.971.971.971Marketing-XgBoost.954.956.959.962.965.966.970.970.970.970-.10.1.2Marketing-DNN.957.961.965.967.970.972.975.975Marketing-RFFidelityParitygapofI(·) :0.010.030.050.070.10.2DNN and LR
+
+.7
+
+.9
+
+.8
+Fairness
+DNN and DT
+
+AdaBoost and LR
+
+.7
+
+.9
+
+.8
+Fairness
+AdaBoost and DT
+
+.6
+
+.8
+
+.6
+
+L
+K
+.4
+C
+
+.2
+
+.8
+
+.6
+
+L
+K
+.4
+C
+
+.2
+
+.8
+
+.6
+
+.4
+
+.2
+
+1
+
+.6
+
+.8
+
+.6
+
+.4
+
+.2
+
+XgBoost and LR
+
+.7
+
+.9
+
+.8
+Fairness
+XgBoost and DT
+
+1
+
+RF and LR
+
+.9
+
+.8
+Fairness
+RF and DT
+
+.8
+
+.6
+
+.4
+
+.2
+
+1
+
+.6
+
+.7
+
+.8
+
+.6
+
+.4
+
+.2
+
+.8
+
+.6
+
+.4
+
+.2
+
+1
+
+.6
+
+.8
+
+.6
+
+.4
+
+.2
+
+.6
+
+.7
+
+.8
+Fairness
+
+.9
+
+1
+
+.6
+
+.7
+
+.8
+Fairness
+
+.9
+
+1
+
+.6
+
+.7
+
+.8
+Fairness
+
+.9
+
+1
+
+.6
+
+.7
+
+.8
+Fairness
+
+.9
+
+1
+
+Figure 8: Kullback–Leibler divergence,
+CKL, between confusion matrices of subgroups versus
+demographic parity fairness of two interpretable models, namely Logistic Regression (LR) and
+Decision Tree (DT), approximating four black-box models, namely AdaBoost, Deep Neural Network
+(DNN), Random Forest (RF), and Gradient Boosted Decision Trees (XgBoost), using COMPAS
+dataset. We consider 10 split of the dataset to the training set for the black-box model and suing set
+for the interpretable model. Vertical dashed lines represent unfairness values of the black-box models.
+
+AdaBoost and LR
+
+.95
+
+.85
+
+.9
+Fairness
+AdaBoost and DT
+
+1
+
+.4
+
+.3
+
+L
+K
+C
+.2
+
+.1
+
+.8
+
+.5
+
+.4
+
+L
+.3
+K
+C
+
+.2
+
+.1
+
+.8
+
+.85
+
+.9
+Fairness
+
+.95
+
+1
+
+.4
+
+.3
+
+.2
+
+.1
+
+.5
+
+.4
+
+.3
+
+.2
+
+.1
+
+DNN and LR
+
+.8
+
+.85
+
+.95
+
+.9
+Fairness
+DNN and DT
+
+1
+
+.8
+
+.85
+
+.9
+Fairness
+
+.95
+
+1
+
+.4
+
+.3
+
+.2
+
+.1
+
+.5
+
+.4
+
+.3
+
+.2
+
+.1
+
+RF and LR
+
+.8
+
+.85
+
+.95
+
+1
+
+.9
+Fairness
+RF and DT
+
+.8
+
+.85
+
+.9
+Fairness
+
+.95
+
+1
+
+.4
+
+.3
+
+.2
+
+.1
+
+.5
+
+.4
+
+.3
+
+.2
+
+.1
+
+XgBoost and LR
+
+.8
+
+.95
+
+.85
+
+.9
+Fairness
+XgBoost and DT
+
+1
+
+.8
+
+.85
+
+.9
+Fairness
+
+.95
+
+1
+
+CKL, between confusion matrices of subgroups versus
+Figure 9: Kullback–Leibler divergence,
+demographic parity fairness of two interpretable models, namely Logistic Regression (LR) and
+Decision Tree (DT), approximating four black-box models, namely AdaBoost, Deep Neural Network
+(DNN), Random Forest (RF), and Gradient Boosted Decision Trees (XgBoost) using Adult dataset.
+We consider 10 split of the dataset to the training set for the black-box model and suing set for the
+interpretable model. Vertical dashed lines represent unfairness values of the black-box models.
+
+27
+
+AdaBoost and LR
+
+.12
+
+.1
+
+.08
+
+L
+K
+C
+
+.05
+
+.02
+
+0
+
+.85
+
+.12
+
+.1
+
+.9
+
+.95
+
+1
+
+Fairness
+AdaBoost and DT
+
+.08
+
+L
+K
+C
+
+.05
+
+.02
+
+0
+
+.85
+
+.9
+
+.95
+
+1
+
+Fairness
+
+.12
+
+.1
+
+.08
+
+.05
+
+.02
+
+0
+
+.85
+
+.12
+
+.1
+
+.08
+
+.05
+
+.02
+
+0
+
+.85
+
+DNN and LR
+
+.9
+
+.95
+
+1
+
+Fairness
+DNN and DT
+
+.9
+
+.95
+
+1
+
+Fairness
+
+.12
+
+.1
+
+.08
+
+.05
+
+.02
+
+0
+
+.85
+
+.12
+
+.1
+
+.08
+
+.05
+
+.02
+
+0
+
+.85
+
+RF and LR
+
+.9
+
+.95
+
+Fairness
+RF and DT
+
+.9
+
+.95
+
+1
+
+Fairness
+
+.12
+
+.1
+
+.08
+
+.05
+
+.02
+
+1
+
+0
+
+.85
+
+.12
+
+.1
+
+.08
+
+.05
+
+.02
+
+0
+
+.85
+
+XgBoost and LR
+
+.9
+
+.95
+
+1
+
+Fairness
+XgBoost and DT
+
+.9
+
+.95
+
+1
+
+Fairness
+
+Figure 10: Kullback–Leibler divergence,
+CKL, between confusion matrices of subgroups versus
+demographic parity fairness of two interpretable models, namely Logistic Regression (LR) and
+Decision Tree (DT), approximating four black-box models, namely AdaBoost, Deep Neural Network
+(DNN), Random Forest (RF), and Gradient Boosted Decision Trees (XgBoost), using Marketing
+dataset. We consider 10 split of the dataset to the training set for the black-box model and suing set
+for the interpretable model. Vertical dashed lines represent unfairness values of the black-box models.
+
+Figure 11: KL among altered confusion matrices of subgroups versus demographic parity unfairness
+of two explainable models, namely Logistic Regression (LR) and Decision Tree (DT), approximating
+four black-box models, namely AdaBoost, Deep Neural Network (DNN), Random Forest (RF), and
+Gradient Boosted Decision Trees (XgBoost), using COMPAS dataset. We consider 10 split of the
+dataset to the training set for the black-box model and suing set for the interpretable model.
+
+28
+
+0.000.250.500.751.001.25CKLAdaBoostandDTXgBoostandDTDNNandDTRFandDT0.00.20.40.60.81.01  0.000.250.500.751.001.25CKLAdaBoostandLR0.00.20.40.60.81.01  XgBoostandLR0.00.20.40.60.81.01  DNNandLR0.00.20.40.60.81.01  RFandLR0.000.050.100.150.200.25ParitygapofI(·)0.000.050.100.150.200.25ParitygapofI(·)
