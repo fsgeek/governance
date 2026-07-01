@@ -1,0 +1,78 @@
+{
+  "experiment": "single_projection_detector",
+  "design_frozen_in": "docs/superpowers/specs/2026-07-01-single-projection-identifiability.md (36d22e1)",
+  "target": "FULL-COHORT bin-price-vs-bin-realized-default wedge (Result 2, proven-identifiable vs honest)",
+  "scope": "separates LAUNDERED from HONEST only; (b) unpriced-lawful and (c) coarseness DEFERRED",
+  "declared_risk_price_bps_per_default": 95.59,
+  "n": 60000,
+  "coarse_bins": 5,
+  "per_lambda": [
+    {
+      "lambda": 0.0,
+      "footprint_bps": 102.21,
+      "ci": [
+        101.45,
+        102.97
+      ],
+      "ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.05,
+      "footprint_bps": 102.38,
+      "ci": [
+        101.61,
+        103.1
+      ],
+      "ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.1,
+      "footprint_bps": 102.64,
+      "ci": [
+        101.83,
+        103.39
+      ],
+      "ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.15,
+      "footprint_bps": 103.52,
+      "ci": [
+        102.75,
+        104.36
+      ],
+      "ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.2,
+      "footprint_bps": 104.82,
+      "ci": [
+        104.12,
+        105.63
+      ],
+      "ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.3,
+      "footprint_bps": 107.41,
+      "ci": [
+        106.58,
+        108.34
+      ],
+      "ci_excludes_zero": true
+    },
+    {
+      "lambda": 0.4,
+      "footprint_bps": 107.41,
+      "ci": [
+        106.52,
+        108.28
+      ],
+      "ci_excludes_zero": true
+    }
+  ],
+  "guard_a_lambda0_null": false,
+  "guard_b_positive_control_all_detected": true,
+  "guard_c_monotone": true,
+  "verdict": "BROKEN \u2014 lambda=0 not null; declared risk price mis-set or estimator confounded."
+}

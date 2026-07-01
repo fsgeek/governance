@@ -1,0 +1,16 @@
+SINGLE-PROJECTION LAUNDERING DETECTOR (2026-07-01) — full-cohort wedge, first brick
+target: bin-price vs bin-realized-default decoupling (proven-identifiable vs honest)
+declared risk price: 95.6 bps per unit realized-default; N=60000, bins=5
+
+ lambda  footprint_bps                 CI   CI≠0
+   0.00         +102.2    [+101.5,+103.0]    yes
+   0.05         +102.4    [+101.6,+103.1]    yes
+   0.10         +102.6    [+101.8,+103.4]    yes
+   0.15         +103.5    [+102.8,+104.4]    yes
+   0.20         +104.8    [+104.1,+105.6]    yes
+   0.30         +107.4    [+106.6,+108.3]    yes
+   0.40         +107.4    [+106.5,+108.3]    yes
+
+GUARD A (lambda=0 null): False   GUARD B (positive control all detected): True   GUARD C (monotone): True
+
+VERDICT: BROKEN — lambda=0 not null; declared risk price mis-set or estimator confounded.
