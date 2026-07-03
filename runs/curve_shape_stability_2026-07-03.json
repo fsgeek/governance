@@ -1,0 +1,66 @@
+{
+  "prereg": "docs/superpowers/specs/2026-07-03-curve-shape-stability-prereg.md",
+  "all_rate_types": {
+    "label": "all_rate_types",
+    "n": 344767,
+    "score_mean": 0.0669,
+    "base_curvature_score2": 5.0132,
+    "curvature_by_fy": {
+      "2010": 5.0132,
+      "2011": 9.3908,
+      "2012": 9.552,
+      "2013": 9.5877,
+      "2014": 10.9031,
+      "2015": 8.9818,
+      "2016": 6.3149
+    },
+    "wald_curvature_equal_across_fy": {
+      "fvalue": 35.426,
+      "pvalue": 4.151707029246016e-43
+    },
+    "wald_slope_equal_across_fy": {
+      "fvalue": 46.262,
+      "pvalue": 5.49031481679808e-57
+    }
+  },
+  "fixed_rate": {
+    "label": "fixed_rate",
+    "n": 72954,
+    "score_mean": 0.0455,
+    "base_curvature_score2": 5.5048,
+    "curvature_by_fy": {
+      "2010": 5.5048,
+      "2011": 11.4976,
+      "2012": 10.261,
+      "2013": 10.1575,
+      "2014": 9.868,
+      "2015": 7.9327,
+      "2016": 4.5272
+    },
+    "wald_curvature_equal_across_fy": {
+      "fvalue": 14.096,
+      "pvalue": 4.134609978225678e-16
+    },
+    "wald_slope_equal_across_fy": {
+      "fvalue": 19.814,
+      "pvalue": 2.9211060000666703e-23
+    }
+  },
+  "placebo_curvature_wald_p_median": 0.6379173854168725,
+  "placebo_p_values": [
+    0.9898,
+    0.7087,
+    0.1103,
+    0.6901,
+    0.8281,
+    0.5857,
+    0.4411,
+    0.2782,
+    0.5786,
+    0.787
+  ],
+  "scoring": {
+    "P1_shape_DRIFTS_wald_p_lt_0.01": true,
+    "P3_placebo_collapses": true
+  }
+}
