@@ -2,6 +2,24 @@
 
 *Status: working notes capturing structural decisions made during drafting conversation. Updated as decisions are made. This file should travel with the paper drafts so the structural reasoning isn't lost when this conversation context is gone.*
 
+---
+## ⚑ RECONCILIATION 2026-07-05 (read FIRST — the queue below is STALE)
+
+Reconciled the doc against the actual `.tex` sources + a fresh build. The paper is FURTHER ALONG than the "Pending revisions queue" (lines ~258+) implies — most of those passes landed. Verified state:
+
+- **Builds clean.** `latexmk -pdf paper.tex` → exit 0, **34 pages** (grew from the 31 at LaTeX migration; Section 6 absorbed the substrate-vs-stack material, commit `20cec89`, which the queue never listed). **Zero undefined citation KEYS** — every real `\cite` resolves.
+- **The ONLY remaining `[CITATION NEEDED]` markers are 3 `\needcite{}` in `section6.tex`, and they are all SELF-CITATIONS to our own empirical results, not missing external sources:**
+  1. line 33 — "pre-registration discipline and partly falsified" → the **HMDA trimodal null** ([[project_hmda_trimodal_result]], commit `53a58a9`).
+  2. line 48 — "silence-manufacture… pre-registered empirical confirmation on a bounded substrate scope" → the **silence-manufacture / LDA shared-surface result** ([[project_lda_shared_surface_result]] / [[project_silence_manufacture_result]]).
+  3. line 52 — "per-decision routing… falsified across six different operationalizations" → the **disagreement-routing deflation** ([[project_disagreement_routing_result]]).
+- **These 3 are TONY'S CALL, deliberately not filled by the assistant:** how to cite unpublished pre-registered INTERNAL experiments in a position paper (self-cite as "(Mason, in preparation)"? tech-report companion cite? footnote w/ pre-reg commit hash?) is a voice/authorship decision (per "Voice and authorship" §). Guessing the form would put words in the paper's mouth. The PROSE around each marker is already written and honest; only the reference key + `references.bib` entry are missing.
+- **Still genuinely open, and Tony's (not chores):** (a) the two deferred structural questions in "Open structural questions deferred to future sessions" (Position-1-as-parallel-categorical-vs-framing-claim; Section 4 vs 7 mapping order) — both still unresolved in the .tex; (b) the **rikuy review gate** (never skipped, per "Review process" §).
+- **STALE instruction corrected:** line ~255 "After draft complete, Tony moves to new project, converts to LaTeX format" is superseded — the LaTeX migration ALREADY happened (2026-05-01, "LaTeX migration" §) and `.tex` is canonical. Ignore the convert-to-LaTeX step.
+
+**Net:** the paper is ~mechanically done. What blocks publication is 3 self-citation-form decisions + 2 small structural calls + rikuy — all Tony's judgment, none of it drafting volume. The "chore" framing was right that it's not fun; it was wrong that it's large.
+---
+
+
 ## Working title
 
 To be decided. Working candidates: *Empty-Chair Representation: A Framework for AI Governance in Community Banking*. *Architectures of Absence: AI Governance under the FS AI RMF*. The first is descriptive; the second is more pointed. Neither final.
