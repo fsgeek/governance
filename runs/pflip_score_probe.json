@@ -1,0 +1,25 @@
+{
+  "across_seed_flip_set_jaccard": 0.5117,
+  "channel": "D4",
+  "deciles": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.25,
+    0.333,
+    0.667,
+    0.667,
+    1.0,
+    1.0
+  ],
+  "n_scored": 1674,
+  "p_flip_G0": 0.3469,
+  "p_flip_G1": 0.34,
+  "p_flip_G_diff": -0.007,
+  "p_flip_frac_extreme_0or1": 0.6625,
+  "p_flip_frac_middle_0.4_0.6": 0.0114,
+  "p_flip_mean": 0.3448,
+  "p_flip_vs_margin_corr": 0.424
+}

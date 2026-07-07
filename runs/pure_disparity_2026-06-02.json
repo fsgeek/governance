@@ -1,0 +1,474 @@
+{
+  "experiment": "pure-disparity information-set contrast",
+  "pre_reg_commit": "1166cd1",
+  "smoke": false,
+  "ps": 0.7,
+  "families": [
+    "PD_baserate",
+    "PD_noise"
+  ],
+  "gaps": [
+    0.1,
+    0.2
+  ],
+  "n": 8000,
+  "seeds": 20,
+  "info_sets": {
+    "bare": [
+      "A_obs",
+      "CAL"
+    ],
+    "trueG": [
+      "A_obs",
+      "CAL",
+      "A_obs_g0",
+      "A_obs_g1"
+    ],
+    "bisg": [
+      "A_obs",
+      "CAL",
+      "A_obs_ghat0",
+      "A_obs_ghat1"
+    ],
+    "oracle": [
+      "A_clean"
+    ]
+  },
+  "pass_fail": "P1 bare !separate (both families) / P2 trueG separate (some family @0.20) / P3 families differ (N/A if a family gate-rejected) / P4 bisg !separate where trueG does. Validity gate delta<0.02 = pure; gate-rejected family reported, not patched. NEG_clean must show no separation on any info-set (else apparatus broken).",
+  "summary": {
+    "PD_baserate_gap0.10": {
+      "validity": {
+        "clean_wg_auc": 0.9207351511363033,
+        "plant_wg_auc": 0.9210328831945385,
+        "delta": 0.00029773205823513393,
+        "passes": true
+      },
+      "infosets": {
+        "bare": {
+          "separates": true,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.004130791405833528,
+              "coef_naive": 0.003879135297804037
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": true,
+              "no_result": false,
+              "coef_kctl": 0.010078921571886668,
+              "coef_naive": 0.0023971104214322025
+            }
+          ]
+        },
+        "trueG": {
+          "separates": true,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.004130791405833528,
+              "coef_naive": 0.003879135297804037
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": true,
+              "no_result": false,
+              "coef_kctl": 0.010078921571886668,
+              "coef_naive": 0.0023971104214322025
+            },
+            {
+              "disc": "A_obs_g0",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.0045828290658447846,
+              "coef_naive": 0.003372446411775476
+            },
+            {
+              "disc": "A_obs_g1",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.003006169529138042,
+              "coef_naive": 0.005122731253054846
+            }
+          ]
+        },
+        "bisg": {
+          "separates": true,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.004130791405833528,
+              "coef_naive": 0.003879135297804037
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": true,
+              "no_result": false,
+              "coef_kctl": 0.010078921571886668,
+              "coef_naive": 0.0023971104214322025
+            },
+            {
+              "disc": "A_obs_ghat0",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.004374769324219152,
+              "coef_naive": 0.003468138936668863
+            },
+            {
+              "disc": "A_obs_ghat1",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.003886813487448265,
+              "coef_naive": 0.004290131658939655
+            }
+          ]
+        },
+        "oracle": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_clean",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.002924969624605478,
+              "coef_naive": 0.005131069384433973
+            }
+          ]
+        }
+      }
+    },
+    "PD_baserate_gap0.20": {
+      "validity": {
+        "clean_wg_auc": 0.9207351511363033,
+        "plant_wg_auc": 0.9193950534961423,
+        "delta": 0.0013400976401610754,
+        "passes": true
+      },
+      "infosets": {
+        "bare": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.0027156448881869577,
+              "coef_naive": 0.01340042066092928
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": 0.0018472705385864097,
+              "coef_naive": -0.00864014645579747
+            }
+          ]
+        },
+        "trueG": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.0027156448881869577,
+              "coef_naive": 0.01340042066092928
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": 0.0018472705385864097,
+              "coef_naive": -0.00864014645579747
+            },
+            {
+              "disc": "A_obs_g0",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.0037631760124715585,
+              "coef_naive": 0.014963552640701927
+            },
+            {
+              "disc": "A_obs_g1",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.00030288234652375845,
+              "coef_naive": 0.009780874525425864
+            }
+          ]
+        },
+        "bisg": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.0027156448881869577,
+              "coef_naive": 0.01340042066092928
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": 0.0018472705385864097,
+              "coef_naive": -0.00864014645579747
+            },
+            {
+              "disc": "A_obs_ghat0",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.0015067393021238329,
+              "coef_naive": 0.012565528492936018
+            },
+            {
+              "disc": "A_obs_ghat1",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.003924550474250332,
+              "coef_naive": 0.01423531282892232
+            }
+          ]
+        },
+        "oracle": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_clean",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.005794715346819135,
+              "coef_naive": 0.017468272578552435
+            }
+          ]
+        }
+      }
+    },
+    "PD_noise_gap0.10": {
+      "validity": {
+        "clean_wg_auc": 0.9207351511363033,
+        "plant_wg_auc": 0.8982896003611469,
+        "delta": 0.02244555077515642,
+        "passes": false
+      },
+      "infosets": {
+        "bare": {
+          "separates": true,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": -0.0064232078998752995,
+              "coef_naive": -0.0005608088071706874
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": true,
+              "no_result": false,
+              "coef_kctl": 0.010804691425578578,
+              "coef_naive": 0.005579201407208911
+            }
+          ]
+        },
+        "trueG": {
+          "separates": true,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": -0.0064232078998752995,
+              "coef_naive": -0.0005608088071706874
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": true,
+              "no_result": false,
+              "coef_kctl": 0.010804691425578578,
+              "coef_naive": 0.005579201407208911
+            },
+            {
+              "disc": "A_obs_g0",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": -0.007035343219783746,
+              "coef_naive": -0.0007649976055006391
+            },
+            {
+              "disc": "A_obs_g1",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": -0.004983934507338861,
+              "coef_naive": -7.371803927602727e-05
+            }
+          ]
+        },
+        "bisg": {
+          "separates": true,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": -0.0064232078998752995,
+              "coef_naive": -0.0005608088071706874
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": true,
+              "no_result": false,
+              "coef_kctl": 0.010804691425578578,
+              "coef_naive": 0.005579201407208911
+            },
+            {
+              "disc": "A_obs_ghat0",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": -0.008072593990584631,
+              "coef_naive": -0.0018586317565374433
+            },
+            {
+              "disc": "A_obs_ghat1",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.004773821809165912,
+              "coef_naive": 0.0007370141421962906
+            }
+          ]
+        },
+        "oracle": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_clean",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.0049241301347367206,
+              "coef_naive": 0.001393618857934209
+            }
+          ]
+        }
+      }
+    },
+    "PD_noise_gap0.20": {
+      "validity": {
+        "clean_wg_auc": 0.9207351511363033,
+        "plant_wg_auc": 0.890243684035837,
+        "delta": 0.030491467100466352,
+        "passes": false
+      },
+      "infosets": {
+        "bare": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.0015455427647558528,
+              "coef_naive": 0.00697224666983387
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": 0.004492843479804248,
+              "coef_naive": -0.0033784038578781317
+            }
+          ]
+        },
+        "trueG": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.0015455427647558528,
+              "coef_naive": 0.00697224666983387
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": 0.004492843479804248,
+              "coef_naive": -0.0033784038578781317
+            },
+            {
+              "disc": "A_obs_g0",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.0004020530650416798,
+              "coef_naive": 0.009962288434253619
+            },
+            {
+              "disc": "A_obs_g1",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": -0.004355026121103285,
+              "coef_naive": -0.0001353518940635512
+            }
+          ]
+        },
+        "bisg": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_obs",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.0015455427647558528,
+              "coef_naive": 0.00697224666983387
+            },
+            {
+              "disc": "CAL",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": 0.004492843479804248,
+              "coef_naive": -0.0033784038578781317
+            },
+            {
+              "disc": "A_obs_ghat0",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.002906871854817694,
+              "coef_naive": 0.00673157712817507
+            },
+            {
+              "disc": "A_obs_ghat1",
+              "separates_kctl": false,
+              "no_result": true,
+              "coef_kctl": -0.0001842136746937062,
+              "coef_naive": 0.0072129162114931145
+            }
+          ]
+        },
+        "oracle": {
+          "separates": false,
+          "per_disc": [
+            {
+              "disc": "A_clean",
+              "separates_kctl": false,
+              "no_result": false,
+              "coef_kctl": 0.002562037900805947,
+              "coef_naive": 0.01319077095742971
+            }
+          ]
+        }
+      }
+    },
+    "NEG_clean": {
+      "bare": true,
+      "trueG": true,
+      "bisg": true,
+      "oracle": true
+    }
+  }
+}

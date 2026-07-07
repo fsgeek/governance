@@ -48,8 +48,6 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-
 from policy.encoder import PolicyConstraints
 from wedge.losses import (
     deny_emphasis_loss,
@@ -57,7 +55,7 @@ from wedge.losses import (
     grant_emphasis_loss,
     grant_emphasis_loss_weighted,
 )
-from wedge.models import CartModel, fit_model
+from wedge.models import CartModel, FittedModel, fit_model
 
 
 @dataclass(frozen=True)
@@ -71,10 +69,9 @@ class HyperparameterSpec:
 class SweepResult:
     """One hyperparameter combo with its fit outcome.
 
-    `fitted_tree` is populated by `hyperparameter_sweep` so downstream phases
-    (policy evaluation, post-fit inspection) can read `tree_.feature` without
-    re-fitting. The wedge re-fits selected members on the full training set
-    in `refit_members`; the sweep's tree is for inspection only.
+    `fitted_model` is a FittedModel (CART, sparse-linear, or monotone-GBM).
+    `fitted_tree` remains as a read-only convenience for tree-only consumers
+    (categories, attribution); it is None for non-tree families.
 
     `holdout_y_true` and `holdout_y_pred` retain the model's holdout-set
     predictions and true labels so cost-asymmetric losses (L_T, L_F) can be
@@ -86,9 +83,16 @@ class SweepResult:
 
     spec: HyperparameterSpec
     holdout_auc: float
-    fitted_tree: Optional[DecisionTreeClassifier] = None
+    fitted_model: Optional["FittedModel"] = None
     holdout_y_true: Optional[np.ndarray] = None
     holdout_y_pred: Optional[np.ndarray] = None
+
+    @property
+    def fitted_tree(self):
+        from wedge.models import CartModel
+        if isinstance(self.fitted_model, CartModel):
+            return self.fitted_model.tree
+        return None
 
 
 @dataclass
@@ -207,7 +211,7 @@ def hyperparameter_sweep(
                             feature_subset=subset,
                         ),
                         holdout_auc=auc,
-                        fitted_tree=model.tree,
+                        fitted_model=model,
                         holdout_y_true=y_true,
                         holdout_y_pred=y_pred,
                     )
@@ -220,17 +224,17 @@ def hyperparameter_sweep(
 # ---------------------------------------------------------------------------
 
 
-def used_features(fitted_tree: DecisionTreeClassifier, feature_names: list[str]) -> set[str]:
-    """Return the set of feature names a fitted tree actually splits on.
+def used_features(fitted_model, feature_names: list[str]) -> set[str]:
+    """Return the set of feature names a fitted model actually depends on.
 
-    sklearn's `tree_.feature` is an int array of length `n_nodes`; non-leaf
-    nodes carry the feature index used at the split, leaves carry -2 (the
-    sentinel `TREE_UNDEFINED`). Index into `feature_names` accordingly.
-
-    Public API: also used by wedge.categories for the structural-distinguishing
-    feature extraction (spec §6.2 condition 3).
+    Dispatches to the model's own used_features() when available (the
+    FittedModel protocol); falls back to reading tree_.feature for a raw
+    sklearn DecisionTreeClassifier (backwards-compat for callers that still
+    pass a bare tree, e.g. SweepResult.fitted_tree before Task 2).
     """
-    feature_idx = fitted_tree.tree_.feature
+    if hasattr(fitted_model, "used_features"):
+        return fitted_model.used_features()
+    feature_idx = fitted_model.tree_.feature
     return {feature_names[i] for i in feature_idx if i >= 0}
 
 
@@ -298,15 +302,15 @@ def evaluate_policy(
             )
             continue
 
-        # Gate 2 requires the fitted tree.
-        if sr.fitted_tree is None:
+        # Gate 2 requires the fitted model.
+        if sr.fitted_model is None:
             raise ValueError(
                 "evaluate_policy with non-None policy_constraints requires "
-                "SweepResult.fitted_tree to be populated. Did hyperparameter_sweep "
+                "SweepResult.fitted_model to be populated. Did hyperparameter_sweep "
                 "run successfully?"
             )
 
-        used = _used_features(sr.fitted_tree, feature_names)
+        used = sr.fitted_model.used_features()
 
         # Gate 2a: every mandatory feature actually split on (spec §2.7 OD-12).
         unused_mandatory = [
@@ -434,6 +438,80 @@ def filter_to_epsilon_under_loss(
     out: list[SweepResult] = []
     for sr, s in scored:
         if s - best <= tol:
+            within.append(sr)
+        else:
+            out.append(sr)
+    return EpsilonAdmissibleSet(
+        within_epsilon=within,
+        out_of_epsilon=out,
+        global_best_value=best,
+        epsilon=epsilon,
+        score_label=loss_label,
+    )
+
+
+def filter_to_epsilon_under_loss_relative(
+    admissible_set: PolicyAdmissibleSet,
+    *,
+    loss_fn: Callable[[np.ndarray, np.ndarray], float],
+    loss_label: str,
+    epsilon: float,
+) -> EpsilonAdmissibleSet:
+    """Phase 3b (loss-based, RELATIVE ε): partition the admissible set by the
+    model's *relative* loss excess over the admissible best (lower loss = better).
+
+    A model is in `within_epsilon` iff
+    ``(sr.loss - admissible_best) / admissible_best <= epsilon``.
+
+    This is the RELATIVE-band membership the band-opening pre-reg froze (§5:
+    "relative band width ... `(loss − best)/best ≤ ε`", NOT absolute loss
+    units). It differs from `filter_to_epsilon_under_loss` (which uses the
+    absolute window `sr.loss - best <= epsilon`); the absolute function is kept
+    unchanged because `build_dual_set` and prior committed results depend on its
+    semantics.
+
+    EDGE CASE — non-positive best: when `admissible_best <= 0` the relative
+    ratio is undefined / unstable (division by zero or sign flip), so the
+    membership test falls back to the ABSOLUTE window `sr.loss - best <= epsilon`
+    for that band. The losses used here are positive cost-asymmetric losses
+    (`grant_emphasis_loss` / `deny_emphasis_loss`), so a zero best loss means a
+    perfectly-classifying member and the absolute fallback is the sane behavior;
+    this guard exists to keep the function total.
+
+    Requires that SweepResults have `holdout_y_true` and `holdout_y_pred`
+    populated (default for results from `hyperparameter_sweep`).
+    """
+    if not admissible_set.admissible:
+        return EpsilonAdmissibleSet(
+            within_epsilon=[],
+            out_of_epsilon=[],
+            global_best_value=float("nan"),
+            epsilon=epsilon,
+            score_label=loss_label,
+        )
+
+    scored: list[tuple[SweepResult, float]] = []
+    for sr in admissible_set.admissible:
+        if sr.holdout_y_true is None or sr.holdout_y_pred is None:
+            raise ValueError(
+                "filter_to_epsilon_under_loss_relative requires SweepResult."
+                "holdout_y_true and holdout_y_pred to be populated. Did "
+                "hyperparameter_sweep run successfully?"
+            )
+        scored.append((sr, float(loss_fn(sr.holdout_y_true, sr.holdout_y_pred))))
+
+    best = min(s for _, s in scored)
+    tol = epsilon + 1e-9
+    within: list[SweepResult] = []
+    out: list[SweepResult] = []
+    for sr, s in scored:
+        if best > 0:
+            in_band = (s - best) / best <= tol
+        else:
+            # Relative ratio undefined for non-positive best; fall back to the
+            # absolute window (documented edge case above).
+            in_band = s - best <= tol
+        if in_band:
             within.append(sr)
         else:
             out.append(sr)

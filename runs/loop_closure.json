@@ -1,0 +1,51 @@
+{
+  "args": {
+    "channels": [
+      "D1",
+      "D4"
+    ],
+    "eps_frac": 0.01,
+    "max_k": 3,
+    "n": 30000,
+    "out": "runs/loop_closure.json",
+    "seed": 20260610
+  },
+  "rows": [
+    {
+      "channel": "D1",
+      "delta_absdisp": 0.0929,
+      "delta_best_auc": 0.0927,
+      "delta_flip_rate": -0.2924,
+      "round0": {
+        "best_auc": 0.7707,
+        "flip_rate": 0.549111,
+        "mean_absdisp": 0.107,
+        "n_band": 35
+      },
+      "round1": {
+        "best_auc": 0.8634,
+        "flip_rate": 0.256667,
+        "mean_absdisp": 0.1999,
+        "n_band": 701
+      }
+    },
+    {
+      "channel": "D4",
+      "delta_absdisp": 0.0158,
+      "delta_best_auc": 0.0661,
+      "delta_flip_rate": -0.0582,
+      "round0": {
+        "best_auc": 0.7916,
+        "flip_rate": 0.290222,
+        "mean_absdisp": 0.0469,
+        "n_band": 8
+      },
+      "round1": {
+        "best_auc": 0.8577,
+        "flip_rate": 0.232,
+        "mean_absdisp": 0.0627,
+        "n_band": 374
+      }
+    }
+  ]
+}

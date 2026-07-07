@@ -107,11 +107,16 @@ def _eval_model(fr, tr, te, feats, seed):
     pc = np.clip(p, 1e-6, 1 - 1e-6)
     a_g0 = accuracy_score(Y_te[G_te == 0], dec[G_te == 0]) if (G_te == 0).any() else float("nan")
     a_g1 = accuracy_score(Y_te[G_te == 1], dec[G_te == 1]) if (G_te == 1).any() else float("nan")
+    ghat_te = fr["Ghat_bisg"].values[te]
+    ghat_hi = ghat_te >= np.median(ghat_te)        # noisy-G stratifier (deployable BISG)
+    a_gh0 = accuracy_score(Y_te[~ghat_hi], dec[~ghat_hi]) if (~ghat_hi).any() else float("nan")
+    a_gh1 = accuracy_score(Y_te[ghat_hi], dec[ghat_hi]) if ghat_hi.any() else float("nan")
     return {
         "abs_gap": float(abs(gap)),
         "A_obs": float(accuracy_score(Y_te, dec)),          # OBSERVABLE
         "CAL": float(log_loss(Y_te, pc, labels=[0, 1])),    # OBSERVABLE
         "A_obs_g0": float(a_g0), "A_obs_g1": float(a_g1),   # OBSERVABLE (G as stratifier)
+        "A_obs_ghat0": float(a_gh0), "A_obs_ghat1": float(a_gh1),  # OBSERVABLE (noisy BISG stratifier)
         "A_clean": float(accuracy_score(Yc_te, dec)),       # ORACLE (grading-only)
     }
 
@@ -141,13 +146,13 @@ def _arm_families(fr, tr, te, seed):
     return H + L
 
 
-def cell(ps, seed, n, world="A", decouple=0.0):
+def cell(ps, seed, n, world="A", decouple=0.0, target_gap=None):
     """One (ps, seed) cell: generate both arm families (H, L), each a list of
     models with (abs_gap, A_obs, CAL, A_clean, ...). The covariate-adjusted
     comparison happens in aggregate() across pooled cells. world/decouple default
     to the §5 behavior (World A); world='P' + decouple>0 runs the positive control
     (pre-reg 2026-05-29) -- discriminator logic is UNCHANGED."""
-    fr = dgp.generate_twin_world(ps, world, n, seed, decouple=decouple).frame
+    fr = dgp.generate_twin_world(ps, world, n, seed, decouple=decouple, target_gap=target_gap).frame
     tr, te = _split(len(fr), seed)
     _, _, gap0 = _fit_on(fr, tr, te, ADMISSIBLE, seed)
     models = _arm_families(fr, tr, te, seed)
@@ -158,6 +163,33 @@ def cell(ps, seed, n, world="A", decouple=0.0):
 
 
 DISCRIMS = ["A_obs", "CAL", "A_obs_g0", "A_obs_g1", "A_clean"]
+
+INFO_SETS = {
+    "bare":   ["A_obs", "CAL"],                                  # G-blind auditor
+    "trueG":  ["A_obs", "CAL", "A_obs_g0", "A_obs_g1"],          # apparatus as published
+    "bisg":   ["A_obs", "CAL", "A_obs_ghat0", "A_obs_ghat1"],    # deployable noisy-G (BISG)
+    "oracle": ["A_clean"],                                       # grading reference
+}
+
+
+def _infoset_separates(rows, members):
+    """An info-set separates H from L if ANY member discriminator separates
+    (k-controlled CI excl 0 AND |coef|>=0.01) AND its naive coef agrees in sign
+    with the k-controlled one. Sign-disagreement => that member is NO-RESULT
+    (the feature-count-confound hard stop) and is excluded."""
+    per_disc = []
+    for disc in members:
+        r = _ols_label_effect(rows, disc)
+        if r is None:
+            continue
+        same_sign = (r["coef_is_L"] >= 0) == (r["coef_is_L_kctl"] >= 0)
+        per_disc.append({"disc": disc,
+                         "separates_kctl": r["separates_kctl"],
+                         "no_result": (not same_sign),
+                         "coef_kctl": r["coef_is_L_kctl"],
+                         "coef_naive": r["coef_is_L"]})
+    any_sep = any(d["separates_kctl"] and not d["no_result"] for d in per_disc)
+    return {"separates": bool(any_sep), "per_disc": per_disc}
 
 
 def _ols_label_effect(rows, outcome):
@@ -264,6 +296,81 @@ def run(ps_grid, seeds, n, out_path, smoke):
 DECOUPLE_GRID = (0.0, 0.25, 0.50, 0.75, 1.0)
 
 
+def _validity_gate(ps, fam, gap, seed0, n):
+    """within-G-stratum AUC(Y~observable features), plant vs clean (target_gap=0).
+    A genuine pure disparity stays flat (delta<0.02); a leak climbs. Computed on
+    seed0 only (cheap pre-check; the gate is a construction property, ~seed-stable)."""
+    from sklearn.ensemble import GradientBoostingClassifier
+    feats = [f"x{j}" for j in range(8)] + CFRESH
+    def wg(fr):
+        aucs = []
+        for g in (0, 1):
+            sub = fr[fr["G"] == g]
+            if sub["Y"].nunique() < 2:
+                continue
+            m = GradientBoostingClassifier(max_depth=3, n_estimators=100, random_state=0)
+            m.fit(sub[feats].values, sub["Y"].values)
+            aucs.append(roc_auc_score(sub["Y"].values, m.predict_proba(sub[feats].values)[:, 1]))
+        return float(np.mean(aucs))
+    clean = dgp.generate_twin_world(ps, fam, n, seed0, target_gap=0.0).frame
+    plant = dgp.generate_twin_world(ps, fam, n, seed0, target_gap=gap).frame
+    base, pl = wg(clean), wg(plant)
+    return {"clean_wg_auc": base, "plant_wg_auc": pl,
+            "delta": abs(pl - base), "passes": bool(abs(pl - base) < 0.02)}
+
+
+def run_pure_disparity(ps, families, gaps, seeds, n, out_path, smoke):
+    """2x2 info-set contrast (pre-reg 2026-06-02 / commit 1166cd1). For each
+    (family, target_gap): log the validity gate (within-G AUC), pool H/L arm
+    families across seeds, score each INFO_SET via _infoset_separates. Negative
+    control = the clean world (PD_baserate, target_gap=0). NOTE: Ghat_bisg stream
+    position differs across worlds at fixed seed (PD_noise consumes extra draws);
+    benign here because each cell is scored independently and BISG only needs ghat
+    at its target AUC, not cross-world identity."""
+    seeds = list(seeds)
+    t0 = time.time()
+    summary = {}
+    for fam in families:
+        for gap in gaps:
+            rows = []
+            for s in seeds:
+                c = cell(ps, s, n, world=fam, target_gap=gap)
+                rows.extend(c["models"])
+            cellres = {
+                "validity": _validity_gate(ps, fam, gap, seeds[0], n),
+                "infosets": {k: _infoset_separates(rows, v) for k, v in INFO_SETS.items()},
+            }
+            summary[f"{fam}_gap{gap:.2f}"] = cellres
+            sep = {k: cellres["infosets"][k]["separates"] for k in INFO_SETS}
+            print(f"[{time.time()-t0:6.1f}s] {fam} gap={gap:.2f} | "
+                  f"valΔ={cellres['validity']['delta']:.3f}(pass={cellres['validity']['passes']}) "
+                  f"| separates={sep}", flush=True)
+    # negative control: clean world (no planted disparity) must NOT separate on any info-set
+    neg_rows = []
+    for s in seeds:
+        c = cell(ps, s, n, world="PD_baserate", target_gap=0.0)
+        neg_rows.extend(c["models"])
+    summary["NEG_clean"] = {k: _infoset_separates(neg_rows, v)["separates"]
+                            for k, v in INFO_SETS.items()}
+    print(f"[{time.time()-t0:6.1f}s] NEG_clean separates={summary['NEG_clean']}", flush=True)
+    (REPO / "runs").mkdir(exist_ok=True)
+    out_path.write_text(json.dumps({
+        "experiment": "pure-disparity information-set contrast",
+        "pre_reg_commit": "1166cd1", "smoke": smoke, "ps": ps,
+        "families": list(families), "gaps": list(gaps), "n": n, "seeds": len(seeds),
+        "info_sets": INFO_SETS,
+        "pass_fail": "P1 bare !separate (both families) / P2 trueG separate (some family @0.20) "
+            "/ P3 families differ (N/A if a family gate-rejected) / P4 bisg !separate where "
+            "trueG does. Validity gate delta<0.02 = pure; gate-rejected family reported, not patched. "
+            "NEG_clean must show no separation on any info-set (else apparatus broken).",
+        "summary": summary}, indent=2))
+    try:
+        shown = out_path.relative_to(REPO)
+    except ValueError:
+        shown = out_path
+    print(f"\nWrote {shown}", flush=True)
+
+
 def run_positive_control(ps, decouple_grid, seeds, n, out_path, smoke):
     """Positive-control substrate validation (pre-reg 2026-05-29). Sweep world='P'
     over `decouple`; per value, the apparatus's feature-count-controlled A_obs is_L
@@ -345,6 +452,8 @@ def main():
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--positive-control", action="store_true",
                     help="run the world=P decouple sweep (pre-reg 2026-05-29) instead of §5")
+    ap.add_argument("--pure-disparity", action="store_true",
+                    help="run the pure-disparity info-set contrast (pre-reg 2026-06-02)")
     ap.add_argument("--seeds", type=int, default=N_SEEDS_DEFAULT)
     ap.add_argument("--n", type=int, default=N_DEFAULT)
     ap.add_argument("--out", default=None)
@@ -364,6 +473,18 @@ def main():
                     REPO / "runs" / ("positive_control_smoke.json" if args.smoke
                                      else "positive_control_2026-05-29.json"))
         run_positive_control(0.70, decouple_grid, seeds, n, out_path, args.smoke)
+        return
+
+    if args.pure_disparity:
+        families = ("PD_baserate", "PD_noise")
+        if args.smoke:
+            families, gaps, seeds, n = ("PD_baserate",), (0.20,), range(2), 3000
+        else:
+            gaps, seeds, n = (0.10, 0.20), range(args.seeds), args.n
+        out_path = (Path(args.out).resolve() if args.out else
+                    REPO / "runs" / ("pure_disparity_smoke.json" if args.smoke
+                                     else "pure_disparity_2026-06-02.json"))
+        run_pure_disparity(0.70, families, gaps, seeds, n, out_path, args.smoke)
         return
 
     if args.smoke:

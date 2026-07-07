@@ -22,11 +22,25 @@ why we accept this and what iteration 2's richer emission would do.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
+from typing import Any, Protocol, runtime_checkable
 
 import numpy as np
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
+
+
+@runtime_checkable
+class FittedModel(Protocol):
+    """The model-agnostic surface the Rashomon core depends on.
+
+    CART, sparse-linear, and monotone-GBM families each implement this so the
+    ε-band / policy / metric layers never touch a concrete model type.
+    """
+    model_id: str
+    feature_subset: tuple[str, ...]
+    def predict(self, X) -> "np.ndarray": ...
+    def predict_proba(self, X) -> "np.ndarray": ...
+    def used_features(self) -> set[str]: ...
 
 
 @dataclass
@@ -43,6 +57,12 @@ class CartModel:
 
     def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
         return self.tree.predict_proba(X[list(self.feature_subset)].to_numpy())
+
+    def used_features(self) -> set[str]:
+        """Feature names this tree actually splits on (tree_.feature)."""
+        feature_idx = self.tree.tree_.feature
+        names = list(self.feature_subset)
+        return {names[i] for i in feature_idx if i >= 0}
 
     def emit_for_case(self, case_features: dict[str, Any]) -> dict[str, Any]:
         """Return {'T', 'F', 'leaf', 'leaf_id'} for one case (a feature dict).
