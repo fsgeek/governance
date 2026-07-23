@@ -20,6 +20,7 @@ dependencies = [
     "lime>=0.2.0.1",
     "cma>=4.4.4",
     "cmaes>=0.13.0",
+    "statsmodels>=0.14.6",
 ]
 
 [dependency-groups]
