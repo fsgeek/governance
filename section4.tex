@@ -157,7 +157,7 @@ Second, a mapping from empty chairs to architectural requirements that represent
 
 Third, a constraint on architectural choices: any primitive that fails to satisfy at least one chair's requirement and creates costs without serving any chair is architectural overhead. Any primitive that satisfies one chair's requirement at the cost of failing another's is a design tradeoff that requires explicit attention. The architecture is not a set of capabilities; it is a set of empty-chair representations, with capabilities chosen as the means.
 
-The technique's design effect is to shift architecture decisions from feature-driven to representation-driven. Architectures designed without the technique tend to accumulate capabilities (explainability features, audit trails, monitoring dashboards) without explicit attribution to which empty chairs the capabilities serve. Architectures designed with the technique start from the chairs and select capabilities as the means of representing them. The selection criterion makes capability decisions tractable; without the criterion, capability decisions reduce to keeping up with vendor offerings.
+The technique shifts architecture from feature selection to representation. Without it, systems can accumulate explainability features, audit trails, and monitoring dashboards without identifying which empty chairs those capabilities serve. With it, architects start from the chairs and select capabilities as the means of representing them. The criterion makes those choices tractable; without it, they can reduce to keeping up with vendor offerings.
 
 The examination question is concise: \emph{Which absent party depends on this artifact, and what evidence would show that the implementation represents that party's interest?}
 
