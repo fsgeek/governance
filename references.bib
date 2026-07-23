@@ -1,19 +1,4 @@
-% References for "Architectures of Absence: AI Governance under the FS AI RMF"
-%
-% Each entry is annotated with one of three markers in a leading comment:
-%   VERIFIED  --- confirmed real per planning doc citation status; bibliographic
-%                 fields drawn from the planning doc and should be spot-checked
-%                 but are not load-bearing guesses.
-%   LIKELY    --- canonical reference where I have high confidence in the
-%                 bibliographic data, but you should confirm the arxiv ID,
-%                 venue, and exact title before submission.
-%   TODO      --- entry skeleton; the citation key is in use but the
-%                 bibliographic fields are placeholders. Source before
-%                 submission.
-%
-% Sorted by citation key for ease of editing.
 
-% VERIFIED --- planning doc citation status, file at references/PA 1009.pdf
 @techreport{anthony2026,
   author       = {Anthony, Nicholas},
   title        = {Understanding Debanking},
@@ -26,7 +11,6 @@
   urldate      = {2026-05-01},
 }
 
-% VERIFIED --- planning doc citation status; central to position 2
 @inproceedings{bordt2022,
    series={FAccT '22},
    title={Post-Hoc Explanations Fail to Achieve their Purpose in Adversarial Contexts},
@@ -40,34 +24,6 @@
    pages={891--905},
    collection={FAccT '22} }
 
-% VERIFIED --- planning doc citation status; trilemma framing
-@article{evite2026,
-  author       = {Evite, Patricia Marcella and Svetlova, Ekaterina and Bucur, Doina},
-  title        = {Trade-offs in Financial AI: Explainability in a Trilemma with Accuracy and Compliance},
-  journal      = {arXiv preprint arXiv:2602.01368},
-  year         = {2026},
-  eprint       = {2602.01368},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.HC},
-  url          = {https://arxiv.org/abs/2602.01368}
-}
-
-% VERIFIED --- FDIC November 12, 2024 press release announcing 2023 National
-% Survey of Unbanked and Underbanked Households results. Section 2 empirical
-% anchor (4.2\% unbanked / 14.2\% underbanked / demographic disparities). Date
-% and URL verified against fdic.gov; PR number not visible on the press-release
-% page itself.
-@misc{fdic2024,
-  author       = {{Federal Deposit Insurance Corporation}},
-  title        = {{FDIC} National Survey of Unbanked and Underbanked Households, 2023},
-  year         = {2024},
-  month        = {11},
-  day          = {12},
-  howpublished = {Press release},
-  url          = {https://www.fdic.gov/news/press-releases/2024/fdic-survey-finds-96-percent-us-households-were-banked-2023}
-}
-
-% VERIFIED --- Tony via Google Scholar
 @incollection{goodhart1984problems,
   title={Problems of monetary management: the UK experience},
   author={Goodhart, Charles AE},
@@ -89,8 +45,6 @@
   url          = {https://aclanthology.org/N19-1357/}
 }
 
-% VERIFIED --- Anthropic alignment research; widely-cited paper on chain-of-thought
-% faithfulness. Author list, title, and arXiv ID verified against arxiv.org.
 @article{lanham2023,
   author       = {Lanham, Tamera and Chen, Anna and Radhakrishnan, Ansh and Steiner, Benoit and Denison, Carson and Hernandez, Danny and Li, Dustin and Durmus, Esin and Hubinger, Evan and Kernion, Jackson and others},
   title        = {Measuring Faithfulness in Chain-of-Thought Reasoning},
@@ -110,19 +64,6 @@
   url          = {https://papers.neurips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions}
 }
 
-% VERIFIED --- Nisbett \& Wilson 1977 on introspection limits; classic
-% psychology reference cited in Section 2 for reviewer self-report claim.
-@article{nisbett1977,
-  author       = {Nisbett, Richard E. and Wilson, Timothy DeCamp},
-  title        = {Telling More Than We Can Know: Verbal Reports on Mental Processes},
-  journal      = {Psychological Review},
-  volume       = {84},
-  number       = {3},
-  pages        = {231--259},
-  year         = {1977}
-}
-
-% VERIFIED --- planning doc citation status; counterposition for honest engagement
 @article{oh2024,
   author       = {Oh, Nick},
   title        = {In Defence of Post-hoc Explainability},
@@ -134,15 +75,15 @@
   url          = {https://arxiv.org/abs/2412.17883}
 }
 
-% VERIFIED --- TM via Google Scholar.
-% Perez et al. on RLHF reward hacking / discovering language model
-% behaviors. Section 4 mapping for position 3.
-@article{perez2022,
-  title={Discovering language model behaviors with model-written evaluations},
-  author={Perez, Ethan and Ringer, Sam and Lukosiute, Kamile and Nguyen, Karina and Chen, Edwin and Heiner, Scott and Pettit, Craig and Olsson, Catherine and Kundu, Sandipan and Kadavath, Saurav and others},
-  booktitle={Findings of the association for computational linguistics: ACL 2023},
-  pages={13387--13434},
-  year={2023}
+@inproceedings{perez2023,
+  author       = {Perez, Ethan and Ringer, Sam and Lukošiūtė, Kamilė and Nguyen, Karina and Chen, Edwin and Heiner, Scott and Pettit, Craig and Olsson, Catherine and Kundu, Sandipan and Kadavath, Saurav and others},
+  title        = {Discovering Language Model Behaviors with Model-Written Evaluations},
+  booktitle    = {Findings of the Association for Computational Linguistics: ACL 2023},
+  pages        = {13387--13434},
+  year         = {2023},
+  publisher    = {Association for Computational Linguistics},
+  doi          = {10.18653/v1/2023.findings-acl.847},
+  url          = {https://aclanthology.org/2023.findings-acl.847/}
 }
 
 @inproceedings{ribeiro2016,
@@ -156,22 +97,6 @@
   url          = {https://doi.org/10.1145/2939672.2939778}
 }
 
-% VERIFIED --- Rudin 2019 Nature Machine Intelligence; canonical "stop
-% explaining black-box models" paper. Section 1 and Section 3 citation.
-@article{rudin2019,
-  author       = {Rudin, Cynthia},
-  title        = {Stop Explaining Black Box Machine Learning Models for High Stakes Decisions and Use Interpretable Models Instead},
-  journal      = {Nature Machine Intelligence},
-  volume       = {1},
-  number       = {5},
-  pages        = {206--215},
-  year         = {2019},
-  doi          = {10.1038/s42256-019-0048-x}
-}
-
-% VERIFIED --- TM via Google Scholar.
-% Sharma et al. on sycophancy. Section 4 mapping for position 3.
-% Anthropic paper, widely cited.
 @article{sharma2023,
   title={Towards understanding sycophancy in language models},
   author={Sharma, Mrinank and Tong, Meg and Korbak, Tomasz and Duvenaud, David and Askell, Amanda and Bowman, Samuel R and Cheng, Newton and Durmus, Esin and Hatfield-Dodds, Zac and Johnston, Scott R and others},
@@ -179,19 +104,16 @@
   year={2023}
 }
 
-% VERIFIED --- TM via Google Scholar.
-% Slack et al. on adversarial attacks. Section 4 mapping for position 3.
-% Author list, title, and arXiv ID verified against arxiv.org.
 @inproceedings{slack2020,
-  title={Fooling lime and shap: Adversarial attacks on post hoc explanation methods},
+  title={Fooling {LIME} and {SHAP}: Adversarial Attacks on Post Hoc Explanation Methods},
   author={Slack, Dylan and Hilgard, Sophie and Jia, Emily and Singh, Sameer and Lakkaraju, Himabindu},
   booktitle={Proceedings of the AAAI/ACM Conference on AI, Ethics, and Society},
   pages={180--186},
-  year={2020}
+  year={2020},
+  doi={10.1145/3375627.3375830},
+  url={https://doi.org/10.1145/3375627.3375830}
 }
 
-% VERIFIED --- TM via Google Scholar.
-% Strathern 1997 on audit culture; common Goodhart-adjacent citation.
 @article{strathern1997,
   title={`Improving ratings': audit in the British University system},
   author={Strathern, Marilyn},
@@ -200,14 +122,10 @@
   number={3},
   pages={305--321},
   year={1997},
-  publisher={Cambridge University Press}
+  publisher={Cambridge University Press},
+  doi={10.1017/S1062798700002660}
 }
 
-% VERIFIED --- primary bibliographic sources (AJS vol/pages, 2026-07-07). The
-% foundational decoupling reference: formal structures adopted ceremonially for
-% legitimacy, decoupled from operational activity. The nearest neighbor to
-% silence-manufacture in organizational sociology; cited in Section 4 to state
-% the residual (voluntary decoupling vs. architecturally/legally produced silence).
 @article{meyer1977,
   author    = {Meyer, John W. and Rowan, Brian},
   title     = {Institutionalized Organizations: Formal Structure as Myth and Ceremony},
@@ -219,10 +137,6 @@
   publisher = {University of Chicago Press}
 }
 
-% VERIFIED --- primary bibliographic sources (ISBN 0-19-828947-2, 2026-07-07).
-% The audit-society thesis: the spread of ritualized verification that certifies
-% process rather than substance. Cited in Section 4 alongside meyer1977 and
-% strathern1997 as the audit-washing / ceremonial-verification prior art.
 @book{power1997,
   author    = {Power, Michael},
   title     = {The Audit Society: Rituals of Verification},
@@ -232,19 +146,6 @@
   isbn      = {0-19-828947-2}
 }
 
-% VERIFIED --- planning doc citation status; April 2026 model-risk guidance memo
-@misc{sullcrom2026,
-  author       = {{Sullivan \& Cromwell LLP}},
-  title        = {Revised Model Risk Management Guidance Memorandum},
-  year         = {2026},
-  month        = {4},
-  day          = {17},
-  howpublished = {Client memorandum},
-  url          = {https://www.sullcrom.com/insights/memo/2026/April/OCC-Fed-FDIC-Issue-Revised-Guidance-Model-Risk-Management}
-}
-
-% VERIFIED --- Turpin et al. 2023; widely cited in interpretability work.
-% Author list, title, and arXiv ID verified against arxiv.org.
 @article{turpin2023,
   author       = {Turpin, Miles and Michael, Julian and Perez, Ethan and Bowman, Samuel R.},
   title        = {Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting},
@@ -256,24 +157,6 @@
   url          = {https://arxiv.org/abs/2305.04388}
 }
 
-% VERIFIED --- planning doc citation status; partition-counterpart to Cato in Section 7
-@misc{unbankedamerica,
-  author       = {{HR\&A Advisors, Inc.}},
-  title        = {Atlas of Financial Inclusion},
-  howpublished = {\url{https://unbankedamerica.org}},
-  urldate      = {2026-05-02}
-}
-
-% VERIFIED --- TM via Google Scholar.
-% CIGI Paper 296
-@techreport{witzel2024,
-  title={Explainable AI policy: It is time to challenge post hoc explanations},
-  author={Witzel, Mardi and Gonnet, Gast{\'o}n H and Snider, Tim},
-  year={2024},
-  institution={CIGI Papers}
-}
-
-% VERIFIED --- TM via web review.
 @misc{treasuryFSAIRMFRelease2026,
   author       = {{U.S. Department of the Treasury}},
   title        = {Treasury Releases Two New Resources to Guide AI Use in the Financial Sector},
@@ -284,7 +167,6 @@
   note         = {Press release announcing the AI Lexicon and Financial Services AI Risk Management Framework}
 }
 
-% VERFIED --- TM downloaded from FFIEC website; merged manual generated from the FFIEC online manual modules. Central reference for Section 3 and Section 4.
 @manual{ffiecBSAAMLManual,
   author       = {{Federal Financial Institutions Examination Council}},
   title        = {Bank Secrecy Act/Anti-Money Laundering Examination Manual},
@@ -294,18 +176,16 @@
   note         = {Merged manual generated from the FFIEC online manual modules}
 }
 
-% VERIFIED --- TM via web review; April 2023 Treasury press release announcing the 2023 De-risking Strategy, which is the central policy anchor for Section 5. Date and URL verified against home.treasury.gov; PR number not visible on the press-release page itself.
 @misc{treasuryDeRisking2023,
   author       = {{U.S. Department of the Treasury}},
   title        = {2023 De-risking Strategy},
   year         = {2023},
   month        = apr,
-  day          = {10},
+  day          = {25},
   howpublished = {\url{https://home.treasury.gov/news/press-releases/jy1438}},
   note         = {Announced April 25, 2023; issued pursuant to the Anti-Money Laundering Act of 2020}
 }
 
-% VERIFIED --- TM via web review; Regulations
 @misc{regB1002_9,
   author       = {{Consumer Financial Protection Bureau}},
   title        = {12 CFR § 1002.9 --- Notifications (Regulation B)},
@@ -314,7 +194,6 @@
   note         = {Implements the Equal Credit Opportunity Act adverse action notice requirements}
 }
 
-% VERIFIED --- TM via web review; circular on adverse action notice requirements for complex algorithmic credit decisions.
 @misc{cfpbCircular2022_03,
   author       = {{Consumer Financial Protection Bureau}},
   title        = {Consumer Financial Protection Circular 2022-03: Adverse Action Notification Requirements in Connection with Credit Decisions Based on Complex Algorithms},
@@ -325,7 +204,6 @@
   note         = {Policy statement on ECOA and Regulation B adverse action notice requirements for complex algorithmic credit decisions}
 }
 
-% VERIFIED --- TM via web review; Regulations
 @misc{regZ1026,
   author       = {{Consumer Financial Protection Bureau}},
   title        = {12 CFR Part 1026 --- Truth in Lending (Regulation Z)},
@@ -334,7 +212,6 @@
   note         = {Implements the Truth in Lending Act and establishes standardized disclosure requirements for consumer credit}
 }
 
-% VERIFIED --- TM via web review; supervisory guidance on model risk management for banking organizations.
 @misc{sr11_7,
   author       = {{Board of Governors of the Federal Reserve System and Office of the Comptroller of the Currency}},
   title        = {Supervisory Guidance on Model Risk Management (SR 11-7)},
@@ -345,7 +222,6 @@
   note         = {Attachment to Federal Reserve SR Letter 11-7 and OCC Bulletin 2011-12}
 }
 
-% VERFIFIED --- TM Via web review. Note that this replaces SR 11-7
 @misc{sr26_2,
   author       = {{Board of Governors of the Federal Reserve System}},
   title        = {SR 26-2: Revised Guidance on Model Risk Management},
@@ -356,7 +232,6 @@
   note         = {Issued with the OCC and FDIC; supersedes SR 11-7 and SR 21-8}
 }
 
-% VERIFIED -- TM via web review.
 @misc{usc31_5318g2,
   author       = {{United States Congress}},
   title        = {31 U.S.C. § 5318(g)(2) --- Confidentiality of Suspicious Activity Reports},
@@ -365,7 +240,6 @@
   note         = {Prohibits disclosure of SAR filings or information revealing their existence}
 }
 
-% VERIFIED --- TM via web review; summary of FCRA adverse action notice requirements under 15 U.S.C. § 1681m.
 @misc{fcraAdverseAction,
   author       = {{Federal Trade Commission}},
   title        = {Using Consumer Reports for Credit Decisions: What to Know About Adverse Action and Risk-Based Pricing Notices},
@@ -374,8 +248,6 @@
   note         = {Summary of Fair Credit Reporting Act adverse action requirements under 15 U.S.C. § 1681m}
 }
 
-% VERIFIED -- full version 1.0 held in references/ and distributed from the
-% Cyber Risk Institute FS AI RMF resource page.
 @misc{fssccFSAIRMF2026,
   author       = {{Financial Services Sector Coordinating Council FS AI RMF Workstream and Cyber Risk Institute}},
   title        = {Financial Services Artificial Intelligence Risk Management Framework: Control Objective Reference Guide (Full Version 1.0)},
@@ -385,19 +257,6 @@
   note         = {Version 1.0, February 2026},
 }
 
-%k VERIFIED -- TM via Google Scholar
-@article{kahneman2009conditions,
-  title={Conditions for intuitive expertise: a failure to disagree.},
-  author={Kahneman, Daniel and Klein, Gary},
-  journal={American psychologist},
-  volume={64},
-  number={6},
-  pages={515},
-  year={2009},
-  publisher={American Psychological Association}
-}
-
-% VERIFIED -- TM via Google Scholar
 @article{wing2008computational,
   title={Computational thinking and thinking about computing},
   author={Wing, Jeannette M},
@@ -409,7 +268,6 @@
   publisher={The Royal Society}
 }
 
-% VERIFIED -- TM via Google Scholar
 @article{brooks1974mythical,
   title={The mythical man-month},
   author={Brooks, Frederick P},
@@ -420,7 +278,6 @@
   year={1974}
 }
 
-% VERIFIED -- TM via Google Scholar
 @article{bartlett2022consumer,
   title={Consumer-lending discrimination in the FinTech era},
   author={Bartlett, Robert and Morse, Adair and Stanton, Richard and Wallace, Nancy},
@@ -433,7 +290,6 @@
 }
 
 
-% VERIFIED -- Crackpot author, but the citation is real.
 @article{mason2026epistemic,
   title={Epistemic Observability in Language Models},
   author={Mason, Tony},
@@ -441,23 +297,12 @@
   year={2026}
 }
 
-% VERIFIED -- TM via web access.
 @misc{bricken2023monosemanticity,
   author       = {Bricken, Trenton and Templeton, Adly and Batson, Joshua and Chen, Brian and Jermyn, Adam and Conerly, Tom and Turner, Nicholas L. and Anil, Cem and Denison, Carson and Askell, Amanda and Lasenby, Robert and Wu, Yifan and Kravec, Shauna and Schiefer, Nicholas and Maxwell, Tim and Joseph, Nicholas and Tamkin, Alex and Nguyen, Karina and McLean, Brayden and Burke, Josiah E. and Hume, Tristan and Carter, Shan and Henighan, Tom and Olah, Christopher},
   title        = {Towards Monosemanticity: Decomposing Language Models With Dictionary Learning},
   year         = {2023},
   month        = oct,
   howpublished = {\url{https://transformer-circuits.pub/2023/monosemantic-features/}},
-  note         = {Anthropic Transformer Circuits Thread}
-}
-
-% VERIFIED -- TM via web access. Note this may not be used - holding it in reserve.
-@misc{elhage2022superposition,
-  author       = {Elhage, Nelson and Hume, Tristan and Olsson, Catherine and Schiefer, Nicholas and Henighan, Tom and Kravec, Shauna and Hatfield-Dodds, Zac and Lasenby, Robert and Drain, Dawn and Chen, Carol and Grosse, Roger and McCandlish, Sam and Kaplan, Jared and Amodei, Dario and Wattenberg, Martin and Olah, Christopher},
-  title        = {Toy Models of Superposition},
-  year         = {2022},
-  month        = sep,
-  howpublished = {\url{https://transformer-circuits.pub/2022/toy_model/index.html}},
   note         = {Anthropic Transformer Circuits Thread}
 }
 
@@ -469,43 +314,4 @@ year         = {2026},
 month        = feb,
 howpublished = {Lowenstein Sandler LLP Client Alert},
 url          = {https://www.lowenstein.com/news-insights/publications/client-alerts/financial-services-ai-risk-management-framework-operationalizing-the-230-control-objectives-before-the-market-wakes-up-data-privacy}
-}
-
-% Pre-registered, timestamped empirical results supporting Section 6's
-% bounded-empirical claims. Cited by commit hash so the freeze-before-data
-% discipline is independently verifiable (the prediction precedes the data
-% touch in the commit graph). The same snapshot is deposited on Zenodo with a
-% resolvable DOI (10.5281/zenodo.21245641) so the citations are archival, not
-% only repo-local; the DOI resolves to the frozen tree, the commit hashes
-% locate the specific pre-reg/result within it, and the OpenTimestamps proofs
-% in timestamps/ make the ordering tamper-evident without a trusted third party.
-% Repo: github.com/fsgeek/governance.
-@misc{prereg2026expandedvintage,
-  author       = {Mason, Tony},
-  title        = {Expanded-Vintage Replication of Manufactured Silence on {Fannie Mae} Mortgage Data: Pre-Registration and Result},
-  year         = {2026},
-  month        = may,
-  doi          = {10.5281/zenodo.21245641},
-  howpublished = {Pre-registered, timestamped experiment; \texttt{governance} repository, commits \texttt{24e20f8} (pre-registration, frozen before data access) and \texttt{6b23516} (result)},
-  note         = {OpenTimestamps-stamped; pre-registration commit precedes the result commit in the repository history. github.com/fsgeek/governance}
-}
-
-@misc{prereg2026hmdatrimodal,
-  author       = {Mason, Tony},
-  title        = {Cross-Substrate Replication of Demographic-Saturation Reorganization on {HMDA} {Rhode Island} Lending Data: Pre-Registration and Result},
-  year         = {2026},
-  month        = may,
-  doi          = {10.5281/zenodo.21245641},
-  howpublished = {Pre-registered, timestamped experiment; \texttt{governance} repository, commits \texttt{97fcd6f} (pre-registration) and \texttt{b1c7ddc} (result)},
-  note         = {OpenTimestamps-stamped; predictions frozen before data access. github.com/fsgeek/governance}
-}
-
-@misc{prereg2026knobrobustness,
-  author       = {Mason, Tony},
-  title        = {Threshold-Sensitivity of the Manufactured-Silence Cell Count: Adequacy-Knob Robustness},
-  year         = {2026},
-  month        = may,
-  doi          = {10.5281/zenodo.21245641},
-  howpublished = {Pre-registered, timestamped experiment; \texttt{governance} repository, commits \texttt{02fc921} (pre-registration, frozen before data access) and \texttt{e2b66dc} (result)},
-  note         = {OpenTimestamps-stamped; establishes that the silence-cell count is threshold-dependent and must be reported as an operating curve. github.com/fsgeek/governance}
 }

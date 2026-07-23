@@ -1,6 +1,6 @@
 % =====================================================================
 % Section label naming convention (kebab-case, parent prefix per level).
-% Cross-references use \ref{sec:...}; update this map when sections move.
+% Cross-references use section labels; update this map when sections move.
 %
 %   Section 1  Opening Movement                          sec:opening
 %   Section 2  The Frame as Method                       sec:frame-as-method
@@ -65,20 +65,10 @@
   pdfauthor={Tony Mason}
 }
 
-% Tracking macro: visible flag in PDF for citation gaps still to fill.
-% Search the source for \needcite to find each spot before submission.
-\newcommand{\needcite}{\textbf{[CITATION NEEDED]}}
-
-% Tracking macro: marks paragraphs of implementation detail that belong in
-% Paper 2 (the architecture-specification paper) rather than this position
-% paper. Visible in the rendered PDF; search the source for \quarry to find
-% paragraphs slated for migration.
-\newcommand{\quarry}{}
-
 \title{Architectures of Absence:\\AI Governance under the FS~AI~RMF}
 \author{Tony Mason\\
   \texttt{fsgeek@gatech.edu}}
-\date{\today}
+\date{July 23, 2026}
 
 \begin{document}
 
