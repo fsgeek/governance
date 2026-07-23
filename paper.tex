@@ -85,11 +85,30 @@
 \maketitle
 
 \begin{abstract}
-The Financial Services AI Risk Management Framework, developed by the Cyber Risk Institute with the Financial Services Sector Coordinating Council and the US Treasury and released in February 2026, specifies 230 control objectives spanning governance, data, model development, validation, monitoring, third-party risk, and consumer protection. Read as a checklist, the framework is operationally daunting and conceptually opaque; because the framework carries no asset-size threshold and is written to apply to institutions of every size, community banks face an unresolved question about what commensurate compliance means for their context. We argue that the framework admits a generative organizing lens --- empty-chair representation --- that makes interpretation tractable and gives operationalization a structure: a wide range of control objectives can be read as protecting the interests of a party who is not in the room when an AI system makes or supports a financial decision. We advance empty-chair representation as an interpretive and architectural lens whose value lies in the diagnostic structure it produces, demonstrated through worked examples across the framework's control families, rather than as a measured coding of all 230 objectives; a systematic content-analytic coding is identified as future work.
+The Financial Services AI Risk Management Framework (FS~AI~RMF) specifies 230
+control objectives without resolving how a community bank should interpret
+commensurate compliance as a coherent system. This paper proposes
+\emph{empty-chair representation} as an organizing lens: ask which party is
+absent when an AI-supported decision is made, which interest the control is
+meant to represent, and what evidence would make that representation
+inspectable. Worked examples bind the lens to specific FS~AI~RMF control
+objectives; they demonstrate the method rather than claim a coding of the full
+framework.
 
-We develop the empty-chair frame at three levels. We argue that AI applications in regulated decision contexts divide into structurally distinct categories distinguished by whether a verification regime is available for their outputs, and that two categorical positions follow: post-hoc explanation is structurally inadequate as a verification regime in adversarial contexts, and human oversight of AI-generated decisions is not a verification regime when the human reviews explanations rather than reasoning. We propose three diagnostic techniques --- empty-chair enumeration, pages missing from the ledger, and a produced-silence question pair --- that operationalize the frame as architectural design discipline and examination methodology. We propose four categories of architectural primitive that empty-chair representation requires: tamper-evident temporal capture, evidence binding, three-dimensional confidence characterization, and structural drift typology.
-
-Across these arguments, a unifying pattern emerges: the architectures the FS~AI~RMF was written to govern fail not because their controls are corrupted versions of correct measurements but because their controls are produced to occupy the rhetorical space of accountability while the underlying processes are architecturally suppressed. The frame's contribution is an analytical and architectural vocabulary for surfacing this distinction, with implications for examination practice, architectural design, and the regulatory direction of FS~AI~RMF operationalization. This is the first paper in a planned sequence; companion papers treat architectural specification at implementation level and examination methodology in their respective registers.
+The central verification problem is an artifact-to-inference gap. A decision
+record, feature attribution, local surrogate, generated rationale, human review
+record, and approval signature expose different evidentiary objects. Governance
+fails when an artifact is treated as establishing a different proposition
+without an inspectable warrant. We call the recurring pattern
+\emph{silence-manufacture} and develop three regulator-usable diagnostics:
+empty-chair enumeration, pages missing from the ledger, and the produced-silence
+question pair. The diagnostics generate four provisional architectural
+requirements: tamper-evident temporal capture, evidence binding,
+multidimensional characterization of support and insufficiency, and structural
+drift typology. These requirements are property-level design hypotheses, not a
+validated implementation. The contribution is a bounded vocabulary for asking
+what an AI governance artifact establishes, what inference is claimed from it,
+and whose interests bear the gap.
 \end{abstract}
 
 \input{section1}
