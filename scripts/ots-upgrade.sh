@@ -15,6 +15,8 @@ else
 fi
 
 upgraded=0
+pending=0
+previously_completed=0
 changed_paths=()
 for f in timestamps/*.ots; do
     [ -f "$f" ] || continue
@@ -29,12 +31,15 @@ for f in timestamps/*.ots; do
                 changed_paths+=("$f.bak")
             fi
         else
-            echo "already complete: $f"
+	    previously_completed=$((previously_completed + 1))
         fi
     else
+	pending=$((pending + 1))
         echo "pending:  $f"
     fi
 done
+
+echo ots: upgraded $upgraded, pending $pending, previously completed $previously_completed
 
 if [ "$upgraded" -gt 0 ]; then
     git add -- "${changed_paths[@]}"
