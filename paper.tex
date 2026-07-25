@@ -25,21 +25,20 @@
 %       4.2.1  Technique 1: Empty-chair enumeration      sec:diagnostics:enumeration
 %       4.2.2  Technique 2: Pages missing from ledger    sec:diagnostics:pages-missing
 %       4.2.3  Technique 3: Produced-silence pair        sec:diagnostics:question-pair
-%     4.3  Techniques as compounding design constraints  sec:diagnostics:compounding
-%     4.4  Examination as consequence                    sec:diagnostics:examination
-%     4.5  Implications for primitive selection          sec:diagnostics:primitive-implications
-%   Section 5  Architectural Primitive Categories        sec:primitives
-%     5.1  Primitive 1: Tamper-evident temporal capture  sec:primitives:temporal-capture
-%     5.2  Primitive 2: Evidence binding                 sec:primitives:evidence-binding
-%     5.3  Primitive 3: Confidence characterization      sec:primitives:confidence-characterization
-%     5.4  Primitive 4: Structural drift typology        sec:primitives:drift-typology
-%     5.5  What this section does not include            sec:primitives:exclusions
-%     5.6  What the four primitives compound to          sec:primitives:compound
+%     4.3  From orientation to evidence request          sec:diagnostics:evidence-request
+%     4.4  Coordination consequence                      sec:diagnostics:compounding
+%   Section 5  Provisional Evidentiary Capabilities      sec:primitives
+%     5.1  Revision-aware temporal capture               sec:primitives:temporal-capture
+%     5.2  Evidence binding and exportability            sec:primitives:evidence-binding
+%     5.3  Non-collapsing uncertainty representation     sec:primitives:confidence-characterization
+%     5.4  Technical-change monitoring                   sec:primitives:technical-change
+%     5.5  Institutional-conformance monitoring          sec:primitives:institutional-conformance
+%     5.6  What the capabilities contribute              sec:primitives:compound
 %   Section 6  Honest Uncertainties                      sec:uncertainties
 %     6.1  Uncertainties about the frame                 sec:uncertainties:frame
 %     6.2  Uncertainties about the categoricals          sec:uncertainties:categoricals
 %     6.3  Uncertainties about the diagnostic techniques sec:uncertainties:diagnostics
-%     6.4  Uncertainties about the architectural primitives sec:uncertainties:primitives
+%     6.4  Architectural boundaries
 %     6.5  The meta-uncertainty: theory of effect        sec:uncertainties:meta
 %     6.6  What this section earns                       sec:uncertainties:summary
 %   Section 7  Conclusion                                sec:implications
@@ -74,30 +73,35 @@
 \maketitle
 
 \begin{abstract}
-The Financial Services AI Risk Management Framework (FS~AI~RMF) specifies 230
-control objectives without resolving how a community bank should interpret
-commensurate compliance as a coherent system. This paper proposes
-\emph{empty-chair representation} as an organizing lens: ask which party is
-absent when an AI-supported decision is made, which interest the control is
-meant to represent, and what evidence would make that representation
-inspectable. Worked examples bind the lens to specific FS~AI~RMF control
-objectives; they demonstrate the method rather than claim a coding of the full
-framework.
+The Financial Services AI Risk Management Framework (FS~AI~RMF) gives community
+banks 230 control objectives but not a common language for deciding what their
+artifacts establish. Banks may also depend on vendor systems they are responsible
+for governing but cannot unilaterally change. This position paper offers a
+translation ontology for coordination among banks, examiners and regulators,
+and vendors and architects, with affected parties as its normative center.
+\emph{Empty-chair representation} asks whose interest a control protects when
+that party is absent from an AI-supported decision.
 
-The central verification problem is an artifact-to-inference gap. A decision
-record, feature attribution, local surrogate, generated rationale, human review
-record, and approval signature expose different evidentiary objects. Governance
-fails when an artifact is treated as establishing a different proposition
-without an inspectable warrant. We call the recurring pattern
-\emph{silence-manufacture} and develop three regulator-usable diagnostics:
-empty-chair enumeration, pages missing from the ledger, and the produced-silence
-question pair. The diagnostics generate four provisional architectural
-requirements: tamper-evident temporal capture, evidence binding,
-multidimensional characterization of support and insufficiency, and structural
-drift typology. These requirements are property-level design hypotheses, not a
-validated implementation. The contribution is a bounded vocabulary for asking
-what an AI governance artifact establishes, what inference is claimed from it,
-and whose interests bear the gap.
+The ontology follows an affected interest through control objective,
+evidentiary object, available artifact, claimed inference and binding, and the
+actor able to close, disclose, or contest a gap. Decision records, feature
+attributions, local approximations, generated rationales, human review records,
+and approvals expose different objects; none inherits another's warrant merely
+by being called an explanation. \emph{Silence-manufacture} names the diagnostic
+sequence in which unavailable contradictory evidence helps an unsupported
+substitution persist.
+
+Three two-layer diagnostics first orient inquiry and then structure any
+authorized evidence request: empty-chair enumeration, pages missing from the
+ledger relative to a declared attestation scope, and the produced-silence
+question pair. They motivate five provisional evidentiary capabilities:
+revision-aware temporal capture; evidence binding and exportability;
+non-collapsing uncertainty representation; technical-change monitoring; and
+institutional-conformance monitoring. Worked applications to selected
+FS~AI~RMF controls illustrate the vocabulary rather than validate it across the
+framework. The paper supplies neither an implementation validation nor new
+examination authority; it identifies where current claims, technical
+capabilities, institutional obligations, and policy choices should meet.
 \end{abstract}
 
 \input{section1}

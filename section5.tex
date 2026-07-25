@@ -38,6 +38,16 @@ capture establishes when specified content was committed and whether revision
 is detectable; it does not establish that the content was true, complete, or a
 transparent account of human cognition.
 
+Validation should therefore test the entire record lifecycle rather than the
+timestamp alone. It can sample whether material inputs and system versions are
+captured before disposition, whether later annotations create new records
+rather than mutate old ones, whether clock and identity controls are reliable,
+and whether retention and migration preserve verification. A cryptographically
+strong commitment to an incomplete field set remains incomplete; a detailed
+record written after the event remains retrospective. The capability is useful
+because it keeps those limitations visible while allowing reflection to remain
+part of governance rather than treating every later reason as suspect.
+
 \subsection{Capability 2: Evidence binding and exportability}
 \label{sec:primitives:evidence-binding}
 
@@ -60,6 +70,17 @@ Binding an explanation to a decision establishes association and provenance.
 It does not prove causal influence, method fidelity, or evidentiary sufficiency.
 Those are separate propositions tested with method-appropriate evidence.
 
+Exportability is also an access property, not merely a file-format property. An
+export that only the vendor can interpret, omits model or configuration
+versions, cannot be reconciled to the bank's decision population, or expires
+before the applicable retention period may be technically portable but
+evidentially unusable. Contracts can specify schemas, identifiers, retention,
+change notice, validation access, and transition assistance; independent
+assessment can protect proprietary details while testing a bounded claim. These
+arrangements do not remove third-party risk. They make the evidence dependency
+and the residual limitation explicit enough for bank governance and regulatory
+review.
+
 \subsection{Capability 3: Non-collapsing uncertainty representation}
 \label{sec:primitives:confidence-characterization}
 
@@ -81,6 +102,16 @@ validation should test whether the representation is stable, meaningful, and
 used as declared. The representation does not itself establish that the
 underlying evidence is accurate.
 
+The policy interface is as important as the representation. A system might
+faithfully report conflict or missing information while a workflow treats every
+non-numeric state as approval, routes it around human review, or silently
+converts it to a midpoint. Validation should trace representative and
+high-consequence states through display, reviewer action, override, escalation,
+and final disposition. It should also test whether different uncertainty types
+are comprehensible to their intended users. The goal is not maximal complexity;
+it is to preserve distinctions that would change a reasonable action or the
+claim made about that action.
+
 \subsection{Capability 4: Technical-change monitoring}
 \label{sec:primitives:technical-change}
 
@@ -96,6 +127,15 @@ with bank or third-party validation against the institution's operational
 population. Examiners can inspect the monitoring design, thresholds, escalation
 records, and selected results. A detected change directs investigation; it does
 not establish cause, harm, or noncompliance.
+
+The declared population and outcome lag matter. Aggregate stability may conceal
+subgroup change, while a small subgroup can produce noisy alarms. Ground truth
+may arrive months after a credit or fraud decision, and interventions may alter
+the outcomes used for validation. Monitoring should therefore state its unit of
+analysis, reference population, windows, missing-outcome treatment, subgroup
+coverage, thresholds, and escalation logic. A vendor's global performance
+dashboard can inform this work but cannot automatically establish performance
+for one bank's customers, configuration, or operational use.
 
 \subsection{Capability 5: Institutional-conformance monitoring}
 \label{sec:primitives:institutional-conformance}
@@ -115,6 +155,16 @@ challenge a self-selected institutional account. A discrepancy establishes a
 conformance question and may support a finding where applicable authority and
 evidence do so; the monitoring capability alone does not determine legal
 significance.
+
+Conformance evidence is vulnerable to the same selection problem as other
+governance artifacts. A dashboard built entirely from events the workflow was
+configured to emit can show perfect compliance while uninstrumented exceptions
+remain outside its denominator. Reconciliation to inventories, permissions,
+complaints, manual queues, downstream systems, and external samples tests that
+boundary. Because policy can change legitimately, monitoring must preserve the
+operative policy version and authority at the time of action rather than judge
+every historical case by the latest text. Technical and institutional
+monitoring can inform one another, but neither is a substitute for the other.
 
 \subsection{What the capabilities contribute}
 \label{sec:primitives:compound}

@@ -5,56 +5,82 @@
 
 The FS~AI~RMF gives financial institutions a substantial control vocabulary
 \parencite{treasuryFSAIRMFRelease2026}. It does not, by itself, tell a community
-bank how those controls cohere or tell an examiner what a completed governance
-artifact warrants. Empty-chair representation offers a proposed organizing
-lens: identify the party absent from an AI-supported decision, the interest a
-control is meant to represent, and the evidence by which that representation
-can later be tested. The worked examples show how to apply the lens to selected
-control objectives; framework-wide validation remains future work.
+bank how those controls cohere, tell an examiner what a completed artifact
+warrants, or give either participant leverage to obtain missing evidence from a
+vendor. Empty-chair representation supplies a coordination ontology for that
+gap. It traces an affected interest through the control objective, required
+evidentiary object, offered artifact, claimed inference and binding, and the
+actor able to close, disclose, or contest the difference.
 
-The paper's central distinction is between an artifact and the inference drawn
-from it. Decision-time records, feature attributions, local approximations,
-internal-state observations, generated rationales, human deliberative records,
-and institutional approvals can all be useful. They expose different
-evidentiary objects. An explanation reviewed by a human establishes that the
-explanation was reviewed; stronger conclusions depend on what the method
-targets, what the reviewer could test, and how the evidence is bound to the
-claim. This distinction narrows neither AI nor explanation to a single approved
-form. It requires institutions to state the proposition each artifact is being
-used to support.
+This is procedural neutrality rather than a view from nowhere. Affected parties
+remain the normative center although they do not have power symmetric with a
+bank, vendor, or regulator. Banks, examiners, regulators, and vendors receive
+distinct roles because their obligations, authority, and capabilities differ.
+The ontology makes those differences discussable without resolving them by
+terminology.
 
-Silence-manufacture names a recurring inference gap: relevant evidence is
-unavailable, a different artifact is offered, and the absence of contradictory
-evidence supports a conclusion the artifact does not independently establish.
-The pattern is a diagnostic, not a presumption of bad faith and not a claim that
-every governance artifact fails. It directs attention to the relation among the
-proposition, the artifact, the claimed binding, and the party who cannot test
-that binding.
+The central constraint is that artifacts retain their method-specific warrants.
+Decision-time records, feature attributions, local approximations,
+internal-state observations, generated rationales, later reflective accounts,
+human review records, and institutional approvals may all be useful. They
+expose different evidentiary objects. An explanation reviewed by a human
+establishes that the explanation was reviewed; a stronger conclusion depends on
+what the method targets, what the reviewer could test, and how the evidence is
+bound to the claim. Later reflection may discover genuine reasons, but should
+be preserved as later reflection rather than substituted for a decision-time
+record.
 
-The three diagnostic techniques turn that distinction into a shared inquiry.
-Empty-chair enumeration identifies whose interest depends on an
-artifact. Pages missing from the ledger makes declared and ambient evidentiary
-absences visible. The produced-silence question asks what access a design
-removed and what is inferred from the resulting gap. Provisional evidentiary
-capabilities then identify properties that may help participants answer those
-questions. Vendors and architects are generally positioned to implement such
-capabilities; banks can identify gaps, use compensating controls, and express
-procurement needs; examiners can test claims within current authority; and
-regulators can decide whether recurring gaps warrant coordinated expectations.
-Their implementation, sufficiency, and tractability remain to be tested.
+Silence-manufacture names a diagnostic sequence, not a presumption of bad faith:
+a required evidentiary object is unavailable, another artifact is offered, a
+broader inference is claimed without an inspectable binding, contradictory
+evidence is unavailable, and an affected party bears the gap. Produced absence
+is likewise a hypothesis. Observed silence alone does not establish that a
+design or institution caused it; comparison, counterfactual, provenance, user,
+complaint, or externally sampled evidence must test the proposed mechanism.
+
+The three diagnostics translate these distinctions into shared work.
+Empty-chair enumeration identifies which interest depends on an artifact.
+Pages missing from the ledger compares record coverage with a declared
+attestation scope and operational population. The produced-silence question
+asks what changed observability and who draws which inference from the resulting
+record. Each begins as orientation. Under established authority it can structure
+an evidence request; with sufficient evidence and applicable law or guidance it
+may contribute to a finding. Otherwise, the result may properly remain a
+disclosed limitation, procurement need, vendor design problem, or policy
+question.
+
+That division gives each participant a usable handoff. A bank can say which
+proposition it is responsible for, which evidence it possesses, which
+compensating control narrows the gap, and which export it needs from a vendor.
+An examiner can test a claimed inference without prescribing an unrequired
+architecture. A regulator can aggregate recurring gaps and decide whether
+guidance, coordinated expectations, or no further action is warranted. A vendor
+can specify which provenance, exportability, temporal, uncertainty, and
+monitoring capabilities its system supplies. An affected party can identify the
+interest and proposition at stake and, where access permits, contest the
+institutional account.
+
+Five provisional evidentiary capabilities suggest where technical and
+contractual work might help: revision-aware temporal capture; evidence binding
+and exportability; non-collapsing uncertainty representation; technical-change
+monitoring; and institutional-conformance monitoring. They are design
+hypotheses, not mandates. Their presence does not prove a governance claim,
+their absence does not prove a violation, and their cost and viability for
+community banks remain unvalidated.
 
 For a participant reading or contesting an AI governance record, the frame
 reduces to five questions:
 
 \begin{enumerate}
   \item What evidentiary object does this artifact expose?
-  \item What conclusion is the institution asking the examiner to draw from it?
-  \item What binds the artifact to that conclusion?
-  \item Whose interest bears the cost if the binding is absent?
-  \item What additional evidence would close or honestly disclose the gap?
+  \item What proposition is the institution asking the recipient to infer?
+  \item What inspectable binding warrants that inference?
+  \item Whose interest bears the gap, and under what authority may it be tested?
+  \item Which actor can close or disclose the gap, by what remedy?
 \end{enumerate}
 
-Those questions do not decide every governance dispute. They do make the point
-of disagreement inspectable. A useful AI governance architecture should let an
-absent party's interest appear not only in policy, but in evidence capable of
+Those questions do not, by themselves, decide every governance dispute or create authority that
+law and policy have not supplied. They make the location and ownership of
+disagreement legible. A useful governance architecture should let an affected
+party's interest appear not only in policy language, but in evidence capable of
 bearing the conclusion placed upon it.
