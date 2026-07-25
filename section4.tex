@@ -5,7 +5,12 @@
 
 The empty-chair frame produces interpretive structure (Section~\ref{sec:frame-as-method}) and a taxonomy of evidentiary claims (Section~\ref{sec:verification-regimes}). Three gaps recur across those sections: documentation may be treated as proof of the activity it describes; an explanation artifact may be treated as proof of a different evidentiary object; and human approval may be treated as substantive verification of material the reviewer could not test. The artifacts themselves can be genuine and useful. The failure occurs in the unsupported inference from the exposed artifact to the unexposed proposition. We name the recurring pattern \emph{silence-manufacture}. The three diagnostic techniques that follow are designed to expose the missing relation and the absent parties who depend on it.
 
-We frame the techniques from the architect's perspective because the techniques are most powerful when they constrain construction rather than evaluate existing artifacts. An architect who applies them builds systems that are diagnosable; an examiner who applies them to an undiagnosable system can only document that diagnosis is unavailable~\parencite{brooks1974mythical,wing2008computational}. The architectural moment is where empty-chair representation is structurally determined, and the diagnostic techniques are most valuable as design-time discipline. The examination-time application of these same techniques falls out as a consequence and is treated below as such.
+The techniques can be used at several institutional moments. Architects can use
+them to make evidentiary capabilities explicit; banks can use them to identify
+compensating controls and procurement needs; examiners can use them to frame
+requests within existing authority; and regulators can use recurring gaps to
+inform policy. Their outputs differ because those actors do not possess the same
+authority or capability \parencite{brooks1974mythical,wing2008computational}.
 
 \subsection{Silence-manufacture as the underlying structural pattern}
 \label{sec:diagnostics:silence-manufacture}
@@ -161,100 +166,109 @@ public discourse.
 \subsection{Three diagnostic techniques}
 \label{sec:diagnostics:three-techniques}
 
-The diagnostic techniques developed below are silence-breaking instruments. Each technique is paired to a class of silence the architecture produces, and the technique's value is in what it makes audible. We claim three techniques because they emerge cleanly from the frame's structural commitments and produce design constraints directly applicable to AI governance system construction. Other techniques are possible and likely; these three are the ones the frame produces first, and together they cover the silence-types the three earned positions identify.
+The techniques have two layers. An \emph{orienting question} locates a possible
+gap; it is not an examination procedure or finding. Where established authority
+permits inquiry, a structured evidence request can then test a proposition. The
+same structure also helps a bank formulate procurement needs, a vendor specify
+an export, or a regulator identify a recurring policy gap.
 
-\subsubsection{Technique 1: Empty-chair enumeration as design pre-condition}
+\subsubsection{Technique 1: Empty-chair enumeration}
 \label{sec:diagnostics:enumeration}
 
-Before specifying any architectural primitive, the architect asks: \emph{which empty chairs is this system supposed to represent, and what does representation require for each?} The question precedes any technical decision. An architecture whose empty-chair attribution is left implicit will produce primitives that serve some chairs and fail to serve others, and the failure will not be visible in the architecture's documentation because the documentation will describe what the system does, not what it leaves out. The silence the technique breaks is the silence around \emph{which absences the architecture is making consequential}: an architecture that has not enumerated its empty chairs is suppressing the question of which chairs it serves, not answering it.
+The orienting question is: \emph{which affected interest depends on this
+artifact, and what evidence would show that the implementation represents that
+interest?} The output is a mapping among affected parties, control objectives,
+evidentiary objects, and the capabilities required to expose them. Conflicting
+interests remain visible rather than being collapsed into a generic
+``stakeholder'' field.
 
-Section~\ref{sec:frame-as-method} demonstrated this technique applied analytically to BSA/AML transaction monitoring. The same move applies to design. The architect designing an AI governance system for a community bank's lending operation asks first: \emph{whose interest is this system structurally protecting?} The answer is rarely on the page initially; it has to be derived from the regulatory regime, the institution's risk profile, and the categories of decision the system will affect. Making the derivation explicit at design time is the technique's primary work.
+For a denied applicant, for example, understandability, method fidelity,
+policy conformity, and access to contest are distinct propositions. An
+architect can select capabilities against those propositions; a bank can state
+which are available or compensating; and an examiner can test only those claims
+within applicable authority.
 
-The technique produces three outputs at design time:
-
-First, an enumeration of empty chairs the system affects. This is the analytical move from Section~\ref{sec:frame-as-method}, applied at the moment of architectural commitment.
-
-Second, a mapping from empty chairs to architectural requirements that representation imposes. Different empty chairs require different architectural support. The future compliance officer needs durable, queryable institutional knowledge. The denied applicant needs a testable account of the action's basis. The marginalized customer needs disparate-impact monitoring with population decomposition. The institution's future self needs tamper-evident temporal capture. Each chair generates a set of requirements; the requirements may conflict, and the conflicts are themselves design information.
-
-Third, a constraint on architectural choices: any primitive that fails to satisfy at least one chair's requirement and creates costs without serving any chair is architectural overhead. Any primitive that satisfies one chair's requirement at the cost of failing another's is a design tradeoff that requires explicit attention. The architecture is not a set of capabilities; it is a set of empty-chair representations, with capabilities chosen as the means.
-
-The technique shifts architecture from feature selection to representation. Without it, systems can accumulate explainability features, audit trails, and monitoring dashboards without identifying which empty chairs those capabilities serve. With it, architects start from the chairs and select capabilities as the means of representing them. The criterion makes those choices tractable; without it, they can reduce to keeping up with vendor offerings.
-
-The examination question is concise: \emph{Which absent party depends on this artifact, and what evidence would show that the implementation represents that party's interest?}
-
-\subsubsection{Technique 2: Designing for pages missing from the ledger}
+\subsubsection{Technique 2: Pages missing from the ledger}
 \label{sec:diagnostics:pages-missing}
 
-A well-designed attestation regime makes the institution's recorded commitments
-and decision evidence inspectable. But attestation cannot be uniformly
-comprehensive; cost and operational reality require choices about what to attest
-and what to leave un-attested. The architect's diagnostic move at design time is
-to make these choices explicitly and to design the attestation regime such that
-\emph{what is left out is itself informative}. The silence the technique breaks
-is the silence between the institution's posture and its documentary record:
-under ambient absences, posture is unreadable; under documented absences,
-posture becomes a pattern an examiner can read.
+``Pages missing from the ledger'' remains a metaphor for record coverage, not a
+claim that every event should be attested. Its orienting question is: \emph{which
+categories lack contemporaneous evidence, relative to what declared scope, and
+what pattern results?} The operational denominator is a declared attestation
+scope: the decision universe; category definitions and inclusion or exclusion
+rules; the rationale and version history for those boundaries; operational
+counts and risk weighting; reconciliation to system inventories; and both
+institution-selected and examiner-selected samples.
 
-We call this technique \emph{designing for pages missing from the ledger}. The metaphor is deliberate: an accounting ledger with missing pages is more diagnostic than a forged ledger if the pattern of missing pages is itself interpretable. A ledger where missing pages are random reveals nothing about the institution's posture; a ledger where missing pages cluster around decisions favorable to the institution and unfavorable to challenged customers reveals the institution's posture clearly.
+This denominator matters because raw attestation volume is gameable. An
+institution could document many low-risk cases while consequential categories
+remain outside the declared or operational scope. Comparison with operational
+populations, high-risk categories, boundary changes, inventory records, and
+externally selected samples makes such curation more expensive. A discrepancy
+is evidence about coverage. It does not, without additional evidence, prove a
+motive, violation, or produced-absence mechanism.
 
-The technique works as follows. The architect determines, for each category of decision the system handles, what attestation will and will not be produced. The determination is documented. The institution's choice not to attest a category is itself attested, with the rationale captured. An examiner reading the system's attestation later can read both the present attestation (what was captured) and the meta-attestation (what was deliberately not captured, and why). The pattern of present and absent attestation is interpretable because the absences are themselves documented choices rather than oversights.
-
-This is a design discipline, not a construction discipline. Most attestation systems are built bottom-up: a capability is implemented, attestation for that capability is added, and the absence of attestation in other areas is ambient. Designing for pages-missing inverts this: the architect specifies in advance the full domain of decisions, marks which will and will not be attested, and ensures the system's structure makes the absence visible rather than ambient.
-
-The technique produces a design output: a manifest of attested and un-attested decision categories, with rationale, that travels with the system as part of its architectural documentation. An examiner reading the manifest can ask whether the un-attested categories are operationally explicable (resource constraints, low-risk decisions deprioritized) or whether they cluster in ways that reveal a posture (decisions favorable to the institution attested, decisions unfavorable to challenged customers not). The architect who has produced the manifest knows in advance which questions the manifest will answer and which it will not, and can adjust the attestation scope accordingly.
-
-The examination question is: \emph{Which decision categories lack contemporaneous evidence, was that absence declared in advance, and what pattern do the absences form?}
-
-\subsubsection{Technique 3: The produced-silence question pair as design constraint}
+\subsubsection{Technique 3: The produced-silence question pair}
 \label{sec:diagnostics:question-pair}
 
-Section~\ref{sec:frame-as-method} introduced the distinction between structural and produced absence. The diagnostic technique on produced absence, applied at design time, is a question pair the architect asks of every interface, every documentation regime, every customer-facing artifact:
+The orienting question is: \emph{what access or observability changed, what
+artifact is offered in its place, and which actor draws what inference from
+it?} A post-decision justification regime, generic notice, or challenge channel
+may raise the question. Classification as produced absence still requires the
+comparative, counterfactual, provenance, or user evidence described in
+Section~\ref{sec:frame-as-method}. Later reflection can add genuine reasoning;
+the diagnostic asks that it be identified as a later evidentiary object rather
+than silently substituted for a decision-time record.
 
-\emph{What is this design doing that creates silence?}
+\subsection{From orientation to evidence request}
+\label{sec:diagnostics:evidence-request}
 
-\emph{What is this design inferring from the silence it creates?}
+An evidence request derived from any of the three techniques should state eight
+fields compactly:
 
-This is the silence-manufacture-direct technique. The first two techniques operate on silences that the architecture has implicitly allowed to form (empty chairs not enumerated, decision categories ambient about their attestation status); this technique operates on silences the architecture \emph{actively produces}, then \emph{reads as endorsement}. The two-part question maps directly onto the two parts of silence-manufacture: the first question surfaces the architecture's silence-production, the second surfaces the substitute artifact and the inference being drawn from suppression.
+\begin{enumerate}
+  \item the control objective and source of authority;
+  \item the proposition being tested;
+  \item the evidentiary object that proposition requires;
+  \item the artifact the institution offers;
+  \item relevant method, configuration, provenance, validation, access, and
+        declared-scope records;
+  \item observations that would support or defeat the proposition;
+  \item the actor able to close or disclose the gap and the available remedy;
+  \item whether the result concerns a current finding, an assessment of the
+        institution's claimed inference, or a policy or design implication.
+\end{enumerate}
 
-A design that asks reviewers to write justification after deciding leaves the
-decision-time information and observable deliberative record unavailable, then
-infers from the absence of contradicting evidence in the post-hoc justification
-that the documentation is faithful. The architect applying the question pair at
-design time recognizes the silence-production and chooses differently,
-capturing decision context as the reviewer engages with it rather than asking
-for narrative reconstruction.
+Consider FS~AI~RMF objective MS-2.9.1. The objective calls for structured model
+explanations and method documentation, with validation for matters including
+stability, performance, fairness, bias, and limitations. Suppose a bank offers
+a SHAP report as support for the proposition that stated principal reasons are
+faithful to a particular model output. The required object is method-specific
+functional attribution, not a transcript of ``model reasoning.'' A request can
+seek the operative model and case binding, value function, background-data
+construction, feature handling, software version, generation provenance,
+stability and relevant validation tests, known limitations, and reviewer
+access. Supporting observations include stable, reproducible attributions under
+the declared construction and agreement with suitable model-specific tests;
+instability, broken provenance, or material sensitivity to an unjustified
+background would defeat the broader claim. The bank can disclose the bounded
+warrant or adopt compensating controls; the vendor may need to supply missing
+provenance or exportability. An examiner may assess the bank's claim under
+applicable authority. The objective alone does not authorize a finding that one
+particular explanation architecture was required.
 
-A design that produces adverse action notices in regulatory boilerplate creates silence around the customer's effective interrogation of the notice, then infers from the absence of customer challenges that the notice is adequate. The architect applying the question pair at design time recognizes the boilerplate's interrogation-resistance and chooses differently, producing notices the customer can effectively interrogate, even if doing so requires architectural work the regulation does not currently require.
-
-A design that prices loans without communicating substantive justification to the customer creates silence around the customer's standing to negotiate, then infers from acceptance rates that pricing is fair. The architect applying the question pair at design time recognizes the absence of customer-side justification mechanisms as a design choice with consequences, and weighs whether the consequences are acceptable given the empty chair the design leaves unrepresented.
-
-The question pair, applied at design time, has the same structure as at examination time but different effect. At examination time, it diagnoses what the architecture has already done. At design time, it constrains what the architecture will do. The architect who anticipates the diagnostic question pair builds a system that can answer it; the architect who does not builds a system that the question pair will diagnose negatively.
-
-This technique is the most contestable of the three because it requires the architect to design for absences they are choosing to allow. An architect may legitimately respond that some silences are structural rather than produced, that customers who don't challenge are satisfied, that reviewers who don't surface contemporaneous reasoning don't have any to surface. The architect may be correct in some cases. The technique's value is in making the question explicit at design time so the architect's choice is conscious rather than ambient.
-
-The examination question is: \emph{What access did the architecture remove, what artifact replaced it, and what inference is being drawn from the replacement?}
-
-\subsection{The techniques as compounding design constraints}
+\subsection{Coordination consequence}
 \label{sec:diagnostics:compounding}
 
-The three techniques compound at design time. Empty-chair enumeration breaks the silence around which absences the system is structurally responsible to. Designing-for-pages-missing breaks the silence between institutional posture and documentary record. The produced-silence question pair breaks the silence the architecture itself manufactures and reads as endorsement. In combination, the techniques do not merely produce a checklist of design requirements; they produce a design discipline whose effect is to replace the architecture's manufactured silences with inspectable evidence at the points where silence-manufacture would otherwise sustain an unchallenged substitute.
+The three techniques compound without becoming a checklist. Enumeration says
+whose interest supplies the purpose; declared scope exposes where records do
+and do not cover the operational population; and the produced-silence question
+tests whether the pattern may be endogenous to the process being evaluated.
+Orientation may lead to an evidence request; evidence may support or defeat an
+institutional inference; only applicable law or guidance supplies the basis for
+a formal finding. Unresolved recurring gaps can instead become procurement
+requirements, vendor design problems, or regulatory policy questions.
 
-This is structurally different from feature-driven architecture. The system's capabilities are chosen as means of empty-chair representation; the system's attestation regime is designed for pattern-readability; the system's interfaces are scrutinized for silence-production at the moment of design rather than at the moment of examination. The architecture that results is one that an examiner can read; the architecture without these techniques is one that an examiner cannot read regardless of skill.
-
-This is the operational claim of the section: the empty-chair frame, developed into design-time diagnostic techniques against silence-manufactured artifacts, produces architectural discipline that makes the resulting systems substantively examinable. The frame is not an examination methodology that compensates for inadequate architecture; it is an architectural discipline that produces examinable systems. The examination-time application of the techniques follows from the architectural use, not the other way around.
-
-\subsection{Examination as consequence}
-\label{sec:diagnostics:examination}
-
-The same three techniques, applied by an examiner to an existing system, produce assessment leverage the FS~AI~RMF's checklist does not provide. The examiner asks: \emph{which empty chairs does this system claim to represent? What does its attestation pattern reveal about its actual representation? What silences does its architecture produce, and what does the architecture infer from those silences?} These are the same questions the architect asked at design time, redirected from ``what should I build'' to ``what was built.''
-
-The asymmetry between design-time and examination-time application is important. A system designed with the techniques in mind answers all three questions; an examiner reading such a system can assess whether the answers are substantive or theatrical. A system designed without the techniques in mind may be unable to answer the questions at all; an examiner reading such a system can only document the unavailability of substantive assessment.
-
-The implication: the techniques' regulatory effect depends on adoption at the architectural level, not just at the examination level. An examiner who applies the techniques to a system designed without them produces findings of inadequacy, but the inadequacy is structural: it cannot be remediated by additional examination, only by re-architecture. The frame's claim is that AI governance systems for community banking should be architected to be diagnosable, and the diagnostic techniques developed here should shape the architecture rather than only its evaluation. The development of examination-time methodology is the work of Paper~3; this paper's diagnostic register is architectural because the architectural moment is where the techniques have most leverage.
-
-\subsection{Implications for architectural primitive selection}
-\label{sec:diagnostics:primitive-implications}
-
-Section~\ref{sec:primitives} develops the categories of architectural primitive that empty-chair representation requires. The diagnostic techniques developed here constrain that development: a primitive is valuable in proportion to its support of design-time diagnostic discipline against silence-manufacture. Tamper-evident temporal capture is valuable because designing-for-pages-missing requires the ability to attest both presence and absence of records, and because the silence-manufacture pattern at the institutional level is sustained by retroactive narrative substitution that contemporaneous capture forecloses. Three-dimensional confidence characterization is valuable because empty-chair enumeration requires distinguishing decisions where the architect provided genuine evidentiary support from decisions where the architect produced narrative without substantive grounding, which is precisely the distinction silence-manufacture exists to obscure. The primitive categories are not generic technical capabilities; they are capabilities selected because the design-time techniques require them, and the techniques require them because silence-manufacture is the failure mode they are constructed against.
-
-This is the section's transition into Section~\ref{sec:primitives}. The techniques operationalize the frame at design time; the primitives operationalize the techniques. Each layer of the architecture is justified by what the layer above it requires of it, and the layer above the techniques is the structural pattern they are constructed to break.
+Section~\ref{sec:primitives} proposes evidentiary capabilities that could make
+these requests answerable. Their absence is not automatically a violation, and
+their presence is not proof that the corresponding governance claim is true.
