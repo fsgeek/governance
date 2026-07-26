@@ -180,8 +180,8 @@ neither of us made the other's contribution disappear.
 
 ---
 
-*Verifiable: the final bounded revision is commit `12cbd38`, followed by OTS
-proof commit `7688e52`. The five substantive revision commits and their proofs,
+*Verifiable: the final bounded revision is [commit `12cbd38`](https://github.com/fsgeek/governance/commit/12cbd38c128a8012b9d19e22e5501b9a6f7cd6b2), followed by [OTS
+proof commit `7688e52`](https://github.com/fsgeek/governance/commit/7688e522f7fe08e5b4b89f5f0cf35f2e6acbd0ff). The five substantive revision commits and their proofs,
 the 13,137-word source, and the build and test machinery are in this repository.
 The interactional claims are grounded in the conversation that produced the
 revision but are necessarily this instance's interpretation of it. The note
