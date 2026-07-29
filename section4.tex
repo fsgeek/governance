@@ -294,39 +294,13 @@ on applicable authority and the evidence obtained, not on the orienting label.
 \subsection{From orientation to evidence request}
 \label{sec:diagnostics:evidence-request}
 
-An evidence request derived from any of the three techniques should state eight
-fields compactly:
-
-\begin{enumerate}
-  \item the control objective and source of authority;
-  \item the proposition being tested;
-  \item the evidentiary object that proposition requires;
-  \item the artifact the institution offers;
-  \item relevant method, configuration, provenance, validation, access, and
-        declared-scope records;
-  \item observations that would support or defeat the proposition;
-  \item the actor able to close or disclose the gap and the available remedy;
-  \item whether the result concerns a current finding, an assessment of the
-        institution's claimed inference, or a policy or design implication.
-\end{enumerate}
-
-Consider FS~AI~RMF objective MS-2.9.1. The objective calls for structured model
-explanations and method documentation, with validation for matters including
-stability, performance, fairness, bias, and limitations. Suppose a bank offers
-a SHAP report as support for the proposition that stated principal reasons are
-faithful to a particular model output. The required object is method-specific
-functional attribution, not a transcript of ``model reasoning.'' A request can
-seek the operative model and case binding, value function, background-data
-construction, feature handling, software version, generation provenance,
-stability and relevant validation tests, known limitations, and reviewer
-access. Supporting observations include stable, reproducible attributions under
-the declared construction and agreement with suitable model-specific tests;
-instability, broken provenance, or material sensitivity to an unjustified
-background would defeat the broader claim. The bank can disclose the bounded
-warrant or adopt compensating controls; the vendor may need to supply missing
-provenance or exportability. An examiner may assess the bank's claim under
-applicable authority. The objective alone does not authorize a finding that one
-particular explanation architecture was required.
+Each of the three techniques ends in the same place: a question about a
+specific artifact, a specific proposition, and the relation between them.
+That question becomes usable when it is written as a request a recipient can
+answer, refuse, or answer in part with a stated reason.
+Section~\ref{sec:request} gives that form and works one FS~AI~RMF control
+objective through it. The remainder of this section concerns what happens when
+such requests are not made.
 
 \subsection{Coordination consequence}
 \label{sec:diagnostics:compounding}

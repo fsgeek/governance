@@ -1,0 +1,105 @@
+% Section: The Evidence Request
+%
+% Promoted from a subsection of the diagnostics section. This is the operative
+% handoff -- the form in which the frame leaves the paper and enters a letter,
+% a procurement document, an examination procedure, or a complaint.
+
+\section{The Evidence Request}
+\label{sec:request}
+
+The three diagnostics orient inquiry. They become shared work only when they
+take the form of a specific request that a recipient can answer, refuse, or
+answer partially with a stated reason. This section gives that form. Nothing in
+it creates authority. It presumes a requester who already has standing to ask
+--- an examiner under existing examination authority, a bank under its vendor
+agreement, a regulator under its supervisory process, an affected party under
+an applicable notice, complaint, appeal, or discovery procedure --- and
+supplies only the structure of the asking.
+
+The structure matters because the common failure is not refusal. It is a
+responsive-looking answer that addresses a different proposition from the one
+at issue. A request that names the proposition, the object it requires, and the
+observations that would defeat it makes that substitution visible.
+
+\subsection{The eight fields}
+\label{sec:request:fields}
+
+An evidence request derived from any of the three diagnostics should state
+eight fields compactly. Stated as a request rather than a description:
+
+\begin{enumerate}
+  \item \textbf{Authority.} We are asking under [statute, regulation,
+        enforceable condition, contractual provision, or adopted internal
+        policy]. Supervisory guidance, where cited, informs the analysis and
+        is not offered as the obligation: agency rules codifying the role of
+        supervisory guidance provide that guidance does not carry the force
+        and effect of law and is not by itself a basis for supervisory
+        criticism. Identify any respect in which you contest the stated basis.
+  \item \textbf{Proposition.} We are testing whether [the specific claim]. This
+        is the proposition at issue; responses addressing a different claim
+        should say so.
+  \item \textbf{Required object.} Establishing that proposition requires
+        evidence of [decision-time inputs and context / functional feature
+        dependence / local behavioral approximation / internal computational
+        state / a generated rationale / a human deliberative record /
+        institutional authorization]. State which object you take the
+        proposition to require if you disagree.
+  \item \textbf{Offered artifact.} Identify the artifact you offer as
+        establishing it, and the object that artifact exposes.
+  \item \textbf{Binding records.} Provide the operative model and case binding,
+        method and configuration, background-data construction, feature
+        handling, software version, generation provenance, stability and
+        relevant validation tests, known limitations, declared attestation
+        scope, and reviewer access.
+  \item \textbf{Defeating observations.} Identify the observations that would
+        support the proposition and those that would defeat it. If no available
+        observation could defeat it, say so.
+  \item \textbf{Ownership.} Identify the party able to close or disclose any
+        gap --- institution, vendor, or neither --- and the remedy available to
+        the party whose interest the gap falls on.
+  \item \textbf{Disposition.} State whether the result bears on a current
+        finding, on an assessment of a claimed inference, or on a policy or
+        design question outside the present review.
+\end{enumerate}
+
+Field~6 carries unusual weight. An artifact that no available observation could
+have contradicted establishes that a process was run, not that its conclusion
+holds. A validation regime with no failing condition, or a monitoring report
+with no threshold that triggers action, answers fields~1 through~5 completely
+and field~6 not at all.
+
+\subsection{A worked request}
+\label{sec:request:worked}
+
+Consider FS~AI~RMF objective MS-2.9.1, which calls for structured model
+explanations and method documentation, with validation for matters including
+stability, performance, fairness, bias, and limitations. A bank offers a SHAP
+report in support of the proposition that stated principal reasons are faithful
+to a particular model output. The required object is method-specific functional
+attribution under a declared value function and background construction; it is
+not a transcript of model reasoning, and the report does not become one by
+being called an explanation.
+
+The request accordingly seeks the operative model and case binding, the value
+function, the background-data construction, feature handling, software version,
+generation provenance, stability and relevant validation tests, known
+limitations, and reviewer access. Stable, reproducible attributions under the
+declared construction, agreeing with suitable model-specific tests, support the
+proposition. Instability, broken provenance, or material sensitivity to an
+unjustified background defeats the broader claim while leaving the narrower one
+intact.
+
+The disposition then divides by actor. The bank can narrow its stated claim to
+the bounded warrant the artifact supports, adopt a compensating control, or
+disclose the residual gap. The vendor may be the only party able to supply the
+missing provenance or export. An examiner may assess whether the bank's claimed
+inference is supported, under authority the examiner already holds, without
+prescribing any particular explanation architecture --- the objective does not
+authorize a finding that one architecture was required. An affected party, where
+a notice, complaint, appeal, or discovery process applies, can ask which method
+produced the stated reasons and what binds that output to their own file, rather
+than asking the institution to explain the denial.
+
+That last division is the point of the form. The same eight fields, answered
+once, tell four differently situated parties four different things they can each
+act on separately.
