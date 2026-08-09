@@ -55,7 +55,10 @@ esac
 FAKE_OTS
 chmod +x .venv/bin/ots
 
+# Fixtures: an already-complete proof WITH its bare <hash> target file (the
+# backlog-migration case), a calendar-ready proof, and a still-pending one.
 printf 'fixture repository\n' > README.md
+printf 'complete-target' > timestamps/complete
 printf 'complete' > timestamps/complete.ots
 printf 'ready' > timestamps/ready.ots
 printf 'pending' > timestamps/pending.ots
@@ -72,15 +75,30 @@ assert_contains "$output" "upgraded: timestamps/ready.ots"
 assert_contains "$output" "pending:  timestamps/pending.ots"
 
 subject=$(git log -1 --format=%s)
-[ "$subject" = "ots: upgrade 1 timestamp(s)" ] || \
-    fail "expected one-upgrade subject, got: $subject"
+[ "$subject" = "ots: upgrade 1 timestamp(s), 2 anchored" ] || \
+    fail "unexpected commit subject: $subject"
 
+# The commit carries exactly: the moves of both completed triples (old paths
+# as deletions, new paths as additions) and the freshly created .bak.
 changed=$(git diff-tree --no-commit-id --name-only -r HEAD | sort)
 expected=$(printf '%s\n' \
-    timestamps/ready.ots \
-    timestamps/ready.ots.bak | sort)
+    timestamps/anchored/complete \
+    timestamps/anchored/complete.ots \
+    timestamps/anchored/ready.ots \
+    timestamps/anchored/ready.ots.bak \
+    timestamps/complete \
+    timestamps/complete.ots \
+    timestamps/ready.ots | sort)
 [ "$changed" = "$expected" ] || \
     fail "unexpected paths in upgrade commit: $changed"
+
+# Directory state: only the pending proof remains scannable; anchored
+# triples moved wholesale.
+remaining=$(find timestamps -maxdepth 1 -type f | sort)
+[ "$remaining" = "timestamps/pending.ots" ] || \
+    fail "unexpected files left in timestamps/: $remaining"
+[ -f timestamps/anchored/complete ] || fail "bare target file did not move"
+[ -f timestamps/anchored/ready.ots.bak ] || fail ".bak did not move"
 
 staged=$(git diff --cached --name-only)
 [ "$staged" = "unrelated.txt" ] || \
@@ -93,5 +111,6 @@ head_after=$(git rev-parse HEAD)
 [ "$head_before" = "$head_after" ] || \
     fail "a no-change run created a commit"
 assert_contains "$second_output" "No timestamps ready to upgrade yet."
+assert_contains "$second_output" "pending:  timestamps/pending.ots"
 
-echo "PASS: OTS upgrade accounting and commit isolation"
+echo "PASS: OTS upgrade accounting, anchoring moves, and commit isolation"
