@@ -1,6 +1,8 @@
 .python-version
 .venv
 .worktrees/
+.superpowers/
+*.zip
 
 # LaTeX build artifacts
 *.aux
