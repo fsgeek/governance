@@ -4,6 +4,7 @@
 **Authority:** supporting  
 **Depends on:** `working_notes/2026-06-03-provenance-is-the-5th-confound.md`; `working_notes/2026-06-09-pick-one-hides-the-choice.md`; `section6.tex`  
 **Invalidated by:** none yet  
+**Reviewed by:** Tony, 2026-08-19/21 — design iterated in session, not merely read. Double-blind *assignment* (not merely information restriction) is his correction; the 401(k) pre-approved-plan analogy is his; the constructor-produces-a-portable-artifact-but-does-not-deploy boundary was agreed jointly. The protocol below is SETTLED as a design. It is not validated, not implemented, and novelty is not established pending a targeted literature review.  
 **Last reconciled with code:** not applicable; this note describes a proposed protocol, not current implementation
 
 **Date:** 2026-08-20
