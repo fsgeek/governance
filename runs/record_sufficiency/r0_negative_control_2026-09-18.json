@@ -1,0 +1,343 @@
+{
+  "study": "record-sufficiency",
+  "cell": "negative_control_R0_plus_R5_sanity",
+  "prereg": "docs/superpowers/specs/2026-09-18-record-sufficiency-preregistration-note.md",
+  "prereg_ots_commit": "bd47a9d",
+  "seed": 20260918,
+  "n_eval": 200,
+  "R0": {
+    "provenance": {
+      "record_level": "R0",
+      "record_bytes": 111,
+      "model_route": "refit_surrogate",
+      "background_route": "resampled_default",
+      "sampling": {
+        "n_samples": 2048
+      },
+      "seed_used": null,
+      "seed_from_record": false,
+      "defaults_applied": {
+        "current_background_size": 100,
+        "current_seed": null,
+        "current_n_samples": 2048,
+        "surrogate": true
+      }
+    },
+    "report": {
+      "primary": {
+        "metric": "topk_jaccard_k5",
+        "threshold": 0.9,
+        "mean_jaccard": 0.8692857142857143,
+        "median_jaccard": 1.0,
+        "min_jaccard": 0.42857142857142855,
+        "fraction_reproducing": 0.615,
+        "sufficiency_fraction_required": 0.95,
+        "SUFFICIENT": false,
+        "n_decisions": 200
+      },
+      "secondary_rbo": {
+        "mean": 0.9104195122730008,
+        "median": 0.9236400222355194,
+        "min": 0.6884936163233767,
+        "max": 0.9968301959990908
+      },
+      "secondary_l2": {
+        "mean": 0.04146160778327344,
+        "median": 0.03889811336768759,
+        "min": 0.012271148971703331,
+        "max": 0.09523434857844115
+      },
+      "secondary_cosine": {
+        "mean": 0.9746324888585609,
+        "median": 0.979798624284554,
+        "min": 0.8719669284173953,
+        "max": 0.9990805860275188
+      },
+      "sensitivity_NON_GATING": {
+        "k3_thr0.85_frac0.9": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.85_frac0.95": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.85_frac0.99": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.9_frac0.9": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.9_frac0.95": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.9_frac0.99": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.95_frac0.9": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.95_frac0.95": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k3_thr0.95_frac0.99": {
+          "fraction_reproducing": 0.54,
+          "sufficient": false
+        },
+        "k5_thr0.85_frac0.9": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.85_frac0.95": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.85_frac0.99": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.9_frac0.9": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.9_frac0.95": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.9_frac0.99": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.95_frac0.9": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.95_frac0.95": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k5_thr0.95_frac0.99": {
+          "fraction_reproducing": 0.615,
+          "sufficient": false
+        },
+        "k10_thr0.85_frac0.9": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.85_frac0.95": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.85_frac0.99": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.9_frac0.9": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.9_frac0.95": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.9_frac0.99": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.95_frac0.9": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.95_frac0.95": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        },
+        "k10_thr0.95_frac0.99": {
+          "fraction_reproducing": 0.19,
+          "sufficient": false
+        }
+      }
+    },
+    "record_bytes": 111
+  },
+  "R5": {
+    "provenance": {
+      "record_level": "R5",
+      "record_bytes": 817,
+      "model_route": "exact",
+      "background_route": "exact",
+      "sampling": {
+        "n_samples": 2048
+      },
+      "seed_used": 20260918,
+      "seed_from_record": true,
+      "defaults_applied": {
+        "current_background_size": 100,
+        "current_seed": null,
+        "current_n_samples": 2048,
+        "surrogate": true
+      }
+    },
+    "report": {
+      "primary": {
+        "metric": "topk_jaccard_k5",
+        "threshold": 0.9,
+        "mean_jaccard": 1.0,
+        "median_jaccard": 1.0,
+        "min_jaccard": 1.0,
+        "fraction_reproducing": 1.0,
+        "sufficiency_fraction_required": 0.95,
+        "SUFFICIENT": true,
+        "n_decisions": 200
+      },
+      "secondary_rbo": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "secondary_l2": {
+        "mean": 0.0,
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "secondary_cosine": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 0.9999999999999998,
+        "max": 1.0000000000000002
+      },
+      "sensitivity_NON_GATING": {
+        "k3_thr0.85_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.85_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.85_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.9_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.9_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.9_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.95_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.95_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k3_thr0.95_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.85_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.85_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.85_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.9_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.9_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.9_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.95_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.95_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k5_thr0.95_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.85_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.85_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.85_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.9_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.9_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.9_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.95_frac0.9": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.95_frac0.95": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        },
+        "k10_thr0.95_frac0.99": {
+          "fraction_reproducing": 1.0,
+          "sufficient": true
+        }
+      }
+    },
+    "record_bytes": 817
+  },
+  "environment": {
+    "lib_versions": {
+      "numpy": "2.4.6",
+      "sklearn": "1.6.1",
+      "shap": "0.48.0",
+      "lime": null,
+      "xgboost": "3.2.0",
+      "scipy": "1.17.1"
+    },
+    "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+    "hardware_class": "x86_64",
+    "thread_count": 128
+  }
+}
