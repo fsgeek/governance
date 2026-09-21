@@ -143,6 +143,17 @@ def full_report(a: np.ndarray, b: np.ndarray) -> dict:
     """
     report = {"primary": reproduces(a, b)}
 
+    n_feat = a.shape[1]
+    null = random_null_jaccard(n_feat)
+    report["chance_correction"] = {
+        "n_features": int(n_feat),
+        "random_null_jaccard": null,
+        "normalized_jaccard": normalized_jaccard(
+            report["primary"]["mean_jaccard"], n_feat),
+        "note": "normalized = (observed - null)/(1 - null); "
+                "ONLY this figure is comparable across substrates",
+    }
+
     report["secondary_rbo"] = _summarize(rbo(a, b))
     report["secondary_l2"] = _summarize(l2(a, b))
     report["secondary_cosine"] = _summarize(cosine(a, b))
@@ -159,6 +170,46 @@ def full_report(a: np.ndarray, b: np.ndarray) -> dict:
                 }
     report["sensitivity_NON_GATING"] = sens
     return report
+
+
+def random_null_jaccard(n_features: int, k: int = PRIMARY_K,
+                        trials: int = 40000, seed: int = 0) -> float:
+    """E[top-k Jaccard] for two INDEPENDENT uniform-random rankings.
+
+    The principled reference point Hwang et al. (arXiv:2601.12654) derive and
+    which the R0 surrogate-refit control does not supply. It is not decorative:
+    the null is a strong function of feature count --
+
+        n_feat=7 -> 0.568   n_feat=12 -> 0.278   n_feat=50 -> 0.058
+
+    -- because with k=5 of 7 features, two random top-5 sets must overlap
+    heavily by construction. A raw Jaccard of 0.85 is therefore NOT comparable
+    across substrates with different feature counts, and the study's two arms
+    have 7 and 12 features. Report `normalized_jaccard` for any cross-arm
+    statement.
+    """
+    rng = np.random.RandomState(seed)
+    k = min(k, n_features)
+    a = np.argsort(rng.rand(trials, n_features), axis=1)[:, :k]
+    b = np.argsort(rng.rand(trials, n_features), axis=1)[:, :k]
+    inter = np.array([len(set(x.tolist()) & set(y.tolist())) for x, y in zip(a, b)])
+    return float((inter / (2 * k - inter)).mean())
+
+
+def normalized_jaccard(observed: float, n_features: int,
+                       k: int = PRIMARY_K) -> float:
+    """Chance-corrected agreement: (observed - null) / (1 - null).
+
+    0.0 == indistinguishable from random ranking; 1.0 == exact reproduction.
+    Negative values mean WORSE than chance. This is the only Jaccard figure
+    that may be compared across substrates. The frozen primary verdict in
+    `reproduces` is deliberately NOT changed -- it stays on the raw scale the
+    pre-registration fixed; this is an additional reported quantity.
+    """
+    null = random_null_jaccard(n_features, k=k)
+    if null >= 1.0:
+        return float("nan")
+    return (observed - null) / (1.0 - null)
 
 
 def _summarize(v: np.ndarray) -> dict:

@@ -168,3 +168,37 @@ def test_rbo_is_topweighted():
     deep[0, 15], deep[0, 16] = base[0, 16], base[0, 15]
 
     assert rbo(base, top)[0] < rbo(base, deep)[0]
+
+
+def test_random_null_depends_strongly_on_feature_count():
+    """The null is not a constant -- it is why raw Jaccard is not cross-comparable.
+
+    With k=5 of 7 features two random top-5 sets must overlap heavily; with 50
+    features they need not. Caught after three commits of cross-arm comparison
+    on the raw scale.
+    """
+    from metrics import random_null_jaccard
+
+    n7 = random_null_jaccard(7, trials=20000)
+    n50 = random_null_jaccard(50, trials=20000)
+    assert n7 > 0.5
+    assert n50 < 0.1
+    assert n7 > n50 * 5
+
+
+def test_normalized_jaccard_anchors():
+    from metrics import normalized_jaccard, random_null_jaccard
+
+    for n_feat in (7, 12, 50):
+        null = random_null_jaccard(n_feat)
+        assert normalized_jaccard(1.0, n_feat) == pytest.approx(1.0)
+        assert normalized_jaccard(null, n_feat) == pytest.approx(0.0, abs=1e-9)
+
+
+def test_full_report_carries_chance_correction():
+    a = np.random.RandomState(3).randn(30, 12)
+    rep = full_report(a, a.copy())
+    cc = rep["chance_correction"]
+    assert cc["n_features"] == 12
+    assert 0.2 < cc["random_null_jaccard"] < 0.35
+    assert cc["normalized_jaccard"] == pytest.approx(1.0)
