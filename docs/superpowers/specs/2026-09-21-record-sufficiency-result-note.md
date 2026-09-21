@@ -1,9 +1,58 @@
 # Record sufficiency for post-hoc attribution recomputation — result note
 
-**Date:** 2026-09-21. **Status:** RESULT (draft, pre-adversarial-review).
+**Date:** 2026-09-21. **Status:** ⚠ **WITHDRAWN — REJECTED at blind adversarial review 2026-09-21.**
+Retained for the audit trail. **Do not cite any verdict below.** The instrument does
+not measure the construct: `recompute.resolve_model` resolves R2+ by dict-lookup of
+the *live* operative model object (verified `m is op` → `True`), so no record ever
+crossed a serialization boundary. See §0 and
+[[record-sufficiency-v1-rejected-by-blind-adversary-the-harness-never-crossed-a-record-boundary]].
 **Pre-registration:** `docs/superpowers/specs/2026-09-18-record-sufficiency-preregistration-note.md`, OTS `bd47a9d`. Frozen before any attribution ran.
 **Artifacts:** `runs/record_sufficiency/*.json`. **Code:** `scripts/record_sufficiency/`.
 **Commits:** `403bb2e` (Arm B), `873b0a9` (Arm G), `c6f89c0` (chance correction + methods).
+
+---
+
+## 0. Why this note is withdrawn (added 2026-09-21, post-review)
+
+**Fatal.** The record is a lookup key into a live object store. `resolve_model`
+returns the *same Python object* that computed the original, in the same process.
+"TreeSHAP sufficient at R2" therefore decodes to *a deterministic function called
+twice on the same in-memory object returns the same answer* — knowable at
+pre-registration time without running anything. This **inverts the thesis**: the
+harness assumes the artifact was preserved and measures whether you can find it,
+which supports the *collapse* branch (artifacts must be stored) rather than the
+leverage argument.
+
+**The §3 headline is a misreading of our own JSON.** "KernelSHAP is closed by
+`n_samples`, not the seed" is FALSE: `n_samples` is 2048 at **both** R2 and R3.
+What changes is `background_route: resampled_default → exact`. The jump is the
+background set becoming retrievable — Hwang et al.'s published axis. At R2 the
+seed is `None`, so `resolve_background` draws a different subset every call.
+
+**P1 and P3 were never tested.** Condition (iii) re-fits the model and
+re-instantiates the store in the new environment, so no serialization boundary was
+crossed; P1's FALSIFIED verdict rests on a cell that could not exercise the
+mechanism. P3 is a **null instrument** — a single-process design cannot observe
+systems nondeterminism, so finding none is not confirmation. R4 is a **no-op by
+construction**: the harness reads lib versions/threads into the record and never
+acts on them.
+
+**Other conceded defects.** `params_hash` hashes *hyperparameters*, not weights
+(`hash_array` is dead code). The chance correction is **post-hoc** (added two days
+after results, absent from frozen §4) and reversed a reported direction. Arm B
+abandoned its pre-registered justification — §2d promised standard public
+benchmarks "for direct comparability with Hwang et al.", delivered
+`make_classification`. On Arm G, k=5 of 7 features admits only three Jaccard values
+{0.429, 0.667, 1.0}, so the 0.90 gate is operationally exact-match and the
+threshold sweep is vacuous. No confidence intervals anywhere. The 65 MB cost figure
+omits the model blob and is off by orders of magnitude. "Pre-reg §9" does not exist
+— the frozen document has seven sections.
+
+**What survives:** §5 (reproducible ≠ right); `metrics.py`'s RBO extrapolation and
+deterministic tie-breaking; the chance-correction *insight* (timing aside); the
+retention point *qualitatively* — its number is an arbitrary function of how
+different the successor model was chosen to be. The pre-registration itself is
+reusable almost verbatim for the corrected study.
 
 ---
 
