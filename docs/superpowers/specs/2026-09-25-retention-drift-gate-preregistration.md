@@ -121,3 +121,17 @@ what any particular lender ran; the contest path is "recompute with the contest-
 alternative (re-install the origin stack at contest time) is trivially feasible here because all six
 envs installed on 2026-09-25, which is itself only a one-date observation. Python-version rot is
 captured only through the vintage/CPython pairing. No GPU nondeterminism.
+
+## 9. Amendment A1 (2026-09-25, recorded after the six ARCHIVE runs started and BEFORE any recompute pair existed)
+
+**Observed at origin:** v2023 (shap 0.41.0 + numpy 1.24.4, as resolved by `--exclude-newer 2023-07-01`)
+cannot compute any SHAP attribution: shap 0.41 uses `np.bool`/`np.int`, removed in numpy 1.24
+(`AttributeError: module 'numpy' has no attribute 'bool'`). shap 0.42.0 shipped 2023-07-06. LIME
+is unaffected. Under §4 this is `ORIGIN_UNCOMPUTABLE` for v2023's SHAP cells and `UNCOMPUTABLE`
+wherever v2023 is the contest vintage; the **primary analysis keeps v2023 exactly as frozen.**
+
+**Added, secondary, labelled as such everywhere:** vintage **v2023p** = v2023 with `numpy<1.24`
+(the constraint a working 2023 shap install needed). It is an origin and a contest vintage in the
+same way as the others, reported in a separate table, and **cannot by itself move the gate** (§7
+is evaluated on the frozen vintages). Rationale: separates "the explainer's own dependency hygiene
+broke" from "a working stack drifts."
