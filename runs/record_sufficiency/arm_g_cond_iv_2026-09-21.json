@@ -4,7 +4,7 @@
   "cell": "arm_g_condition_iv",
   "prereg_ots_commit": "bd47a9d",
   "condition": "iv",
-  "omp_threads": null,
+  "omp_threads": "1",
   "n_train": 40000,
   "n_eval": 200,
   "features": [
@@ -28,7 +28,7 @@
     },
     "os": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35",
     "hardware_class": "x86_64",
-    "thread_count": 128
+    "thread_count": 1
   },
   "results": {
     "TreeSHAP": {
@@ -684,7 +684,7 @@
         },
         "provenance": {
           "record_level": "R4",
-          "record_bytes": 801,
+          "record_bytes": 799,
           "model_route": "exact",
           "background_route": "exact",
           "sampling": {
@@ -699,7 +699,7 @@
             "surrogate": false
           }
         },
-        "record_bytes": 801
+        "record_bytes": 799
       },
       "R5": {
         "report": {
@@ -851,7 +851,7 @@
         },
         "provenance": {
           "record_level": "R5",
-          "record_bytes": 819,
+          "record_bytes": 817,
           "model_route": "exact",
           "background_route": "exact",
           "sampling": {
@@ -866,7 +866,7 @@
             "surrogate": false
           }
         },
-        "record_bytes": 819
+        "record_bytes": 817
       }
     },
     "SamplingSHAP": {
@@ -876,10 +876,10 @@
           "primary": {
             "metric": "topk_jaccard_k5",
             "threshold": 0.9,
-            "mean_jaccard": 0.8013392857142857,
+            "mean_jaccard": 0.8080357142857143,
             "median_jaccard": 0.6666666666666666,
             "min_jaccard": 0.42857142857142855,
-            "fraction_reproducing": 0.4375,
+            "fraction_reproducing": 0.46875,
             "sufficiency_fraction_required": 0.95,
             "SUFFICIENT": false,
             "n_decisions": 64
@@ -887,98 +887,98 @@
           "chance_correction": {
             "n_features": 7,
             "random_null_jaccard": 0.5684107142857143,
-            "normalized_jaccard": 0.5396996152095659,
+            "normalized_jaccard": 0.5552153585171087,
             "note": "normalized = (observed - null)/(1 - null); ONLY this figure is comparable across substrates"
           },
           "secondary_rbo": {
-            "mean": 0.8865991796874999,
-            "median": 0.89996675,
-            "min": 0.7064280000000001,
+            "mean": 0.8901421171875,
+            "median": 0.89829325,
+            "min": 0.7284645000000001,
             "max": 1.0
           },
           "secondary_l2": {
-            "mean": 0.042945242853072364,
-            "median": 0.03734877651682382,
-            "min": 0.014138594962741332,
-            "max": 0.10567624004859745
+            "mean": 0.046254386624401664,
+            "median": 0.04260060532985046,
+            "min": 0.017107374678510177,
+            "max": 0.12050762854293612
           },
           "secondary_cosine": {
-            "mean": 0.9114027806277064,
-            "median": 0.9393620962001452,
-            "min": 0.5502500518216452,
-            "max": 0.9873223963215715
+            "mean": 0.9125694094486336,
+            "median": 0.9430012968148788,
+            "min": 0.5451975833874331,
+            "max": 0.9880139970358662
           },
           "sensitivity_NON_GATING": {
             "k3_thr0.85_frac0.9": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.85_frac0.95": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.85_frac0.99": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.9_frac0.9": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.9_frac0.95": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.9_frac0.99": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.95_frac0.9": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.95_frac0.95": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k3_thr0.95_frac0.99": {
-              "fraction_reproducing": 0.515625,
+              "fraction_reproducing": 0.453125,
               "sufficient": false
             },
             "k5_thr0.85_frac0.9": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.85_frac0.95": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.85_frac0.99": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.9_frac0.9": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.9_frac0.95": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.9_frac0.99": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.95_frac0.9": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.95_frac0.95": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k5_thr0.95_frac0.99": {
-              "fraction_reproducing": 0.4375,
+              "fraction_reproducing": 0.46875,
               "sufficient": false
             },
             "k10_thr0.85_frac0.9": {
@@ -1043,10 +1043,10 @@
           "primary": {
             "metric": "topk_jaccard_k5",
             "threshold": 0.9,
-            "mean_jaccard": 0.859375,
-            "median_jaccard": 1.0,
-            "min_jaccard": 0.6666666666666666,
-            "fraction_reproducing": 0.578125,
+            "mean_jaccard": 0.8050595238095237,
+            "median_jaccard": 0.6666666666666666,
+            "min_jaccard": 0.42857142857142855,
+            "fraction_reproducing": 0.4375,
             "sufficiency_fraction_required": 0.95,
             "SUFFICIENT": false,
             "n_decisions": 64
@@ -1054,98 +1054,98 @@
           "chance_correction": {
             "n_features": 7,
             "random_null_jaccard": 0.5684107142857143,
-            "normalized_jaccard": 0.6741693905416029,
+            "normalized_jaccard": 0.548319472602645,
             "note": "normalized = (observed - null)/(1 - null); ONLY this figure is comparable across substrates"
           },
           "secondary_rbo": {
-            "mean": 0.9324365,
-            "median": 0.9547749999999999,
-            "min": 0.7731585000000001,
+            "mean": 0.9056672187500001,
+            "median": 0.9165182500000001,
+            "min": 0.7284645000000001,
             "max": 1.0
           },
           "secondary_l2": {
-            "mean": 0.024950082632818366,
-            "median": 0.024962853432618982,
-            "min": 0.010356027840493996,
-            "max": 0.0447373868504724
+            "mean": 0.029568992373445915,
+            "median": 0.028872756581130653,
+            "min": 0.012007676953153561,
+            "max": 0.061600573705611394
           },
           "secondary_cosine": {
-            "mean": 0.9677228337902469,
-            "median": 0.9750713826169825,
-            "min": 0.8660433854191225,
-            "max": 0.997598600851553
+            "mean": 0.951951629839776,
+            "median": 0.9700297429317428,
+            "min": 0.6768654384429662,
+            "max": 0.9967851744027925
           },
           "sensitivity_NON_GATING": {
             "k3_thr0.85_frac0.9": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.85_frac0.95": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.85_frac0.99": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.9_frac0.9": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.9_frac0.95": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.9_frac0.99": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.95_frac0.9": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.95_frac0.95": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k3_thr0.95_frac0.99": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.609375,
               "sufficient": false
             },
             "k5_thr0.85_frac0.9": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.85_frac0.95": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.85_frac0.99": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.9_frac0.9": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.9_frac0.95": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.9_frac0.99": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.95_frac0.9": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.95_frac0.95": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k5_thr0.95_frac0.99": {
-              "fraction_reproducing": 0.578125,
+              "fraction_reproducing": 0.4375,
               "sufficient": false
             },
             "k10_thr0.85_frac0.9": {
@@ -1522,7 +1522,7 @@
         },
         "provenance": {
           "record_level": "R4",
-          "record_bytes": 801,
+          "record_bytes": 799,
           "model_route": "exact",
           "background_route": "exact",
           "sampling": {
@@ -1537,7 +1537,7 @@
             "surrogate": false
           }
         },
-        "record_bytes": 801
+        "record_bytes": 799
       },
       "R5": {
         "report": {
@@ -1689,7 +1689,7 @@
         },
         "provenance": {
           "record_level": "R5",
-          "record_bytes": 819,
+          "record_bytes": 817,
           "model_route": "exact",
           "background_route": "exact",
           "sampling": {
@@ -1704,7 +1704,7 @@
             "surrogate": false
           }
         },
-        "record_bytes": 819
+        "record_bytes": 817
       }
     }
   }
