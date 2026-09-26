@@ -8,7 +8,9 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[2] / "runs/retention_drift"
-YEARS = [2021, 2022, 2023, 2024, 2025, 2026]
+LABELS = ["v2021", "v2022", "v2023", "v2023p", "v2024", "v2025", "v2026"]
+PRIMARY = {"v2021", "v2022", "v2023", "v2024", "v2025", "v2026"}
+year = lambda v: int(v[1:5])
 MODELS = ["gbc", "xgb"]
 METHODS = ["tree", "kernel_pinned", "kernel_default", "lime"]
 K, P_RBO, NBOOT, BOOT_SEED = 4, 0.9, 2000, 20260925
@@ -65,28 +67,34 @@ def compare(A, rowsA, B, rowsB, denied):
 
 def main():
     res = {"prereg": "dc12f1a", "pairs": {}, "positive_control": {}}
-    for o in YEARS:
-        arch = ROOT / f"archive/v{o}"
+    for o in LABELS:
+        arch = ROOT / f"archive/{o}"
         am = json.load(open(arch / "manifest.json"))
         denied = {m: np.load(arch / f"denied_{m}.npy") for m in MODELS}
         # positive control: archived tree vs archived tree_altbg (different background)
         for m in MODELS:
             A, rA = load_cell(arch, m, "tree"); B, rB = load_cell(arch, m, "tree_altbg")
-            res["positive_control"][f"v{o}_{m}"] = (compare(A, rA, B, rB, denied[m])
+            res["positive_control"][f"{o}_{m}"] = (compare(A, rA, B, rB, denied[m])
                                                      if A is not None and B is not None
                                                      else "UNAVAILABLE")
-        for c in YEARS:
-            if c < o:
+        for c in LABELS:
+            if c != o and year(c) <= year(o):
                 continue
-            d = ROOT / f"recompute/v{o}_v{c}"
+            d = ROOT / f"recompute/{o}_{c}"
+            tag = "primary" if (o in PRIMARY and c in PRIMARY) else "secondary_A1"
             if not (d / "manifest.json").exists():
-                res["pairs"][f"v{o}_v{c}"] = "MISSING"; continue
+                res["pairs"][f"{o}_{c}"] = "MISSING"; continue
             cm = json.load(open(d / "manifest.json"))
-            pair = {"delta": c - o, "load": cm["load"], "cells": {}}
+            pair = {"delta": year(c) - year(o), "arm": tag, "load": cm["load"], "cells": {}}
             for m in MODELS:
                 if cm["load"][m]["status"] != "ok":
                     for meth in METHODS:
                         pair["cells"][f"{m}_{meth}"] = {"status": "UNLOADABLE"}
+                    continue
+                if "predict" in cm["load"][m]:  # amendment A2: loaded, then failed on predict
+                    for meth in METHODS:
+                        pair["cells"][f"{m}_{meth}"] = {"status": "UNCOMPUTABLE", "stage": "predict",
+                                                        "error": cm["load"][m]["predict"]}
                     continue
                 pa, pc = np.load(arch / f"p_{m}.npy"), np.load(d / f"p_{m}.npy")
                 new_denied = set(np.argsort(-pc, kind="mergesort")[:len(denied[m])].tolist())
@@ -102,7 +110,7 @@ def main():
                         continue
                     A, rA = load_cell(arch, m, meth); B, rB = load_cell(d, m, meth)
                     pair["cells"][key] = {"status": "ok", **compare(A, rA, B, rB, denied[m])}
-            res["pairs"][f"v{o}_v{c}"] = pair
+            res["pairs"][f"{o}_{c}"] = pair
     # excess over noise floor
     for key, pair in res["pairs"].items():
         if not isinstance(pair, dict):
@@ -120,8 +128,44 @@ def main():
                 cell["R_repeat_max"] = max(f["R"] for f in floors)
                 cell["R_repeat_ci_hi"] = max(f["R_ci"][1] for f in floors)
                 cell["R_excess"] = cell["R"] - cell["R_repeat_max"]
+    res["gate"] = gate(res)
     json.dump(res, open(ROOT / "results.json", "w"), indent=2)
     report(res)
+    print("\nGATE (pre-reg §7, primary vintages, 1 <= delta <= 2):", json.dumps(res["gate"], indent=1))
+
+
+def gate(res):
+    """Pre-reg §7, evaluated mechanically on PRIMARY pairs with 1 <= delta <= 2."""
+    pc = [v for v in res["positive_control"].values() if isinstance(v, dict)]
+    if not pc or any(v["R"] == 0 for v in pc):
+        return {"verdict": "VOID", "why": "positive control R == 0 somewhere (or unavailable everywhere)"}
+    strong, weak, all_small, ambiguous = [], [], True, []
+    for key, pair in res["pairs"].items():
+        if not isinstance(pair, dict) or pair["arm"] != "primary" or not 1 <= pair["delta"] <= 2:
+            continue
+        for ck, cell in pair["cells"].items():
+            st = cell.get("status")
+            if st in ("UNLOADABLE", "UNCOMPUTABLE"):
+                weak.append(f"{key}:{ck}:{st}"); all_small = False
+            elif st == "ok":
+                ex = cell.get("R_excess")
+                if ex is None:
+                    ambiguous.append(f"{key}:{ck}:no-noise-floor"); all_small = False; continue
+                if ex >= 0.05 and cell["R_ci"][0] > cell["R_repeat_ci_hi"]:
+                    strong.append(f"{key}:{ck}:R_excess={ex:.3f}")
+                if ex >= 0.01:
+                    all_small = False
+                    if not (ex >= 0.05 and cell["R_ci"][0] > cell["R_repeat_ci_hi"]):
+                        ambiguous.append(f"{key}:{ck}:R_excess={ex:.3f}")
+    if strong:
+        v = "STRONG_GO"
+    elif weak:
+        v = "WEAK_GO"
+    elif all_small:
+        v = "NO_GO"
+    else:
+        v = "AMBIGUOUS"
+    return {"verdict": v, "strong": strong, "weak": weak, "ambiguous": ambiguous}
 
 
 def report(res):

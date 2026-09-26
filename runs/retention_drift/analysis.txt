@@ -1,0 +1,322 @@
+POSITIVE CONTROL (tree vs tree w/ different background, R must be > 0):
+  v2021_gbc: R=0.320
+  v2021_xgb: R=0.260
+  v2022_gbc: R=0.320
+  v2022_xgb: R=0.260
+  v2023_gbc: UNAVAILABLE
+  v2023_xgb: UNAVAILABLE
+  v2023p_gbc: R=0.320
+  v2023p_xgb: R=0.260
+  v2024_gbc: R=0.320
+  v2024_xgb: R=0.325
+  v2025_gbc: R=0.320
+  v2025_xgb: R=0.300
+  v2026_gbc: R=0.320
+  v2026_xgb: UNAVAILABLE
+
+pair         delta cell                 status        R      CI            excess  ordm  jac   rbo
+v2021_v2021    0   gbc_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021    0   gbc_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021    0   gbc_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021    0   gbc_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021    0   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021    0   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021    0   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021    0   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2021        gbc predictions: max|dP|=0.00e+00 denied flips=0
+v2021_v2021        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2021_v2022    1   gbc_tree             UNCOMPUTABLE
+v2021_v2022    1   gbc_kernel_pinned    UNCOMPUTABLE
+v2021_v2022    1   gbc_kernel_default   UNCOMPUTABLE
+v2021_v2022    1   gbc_lime             UNCOMPUTABLE
+v2021_v2022    1   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2022    1   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2022    1   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  0.98  1.00  0.99
+v2021_v2022    1   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2022        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2021_v2023    2   gbc_tree             UNLOADABLE
+v2021_v2023    2   gbc_kernel_pinned    UNLOADABLE
+v2021_v2023    2   gbc_kernel_default   UNLOADABLE
+v2021_v2023    2   gbc_lime             UNLOADABLE
+v2021_v2023    2   xgb_tree             UNCOMPUTABLE
+v2021_v2023    2   xgb_kernel_pinned    UNCOMPUTABLE
+v2021_v2023    2   xgb_kernel_default   UNCOMPUTABLE
+v2021_v2023    2   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2023        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2021_v2023p   2   gbc_tree             UNLOADABLE
+v2021_v2023p   2   gbc_kernel_pinned    UNLOADABLE
+v2021_v2023p   2   gbc_kernel_default   UNLOADABLE
+v2021_v2023p   2   gbc_lime             UNLOADABLE
+v2021_v2023p   2   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2023p   2   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2023p   2   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  0.98  1.00  0.99
+v2021_v2023p   2   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2023p       xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2021_v2024    3   gbc_tree             UNLOADABLE
+v2021_v2024    3   gbc_kernel_pinned    UNLOADABLE
+v2021_v2024    3   gbc_kernel_default   UNLOADABLE
+v2021_v2024    3   gbc_lime             UNLOADABLE
+v2021_v2024    3   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2024    3   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2024    3   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  0.98  1.00  0.99
+v2021_v2024    3   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2024        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2021_v2025    4   gbc_tree             UNLOADABLE
+v2021_v2025    4   gbc_kernel_pinned    UNLOADABLE
+v2021_v2025    4   gbc_kernel_default   UNLOADABLE
+v2021_v2025    4   gbc_lime             UNLOADABLE
+v2021_v2025    4   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2025    4   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2025    4   xgb_kernel_default   ok     0.065 [0.035,0.100] +0.065  0.84  0.97  0.92
+v2021_v2025    4   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2025        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2021_v2026    5   gbc_tree             UNLOADABLE
+v2021_v2026    5   gbc_kernel_pinned    UNLOADABLE
+v2021_v2026    5   gbc_kernel_default   UNLOADABLE
+v2021_v2026    5   gbc_lime             UNLOADABLE
+v2021_v2026    5   xgb_tree             ok     0.000 [0.000,0.000]    n/a  1.00  1.00  1.00
+v2021_v2026    5   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2026    5   xgb_kernel_default   ok     0.065 [0.035,0.100] +0.065  0.84  0.97  0.92
+v2021_v2026    5   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2021_v2026        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2022_v2022    0   gbc_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022    0   gbc_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022    0   gbc_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022    0   gbc_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022    0   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022    0   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022    0   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022    0   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2022        gbc predictions: max|dP|=0.00e+00 denied flips=0
+v2022_v2022        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2022_v2023    1   gbc_tree             UNLOADABLE
+v2022_v2023    1   gbc_kernel_pinned    UNLOADABLE
+v2022_v2023    1   gbc_kernel_default   UNLOADABLE
+v2022_v2023    1   gbc_lime             UNLOADABLE
+v2022_v2023    1   xgb_tree             UNCOMPUTABLE
+v2022_v2023    1   xgb_kernel_pinned    UNCOMPUTABLE
+v2022_v2023    1   xgb_kernel_default   UNCOMPUTABLE
+v2022_v2023    1   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2023        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2022_v2023p   1   gbc_tree             UNLOADABLE
+v2022_v2023p   1   gbc_kernel_pinned    UNLOADABLE
+v2022_v2023p   1   gbc_kernel_default   UNLOADABLE
+v2022_v2023p   1   gbc_lime             UNLOADABLE
+v2022_v2023p   1   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2023p   1   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2023p   1   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2023p   1   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2023p       xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2022_v2024    2   gbc_tree             UNLOADABLE
+v2022_v2024    2   gbc_kernel_pinned    UNLOADABLE
+v2022_v2024    2   gbc_kernel_default   UNLOADABLE
+v2022_v2024    2   gbc_lime             UNLOADABLE
+v2022_v2024    2   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2024    2   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2024    2   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2024    2   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2024        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2022_v2025    3   gbc_tree             UNLOADABLE
+v2022_v2025    3   gbc_kernel_pinned    UNLOADABLE
+v2022_v2025    3   gbc_kernel_default   UNLOADABLE
+v2022_v2025    3   gbc_lime             UNLOADABLE
+v2022_v2025    3   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2025    3   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2025    3   xgb_kernel_default   ok     0.065 [0.035,0.100] +0.065  0.84  0.97  0.91
+v2022_v2025    3   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2025        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2022_v2026    4   gbc_tree             UNLOADABLE
+v2022_v2026    4   gbc_kernel_pinned    UNLOADABLE
+v2022_v2026    4   gbc_kernel_default   UNLOADABLE
+v2022_v2026    4   gbc_lime             UNLOADABLE
+v2022_v2026    4   xgb_tree             ok     0.000 [0.000,0.000]    n/a  1.00  1.00  1.00
+v2022_v2026    4   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2026    4   xgb_kernel_default   ok     0.065 [0.035,0.100] +0.065  0.84  0.97  0.91
+v2022_v2026    4   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2022_v2026        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023_v2023    0   gbc_tree             ORIGIN_UNCOMPUTABLE
+v2023_v2023    0   gbc_kernel_pinned    ORIGIN_UNCOMPUTABLE
+v2023_v2023    0   gbc_kernel_default   ORIGIN_UNCOMPUTABLE
+v2023_v2023    0   gbc_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023_v2023    0   xgb_tree             ORIGIN_UNCOMPUTABLE
+v2023_v2023    0   xgb_kernel_pinned    ORIGIN_UNCOMPUTABLE
+v2023_v2023    0   xgb_kernel_default   ORIGIN_UNCOMPUTABLE
+v2023_v2023    0   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023_v2023        gbc predictions: max|dP|=0.00e+00 denied flips=0
+v2023_v2023        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023_v2024    1   gbc_tree             UNLOADABLE
+v2023_v2024    1   gbc_kernel_pinned    UNLOADABLE
+v2023_v2024    1   gbc_kernel_default   UNLOADABLE
+v2023_v2024    1   gbc_lime             UNLOADABLE
+v2023_v2024    1   xgb_tree             ORIGIN_UNCOMPUTABLE
+v2023_v2024    1   xgb_kernel_pinned    ORIGIN_UNCOMPUTABLE
+v2023_v2024    1   xgb_kernel_default   ORIGIN_UNCOMPUTABLE
+v2023_v2024    1   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023_v2024        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023_v2025    2   gbc_tree             UNLOADABLE
+v2023_v2025    2   gbc_kernel_pinned    UNLOADABLE
+v2023_v2025    2   gbc_kernel_default   UNLOADABLE
+v2023_v2025    2   gbc_lime             UNLOADABLE
+v2023_v2025    2   xgb_tree             ORIGIN_UNCOMPUTABLE
+v2023_v2025    2   xgb_kernel_pinned    ORIGIN_UNCOMPUTABLE
+v2023_v2025    2   xgb_kernel_default   ORIGIN_UNCOMPUTABLE
+v2023_v2025    2   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023_v2025        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023_v2026    3   gbc_tree             UNLOADABLE
+v2023_v2026    3   gbc_kernel_pinned    UNLOADABLE
+v2023_v2026    3   gbc_kernel_default   UNLOADABLE
+v2023_v2026    3   gbc_lime             UNLOADABLE
+v2023_v2026    3   xgb_tree             ORIGIN_UNCOMPUTABLE
+v2023_v2026    3   xgb_kernel_pinned    ORIGIN_UNCOMPUTABLE
+v2023_v2026    3   xgb_kernel_default   ORIGIN_UNCOMPUTABLE
+v2023_v2026    3   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023_v2026        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023p_v2023p   0   gbc_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p   0   gbc_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p   0   gbc_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p   0   gbc_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p   0   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p   0   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p   0   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p   0   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2023p       gbc predictions: max|dP|=0.00e+00 denied flips=0
+v2023p_v2023p       xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023p_v2024   1   gbc_tree             UNLOADABLE
+v2023p_v2024   1   gbc_kernel_pinned    UNLOADABLE
+v2023p_v2024   1   gbc_kernel_default   UNLOADABLE
+v2023p_v2024   1   gbc_lime             UNLOADABLE
+v2023p_v2024   1   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2024   1   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2024   1   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2024   1   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2024       xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023p_v2025   2   gbc_tree             UNLOADABLE
+v2023p_v2025   2   gbc_kernel_pinned    UNLOADABLE
+v2023p_v2025   2   gbc_kernel_default   UNLOADABLE
+v2023p_v2025   2   gbc_lime             UNLOADABLE
+v2023p_v2025   2   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2025   2   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2025   2   xgb_kernel_default   ok     0.065 [0.035,0.100] +0.065  0.84  0.97  0.91
+v2023p_v2025   2   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2025       xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2023p_v2026   3   gbc_tree             UNLOADABLE
+v2023p_v2026   3   gbc_kernel_pinned    UNLOADABLE
+v2023p_v2026   3   gbc_kernel_default   UNLOADABLE
+v2023p_v2026   3   gbc_lime             UNLOADABLE
+v2023p_v2026   3   xgb_tree             ok     0.000 [0.000,0.000]    n/a  1.00  1.00  1.00
+v2023p_v2026   3   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2026   3   xgb_kernel_default   ok     0.065 [0.035,0.100] +0.065  0.84  0.97  0.91
+v2023p_v2026   3   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2023p_v2026       xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2024_v2024    0   gbc_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024    0   gbc_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024    0   gbc_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024    0   gbc_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024    0   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024    0   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024    0   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024    0   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2024        gbc predictions: max|dP|=0.00e+00 denied flips=0
+v2024_v2024        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2024_v2025    1   gbc_tree             UNLOADABLE
+v2024_v2025    1   gbc_kernel_pinned    UNLOADABLE
+v2024_v2025    1   gbc_kernel_default   UNLOADABLE
+v2024_v2025    1   gbc_lime             UNLOADABLE
+v2024_v2025    1   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2025    1   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2025    1   xgb_kernel_default   ok     0.035 [0.010,0.065] +0.035  0.90  0.99  0.92
+v2024_v2025    1   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2025        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2024_v2026    2   gbc_tree             UNLOADABLE
+v2024_v2026    2   gbc_kernel_pinned    UNLOADABLE
+v2024_v2026    2   gbc_kernel_default   UNLOADABLE
+v2024_v2026    2   gbc_lime             UNLOADABLE
+v2024_v2026    2   xgb_tree             ok     0.000 [0.000,0.000]    n/a  1.00  1.00  1.00
+v2024_v2026    2   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2026    2   xgb_kernel_default   ok     0.035 [0.010,0.065] +0.035  0.90  0.99  0.92
+v2024_v2026    2   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2024_v2026        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2025_v2025    0   gbc_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025    0   gbc_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025    0   gbc_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025    0   gbc_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025    0   xgb_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025    0   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025    0   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025    0   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2025        gbc predictions: max|dP|=0.00e+00 denied flips=0
+v2025_v2025        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2025_v2026    1   gbc_tree             UNLOADABLE
+v2025_v2026    1   gbc_kernel_pinned    UNLOADABLE
+v2025_v2026    1   gbc_kernel_default   UNLOADABLE
+v2025_v2026    1   gbc_lime             UNLOADABLE
+v2025_v2026    1   xgb_tree             ok     0.000 [0.000,0.000]    n/a  1.00  1.00  1.00
+v2025_v2026    1   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2026    1   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2026    1   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2025_v2026        xgb predictions: max|dP|=0.00e+00 denied flips=0
+v2026_v2026    0   gbc_tree             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2026_v2026    0   gbc_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2026_v2026    0   gbc_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2026_v2026    0   gbc_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2026_v2026    0   xgb_tree             ORIGIN_UNCOMPUTABLE
+v2026_v2026    0   xgb_kernel_pinned    ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2026_v2026    0   xgb_kernel_default   ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2026_v2026    0   xgb_lime             ok     0.000 [0.000,0.000] +0.000  1.00  1.00  1.00
+v2026_v2026        gbc predictions: max|dP|=0.00e+00 denied flips=0
+v2026_v2026        xgb predictions: max|dP|=0.00e+00 denied flips=0
+
+GATE (pre-reg §7, primary vintages, 1 <= delta <= 2): {
+ "verdict": "WEAK_GO",
+ "strong": [],
+ "weak": [
+  "v2021_v2022:gbc_tree:UNCOMPUTABLE",
+  "v2021_v2022:gbc_kernel_pinned:UNCOMPUTABLE",
+  "v2021_v2022:gbc_kernel_default:UNCOMPUTABLE",
+  "v2021_v2022:gbc_lime:UNCOMPUTABLE",
+  "v2021_v2023:gbc_tree:UNLOADABLE",
+  "v2021_v2023:gbc_kernel_pinned:UNLOADABLE",
+  "v2021_v2023:gbc_kernel_default:UNLOADABLE",
+  "v2021_v2023:gbc_lime:UNLOADABLE",
+  "v2021_v2023:xgb_tree:UNCOMPUTABLE",
+  "v2021_v2023:xgb_kernel_pinned:UNCOMPUTABLE",
+  "v2021_v2023:xgb_kernel_default:UNCOMPUTABLE",
+  "v2022_v2023:gbc_tree:UNLOADABLE",
+  "v2022_v2023:gbc_kernel_pinned:UNLOADABLE",
+  "v2022_v2023:gbc_kernel_default:UNLOADABLE",
+  "v2022_v2023:gbc_lime:UNLOADABLE",
+  "v2022_v2023:xgb_tree:UNCOMPUTABLE",
+  "v2022_v2023:xgb_kernel_pinned:UNCOMPUTABLE",
+  "v2022_v2023:xgb_kernel_default:UNCOMPUTABLE",
+  "v2022_v2024:gbc_tree:UNLOADABLE",
+  "v2022_v2024:gbc_kernel_pinned:UNLOADABLE",
+  "v2022_v2024:gbc_kernel_default:UNLOADABLE",
+  "v2022_v2024:gbc_lime:UNLOADABLE",
+  "v2023_v2024:gbc_tree:UNLOADABLE",
+  "v2023_v2024:gbc_kernel_pinned:UNLOADABLE",
+  "v2023_v2024:gbc_kernel_default:UNLOADABLE",
+  "v2023_v2024:gbc_lime:UNLOADABLE",
+  "v2023_v2025:gbc_tree:UNLOADABLE",
+  "v2023_v2025:gbc_kernel_pinned:UNLOADABLE",
+  "v2023_v2025:gbc_kernel_default:UNLOADABLE",
+  "v2023_v2025:gbc_lime:UNLOADABLE",
+  "v2024_v2025:gbc_tree:UNLOADABLE",
+  "v2024_v2025:gbc_kernel_pinned:UNLOADABLE",
+  "v2024_v2025:gbc_kernel_default:UNLOADABLE",
+  "v2024_v2025:gbc_lime:UNLOADABLE",
+  "v2024_v2026:gbc_tree:UNLOADABLE",
+  "v2024_v2026:gbc_kernel_pinned:UNLOADABLE",
+  "v2024_v2026:gbc_kernel_default:UNLOADABLE",
+  "v2024_v2026:gbc_lime:UNLOADABLE",
+  "v2025_v2026:gbc_tree:UNLOADABLE",
+  "v2025_v2026:gbc_kernel_pinned:UNLOADABLE",
+  "v2025_v2026:gbc_kernel_default:UNLOADABLE",
+  "v2025_v2026:gbc_lime:UNLOADABLE"
+ ],
+ "ambiguous": [
+  "v2024_v2025:xgb_kernel_default:R_excess=0.035",
+  "v2024_v2026:xgb_tree:no-noise-floor",
+  "v2024_v2026:xgb_kernel_default:R_excess=0.035",
+  "v2025_v2026:xgb_tree:no-noise-floor"
+ ]
+}

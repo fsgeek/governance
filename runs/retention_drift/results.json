@@ -1,0 +1,2940 @@
+{
+  "prereg": "dc12f1a",
+  "pairs": {
+    "v2021_v2021": {
+      "delta": 0,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 7.216449660063518e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.828670879282072e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.273559366969494e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 7.771561172376096e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.551115123125783e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "gbc_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2021_v2022": {
+      "delta": 1,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle",
+          "predict": "FAIL AttributeError(\"'GradientBoostingClassifier' object has no attribute '_loss'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNCOMPUTABLE",
+          "stage": "predict",
+          "error": "FAIL AttributeError(\"'GradientBoostingClassifier' object has no attribute '_loss'\")"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNCOMPUTABLE",
+          "stage": "predict",
+          "error": "FAIL AttributeError(\"'GradientBoostingClassifier' object has no attribute '_loss'\")"
+        },
+        "gbc_kernel_default": {
+          "status": "UNCOMPUTABLE",
+          "stage": "predict",
+          "error": "FAIL AttributeError(\"'GradientBoostingClassifier' object has no attribute '_loss'\")"
+        },
+        "gbc_lime": {
+          "status": "UNCOMPUTABLE",
+          "stage": "predict",
+          "error": "FAIL AttributeError(\"'GradientBoostingClassifier' object has no attribute '_loss'\")"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 2.220446049250313e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 0.98,
+          "jaccard": 1.0,
+          "rbo": 0.9918764384510433,
+          "max_abs_diff": 0.010010828830338173,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2021_v2023": {
+      "delta": 2,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ValueError(\"node array from the pickle has an incompatible dtype:\\n- expected: {'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples', 'weighted_n_node_samples', 'missing_go_to_left'], 'formats': ['<i8', '<i8', '<i8', '<f8', '<f8', '<i8', '<f8', 'u1'], 'offsets': [0, 8, 16, 24, 32, 40, 48, 56], 'itemsize': 64}\\n- got     : [('left_child', '<i8'), ('right_child"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "UNCOMPUTABLE",
+          "error": "AttributeError(\"module 'numpy' has no attribute 'bool'.\\n`np.bool` was a deprecated alias for the builtin `bool`. To avoid this error in existing code, use `bool` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.bool_` here.\\nThe aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original r"
+        },
+        "xgb_kernel_pinned": {
+          "status": "UNCOMPUTABLE",
+          "error": "AttributeError(\"module 'numpy' has no attribute 'int'.\\n`np.int` was a deprecated alias for the builtin `int`. To avoid this error in existing code, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for addi"
+        },
+        "xgb_kernel_default": {
+          "status": "UNCOMPUTABLE",
+          "error": "AttributeError(\"module 'numpy' has no attribute 'int'.\\n`np.int` was a deprecated alias for the builtin `int`. To avoid this error in existing code, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for addi"
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2021_v2023p": {
+      "delta": 2,
+      "arm": "secondary_A1",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ValueError(\"node array from the pickle has an incompatible dtype:\\n- expected: {'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples', 'weighted_n_node_samples', 'missing_go_to_left'], 'formats': ['<i8', '<i8', '<i8', '<f8', '<f8', '<i8', '<f8', 'u1'], 'offsets': [0, 8, 16, 24, 32, 40, 48, 56], 'itemsize': 64}\\n- got     : [('left_child', '<i8'), ('right_child"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 0.98,
+          "jaccard": 1.0,
+          "rbo": 0.9918154263630974,
+          "max_abs_diff": 0.01001082883033827,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2021_v2024": {
+      "delta": 3,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.212844045310305e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 0.98,
+          "jaccard": 1.0,
+          "rbo": 0.9918154263630974,
+          "max_abs_diff": 0.010010828830338128,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2021_v2025": {
+      "delta": 4,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.212844045310305e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.065,
+          "R_ci": [
+            0.035,
+            0.1
+          ],
+          "ordered_match": 0.845,
+          "jaccard": 0.9747500000000001,
+          "rbo": 0.9166724400243226,
+          "max_abs_diff": 0.07111307472096297,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.065
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2021_v2026": {
+      "delta": 5,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "FAIL XGBoostError('[20:35:57] /__w/xgboost/xgboost/src/learner.cc:1011: Check failed: std::isalpha(header[1]): Invalid serialization file.\\nStack trace:\\n  [bt] (0) /home/tony/projects/governance/envs_rd/v"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.212844045310305e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.065,
+          "R_ci": [
+            0.035,
+            0.1
+          ],
+          "ordered_match": 0.845,
+          "jaccard": 0.9747500000000001,
+          "rbo": 0.9166724400243226,
+          "max_abs_diff": 0.07111307472096297,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.065
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2022_v2022": {
+      "delta": 0,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.273559366969494e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 5.551115123125783e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "gbc_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2022_v2023": {
+      "delta": 1,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ValueError(\"node array from the pickle has an incompatible dtype:\\n- expected: {'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples', 'weighted_n_node_samples', 'missing_go_to_left'], 'formats': ['<i8', '<i8', '<i8', '<f8', '<f8', '<i8', '<f8', 'u1'], 'offsets': [0, 8, 16, 24, 32, 40, 48, 56], 'itemsize': 64}\\n- got     : [('left_child', '<i8'), ('right_child"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "UNCOMPUTABLE",
+          "error": "AttributeError(\"module 'numpy' has no attribute 'bool'.\\n`np.bool` was a deprecated alias for the builtin `bool`. To avoid this error in existing code, use `bool` by itself. Doing this will not modify any behavior and is safe. If you specifically wanted the numpy scalar type, use `np.bool_` here.\\nThe aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original r"
+        },
+        "xgb_kernel_pinned": {
+          "status": "UNCOMPUTABLE",
+          "error": "AttributeError(\"module 'numpy' has no attribute 'int'.\\n`np.int` was a deprecated alias for the builtin `int`. To avoid this error in existing code, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for addi"
+        },
+        "xgb_kernel_default": {
+          "status": "UNCOMPUTABLE",
+          "error": "AttributeError(\"module 'numpy' has no attribute 'int'.\\n`np.int` was a deprecated alias for the builtin `int`. To avoid this error in existing code, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for addi"
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2022_v2023p": {
+      "delta": 1,
+      "arm": "secondary_A1",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ValueError(\"node array from the pickle has an incompatible dtype:\\n- expected: {'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples', 'weighted_n_node_samples', 'missing_go_to_left'], 'formats': ['<i8', '<i8', '<i8', '<f8', '<f8', '<i8', '<f8', 'u1'], 'offsets': [0, 8, 16, 24, 32, 40, 48, 56], 'itemsize': 64}\\n- got     : [('left_child', '<i8'), ('right_child"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9998847351188026,
+          "max_abs_diff": 0.0005712418027984563,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2022_v2024": {
+      "delta": 2,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9998847351188026,
+          "max_abs_diff": 0.0005712418027984445,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2022_v2025": {
+      "delta": 3,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.065,
+          "R_ci": [
+            0.035,
+            0.1
+          ],
+          "ordered_match": 0.845,
+          "jaccard": 0.9747500000000001,
+          "rbo": 0.9127493734419009,
+          "max_abs_diff": 0.0711253451411297,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.065
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2022_v2026": {
+      "delta": 4,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.065,
+          "R_ci": [
+            0.035,
+            0.1
+          ],
+          "ordered_match": 0.845,
+          "jaccard": 0.9747500000000001,
+          "rbo": 0.9127493734419009,
+          "max_abs_diff": 0.0711253451411297,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.065
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 1.3877787807814457e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023_v2023": {
+      "delta": 0,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "gbc_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.938893903907228e-17,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_tree": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_pinned": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_default": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.245004513516506e-17,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "gbc_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023_v2024": {
+      "delta": 1,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_pinned": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_default": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023_v2025": {
+      "delta": 2,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_pinned": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_default": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023_v2026": {
+      "delta": 3,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_pinned": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_default": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023p_v2023p": {
+      "delta": 0,
+      "arm": "secondary_A1",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.938893903907228e-17,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.245004513516506e-17,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "gbc_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023p_v2024": {
+      "delta": 1,
+      "arm": "secondary_A1",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.00028986289105377525,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023p_v2025": {
+      "delta": 2,
+      "arm": "secondary_A1",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.065,
+          "R_ci": [
+            0.035,
+            0.1
+          ],
+          "ordered_match": 0.845,
+          "jaccard": 0.9747500000000001,
+          "rbo": 0.9127136849411863,
+          "max_abs_diff": 0.0711253451411297,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.065
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2023p_v2026": {
+      "delta": 3,
+      "arm": "secondary_A1",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named 'sklearn.ensemble._gb_losses'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 6.661338147750939e-16,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.065,
+          "R_ci": [
+            0.035,
+            0.1
+          ],
+          "ordered_match": 0.845,
+          "jaccard": 0.9747500000000001,
+          "rbo": 0.9127136849411863,
+          "max_abs_diff": 0.0711253451411297,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.065
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2024_v2024": {
+      "delta": 0,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "gbc_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2024_v2025": {
+      "delta": 1,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "AttributeError(\"Can't get attribute '__pyx_unpickle_CyHalfBinomialLoss' on <module 'sklearn._loss._loss' from '/home/tony/projects/governance/envs_rd/v2025/lib/python3.13/site-packages/sklearn/_loss/_loss.cpython-313-x86_64-linux-gnu.so'>\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.035,
+          "R_ci": [
+            0.01,
+            0.065
+          ],
+          "ordered_match": 0.9,
+          "jaccard": 0.9867500000000001,
+          "rbo": 0.9151347033969947,
+          "max_abs_diff": 0.07064154312999728,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.035
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2024_v2026": {
+      "delta": 2,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named '_loss'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.035,
+          "R_ci": [
+            0.01,
+            0.065
+          ],
+          "ordered_match": 0.9,
+          "jaccard": 0.9867500000000001,
+          "rbo": 0.9151347033969947,
+          "max_abs_diff": 0.07064154312999728,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.035
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2025_v2025": {
+      "delta": 0,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "gbc_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2025_v2026": {
+      "delta": 1,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "UNLOADABLE",
+          "path": "pickle",
+          "error": "ModuleNotFoundError(\"No module named '_loss'\")"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_pinned": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_kernel_default": {
+          "status": "UNLOADABLE"
+        },
+        "gbc_lime": {
+          "status": "UNLOADABLE"
+        },
+        "xgb_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    },
+    "v2026_v2026": {
+      "delta": 0,
+      "arm": "primary",
+      "load": {
+        "gbc": {
+          "status": "ok",
+          "path": "pickle"
+        },
+        "xgb": {
+          "status": "ok",
+          "path": "json",
+          "pickle_secondary": "ok"
+        }
+      },
+      "cells": {
+        "gbc_tree": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "gbc_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_tree": {
+          "status": "ORIGIN_UNCOMPUTABLE"
+        },
+        "xgb_kernel_pinned": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_kernel_default": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        },
+        "xgb_lime": {
+          "status": "ok",
+          "n": 200,
+          "R": 0.0,
+          "R_ci": [
+            0.0,
+            0.0
+          ],
+          "ordered_match": 1.0,
+          "jaccard": 1.0,
+          "rbo": 0.9999999999999999,
+          "max_abs_diff": 0.0,
+          "R_repeat_max": 0.0,
+          "R_repeat_ci_hi": 0.0,
+          "R_excess": 0.0
+        }
+      },
+      "gbc_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      },
+      "xgb_pred": {
+        "max_abs_dp": 0.0,
+        "denied_flips": 0
+      }
+    }
+  },
+  "positive_control": {
+    "v2021_gbc": {
+      "n": 200,
+      "R": 0.32,
+      "R_ci": [
+        0.255,
+        0.385
+      ],
+      "ordered_match": 0.38,
+      "jaccard": 0.8693333333333334,
+      "rbo": 0.9341617750398831,
+      "max_abs_diff": 0.24190299218287697
+    },
+    "v2021_xgb": {
+      "n": 200,
+      "R": 0.26,
+      "R_ci": [
+        0.2,
+        0.32
+      ],
+      "ordered_match": 0.41,
+      "jaccard": 0.8933333333333333,
+      "rbo": 0.9344245355783317,
+      "max_abs_diff": 0.11428389441512993
+    },
+    "v2022_gbc": {
+      "n": 200,
+      "R": 0.32,
+      "R_ci": [
+        0.255,
+        0.385
+      ],
+      "ordered_match": 0.38,
+      "jaccard": 0.8693333333333334,
+      "rbo": 0.9341617750398831,
+      "max_abs_diff": 0.24190299218287697
+    },
+    "v2022_xgb": {
+      "n": 200,
+      "R": 0.26,
+      "R_ci": [
+        0.2,
+        0.32
+      ],
+      "ordered_match": 0.41,
+      "jaccard": 0.8933333333333333,
+      "rbo": 0.9344245355783317,
+      "max_abs_diff": 0.11428389441512993
+    },
+    "v2023_gbc": "UNAVAILABLE",
+    "v2023_xgb": "UNAVAILABLE",
+    "v2023p_gbc": {
+      "n": 200,
+      "R": 0.32,
+      "R_ci": [
+        0.255,
+        0.385
+      ],
+      "ordered_match": 0.38,
+      "jaccard": 0.8693333333333334,
+      "rbo": 0.9341617750398831,
+      "max_abs_diff": 0.24190299218287697
+    },
+    "v2023p_xgb": {
+      "n": 200,
+      "R": 0.26,
+      "R_ci": [
+        0.2,
+        0.32
+      ],
+      "ordered_match": 0.41,
+      "jaccard": 0.8933333333333333,
+      "rbo": 0.9344245355783317,
+      "max_abs_diff": 0.11428389441512993
+    },
+    "v2024_gbc": {
+      "n": 200,
+      "R": 0.32,
+      "R_ci": [
+        0.255,
+        0.385
+      ],
+      "ordered_match": 0.38,
+      "jaccard": 0.8693333333333334,
+      "rbo": 0.9343062665831576,
+      "max_abs_diff": 0.24190299218287697
+    },
+    "v2024_xgb": {
+      "n": 200,
+      "R": 0.325,
+      "R_ci": [
+        0.26,
+        0.39
+      ],
+      "ordered_match": 0.435,
+      "jaccard": 0.87,
+      "rbo": 0.9325164951734388,
+      "max_abs_diff": 0.10860268809832635
+    },
+    "v2025_gbc": {
+      "n": 200,
+      "R": 0.32,
+      "R_ci": [
+        0.255,
+        0.385
+      ],
+      "ordered_match": 0.38,
+      "jaccard": 0.8693333333333334,
+      "rbo": 0.9343062665831576,
+      "max_abs_diff": 0.24190299218287697
+    },
+    "v2025_xgb": {
+      "n": 200,
+      "R": 0.3,
+      "R_ci": [
+        0.235,
+        0.37
+      ],
+      "ordered_match": 0.46,
+      "jaccard": 0.8759999999999999,
+      "rbo": 0.9363831308724161,
+      "max_abs_diff": 0.11143113032914698
+    },
+    "v2026_gbc": {
+      "n": 200,
+      "R": 0.32,
+      "R_ci": [
+        0.255,
+        0.385
+      ],
+      "ordered_match": 0.38,
+      "jaccard": 0.8693333333333334,
+      "rbo": 0.9338974932014904,
+      "max_abs_diff": 0.24190299218287697
+    },
+    "v2026_xgb": "UNAVAILABLE"
+  },
+  "gate": {
+    "verdict": "WEAK_GO",
+    "strong": [],
+    "weak": [
+      "v2021_v2022:gbc_tree:UNCOMPUTABLE",
+      "v2021_v2022:gbc_kernel_pinned:UNCOMPUTABLE",
+      "v2021_v2022:gbc_kernel_default:UNCOMPUTABLE",
+      "v2021_v2022:gbc_lime:UNCOMPUTABLE",
+      "v2021_v2023:gbc_tree:UNLOADABLE",
+      "v2021_v2023:gbc_kernel_pinned:UNLOADABLE",
+      "v2021_v2023:gbc_kernel_default:UNLOADABLE",
+      "v2021_v2023:gbc_lime:UNLOADABLE",
+      "v2021_v2023:xgb_tree:UNCOMPUTABLE",
+      "v2021_v2023:xgb_kernel_pinned:UNCOMPUTABLE",
+      "v2021_v2023:xgb_kernel_default:UNCOMPUTABLE",
+      "v2022_v2023:gbc_tree:UNLOADABLE",
+      "v2022_v2023:gbc_kernel_pinned:UNLOADABLE",
+      "v2022_v2023:gbc_kernel_default:UNLOADABLE",
+      "v2022_v2023:gbc_lime:UNLOADABLE",
+      "v2022_v2023:xgb_tree:UNCOMPUTABLE",
+      "v2022_v2023:xgb_kernel_pinned:UNCOMPUTABLE",
+      "v2022_v2023:xgb_kernel_default:UNCOMPUTABLE",
+      "v2022_v2024:gbc_tree:UNLOADABLE",
+      "v2022_v2024:gbc_kernel_pinned:UNLOADABLE",
+      "v2022_v2024:gbc_kernel_default:UNLOADABLE",
+      "v2022_v2024:gbc_lime:UNLOADABLE",
+      "v2023_v2024:gbc_tree:UNLOADABLE",
+      "v2023_v2024:gbc_kernel_pinned:UNLOADABLE",
+      "v2023_v2024:gbc_kernel_default:UNLOADABLE",
+      "v2023_v2024:gbc_lime:UNLOADABLE",
+      "v2023_v2025:gbc_tree:UNLOADABLE",
+      "v2023_v2025:gbc_kernel_pinned:UNLOADABLE",
+      "v2023_v2025:gbc_kernel_default:UNLOADABLE",
+      "v2023_v2025:gbc_lime:UNLOADABLE",
+      "v2024_v2025:gbc_tree:UNLOADABLE",
+      "v2024_v2025:gbc_kernel_pinned:UNLOADABLE",
+      "v2024_v2025:gbc_kernel_default:UNLOADABLE",
+      "v2024_v2025:gbc_lime:UNLOADABLE",
+      "v2024_v2026:gbc_tree:UNLOADABLE",
+      "v2024_v2026:gbc_kernel_pinned:UNLOADABLE",
+      "v2024_v2026:gbc_kernel_default:UNLOADABLE",
+      "v2024_v2026:gbc_lime:UNLOADABLE",
+      "v2025_v2026:gbc_tree:UNLOADABLE",
+      "v2025_v2026:gbc_kernel_pinned:UNLOADABLE",
+      "v2025_v2026:gbc_kernel_default:UNLOADABLE",
+      "v2025_v2026:gbc_lime:UNLOADABLE"
+    ],
+    "ambiguous": [
+      "v2024_v2025:xgb_kernel_default:R_excess=0.035",
+      "v2024_v2026:xgb_tree:no-noise-floor",
+      "v2024_v2026:xgb_kernel_default:R_excess=0.035",
+      "v2025_v2026:xgb_tree:no-noise-floor"
+    ]
+  }
+}

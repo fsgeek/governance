@@ -148,7 +148,15 @@ def explain_all(models, d, X_train, X_eval, bg, bg_alt, denied, manifest):
     for mname, model in models.items():
         if model is None:
             continue
-        p = p_default(model, X_eval)
+        try:  # amendment A2: a model that loads but cannot predict is recorded, not fatal
+            p = p_default(model, X_eval)
+        except Exception as e:
+            for method in METHODS:
+                manifest["cells"][f"{mname}_{method}"] = {
+                    "status": "UNCOMPUTABLE", "stage": "predict", "error": repr(e)[:400]}
+            manifest["load"][mname]["predict"] = "FAIL " + repr(e)[:200]
+            print(mname, "UNPREDICTABLE", repr(e)[:120], flush=True)
+            continue
         np.save(d / f"p_{mname}.npy", p)
         for method in METHODS:
             key = f"{mname}_{method}"

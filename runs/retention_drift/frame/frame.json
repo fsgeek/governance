@@ -1,0 +1,33 @@
+{
+  "features": [
+    "loan_amnt",
+    "term_months",
+    "annual_inc",
+    "dti",
+    "fico_range_low",
+    "credit_age_months",
+    "emp_length_yrs",
+    "home_own_code",
+    "verification_code",
+    "purpose_code",
+    "delinq_2yrs",
+    "inq_last_6mths",
+    "open_acc",
+    "pub_rec",
+    "revol_bal",
+    "revol_util",
+    "total_acc",
+    "mort_acc",
+    "num_actv_rev_tl",
+    "bc_util",
+    "pct_tl_nvr_dlq",
+    "acc_open_past_24mths",
+    "avg_cur_bal",
+    "pub_rec_bankruptcies"
+  ],
+  "seed": 20260925,
+  "n_train": 40000,
+  "n_eval": 1000,
+  "default_rate_train": 0.19735,
+  "prereg": "dc12f1a"
+}

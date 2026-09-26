@@ -1,0 +1,67 @@
+{
+  "mode": "archive",
+  "vintage": "v2026",
+  "versions": {
+    "python": "3.14.3",
+    "shap": "0.52.0",
+    "sklearn": "1.9.0",
+    "xgboost": "3.3.0",
+    "numpy": "2.4.6",
+    "scipy": "1.18.0",
+    "lime": "ERR AttributeError(\"module 'lime' has no attribute '__version__'\")"
+  },
+  "prereg": "dc12f1a",
+  "omp_threads": "8",
+  "cells": {
+    "gbc_tree": {
+      "status": "ok",
+      "secs": 4.6
+    },
+    "gbc_tree_altbg": {
+      "status": "ok",
+      "secs": 3.4
+    },
+    "gbc_kernel_pinned": {
+      "status": "ok",
+      "secs": 42.2
+    },
+    "gbc_kernel_default": {
+      "status": "ok",
+      "secs": 44.2
+    },
+    "gbc_lime": {
+      "status": "ok",
+      "secs": 11.5
+    },
+    "xgb_tree": {
+      "status": "UNCOMPUTABLE",
+      "error": "NotImplementedError('Categorical split is not yet supported. You can still use TreeExplainer with `feature_perturbation=tree_path_dependent`.')",
+      "trace": "X_train, bg, bg_alt)\n               ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/tony/projects/governance/scripts/retention_drift/explain.py\", line 110, in run_method\n    sv = ex.shap_values(X_eval)\n  File \"/home/tony/projects/governance/envs_rd/v2026/lib/python3.14/site-packages/shap/explainers/_tree.py\", line 673, in shap_values\n    _xgboost_cat_unsupported(self.model)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/home/tony/projects/governance/envs_rd/v2026/lib/python3.14/site-packages/shap/explainers/_tree.py\", line 111, in _xgboost_cat_unsupported\n    raise NotImplementedError(\n    ...<2 lines>...\n    )\nNotImplementedError: Categorical split is not yet supported. You can still use TreeExplainer with `feature_perturbation=tree_path_dependent`.\n"
+    },
+    "xgb_tree_altbg": {
+      "status": "UNCOMPUTABLE",
+      "error": "NotImplementedError('Categorical split is not yet supported. You can still use TreeExplainer with `feature_perturbation=tree_path_dependent`.')",
+      "trace": "X_train, bg, bg_alt)\n               ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/tony/projects/governance/scripts/retention_drift/explain.py\", line 110, in run_method\n    sv = ex.shap_values(X_eval)\n  File \"/home/tony/projects/governance/envs_rd/v2026/lib/python3.14/site-packages/shap/explainers/_tree.py\", line 673, in shap_values\n    _xgboost_cat_unsupported(self.model)\n    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^\n  File \"/home/tony/projects/governance/envs_rd/v2026/lib/python3.14/site-packages/shap/explainers/_tree.py\", line 111, in _xgboost_cat_unsupported\n    raise NotImplementedError(\n    ...<2 lines>...\n    )\nNotImplementedError: Categorical split is not yet supported. You can still use TreeExplainer with `feature_perturbation=tree_path_dependent`.\n"
+    },
+    "xgb_kernel_pinned": {
+      "status": "ok",
+      "secs": 13.6
+    },
+    "xgb_kernel_default": {
+      "status": "ok",
+      "secs": 16.2
+    },
+    "xgb_lime": {
+      "status": "ok",
+      "secs": 9.1
+    }
+  },
+  "load": {
+    "gbc": {
+      "status": "trained"
+    },
+    "xgb": {
+      "status": "trained"
+    }
+  }
+}

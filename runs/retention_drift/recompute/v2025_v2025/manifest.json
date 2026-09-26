@@ -1,0 +1,69 @@
+{
+  "mode": "recompute",
+  "vintage": "v2025",
+  "versions": {
+    "python": "3.13.9",
+    "shap": "0.48.0",
+    "sklearn": "1.7.0",
+    "xgboost": "3.0.2",
+    "numpy": "2.2.6",
+    "scipy": "1.16.0",
+    "lime": "ERR AttributeError(\"module 'lime' has no attribute '__version__'\")"
+  },
+  "prereg": "dc12f1a",
+  "omp_threads": "4",
+  "cells": {
+    "gbc_tree": {
+      "status": "ok",
+      "secs": 1.8
+    },
+    "gbc_tree_altbg": {
+      "status": "ok",
+      "secs": 1.8
+    },
+    "gbc_kernel_pinned": {
+      "status": "ok",
+      "secs": 45.8
+    },
+    "gbc_kernel_default": {
+      "status": "ok",
+      "secs": 39.0
+    },
+    "gbc_lime": {
+      "status": "ok",
+      "secs": 9.3
+    },
+    "xgb_tree": {
+      "status": "ok",
+      "secs": 2.5
+    },
+    "xgb_tree_altbg": {
+      "status": "ok",
+      "secs": 2.5
+    },
+    "xgb_kernel_pinned": {
+      "status": "ok",
+      "secs": 21.5
+    },
+    "xgb_kernel_default": {
+      "status": "ok",
+      "secs": 18.4
+    },
+    "xgb_lime": {
+      "status": "ok",
+      "secs": 10.9
+    }
+  },
+  "load": {
+    "gbc": {
+      "status": "ok",
+      "path": "pickle"
+    },
+    "xgb": {
+      "status": "ok",
+      "path": "json",
+      "pickle_secondary": "ok"
+    }
+  },
+  "origin": "v2025"
+}

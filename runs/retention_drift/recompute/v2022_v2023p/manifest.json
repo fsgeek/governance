@@ -1,0 +1,50 @@
+{
+  "mode": "recompute",
+  "vintage": "v2023p",
+  "versions": {
+    "python": "3.11.14",
+    "shap": "0.41.0",
+    "sklearn": "1.3.0",
+    "xgboost": "1.7.6",
+    "numpy": "1.23.5",
+    "scipy": "1.11.1",
+    "lime": "ERR AttributeError(\"module 'lime' has no attribute '__version__'\")"
+  },
+  "prereg": "dc12f1a",
+  "omp_threads": "4",
+  "cells": {
+    "xgb_tree": {
+      "status": "ok",
+      "secs": 5.9
+    },
+    "xgb_tree_altbg": {
+      "status": "ok",
+      "secs": 2.9
+    },
+    "xgb_kernel_pinned": {
+      "status": "ok",
+      "secs": 84.4
+    },
+    "xgb_kernel_default": {
+      "status": "ok",
+      "secs": 90.8
+    },
+    "xgb_lime": {
+      "status": "ok",
+      "secs": 7.1
+    }
+  },
+  "load": {
+    "gbc": {
+      "status": "UNLOADABLE",
+      "path": "pickle",
+      "error": "ValueError(\"node array from the pickle has an incompatible dtype:\\n- expected: {'names': ['left_child', 'right_child', 'feature', 'threshold', 'impurity', 'n_node_samples', 'weighted_n_node_samples', 'missing_go_to_left'], 'formats': ['<i8', '<i8', '<i8', '<f8', '<f8', '<i8', '<f8', 'u1'], 'offsets': [0, 8, 16, 24, 32, 40, 48, 56], 'itemsize': 64}\\n- got     : [('left_child', '<i8'), ('right_child"
+    },
+    "xgb": {
+      "status": "ok",
+      "path": "json",
+      "pickle_secondary": "ok"
+    }
+  },
+  "origin": "v2022"
+}

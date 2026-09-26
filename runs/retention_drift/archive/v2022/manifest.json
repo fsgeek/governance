@@ -1,0 +1,65 @@
+{
+  "mode": "archive",
+  "vintage": "v2022",
+  "versions": {
+    "python": "3.10.12",
+    "shap": "0.41.0",
+    "sklearn": "1.1.1",
+    "xgboost": "1.6.1",
+    "numpy": "1.22.4",
+    "scipy": "1.8.1",
+    "lime": "ERR AttributeError(\"module 'lime' has no attribute '__version__'\")"
+  },
+  "prereg": "dc12f1a",
+  "omp_threads": "8",
+  "cells": {
+    "gbc_tree": {
+      "status": "ok",
+      "secs": 2.0
+    },
+    "gbc_tree_altbg": {
+      "status": "ok",
+      "secs": 1.9
+    },
+    "gbc_kernel_pinned": {
+      "status": "ok",
+      "secs": 132.2
+    },
+    "gbc_kernel_default": {
+      "status": "ok",
+      "secs": 111.6
+    },
+    "gbc_lime": {
+      "status": "ok",
+      "secs": 1110.4
+    },
+    "xgb_tree": {
+      "status": "ok",
+      "secs": 2.9
+    },
+    "xgb_tree_altbg": {
+      "status": "ok",
+      "secs": 2.9
+    },
+    "xgb_kernel_pinned": {
+      "status": "ok",
+      "secs": 86.2
+    },
+    "xgb_kernel_default": {
+      "status": "ok",
+      "secs": 80.6
+    },
+    "xgb_lime": {
+      "status": "ok",
+      "secs": 1091.8
+    }
+  },
+  "load": {
+    "gbc": {
+      "status": "trained"
+    },
+    "xgb": {
+      "status": "trained"
+    }
+  }
+}

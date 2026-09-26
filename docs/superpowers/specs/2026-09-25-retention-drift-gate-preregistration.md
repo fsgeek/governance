@@ -135,3 +135,14 @@ wherever v2023 is the contest vintage; the **primary analysis keeps v2023 exactl
 same way as the others, reported in a separate table, and **cannot by itself move the gate** (§7
 is evaluated on the frozen vintages). Rationale: separates "the explainer's own dependency hygiene
 broke" from "a working stack drifts."
+
+## 10. Amendment A2 (2026-09-25, recorded after all recompute pairs ran, before the adversarial review)
+
+**Harness defect, fixed:** `explain.py` guarded model *loading* but not the first `predict_proba`.
+In pair v2021→v2022 the sklearn 0.24 GBC pickle **loaded without error in sklearn 1.1 and then
+raised on predict** (`AttributeError: 'GradientBoostingClassifier' object has no attribute
+'_loss'`), killing the cell before its manifest was written, so the analysis showed `MISSING`.
+Fix: a predict failure is recorded as `UNCOMPUTABLE` with `stage: predict` for every method of
+that model. Only v2021→v2022 was re-run; no other cell's code path changed. This is a recording
+fix, not a design change, and it is disclosed because the result it exposes ("loads silently,
+fails on use") is itself a finding the original harness would have hidden.
