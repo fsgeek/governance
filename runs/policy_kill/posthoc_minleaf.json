@@ -1,0 +1,67 @@
+{
+  "0.005": {
+    "1000": {
+      "n": 2,
+      "violating": 1,
+      "uses_fico": 2
+    },
+    "200": {
+      "n": 1,
+      "violating": 1,
+      "uses_fico": 1
+    },
+    "3000": {
+      "n": 1,
+      "violating": 0,
+      "uses_fico": 1
+    }
+  },
+  "0.01": {
+    "1000": {
+      "n": 14,
+      "violating": 5,
+      "uses_fico": 14
+    },
+    "200": {
+      "n": 7,
+      "violating": 5,
+      "uses_fico": 7
+    },
+    "3000": {
+      "n": 11,
+      "violating": 1,
+      "uses_fico": 11
+    }
+  },
+  "0.02": {
+    "1000": {
+      "n": 133,
+      "violating": 33,
+      "uses_fico": 133
+    },
+    "3000": {
+      "n": 125,
+      "violating": 19,
+      "uses_fico": 125
+    },
+    "200": {
+      "n": 96,
+      "violating": 29,
+      "uses_fico": 96
+    }
+  },
+  "all_trees_fico_users": {
+    "3000": {
+      "n": 375,
+      "violating": 28
+    },
+    "200": {
+      "n": 413,
+      "violating": 88
+    },
+    "1000": {
+      "n": 391,
+      "violating": 59
+    }
+  }
+}

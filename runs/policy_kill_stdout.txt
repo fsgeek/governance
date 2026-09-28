@@ -1,0 +1,140 @@
+{
+ "prereg": "see commit",
+ "n_envelope": 363073,
+ "default_rate": 0.00440131874306269,
+ "best_val_logloss": 0.026127555060928623,
+ "by_eps": {
+  "0.005": {
+   "n_R": 4,
+   "mean_pflip_R": 0.03386841821643694,
+   "n_ambiguous_R": 9794,
+   "variants": {
+    "decision_all5": {
+     "n_RP": 2,
+     "retention": 0.5,
+     "mean_pflip_RP": 0.017034500101787874,
+     "delta_mean_pflip": -0.016833918114649068,
+     "n_ambiguous_RP": 2845,
+     "ambiguous_jaccard": 0.29048396977741475,
+     "mean_abs_pflip_change": 0.025485887410636236
+    },
+    "decision_noMI": {
+     "n_RP": 2,
+     "retention": 0.5,
+     "mean_pflip_RP": 0.017034500101787874,
+     "delta_mean_pflip": -0.016833918114649068,
+     "n_ambiguous_RP": 2845,
+     "ambiguous_jaccard": 0.29048396977741475,
+     "mean_abs_pflip_change": 0.025485887410636236
+    },
+    "prob_all5": {
+     "n_RP": 1,
+     "retention": 0.25
+    },
+    "prob_noMI": {
+     "n_RP": 1,
+     "retention": 0.25
+    }
+   }
+  },
+  "0.01": {
+   "n_R": 32,
+   "mean_pflip_R": 0.06207189217670375,
+   "n_ambiguous_R": 32266,
+   "variants": {
+    "decision_all5": {
+     "n_RP": 17,
+     "retention": 0.53125,
+     "mean_pflip_RP": 0.03458251826722522,
+     "delta_mean_pflip": -0.02748937390947853,
+     "n_ambiguous_RP": 17426,
+     "ambiguous_jaccard": 0.5400731420070662,
+     "mean_abs_pflip_change": 0.031010080873811918
+    },
+    "decision_noMI": {
+     "n_RP": 21,
+     "retention": 0.65625,
+     "mean_pflip_RP": 0.04541735024209547,
+     "delta_mean_pflip": -0.01665454193460828,
+     "n_ambiguous_RP": 22384,
+     "ambiguous_jaccard": 0.6937333415979668,
+     "mean_abs_pflip_change": 0.019052972177410844
+    },
+    "prob_all5": {
+     "n_RP": 4,
+     "retention": 0.125,
+     "mean_pflip_RP": 0.03135365897469673,
+     "delta_mean_pflip": -0.03071823320200702,
+     "n_ambiguous_RP": 8909,
+     "ambiguous_jaccard": 0.2761110766751379,
+     "mean_abs_pflip_change": 0.043644544768702026
+    },
+    "prob_noMI": {
+     "n_RP": 4,
+     "retention": 0.125,
+     "mean_pflip_RP": 0.03135365897469673,
+     "delta_mean_pflip": -0.03071823320200702,
+     "n_ambiguous_RP": 8909,
+     "ambiguous_jaccard": 0.2761110766751379,
+     "mean_abs_pflip_change": 0.043644544768702026
+    }
+   }
+  },
+  "0.02": {
+   "n_R": 354,
+   "mean_pflip_R": 0.07496401228653046,
+   "n_ambiguous_R": 48438,
+   "variants": {
+    "decision_all5": {
+     "n_RP": 236,
+     "retention": 0.6666666666666666,
+     "mean_pflip_RP": 0.07147436944796873,
+     "delta_mean_pflip": -0.003489642838561735,
+     "n_ambiguous_RP": 43791,
+     "ambiguous_jaccard": 0.9040629258020563,
+     "mean_abs_pflip_change": 0.014395423665893836
+    },
+    "decision_noMI": {
+     "n_RP": 273,
+     "retention": 0.7711864406779662,
+     "mean_pflip_RP": 0.07110596900674379,
+     "delta_mean_pflip": -0.0038580432797866715,
+     "n_ambiguous_RP": 44237,
+     "ambiguous_jaccard": 0.9132705726908625,
+     "mean_abs_pflip_change": 0.010544997218904392
+    },
+    "prob_all5": {
+     "n_RP": 88,
+     "retention": 0.24858757062146894,
+     "mean_pflip_RP": 0.0665250436272626,
+     "delta_mean_pflip": -0.008438968659267868,
+     "n_ambiguous_RP": 33312,
+     "ambiguous_jaccard": 0.6877245138114704,
+     "mean_abs_pflip_change": 0.02694020407234036
+    },
+    "prob_noMI": {
+     "n_RP": 122,
+     "retention": 0.3446327683615819,
+     "mean_pflip_RP": 0.061925700937606694,
+     "delta_mean_pflip": -0.013038311348923769,
+     "n_ambiguous_RP": 33616,
+     "ambiguous_jaccard": 0.6940005780585491,
+     "mean_abs_pflip_change": 0.028835910962942496
+    }
+   }
+  }
+ },
+ "verdict": {
+  "verdict": "POLICY_MATTERS",
+  "detail": {
+   "n_RP": 21,
+   "retention": 0.65625,
+   "mean_pflip_RP": 0.04541735024209547,
+   "delta_mean_pflip": -0.01665454193460828,
+   "n_ambiguous_RP": 22384,
+   "ambiguous_jaccard": 0.6937333415979668,
+   "mean_abs_pflip_change": 0.019052972177410844
+  }
+ },
+ "secs": 424.0
+}

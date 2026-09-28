@@ -1,0 +1,102 @@
+{
+  "note": "POST-HOC random-subset null",
+  "by_eps": {
+    "0.005": {
+      "n_R": 4,
+      "decision_noMI": {
+        "n_RP": 2,
+        "jaccard_policy": 0.29048396977741475,
+        "null_jaccard_mean": 0.513484173984072,
+        "null_jaccard_p05_p50_p95": [
+          0.25924035123545025,
+          0.2946702062487237,
+          0.8403103941188482
+        ],
+        "frac_null_leq_policy": 0.35,
+        "violations_by_feature": {
+          "fico_range_low": 1,
+          "ltv": 1,
+          "dti": 0,
+          "cltv": 0
+        }
+      },
+      "prob_noMI": {
+        "n_RP": 1
+      }
+    },
+    "0.01": {
+      "n_R": 32,
+      "decision_noMI": {
+        "n_RP": 21,
+        "jaccard_policy": 0.6937333415979668,
+        "null_jaccard_mean": 0.9023500588855141,
+        "null_jaccard_p05_p50_p95": [
+          0.7770795884212484,
+          0.9233558544598028,
+          0.9769850616748279
+        ],
+        "frac_null_leq_policy": 0.001,
+        "violations_by_feature": {
+          "fico_range_low": 10,
+          "ltv": 1,
+          "dti": 0,
+          "cltv": 1
+        }
+      },
+      "prob_noMI": {
+        "n_RP": 4,
+        "jaccard_policy": 0.2761110766751379,
+        "null_jaccard_mean": 0.4501816463150065,
+        "null_jaccard_p05_p50_p95": [
+          0.1920551044443067,
+          0.44656914399057834,
+          0.68464637699126
+        ],
+        "frac_null_leq_policy": 0.118,
+        "violations_by_feature": {
+          "fico_range_low": 27,
+          "ltv": 3,
+          "dti": 1,
+          "cltv": 2
+        }
+      }
+    },
+    "0.02": {
+      "n_R": 354,
+      "decision_noMI": {
+        "n_RP": 273,
+        "jaccard_policy": 0.9132705726908625,
+        "null_jaccard_mean": 0.9688239192369626,
+        "null_jaccard_p05_p50_p95": [
+          0.9328574672777571,
+          0.9714067467690657,
+          0.9943236714975846
+        ],
+        "frac_null_leq_policy": 0.01,
+        "violations_by_feature": {
+          "fico_range_low": 78,
+          "ltv": 3,
+          "dti": 1,
+          "cltv": 4
+        }
+      },
+      "prob_noMI": {
+        "n_RP": 122,
+        "jaccard_policy": 0.6940005780585491,
+        "null_jaccard_mean": 0.8700219249349684,
+        "null_jaccard_p05_p50_p95": [
+          0.7987953672736282,
+          0.8713922953053388,
+          0.930545233081465
+        ],
+        "frac_null_leq_policy": 0.0,
+        "violations_by_feature": {
+          "fico_range_low": 224,
+          "ltv": 23,
+          "dti": 21,
+          "cltv": 19
+        }
+      }
+    }
+  }
+}
