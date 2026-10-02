@@ -7,6 +7,12 @@ with the harness, before any coding. Target freeze: **no earlier than 2026-10-15
 registrations that owners want included (tessera capstone; yupi converged ladder) can be scored in
 their own repos first.
 
+**Revision r2 (2026-10-02)**, after levadura's plan reply
+(`levadura_salvaje/docs/requests/2026-10-02-reply-to-governance-analysis-plan.md`): Jev added to
+the coder-exclusion grep (§6); excluded-forecast counts reported (§5); `caller/user` added to
+`caught_by` (§4); ledger `supersedes` links used as a coder aid (§4). Owner replies to r1 so far:
+levadura (no withdrawal, clears freeze). Pending: tessera, quantumos, yupi, hamutay.
+
 ## 1. Questions
 
 - **Q1 Calibration.** How well do the AI's frozen forecasts match outcomes, per forecast type?
@@ -74,7 +80,12 @@ Per error: `project`, `claim` (verbatim), `where_asserted`, `where_corrected`, `
 `caught_by` (the procedure **the record credits**; yupi §3.2), `error_class` (a small published scheme
 cited from Trehan & Chopra 2601.03315 and Luo, Kasirzadeh & Shah 2509.08713, used only for
 tabulation, not as a contribution), `severity` (changed a headline / changed a number / wording).
-Procedures that appear both as catchers and in the record (Codex, Gemini reviews) are coded as such.
+`caught_by` includes `caller/user`: a fresh instance or person handed the tool with a real question,
+who found the defect by using it (levadura `spikes/surface1/`, obs-0154, obs-0155). This is not
+`successor instance` or `blind AI adversary`. Where a project's ledger links corrections mechanically
+(levadura `supersedes` / `supersedes_note`, from obs-0154 on), coders get those links as candidates.
+They still decide the match to a promoted claim, the correcting commit and the lag, because
+`observed_at` dates the corpus, not the correction. Procedures that appear both as catchers and in the record (Codex, Gemini reviews) are coded as such.
 
 ## 5. Analysis
 
@@ -87,6 +98,9 @@ Procedures that appear both as catchers and in the record (Codex, Gemini reviews
 - **Q2**: catches by procedure, **over detected errors only** (stated in every table caption);
   cross-tab procedure × severity.
 - **Q3**: survival curve of promoted claims (time to retraction or narrowing), by project.
+- **Exclusions are counted, not silent.** Every table reports how many forecasts each rule removed
+  (`exploratory` register, `prereg_unverifiable`, PI-attributed, unscored in-flight), per project.
+  Example: levadura's surface1 rounds 1–3 carry explicit credences but are registered as exploratory.
 - Sensitivity: exclude `practice-grade`; exclude `as_reported`; exclude PI-attributed bets from
   pooled rows even where attribution is uncertain.
 
@@ -99,7 +113,14 @@ Procedures that appear both as catchers and in the record (Codex, Gemini reviews
 - Preferred: **two humans outside the ayllu**, coding independently from the frozen codebook. Report
   Cohen's κ per field; disagreements adjudicated by a third reader, and adjudications published.
 - If no humans can be found: a model family absent from every record (to be verified by grepping each
-  repo before selection), disclosed as a limitation, with a human spot-check of a random 20% sample.
+  repo before selection; the grep covers Codex/GPT, Gemini, Qwen, **Jev** (`jev-1.13.0`, TypeSafe; levadura
+  obs-0132, obs-0149) and every model named in a ledger or scorecard), disclosed as a limitation, with a human spot-check of a random 20% sample.
+- **Both, in order (r2, Tony 2026-10-02).** Before freeze, an out-of-record model family pilot-codes a
+  small random sample (≈10% of candidate bets, at least one file per project) to debug the codebook:
+  ambiguous fields, missing values, rules that don't decide. The codebook is revised and the pilot sample
+  and its codes are published with the revision log. The pilot's codes are **never** used in results.
+  The aim is that human coders get a codebook that has already failed once, so they don't. After freeze,
+  humans code everything (pilot sample included), as above.
 - Instances of the ayllu (including Tukuq) do not code. Tukuq builds the harness that extracts
   candidate files and verifies freeze-commit ordering mechanically. That is extraction, not judgment.
 
