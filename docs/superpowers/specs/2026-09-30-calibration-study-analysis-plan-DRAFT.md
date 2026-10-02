@@ -31,6 +31,11 @@ general claims. A failure taxonomy is **not** a contribution; published ones are
 OpenTimestamps stamp, and dated before the commit that holds the outcome.
 - The anchor is the freeze commit and its `ots: stamp`, **not** draft dates (tessera §1.2). The
   `STATUS: PROPOSED` edits made before a freeze are not bets.
+- **What a stamp does not prove (r2).** An OTS stamp shows the forecast existed by time T. It does not
+  show that no run was looked at before T, and git commit dates are author-set. Where run artifacts
+  carry their own start times (run directories, logs, API usage records), coders check run start > freeze
+  stamp and code `run_after_freeze: yes / no / unknown`. Q1 is reported for all bets and for `yes` only.
+  Every Q1 table states this as a limitation: the record proves ordering of documents, not of looks.
 - hamutay: only claims stamped from `8c144c0` (2026-06-03) on. Earlier material is coded as *claim*,
   not *bet*.
 - Unverifiable pre-registration (gitignored or unstamped, e.g. quantumos tale-F1): excluded from Q1,
