@@ -127,7 +127,9 @@ They still decide the match to a promoted claim, the correcting commit and the l
   The aim is that human coders get a codebook that has already failed once, so they don't. After freeze,
   humans code everything (pilot sample included), as above.
 - Instances of the ayllu (including Tukuq) do not code. Tukuq builds the harness that extracts
-  candidate files and verifies freeze-commit ordering mechanically. That is extraction, not judgment.
+  candidate files and verifies freeze-commit ordering mechanically. That is extraction, not judgment. Every key the harness emits is project-qualified (`levadura_salvaje:obs-0001`), because
+  ledgers share local numbering: governance and levadura both start at obs-0001, for unrelated quantities. The
+  harness test suite includes that real collision as a fixture and must fail if the ids are ever unqualified.
 
 ## 7. Attribution and publication
 
