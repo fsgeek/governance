@@ -106,6 +106,34 @@ who found the defect by using it (levadura `spikes/surface1/`, obs-0154, obs-015
 They still decide the match to a promoted claim, the correcting commit and the lag, because
 `observed_at` dates the corpus, not the correction. Procedures that appear both as catchers and in the record (Codex, Gemini reviews) are coded as such.
 
+## 4a. What the layout inventory showed (r2, 2026-10-07; mechanical, no outcomes read)
+
+Read-only scouts mapped each repo's forecast layout. This changes what Q1 can claim:
+- **Explicit credences exist in three projects only:** tessera (`p ≈` in every `PREDICTIONS.md`, priced over
+  violation/timeout/termination), governance (a minority of pre-regs), and levadura (from 09-25; its
+  probability-bearing surface1/resident files call themselves exploratory and are excluded, but rule-currency
+  v1-v4 are not). quantumos, yupi and hamutay state **no probabilities**: their bets are pass/fail criteria,
+  thresholds, bands and named verdicts. **So Q1-probability (Brier, reliability) is a three-project analysis,
+  dominated by tessera.** That is the N≥3 floor, not above it, and every Q1-probability table says so.
+- **Pass/fail hit rate is not calibration.** Without a stated credence there is no forecast to calibrate. It
+  measures how often frozen expectations held. It's reported, but never called calibration, and it's never
+  compared across projects as if it were.
+- **hamutay dominates by volume** (156 eligible pre-regs plus a 557-row hypothesis ledger that is *derived* from
+  them; count each bet once, from the pre-reg). Pooled rows are cluster-weighted by project; the pilot sample
+  is stratified by project.
+- **Freeze conventions differ, so the harness has one adapter per project:** governance and levadura
+  (first-add commit), tessera (the author's GPG-signed commit; header STATUS lines go stale), yupi (the
+  enacting commit; every commit is stamped, so a stamp doesn't mark a freeze; verdicts cite the *stamp* commit),
+  quantumos (approval commit for hedged-placement; a file first added inside an `ots:` commit is unstamped by
+  hook design, coded `unstamped_hook_gap`, not as avoidance), hamutay (`--diff-filter=A` without `--follow`).
+- **Mechanical exclusions the harness will apply** (each counted): bet and outcome in the same commit
+  (tessera P9/P10; hamutay des_wall_clock_boundary, working_set_accounting_gate, event_loop_viability, the deepseek
+  audit), files edited after freeze (flagged, not excluded; the frozen version is coded), unscored registrations
+  (levadura resident-callers and resident-birth; tessera capstone; yupi three-arm).
+- **A summary that contradicts its record:** yupi's consent reply says D10 states credences; the frozen D10 file
+  says "no precommitted sign". The frozen file governs; D10 is pass/fail. Nothing written after a freeze adds a
+  credence to it.
+
 ## 5. Analysis
 
 - **Q1**, by forecast type, never pooled across types:
