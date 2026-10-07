@@ -66,6 +66,20 @@ coding is complete, then used as a cross-check (disagreements are data).
 | `observed_vs_descended` | tessera capstone cells: score against observed only |
 | `register` | `load-bearing` / `practice-grade` (quantumos qsim field-battery era, per Tony 2026-07-09) / `exploratory` (not a bet) |
 
+**tessera provenance: on-page markers to categories** (r2; tessera consent reply §3, `formal/spike/first-link/DECISION.md` §"Provenance labels"):
+
+| Marker on the page | Category | Effect on coding |
+|---|---|---|
+| `RULED (author)`, `CONFIRMED` | author ruling | PI's decision; never an AI bet |
+| `ADOPTED (author)` | author ruling (adopted recommendation) | binding, but the reasoning is drafted; not itself a bet |
+| `RECOMMENDED`, `PROPOSED`, unlabelled draft prose | recommendation / draft | carries no authority; not a bet, not a ruling |
+| `*[WITHDRAWN <date>, <source>. The draft read: "..."]*` | withdrawn | the quoted text is never coded as a live bet; the withdrawal is a candidate detected error |
+| status phrases "clerk-drafted", "clerk-compiled", owner-instance dispositions | clerk disposition | the owner instance's, contestable by the author; not a bet |
+
+The probabilities in every tessera `PREDICTIONS.md` are the AI collaborator's bets, frozen by the author's
+signed commit (`bettor: AI`). Header `STATUS:` lines go stale after a freeze. Freeze state comes from git
+(the signed commit), never from the header.
+
 **Rules owners asked for, stated as coding rules:**
 - Never convert a `pass_fail` criterion into a probability (yupi (b)).
 - A timeout priced at 0.10 that occurs is a **hit at 0.10** (tessera §3).
