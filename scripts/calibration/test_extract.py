@@ -63,6 +63,20 @@ def test_file_added_inside_ots_commit_is_hook_gap_not_avoidance(repo):
     assert not c.stamped and c.stamp_note == "unstamped_hook_gap"
 
 
+def test_bet_first_landing_in_a_merge_is_unstamped_merge(repo):
+    commit(repo, "base", {"README": "x"})
+    sh(repo, "checkout", "-q", "-b", "side")
+    commit(repo, "side", {"other.txt": "y"})
+    sh(repo, "checkout", "-q", "-")
+    commit(repo, "main", {"main.txt": "z"})
+    sh(repo, "merge", "-q", "--no-ff", "--no-commit", "side")
+    (repo / "prereg").mkdir()
+    (repo / "prereg" / "a.md").write_text("bet")
+    sh(repo, "add", "prereg/a.md")
+    sh(repo, "commit", "-q", "-m", "merge side, with a bet")
+    assert only(repo).stamp_note == "unstamped_merge"
+
+
 def test_edit_after_freeze_flagged(repo):
     a = commit(repo, "prereg A", {"prereg/a.md": "bet"})
     stamp(repo, a)

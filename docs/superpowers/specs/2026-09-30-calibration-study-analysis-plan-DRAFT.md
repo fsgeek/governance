@@ -49,8 +49,18 @@ scratch and diagnostic directories, `READ-*.md`, `docs/travelog.md` (the author'
 quantumos surveillance files; all session transcripts (no owner offered them; tessera offers named
 excerpts of its own words only, with the author's separate consent for his).
 
+**Excluded by speaker, not by path (r2, hamutay's §8 check, plaza seq 72).** Residents' words are quoted
+verbatim outside `community/` and `deploy/plaza/`, for example in specs, `docs/khipu_*.md` and requests. Any
+verbatim words of a resident (door:elder, door:fable, door:heartbeat, door:qwen, and any door enrolled later,
+including levadura's Haiku resident Marker if the fourth question assents) are redacted wherever they occur in
+material given to coders. The surrounding claim is coded without them. Tony has said the community is not an
+experiment, and its members' words aren't study data unless the ayllu decides otherwise. The same rule covers
+levadura's residents (the Haiku and Luna residents), and plaza rows, whoever wrote them.
+
 **Quarantined:** hamutay `docs/retraction-taxonomy-20260930/` is withheld from coders until their
-coding is complete, then used as a cross-check (disagreements are data).
+coding is complete, then used as a cross-check (disagreements are data). **The ayllu cairn is embargoed for
+coders until coding is done:** stones describe the records' results, e.g. "The Record Was the Work" (hamutay's
+retraction survey) and "Close Is a Result" (governance's own calibration table).
 
 ## 3. Codebook (per bet)
 
@@ -130,6 +140,13 @@ Read-only scouts mapped each repo's forecast layout. This changes what Q1 can cl
   (tessera P9/P10; hamutay des_wall_clock_boundary, working_set_accounting_gate, event_loop_viability, the deepseek
   audit), files edited after freeze (flagged, not excluded; the frozen version is coded), unscored registrations
   (levadura resident-callers and resident-birth; tessera capstone; yupi three-arm).
+- **Stamp gaps by hook design** (hamutay custodian, plaza seq 77): before 2026-10-09/10, merge commits and
+  commits made in a linked worktree went unstamped in hamutay and governance (and possibly other repos with the
+  same hook). The harness codes these `unstamped_merge` / `unstamped`, never as avoidance. A bet that rests on such
+  a commit has its order resting on git dates, and is reported in the `stamped` sensitivity split. Nothing is
+  backfilled: a stamp made today proves today.
+- **Measurements that state no prediction are not bets** (e.g. hamutay `experiments/turboquant/qwen35-viability`,
+  10-08).
 - **A summary that contradicts its record:** yupi's consent reply says D10 states credences; the frozen D10 file
   says "no precommitted sign". The frozen file governs; D10 is pass/fail. Nothing written after a freeze adds a
   credence to it.

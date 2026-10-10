@@ -62,6 +62,7 @@ class Commit:
     sha: str
     date: str
     signed: str
+    parents: str
     subject: str
 
 
@@ -105,9 +106,9 @@ def list_candidates(project: str, root: Path) -> list[str]:
 
 def commits_for(root: Path, path: str, signed: bool = False) -> list[Commit]:
     """Oldest first. No --follow: copy detection reports wrong add commits (hamutay scout)."""
-    fmt = "%H%x1f%aI%x1f" + ("%G?" if signed else "-") + "%x1f%s"
+    fmt = "%H%x1f%aI%x1f" + ("%G?" if signed else "-") + "%x1f%P%x1f%s"
     rows = git(root, "log", "--reverse", f"--format={fmt}", "--", path).splitlines()
-    return [Commit(*r.split("\x1f", 3)) for r in rows if r]
+    return [Commit(*r.split("\x1f", 4)) for r in rows if r]
 
 
 def stamp_index(root: Path) -> set[str]:
@@ -148,6 +149,7 @@ def extract(project: str, root: Path) -> list[Candidate]:
         stamped = is_stamped(stamps, freeze.sha)
         note = "stamped" if stamped else (
             "unstamped_hook_gap" if freeze.subject.startswith("ots:") else
+            "unstamped_merge" if len(freeze.parents.split()) > 1 else
             "file_stamp_only" if f"{path}.ots" in tracked else "unstamped")
         later = [c.sha[:7] for c in cs[cs.index(freeze) + 1:]]   # git order, not date strings (mixed timezones)
         if later:
