@@ -48,10 +48,13 @@ unset GIT_AUTHOR_DATE GIT_COMMITTER_DATE
 
 # Plumbing, not `git commit`: when run from post-merge, git's merge state is
 # still present and `git commit` would make the stamp a second merge commit
-# (two parents). commit-tree takes exactly one parent, HEAD, and honors
-# commit.gpgSign. It runs no hooks, so it can't recurse.
+# (two parents). commit-tree takes exactly one parent, HEAD, and runs no hooks.
+# It does NOT honor commit.gpgSign (verified 2026-10-10: 0edcac1 came out
+# unsigned), so pass -S explicitly when the repo signs.
 git -C "$GIT_ROOT" add "$TIMESTAMP_DIR/"
 TREE=$(git -C "$GIT_ROOT" write-tree)
-STAMP=$(git -C "$GIT_ROOT" commit-tree "$TREE" -p "$HASH" -m "ots: stamp $HASH")
+SIGN=()
+[ "$(git -C "$GIT_ROOT" config --bool commit.gpgsign)" = "true" ] && SIGN=(-S)
+STAMP=$(git -C "$GIT_ROOT" commit-tree "${SIGN[@]}" "$TREE" -p "$HASH" -m "ots: stamp $HASH")
 git -C "$GIT_ROOT" update-ref -m "ots: stamp $HASH" HEAD "$STAMP" "$HASH"
 echo "[ots] stamp ${STAMP:0:7} for ${HASH:0:7}"
