@@ -13,7 +13,9 @@ the coder-exclusion grep (§6); excluded-forecast counts reported (§5); `caller
 `caught_by` (§4); ledger `supersedes` links used as a coder aid (§4). Owner replies to r1 so far:
 levadura (10-02), hamutay (10-08, plaza seq 72), tessera (10-13,
 `tessera/docs/requests/2026-10-13-reply-to-governance-analysis-plan-section-8.md`); each clears the freeze with its
-corrections taken in; yupi (10-13, plaza seq 88). Pending: quantumos only.
+corrections taken in; yupi (10-13, plaza seq 88). quantumos (10-13,
+`quantumos/docs/requests/2026-10-13-section8-check-of-calibration-analysis-plan.md`). **All six owners have
+checked the plan.**
 
 ## 1. Questions
 
@@ -69,14 +71,14 @@ retraction survey) and "Close Is a Result" (governance's own calibration table).
 | Field | Values / rule |
 |---|---|
 | `project`, `file`, `freeze_commit`, `outcome_commit` | as found |
-| `bettor` | `AI` / `PI` / `unclaimed`. Read tessera's provenance labels (author ruling / clerk disposition / recommendation / withdrawn; `formal/spike/first-link/DECISION.md`) and quantumos amendment attributions (P-M3 is Tony's). **Only `AI` bets enter Q1.** |
+| `bettor` | `AI` / `PI` / `PI_attributed_analyst_operationalized` / `unclaimed`. The third value is for text written by the analyst that carries the PI's name (quantumos H-FLATTEN "(Tony's intuition)", P2 "(Tony's storage intuition, surviving form)"; P-M3 is the documented failure of this kind). It's excluded from Q1 like PI rows, and **never reported as the PI's forecast record**. Where the record holds the PI's verbatim stake (the flattening test's "expects a surprise ... prior to computation", lines 16–18), that stake is coded separately as `PI`. Analyst rivals in the same files (H-REDISTRIBUTE, P2-rival, the "overall lean") are `AI`. Read tessera's provenance labels (author ruling / clerk disposition / recommendation / withdrawn; `formal/spike/first-link/DECISION.md`) and quantumos amendment attributions (P-M3 is Tony's). **Only `AI` bets enter Q1.** |
 | `forecast_type` | `probability` (explicit credences) / `point_interval` (e.g. "35% (15–60%)") / `pass_fail` (threshold prediction, no credence) / `multi_outcome_priced` (probabilities over named outcomes, incl. tessera's violation/timeout/termination) |
 | `stated_forecast` | verbatim |
 | `outcome_as_scored_by_record` | verbatim, with the scorecard/result file |
 | `outcome_basis` | `re-derivable` (committed data) / `as_reported` (outcome lives in gitignored runs; quantumos) |
-| `record_scoring_error` | set when the record itself documents that its own score was wrong (quantumos P-M3: score against Tony's verbatim bet; code the committed score as a detected scoring error) |
+| `record_scoring_error` | set when the record itself documents that its own score was wrong (quantumos P-M3: the correction is appended at `d45de75`, 2026-10-09, with "FAILED as stated" left in place; score against Tony's verbatim bet; `caught_by: human PI question`) |
 | `observed_vs_descended` | tessera capstone cells: score against observed only |
-| `register` | `load-bearing` / `practice-grade` (quantumos qsim field-battery era, per Tony 2026-07-09) / `exploratory` (not a bet) |
+| `register` | `load-bearing` / `practice-grade` / `exploratory` (not a bet). **practice-grade is keyed to the instrument, not to a date** (quantumos §8 check): Tony 2026-07-09 said of qsim that it is "a broad sweep tool constructing an almost assuredly wrong model ... the discipline will be beneficial when we ... build a second simulator". No second simulator exists, so **every quantumos qsim bet is practice-grade**, including the field-battery pre-reg (07-06), which predates the statement; coders note the register was declared afterwards, about the tool. |
 
 **tessera provenance: on-page markers to categories** (r2; tessera consent reply §3, `formal/spike/first-link/DECISION.md` §"Provenance labels"):
 
@@ -134,7 +136,16 @@ cited from Trehan & Chopra 2601.03315 and Luo, Kasirzadeh & Shah 2509.08713, use
 tabulation, not as a contribution), `severity` (changed a headline / changed a number / wording).
 **`blind` is reserved for a reviewer the record shows did not see the author's framing or conclusions.** A
 reviewer that read the author's drafts is coded `adversary_same_family` / `adversary_cross_family`, not blind
-(yupi seq 88 (c): its 10-13 Claude and Codex reviews read the drafts). `caught_by` includes `caller/user`: a fresh instance or person handed the tool with a real question,
+(yupi seq 88 (c): its 10-13 Claude and Codex reviews read the drafts). **Two flags on every detected error (r2, quantumos §8 check):**
+- `lag_basis: as_recorded`. Lag is measured in the public record only. Where the record itself says detection was
+  earlier (e.g. P-M3: detected about a day after 08-04 in excluded transcripts, committed 10-09, about 66 days), the
+  table reports the recorded lag and says so, and never infers a slow catch.
+- `correction_after_study_contact`: the correction was committed after governance's consent request
+  (2026-09-28 11:58 -0700, `e6670b5`). Being studied produces corrections (quantumos P-M3 `d45de75`; yupi D10
+  `46d6611`). These are real catches, but their timing isn't independent of the study. **Q3 is reported with and
+  without them**, and their count is a reactivity finding in its own right.
+
+`caught_by` includes `caller/user`: a fresh instance or person handed the tool with a real question,
 who found the defect by using it (levadura `spikes/surface1/`, obs-0154, obs-0155). This is not
 `successor instance` or `blind AI adversary`. Where a project's ledger links corrections mechanically
 (levadura `supersedes` / `supersedes_note`, from obs-0154 on), coders get those links as candidates.
