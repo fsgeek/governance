@@ -13,7 +13,7 @@ the coder-exclusion grep (§6); excluded-forecast counts reported (§5); `caller
 `caught_by` (§4); ledger `supersedes` links used as a coder aid (§4). Owner replies to r1 so far:
 levadura (10-02), hamutay (10-08, plaza seq 72), tessera (10-13,
 `tessera/docs/requests/2026-10-13-reply-to-governance-analysis-plan-section-8.md`); each clears the freeze with its
-corrections taken in. Pending: yupi, quantumos.
+corrections taken in; yupi (10-13, plaza seq 88). Pending: quantumos only.
 
 ## 1. Questions
 
@@ -110,6 +110,11 @@ signed commit (`bettor: AI`). Header `STATUS:` lines go stale after a freeze. Fr
   registration, if one exists. Any other solver result (e.g. ProVerif "cannot be proved") takes the record's own
   classification, never a default mapping.
 - An exploratory reading later revised is a **correction**, not a failed prediction (yupi (a)).
+- **A verdict that scores a prediction clause by clause makes each separately scored clause its own pass/fail
+  bet** (yupi seq 88 (a); e.g. converged-ladder C2: band PASS, "no more than" FAIL, labelled AMBIGUOUS overall).
+  The overall label is recorded, not scored.
+- A pre-registration that fixes *readings* of a measurement, forecasts no outcome, and was written with its
+  comparison values already known is a measurement, not a bet (yupi `docs/relay-lossmask-prereg-v0.1.md`, 10-13).
 - A corrected claim that appears twice in a note (wrong, marked; corrected) is **one error, caught**
   (yupi §3.1).
 - Early levadura "thesis" framing is not coded as thesis-falsified events; the predictions were about
@@ -122,10 +127,14 @@ signed commit (`bettor: AI`). Header `STATUS:` lines go stale after a freeze. Fr
 ## 4. Detected-error records (for Q2 and Q3)
 
 Per error: `project`, `claim` (verbatim), `where_asserted`, `where_corrected`, `lag` (commits and days),
-`caught_by` (the procedure **the record credits**; yupi §3.2), `error_class` (a small published scheme
+`caught_by` (the procedure **the record credits**; yupi §3.2), `pi_prompted` (`yes` / `no` / `unknown`: the record
+shows the procedure ran because the PI asked, e.g. yupi's 10-13 re-audit after "How did the re-check come out?";
+`caught_by` still follows the record, and Q2 is reported with and without PI-prompted catches), `error_class` (a small published scheme
 cited from Trehan & Chopra 2601.03315 and Luo, Kasirzadeh & Shah 2509.08713, used only for
 tabulation, not as a contribution), `severity` (changed a headline / changed a number / wording).
-`caught_by` includes `caller/user`: a fresh instance or person handed the tool with a real question,
+**`blind` is reserved for a reviewer the record shows did not see the author's framing or conclusions.** A
+reviewer that read the author's drafts is coded `adversary_same_family` / `adversary_cross_family`, not blind
+(yupi seq 88 (c): its 10-13 Claude and Codex reviews read the drafts). `caught_by` includes `caller/user`: a fresh instance or person handed the tool with a real question,
 who found the defect by using it (levadura `spikes/surface1/`, obs-0154, obs-0155). This is not
 `successor instance` or `blind AI adversary`. Where a project's ledger links corrections mechanically
 (levadura `supersedes` / `supersedes_note`, from obs-0154 on), coders get those links as candidates.
@@ -214,7 +223,10 @@ Read-only scouts mapped each repo's forecast layout. This changes what Q1 can cl
   first, so no record text leaves Tony's machines. Limits, stated in the pilot report: a 14B model with a 16K context.
   Files longer than the context (tessera capstone; long hamutay pre-regs) are coded in sections or left out of the
   pilot sample, and the count is reported. A weak coder is acceptable for the pilot's purpose: its job is to break
-  the codebook, not to produce results.
+  the codebook, not to produce results. **Sampled, not temperature 0** (arbiter seq 86: temperature-0 triplicates
+  aren't measurements). Each pilot item is coded 5 times at temperature 0.7. A field whose codes disagree across
+  samples is a codebook ambiguity, the main thing the pilot is looking for, and is reported per field. The runner
+  counts responses that come back as tool-call attempts with no text, so they can't be dropped silently.
 - **Both, in order (r2, Tony 2026-10-02).** Before freeze, an out-of-record model family pilot-codes a
   small random sample (≈10% of candidate bets, at least one file per project) to debug the codebook:
   ambiguous fields, missing values, rules that don't decide. The codebook is revised and the pilot sample
