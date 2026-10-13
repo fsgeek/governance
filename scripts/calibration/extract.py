@@ -34,7 +34,7 @@ EXCLUDE = {
 INCLUDE = {
     "governance": ["*pre-reg*.md", "*prereg*.md", "*preregistration*.md", "*pre-registration*.md"],
     "levadura_salvaje": ["predictions/*.md"],
-    "tessera": ["docs/phase-0-prereg.md", "formal/*PREDICTIONS*.md", "formal/*/PROBE.md"],
+    "tessera": ["docs/phase-0-prereg.md", "formal/*PREDICTIONS*.md", "formal/*/PROBE.md", "formal/*PREREG*.md"],
     "quantumos": ["docs/superpowers/specs/*prereg*.md", "docs/superpowers/specs/2026-07-10-s1-run-note.md",
                   "docs/superpowers/specs/2026-07-23-pool-retry-sweep-note.md"],
     "yupi": ["docs/*prereg*.md", "docs/*-freeze-*.md", "docs/held-out-laws-proposal*.md"],
@@ -133,7 +133,7 @@ def extract(project: str, root: Path) -> list[Candidate]:
     cutoff = resolve(root, HAMUTAY_CUTOFF) if project == "hamutay" else None
     out = []
     for path in list_candidates(project, root):
-        cs = commits_for(root, path, signed=(project == "tessera"))
+        cs = commits_for(root, path)
         if not cs:
             continue
         flags, rule, freeze = [], "first_add", cs[0]
@@ -141,9 +141,6 @@ def extract(project: str, root: Path) -> list[Candidate]:
             want = resolve(root, FREEZE_OVERRIDE[(project, path)])
             hit = [c for c in cs if c.sha == want]
             freeze, rule = (hit[0], "override") if hit else (freeze, "override_missing")
-        elif project == "tessera":
-            signed = [c for c in cs if c.signed in ("G", "U", "X", "Y", "E")]
-            freeze, rule = (signed[0], "first_signed") if signed else (cs[0], "no_signed_commit")
         if cutoff and not is_ancestor(root, cutoff, freeze.sha):
             flags.append("before_cutoff_claim_not_bet")
         stamped = is_stamped(stamps, freeze.sha)
@@ -157,6 +154,16 @@ def extract(project: str, root: Path) -> list[Candidate]:
         out.append(Candidate(qualify(project, path), project, path, freeze.sha, freeze.date, rule,
                              stamped, note, later, flags))
     return out
+
+
+def bet_freeze(root: Path, path: str, anchor: str) -> str | None:
+    """Freeze is per bet, not per file (tessera §8 reply, 2026-10-13): the first commit whose version of `path`
+    contains `anchor` (the bet's id line, verbatim). Post-freeze addenda register new bets in an already-frozen
+    file; a file-level freeze would date them before they existed. A coder supplies the anchor."""
+    if not anchor.strip():
+        raise ValueError("empty anchor: a bet needs its id line verbatim")   # git aborts on -S ''
+    rows = git(root, "log", "--reverse", "--format=%H", "-S", anchor, "--", path).split()
+    return rows[0] if rows else None
 
 
 def check_order(root: Path, bet: Candidate, outcome_path: str) -> str:

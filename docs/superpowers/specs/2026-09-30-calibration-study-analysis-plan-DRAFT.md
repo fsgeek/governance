@@ -11,7 +11,9 @@ their own repos first.
 (`levadura_salvaje/docs/requests/2026-10-02-reply-to-governance-analysis-plan.md`): Jev added to
 the coder-exclusion grep (§6); excluded-forecast counts reported (§5); `caller/user` added to
 `caught_by` (§4); ledger `supersedes` links used as a coder aid (§4). Owner replies to r1 so far:
-levadura (no withdrawal, clears freeze). Pending: tessera, quantumos, yupi, hamutay.
+levadura (10-02), hamutay (10-08, plaza seq 72), tessera (10-13,
+`tessera/docs/requests/2026-10-13-reply-to-governance-analysis-plan-section-8.md`); each clears the freeze with its
+corrections taken in. Pending: yupi, quantumos.
 
 ## 1. Questions
 
@@ -85,6 +87,15 @@ retraction survey) and "Close Is a Result" (governance's own calibration table).
 | `RECOMMENDED`, `PROPOSED`, unlabelled draft prose | recommendation / draft | carries no authority; not a bet, not a ruling |
 | `*[WITHDRAWN <date>, <source>. The draft read: "..."]*` | withdrawn | the quoted text is never coded as a live bet; the withdrawal is a candidate detected error |
 | status phrases "clerk-drafted", "clerk-compiled", owner-instance dispositions | clerk disposition | the owner instance's, contestable by the author; not a bet |
+| `AUTHOR DECISION` (from 2026-10-12) | author ruling | PI's decision; never an AI bet |
+| `AUTHOR ADOPTED` (from 2026-10-13) | author ruling (adopted recommendation) | as `ADOPTED (author)` |
+| `OWNER DECISION` (from 2026-10-12) | **owner decision (fifth category)** | made by the AI owner instance under the author's 2026-09-17 delegation; load-bearing, but neither a PI ruling nor a clerk reading; not a bet. **The author's signature on an amendment that contains OWNER DECISIONs means "read, no objection" (A9 header). It never converts them into author rulings.** |
+
+Change tags `CLARIFY`, `BROADEN`, `NARROW-CLAIM`, `NARROW-MODEL`, `CORRECT` (from 2026-10-13) classify a change, not
+who made it. They're candidate evidence for Q3 (narrowed or corrected), never bettor or authority markers.
+
+tessera's phase-0 H0–H3 (`docs/phase-0-prereg.md:121-248`) are the **author's** hypotheses: `bettor: PI`, pass/fail.
+They're outside Q1 but counted in the exclusion tallies.
 
 The probabilities in every tessera `PREDICTIONS.md` are the AI collaborator's bets, frozen by the author's
 signed commit (`bettor: AI`). Header `STATUS:` lines go stale after a freeze. Freeze state comes from git
@@ -92,7 +103,12 @@ signed commit (`bettor: AI`). Header `STATUS:` lines go stale after a freeze. Fr
 
 **Rules owners asked for, stated as coding rules:**
 - Never convert a `pass_fail` criterion into a probability (yupi (b)).
-- A timeout priced at 0.10 that occurs is a **hit at 0.10** (tessera §3).
+- A timeout priced at 0.10 that occurs is a **hit at 0.10** (tessera §3): in a multi-class Brier score, the
+  realized class received 0.10.
+- **Interrupted runs are `not_run`, never timeouts and never imputed** (tessera §8 check): host crashes, memory kills,
+  `rc=NOT-RUN`, `*.interrupted-by-host-crash.out`. The scored outcome is the completed re-run under the same
+  registration, if one exists. Any other solver result (e.g. ProVerif "cannot be proved") takes the record's own
+  classification, never a default mapping.
 - An exploratory reading later revised is a **correction**, not a failed prediction (yupi (a)).
 - A corrected claim that appears twice in a note (wrong, marked; corrected) is **one error, caught**
   (yupi §3.1).
@@ -131,15 +147,23 @@ Read-only scouts mapped each repo's forecast layout. This changes what Q1 can cl
 - **hamutay dominates by volume** (156 eligible pre-regs plus a 557-row hypothesis ledger that is *derived* from
   them; count each bet once, from the pre-reg). Pooled rows are cluster-weighted by project; the pilot sample
   is stratified by project.
-- **Freeze conventions differ, so the harness has one adapter per project:** governance and levadura
-  (first-add commit), tessera (the author's GPG-signed commit; header STATUS lines go stale), yupi (the
+- **Freeze is per bet, not per file** (tessera's §8 check): a bet's `freeze_commit` is the first commit whose
+  version of the file contains that bet's id line (`bet_freeze()`, a pickaxe search). Post-freeze addenda
+  register new bets in an already-frozen file (tessera s-p2, s-p7 and s-standing at `504e662`, frozen at `5188e7a`).
+  A file-level freeze would date them before they existed, and "code the frozen version" would drop them.
+  Verified on s-p2: body `5188e7a`, addendum `504e662`. The file-level freeze below is the default for a bet
+  with no later addendum.
+- **Freeze conventions differ, so the harness has one adapter per project:** governance, levadura and tessera
+  (first-add commit; every tessera commit is author-signed, so a signature selects nothing; header STATUS lines go stale), yupi (the
   enacting commit; every commit is stamped, so a stamp doesn't mark a freeze; verdicts cite the *stamp* commit),
   quantumos (approval commit for hedged-placement; a file first added inside an `ots:` commit is unstamped by
   hook design, coded `unstamped_hook_gap`, not as avoidance), hamutay (`--diff-filter=A` without `--follow`).
 - **Mechanical exclusions the harness will apply** (each counted): bet and outcome in the same commit
   (tessera P9/P10; hamutay des_wall_clock_boundary, working_set_accounting_gate, event_loop_viability, the deepseek
   audit), files edited after freeze (flagged, not excluded; the frozen version is coded), unscored registrations
-  (levadura resident-callers and resident-birth; tessera capstone; yupi three-arm).
+  (levadura resident-callers and resident-birth; yupi three-arm). The tessera capstone is now scored: ladder 3 in
+  `formal/suite/capstone/RESULTS.md`; the slice batch is a *separate* registration (`SLICE-PREREG-2026-10-09.md`,
+  frozen at `d379062`) scored in its own section. Each is scored against its own freeze, observed cells only.
 - **Stamp gaps by hook design** (hamutay custodian, plaza seq 77): before 2026-10-09/10, merge commits and
   commits made in a linked worktree went unstamped in hamutay and governance (and possibly other repos with the
   same hook). The harness codes these `unstamped_merge` / `unstamped`, never as avoidance. A bet that rests on such
@@ -204,7 +228,9 @@ Read-only scouts mapped each repo's forecast layout. This changes what Q1 can cl
 
 ## 7. Attribution and publication
 
-Projects named. Instances only as they signed their own work: tessera's cairn names as signed on
+Projects named. Instances only as they signed their own work, **qualified by project and model**, because signed
+names collide: two different instances signed cairn stones as "Tukuq" (governance's Opus 5.5 owner, "Close Is a
+Result"; tessera's Fable 5.1 owner of 09-13 to 09-16, "Round Two of Eighteen"). Neither stone changes. Otherwise, tessera's cairn names as signed on
 the public stones; levadura as "the instance that owns `levadura_salvaje` (Opus 5.5)"; yupi and
 quantumos by date or as signed in the artifact itself; unnamed threads never given names. Quotations
 only from published stones or with the owner's consent. Aggregate results, codebook, extraction code,

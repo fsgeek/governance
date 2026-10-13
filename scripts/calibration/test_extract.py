@@ -108,6 +108,16 @@ def test_results_appended_to_bet_file_go_to_a_coder(repo):
     assert X.check_order(repo, only(repo), "prereg/a.md") == "outcome_in_bet_file"
 
 
+def test_addendum_bet_freezes_at_its_own_commit_not_the_files(repo):
+    a = commit(repo, "freeze", {"prereg/a.md": "| P1 | holds, p = 0.7 |\n"})
+    b = commit(repo, "post-freeze addendum 1", {"prereg/a.md": "| P1 | holds, p = 0.7 |\n## Addendum 1\n| Q1 | violation, p = 0.2 |\n"})
+    assert X.bet_freeze(repo, "prereg/a.md", "| P1 | holds, p = 0.7 |") == a
+    assert X.bet_freeze(repo, "prereg/a.md", "| Q1 | violation, p = 0.2 |") == b
+    assert X.bet_freeze(repo, "prereg/a.md", "| Z9 | never written |") is None
+    with pytest.raises(ValueError):
+        X.bet_freeze(repo, "prereg/a.md", "  ")
+
+
 def test_override_moves_freeze_to_enacting_commit(repo, monkeypatch):
     commit(repo, "draft", {"prereg/a.md": "draft"})
     e = commit(repo, "approve", {"prereg/a.md": "frozen"})
