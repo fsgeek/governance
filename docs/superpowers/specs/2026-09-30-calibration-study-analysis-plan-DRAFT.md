@@ -179,6 +179,18 @@ Read-only scouts mapped each repo's forecast layout. This changes what Q1 can cl
 - If no humans can be found: a model family absent from every record (to be verified by grepping each
   repo before selection; the grep covers Codex/GPT, Gemini, Qwen, **Jev** (`jev-1.13.0`, TypeSafe; levadura
   obs-0132, obs-0149) and every model named in a ledger or scorecard), disclosed as a limitation, with a human spot-check of a random 20% sample.
+- **Pilot coder selected (r2, 2026-10-13): Microsoft Phi (Phi-4, run locally).** A name grep over all six repos
+  (excluding `timestamps/`, resident homes and plaza) found no family with zero mentions. Hamutay's model rosters
+  name almost everything, and "cohere"/"grok" also match ordinary words. So the test applied is *participation*:
+  did the family run as a model anywhere in a record (a `model`/`model_id` field, a judge, a reviewer, a
+  subject)? Phi never did. Its mentions are text only: a cited paper in yupi `docs/references/2608.19161v1.txt`,
+  and words inside two hamutay taste_open logs. Disqualified by participation: Codex/GPT, Gemini **and Gemma**
+  (hamutay `google/gemma-4-*` runs), Qwen, Jev, DeepSeek, Jamba (hamutay taste_open sweep, 2026-04-12), Llama,
+  Mistral and Kimi (rosters and runs). It runs **locally** on an ayllu-gpu lease, announced on the plaza
+  first, so no record text leaves Tony's machines. Limits, stated in the pilot report: a 14B model with a 16K context.
+  Files longer than the context (tessera capstone; long hamutay pre-regs) are coded in sections or left out of the
+  pilot sample, and the count is reported. A weak coder is acceptable for the pilot's purpose: its job is to break
+  the codebook, not to produce results.
 - **Both, in order (r2, Tony 2026-10-02).** Before freeze, an out-of-record model family pilot-codes a
   small random sample (≈10% of candidate bets, at least one file per project) to debug the codebook:
   ambiguous fields, missing values, rules that don't decide. The codebook is revised and the pilot sample
