@@ -17,3 +17,7 @@ be done?" These are explicit credences, scored against the record's own dates, `
 S4 and S6 depend on Tony and people outside the ayllu, so they're the weakest forecasts here. S7 is the one the pilot
 exists to make true. Under the plan's own rules this file is an `AI` bet, `register: load-bearing`. It is
 correction-after-study-contact by construction: the study is its own subject.
+
+**CLARIFY (2026-10-14, after the freeze, no forecast changed):** "correction-after-study-contact by construction"
+misapplies a flag that's defined for *corrections*. What I meant: these bets were made by the study's owner about
+the study itself, so they aren't independent of it. Code them with that note, not with the flag.
