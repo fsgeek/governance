@@ -57,3 +57,27 @@ Freeze harness with pre-reg. Test every check on a constructed positive before f
 decision branch, name the documented behavior that would trigger it. A sampled set near the VOID floor
 is not a measurement: require stability across sampler seeds. And the one this program needed most:
 **say "close" when the deciding experiment can't be run, instead of pivoting to the next frame.**
+
+## Addendum 2026-10-26: the "can't be run on public data" premise is false (the close stands as written above)
+
+Two reviews (a blind adversary and a widening reviewer, 2026-10-26) followed Tony's "don't go smaller, search wider".
+The adversary handed back the experiment this note said could not be run.
+
+- **LendingClub's written credit policy is public**, in its SEC prospectus filings (Form 424B3, Member Payment
+  Dependent Notes, 2008 onward). They give minimum credit criteria with effective dates: a DTI cap excluding mortgage
+  of 35%, raised to 40% effective 2014-07-25; a second DTI cap, including mortgage and the requested loan, that varies
+  by borrower attributes; and minimum FICO requirements changed by supplement. Conditional DTI rules are one of the
+  policy contents this note named as beyond sign constraints.
+- **The applications it declined are public too**, and already on disk: `data/rejected_2007_to_2018Q4.csv`
+  (application date, risk score, DTI, employment length, policy code). It was used only to calibrate synthetic data
+  (`2026-05-07-rashomon-prototype-wedge-design.md` §4.2).
+- So "every public substrate ... lacks a written policy (HMDA, LendingClub rejects)" in §3 was wrong, and nobody
+  checked it. The reopen condition ("a lender ... willing to provide a verbatim written credit policy plus
+  application-level data including declines") is met in substance by a lender's own public filings, at least partially.
+- **Status:** the program reopens on this one experiment only: P (compiled LendingClub policy, versioned by filing
+  date) against G (generic monotone, fixed before reading the policy), on LendingClub applications including declines.
+  The 2014-07-25 DTI change gives a natural test of whether the written policy governs the decline boundary. No other
+  frame reopens. Design, pre-registration and harness are frozen together before any model is fit, per §"What would
+  reopen it".
+- **Lesson, adding to the ones above:** closing on a premise is a claim like any other. "Can't be run" needed the same
+  search-wider check as a positive finding, and it took one web search to falsify.
