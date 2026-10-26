@@ -41,3 +41,26 @@ volume claims (their annualized baseline is undefined).
 - Does a conformance audit say anything beyond "a regulated lender followed its prospectus"? Who would care, and what
   result would surprise them?
 - What did the closing note's P-vs-G framing capture that a conformance audit loses?
+
+## Decision after review (2026-10-26, same day): the conformance-audit proposal is RETRACTED
+
+A blind adversary and a widener reviewed this note.
+- **The adversary's item 3 is decisive.** P ≈ G is the pre-registered *kill* working, not a void. Calling it
+  uninformative and proposing a different study was a frame pivot around a likely kill. The closing-note addendum
+  reopened only P vs G.
+- **Item 9:** the audit answers a different question.
+- **Items 1–2:** the audit grades LendingClub's own Policy Code label, and the volume claims can't be identified with
+  nine reject fields.
+- **The adversary also handed back two contrasts the data can decide (item 4), and step 2 is built on them:**
+  1. **The interaction cell.** V5/V6 (2011-01-06 to 2012-05-31) cap DTI at 25% below FICO 720 and 30% at 720 or
+     above. FICO and DTI are both in the rejects file, and Risk_Score is FICO before 2013-11-05. The FICO ≥ 720 ×
+     DTI [25, 30) cell is small; P imposes the rule, while G (monotone, min leaf 1000) may not resolve it.
+  2. **Out-of-time across a dated change.** Fit before 2014-07-25 and predict after (and across 2016-06-07, the
+     reversal). P carries the dated cap; G, fit without regime knowledge, cannot.
+- The kill stays as in the closing note: P ≈ G on both contrasts (Jaccard ≥ 0.90 and retention ≥ 0.90) means compiling
+  the written policy adds nothing the data does not already reveal.
+- **Parked, not dropped:** the widener's *silence share* (the fraction of declines passing every published criterion
+  the rejects file can check, per regime) measures where the written record says nothing. It is outside the reopened
+  scope, and is recorded here for a separate decision.
+- **SHAP-recovers-policy is dropped as a test of the thesis** (widener): a surrogate trained on decisions isn't
+  LendingClub's model, and on exactly enforced rules SHAP and the record agree.

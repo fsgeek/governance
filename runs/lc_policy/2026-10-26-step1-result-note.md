@@ -40,3 +40,13 @@ R2's exclusion shift (3.3 pp against a 5 pp rule), which the "-1%" growth during
 
 Mean Brier 0.123, with every miss on the side of underconfidence. The owner priced in confounds (April 2016, the
 floor, exclusion growth) that turned out not to bite. Nine correlated forecasts on one dataset; no calibration claim.
+
+## Caveat added after review (2026-10-26; the result above is unchanged)
+
+Step 1 kept accepted loans with `policy_code == 1` and rejects with `Policy Code == 0`, as pre-registered. Policy Code 2
+is LendingClub's own label for loans outside the public credit policy (e.g. FICO 640–659; step-2 adversary, item 1).
+So "0.0% of accepted loans at or above the written cap" partly measures LendingClub's own sorting into the public
+program. It isn't independent evidence that every loan it made followed the written policy. What stands without the
+caveat is that the boundary moved on the stated dates, in both directions, in accepts and in declines. A post-hoc
+sensitivity (labelled as such, not pre-registered) reporting the Policy Code 2 accepted loans' cap-violation share
+is owed.
