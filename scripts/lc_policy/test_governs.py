@@ -1,7 +1,7 @@
 """Constructed violators for every branch of the decision rule (pre-reg §6). No real data is read."""
 import math
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 
 import numpy as np
@@ -34,18 +34,65 @@ def synth_accepted(cap_fn, n=400, seed=0):
     return pd.concat(rows, ignore_index=True)
 
 
-def written_cap(d):
-    return 30 if d < G.C1 else 35 if d < G.C2 else 40 if d < G.C3 else 35
+written_cap = G.written_cap
 
 
 def test_accepted_follow_written_policy_passes_A1_A2_A3():
     a = G.accepted_tests(synth_accepted(written_cap))
-    assert a["A1"] and a["A2"] and a["A3"]
+    assert a["A1"] and a["A2"] and a["A3"] and a["construct_ok"]
 
 
-def test_accepted_ignoring_policy_fails_A1():
-    a = G.accepted_tests(synth_accepted(lambda d: 40))      # constant 40% cap all along: no response to C2
-    assert not a["A1"]
+def test_accepted_ignoring_policy_is_construct_invalid_not_a_verdict():
+    """A constant 40% boundary: no response to C2, and loans above the written cap. On the accepted file this is
+    indistinguishable from a dti mismatch, so the verdict is CONSTRUCT_INVALID and R decides separately."""
+    a = G.accepted_tests(synth_accepted(lambda d: 40))
+    assert not a["A1"] and not a["construct_ok"]
+    assert G.verdict(a, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "CONSTRUCT_INVALID"
+
+
+def test_A2_failure_no_drop_at_C3_gives_mixed():
+    cap = lambda d: 30 if d < G.C1 else 35 if d < G.C2 else 40          # never comes back down
+    a = G.accepted_tests(synth_accepted(cap))
+    assert a["A1"] and not a["A2"]
+    assert G.verdict({**a, "construct_ok": True}, {"R1": "pass", "R2": "pass", "R3": "null"}) == "MIXED"
+
+
+def test_A3_failure_no_rise_at_C1_gives_mixed():
+    cap = lambda d: 35 if d < G.C2 else 40 if d < G.C3 else 35          # already 35 before C1
+    a = G.accepted_tests(synth_accepted(cap))
+    assert a["A1"] and not a["A3"]
+    assert G.verdict({**a, "construct_ok": True}, {"R1": "null", "R2": "pass", "R3": "pass"}) == "MIXED"
+
+
+def test_missing_window_fails_rather_than_passing():
+    acc = synth_accepted(written_cap)
+    acc = acc[acc["month"] >= pd.Period("2012-07", "M")]                # A3's pre window is gone
+    a = G.accepted_tests(acc)
+    assert a["A3"] is False
+
+
+def test_accepted_loader_filters_programs(tmp_path):
+    f = tmp_path / "acc.csv"
+    f.write_text("issue_d,dti,policy_code,application_type,disbursement_method,other\n"
+                 "Dec-2015,38.0,1,Individual,Cash,x\n"
+                 "Dec-2015,45.0,1,Individual,DirectPay,x\n"
+                 "Dec-2015,33.0,1,Joint App,Cash,x\n"
+                 "Dec-2015,20.0,2,Individual,Cash,x\n"
+                 "Mar-2012,22.0,1,Individual,,x\n")
+    df, counts = G.load_accepted(f)
+    assert sorted(df["dti"].tolist()) == [22.0, 38.0] and counts["rows"] == 5 and counts["kept"] == 2
+
+
+def test_rejects_loader_keeps_policy_code_0_and_counts_exclusions(tmp_path):
+    f = tmp_path / "rej.csv"
+    f.write_text("Amount Requested,Application Date,Loan Title,Risk_Score,Debt-To-Income Ratio,Zip Code,State,Employment Length,Policy Code\n"
+                 "1000,2014-07-20,a,700,36%,1xx,NY,1 year,0\n"
+                 "1000,2014-07-21,a,700,-1%,1xx,NY,1 year,0\n"
+                 "1000,2014-07-22,a,700,37%,1xx,NY,1 year,2\n")
+    df, counts = G.load_rejects(f)
+    assert df["dti"].tolist() == [36.0]
+    assert counts["policy_code_dropped"] == 1 and counts["excluded_dti"] == 1
+    assert counts["excluded_dti_by_month"] == {"2014-07": 1}
 
 
 def synth_rejects(boundary_fn, per_day=600, seed=1, start="2011-01-01", end="2017-12-31"):
@@ -96,7 +143,7 @@ def test_wrong_way_below_band_is_null(pdates):
 
 
 def test_verdict_branches():
-    good_a = {"A1": True, "A2": True, "A3": True}
+    good_a = {"A1": True, "A2": True, "A3": True, "construct_ok": True}
     assert G.verdict(good_a, {"R1": "pass", "R2": "pass", "R3": "null"}) == "GOVERNS"
     assert G.verdict(good_a, {"R1": "pass", "R2": "null", "R3": "null"}) == "MIXED"
     assert G.verdict(good_a, {"R1": "pass", "R2": "pass", "R3": "contradict"}) == "DOES_NOT_GOVERN"
@@ -115,10 +162,63 @@ def test_volume_growth_does_not_fake_a_contradict(pdates):
     assert "contradict" not in [r["R1"], r["R2"], r["R3"]]
 
 
-def test_placebo_dates_avoid_known_changes():
+def test_placebo_dates_avoid_known_changes_and_the_undated_2017_reversion():
     ds = G.placebo_dates()
     assert ds and all(abs((d - k).days) > 45 for d in ds for k in G.KNOWN_CHANGES)
     assert G.C2 not in ds
+    assert not [d for d in ds if date(2017, 1, 23) <= d <= date(2017, 7, 6)]
+
+
+def test_local_placebo_is_within_a_year():
+    for d in (G.C1, G.C2, G.C3):
+        loc = G.local_placebo(d, G.placebo_dates())
+        assert len(loc) >= 10 and all(abs((p - d).days) <= 365 for p in loc)
+
+
+def test_drift_plus_volume_growth_does_not_contradict():
+    """Finding 2: a slow random walk in the share of declines falling in [35, 40), plus volume growth, no break.
+    Poisson z inflates with volume under drift; local placebos must keep that from producing a contradict."""
+    rng = np.random.default_rng(11)
+    walk = 0.25
+    rows = []
+    for day in pd.date_range("2011-01-01", "2017-12-31", freq="D"):
+        walk = min(0.45, max(0.05, walk + rng.normal(0, 0.004)))
+        n = int(30 + 3000 * (day.year - 2011) / 6)
+        k = rng.binomial(n, walk)
+        rows.append(pd.DataFrame({"day": day, "dti": np.concatenate([rng.uniform(35, 40, k), rng.uniform(40, 50, n - k),
+                                                                     rng.uniform(0, 35, n)])}))
+    r = G.rejects_tests(pd.concat(rows, ignore_index=True))       # full placebo list
+    assert "contradict" not in [r["R1"], r["R2"], r["R3"]]
+
+
+def test_late_drift_does_not_mask_an_early_break():
+    """Finding 2, demonstrated: no drift 2011-14, heavy drift 2015-17 at higher volume, and a real break at C1.
+    With placebo dates from all years the late tails swamp R1 (null on this seed); with local placebos it passes.
+    Breaks when LOCAL is made global (mutation-checked pre-freeze)."""
+    rng = np.random.default_rng(1)
+    rows, walk = [], 0.25
+    for day in pd.date_range("2011-01-01", "2017-12-31", freq="D"):
+        late = day.year >= 2015
+        if late:
+            walk = min(0.6, max(0.05, walk + rng.normal(0, 0.03)))
+        n = 1500 if late else 400
+        k = rng.binomial(n, walk if late else 0.25)
+        bg = np.concatenate([rng.uniform(30, 35, k), rng.uniform(40, 50, n), rng.uniform(0, 30, n)])
+        over = rng.uniform(G.written_cap(day.date()), 40, 120)
+        rows.append(pd.DataFrame({"day": day, "dti": np.concatenate([bg, over])}))
+    r = G.rejects_tests(pd.concat(rows, ignore_index=True))
+    assert r["R1"] == "pass"
+
+
+def test_break_lagged_14_days_never_contradicts(pdates):
+    lagged = lambda d: G.written_cap(d - pd.Timedelta(days=14).to_pytimedelta())
+    r = G.rejects_tests(synth_rejects(lagged), pdates)
+    assert "contradict" not in [r["R1"], r["R2"], r["R3"]]
+
+
+def test_full_placebo_list_still_passes_written_policy():
+    r = G.rejects_tests(synth_rejects(written_cap, per_day=300, seed=3))
+    assert [r["R1"], r["R2"], r["R3"]].count("pass") >= 2 and "contradict" not in [r["R1"], r["R2"], r["R3"]]
 
 
 def test_empty_band_is_finite():

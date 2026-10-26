@@ -19,27 +19,42 @@ V11, V15):
 If the written policy is the policy applied, the decline boundary moves with it: up at C1 and C2, *down* at C3.
 
 **Documented behavior predicts GOVERNS** (the filings announce each change, and C3 "may not be changed without the
-consent of WebBank"). So this is a positive control for step 2, not a finding if it passes. Its information is in
+consent of WebBank"). So this is a positive control for step 2, not a finding if it passes. A positive control
+that rarely fails mostly checks the harness, not the policy (finding 6); the thresholds above were set so it *can*
+fail. Its information is in
 failure: DOES_NOT_GOVERN means the disclosed policy is not the operative policy on the one criterion that is fully
 quantified, which bears directly on the paper's record-versus-decision argument.
 
 ## 2. Data (public; already on disk)
 
-- **Accepted:** `data/accepted_2007_to_2018Q4.parquet`. Columns used: `issue_d` (month), `dti` (excludes mortgage
-  and the requested loan), `policy_code` (keep `== 1`, the public program), `application_type` (keep Individual).
+- **Accepted:** `data/accepted_2007_to_2018Q4.csv`. The parquet copy lacks the filter columns (adversary finding 1).
+  Columns used: `issue_d` (month), `dti` (excludes mortgage and the requested loan). Kept: `policy_code == 1` (public
+  program), `application_type` Individual, `disbursement_method` Cash (direct-pay had a 50% cap, V13). Blank
+  application type or disbursement method counts as Individual or Cash, since those columns were added late.
 - **Rejected:** `data/rejected_2007_to_2018Q4.csv`. Columns used: `Application Date` (day), `Debt-To-Income Ratio`
-  (percent string). The "-1%" values (about 1.2M, meaning undocumented) and unparseable values are excluded and counted.
-- The rejects file's DTI definition is undocumented, and rejects include declines for every reason. That dilutes a
-  DTI effect but can't reverse its sign.
+  (percent string), `Policy Code`. Kept: `Policy Code == 0` (code 2, about 88k rows from 2014, is non-public credit
+  policies, finding 4). The "-1%" values (about 1.2M, meaning undocumented, share rising about 20× in 2014) and
+  unparseable values are excluded and **counted per month**; the report gives the exclusion rate in every test window.
+- **Unknowns, stated:** the rejects-file DTI definition comes from a secondary dictionary, not LendingClub's own.
+  Rejects include declines for every reason and incomplete applications, which dilutes a DTI effect but can't reverse
+  its sign. The 2013-11-05 FICO-to-Vantage switch doesn't touch DTI and needs no exclusion.
 
 ## 3. Tests
 
-**A (accepted, monthly).** Share of issued loans with `dti` in a band, by month. Months that contain a change date are
-dropped.
-- **A1 (C2 up):** the share in [35, 40) averaged over 2014-08 to 2016-05 is ≥ 0.5%, and ≥ 10× its average over 2012-07 to 2014-06.
-- **A2 (C3 down):** the share in [35, 40) averaged over 2016-07 to 2017-02 is ≤ 1/3 of its average over 2015-07 to
-  2016-04 (1/3, not ~0, because exception programs such as direct-pay at 50% (V13) may continue).
-- **A3 (C1 up):** the share in [30, 35) averaged over 2012-07 to 2013-06 is ≥ 10× its average over 2011-02 to 2012-04.
+**A (accepted, monthly).** Share of issued loans with `dti` in a band, by month. Each window skips the change month **and the month after it**
+(application-to-issue lag, finding 7). A window with fewer than 6 usable months makes its test fail, never pass
+(finding 9).
+- **A1 (C2 up):** the share in [35, 40) averaged over 2014-09 to 2016-05 is ≥ 2%, and ≥ 10× its average over
+  2012-08 to 2014-06. (2%, not 0.5%: 0.5% was trivially easy, finding 6. A uniform-ish spread under a 40% cap puts
+  several percent in [35, 40).)
+- **A2 (C3 down):** the share in [35, 40) averaged over 2016-08 to 2017-02 is ≤ 1/3 of its average over 2015-07 to
+  2016-03. **Confound, stated:** the undisclosed April 2016 tightening targeted "high indebtedness". A2 can't separate it
+  from the June cap cut, so A2 tests "the [35, 40) band closed by mid-2016", not C3 alone. R3 is the test aimed at C3 (1/3, not ~0, because exception programs such as direct-pay at 50% (V13) may continue).
+- **A3 (C1 up):** the share in [30, 35) averaged over 2012-08 to 2013-06 is ≥ 10× its average over 2011-02 to 2012-04.
+- **Construct check (finding 5):** the share of accepted loans with `dti` at or above the written cap, per regime
+  (2012-08 to 2014-06 at 35%; 2014-09 to 2016-05 at 40%; 2016-08 to 2017-02 at 35%). If any regime is above 2%, the
+  accepted tests are uninformative. A lender ignoring its cap and an accepted `dti` that isn't the policy's DTI look the
+  same on this file, so the verdict is CONSTRUCT_INVALID, never DOES_NOT_GOVERN, and the R tests are reported on their own.
 
 **R (rejects, daily).** For a change date d and an affected band b, with reference band [40, 50), above every cap ever written:
 `r = n(b) / n([40, 50))` over a pre window [d−21, d−1] and a post window [d, d+20]. Effect `e = ln(r_post / r_pre)`, standardized as
@@ -50,17 +65,24 @@ The reference band is above the caps, not below: a constructed test (pre-freeze)
 lets a boundary that moved the *wrong* way, but below the band, read as a pass.
 - **R1:** C1, b = [30, 35), predicted e < 0 (fewer declines in the newly allowed band)
 - **R2:** C2, b = [35, 40), predicted e < 0
-- **R3:** C3, b = [35, 40), predicted e > 0
+- **R3:** C3, b = [35, 40), predicted e > 0. **Expected failure mode, stated:** the April 2016 tightening plausibly
+  raises [35, 40) declines inside R3's pre window, which would make R3 read null. Null here isn't evidence against
+  the policy.
 
-**Placebo.** The same e, for each b, at every 1st and 15th of the month from 2011-03-01 to 2017-12-15, excluding
+**Placebo.** The same z, for each b, at every 1st and 15th of the month from 2011-03-01 to 2017-12-15, excluding
 dates within 45 days of any dated policy change in the source table (V5–V18 effective dates, and the April 2016,
-October 2016 and January 2017 tightenings). An R test **passes** if its z is beyond the placebo distribution's
+October 2016 and January 2017 tightenings), and the whole undated V18 reversion interval 2017-03-09 to 2017-05-22
+plus 45 days each side (finding 3). **Each test uses only placebo dates within 365 days of its own change date.**
+With daily drift in the DTI mix, the Poisson z grows with volume, so late high-volume dates would otherwise set the
+bar for the 2012 test (finding 2). An R test **passes** if its z is beyond the placebo distribution's
 5th percentile (for e < 0) or 95th percentile (for e > 0), on the predicted side. It **contradicts** only if |z| > 3 on the opposite side *and*
 it's beyond every placebo z. A contradict alone decides DOES_NOT_GOVERN, so it gets the stricter
 bar: with a 5% tail, a constructed no-break series read "contradict" by noise (pre-freeze test).
 
 ## 4. Decision rule (mechanical)
 
+- **CONSTRUCT_INVALID:** the construct check fails. The R-only verdict is reported beside it (R_GOVERNS: at least 2
+  pass and none contradicts; R_CONTRADICTS: any contradicts; else R_MIXED). Step 2 is not registered.
 - **GOVERNS:** A1, A2 and A3 all hold, at least 2 of R1–R3 pass, and none contradicts.
 - **DOES_NOT_GOVERN:** A1 fails, *or* any R test contradicts.
 - **MIXED:** anything else. Reported as such; step 2 is not registered on a MIXED result.
