@@ -119,3 +119,24 @@ carries information historical data lacks. It doesn't enter the verdict.
   rule carries constraints that data-fit models violate. This is the open contribution the closing note named.
   Generality is still N = 1 (one lender, one rule).
 - **INCONCLUSIVE:** reported as such. No second attempt on this window.
+
+## r2 work-in-progress note (2026-10-27): not freezable; r3 decided
+
+The first blind adversary raised 4 blocking findings: a plateau threshold (the coin-flip again); the monotonicity
+filter discarding the very trees that learned the interaction; VOID likely; POLICY_MATTERS meaning "coarse models
+break the rule". r2 rebuilt the harness (`pvg.py` r2): G trained with `monotonic_cst`, the policy checked exactly on
+leaf boxes at probability level (P(accept) > 0.01 in a declined region holding ≥ 10 test applicants), the verdict on
+retention, and reason fidelity added (widener).
+
+**Constructed test result that blocks r2:** a depth-4 monotone tree fit to a lender that follows the rule *exactly*
+(realistic imbalance) has a leaf "score > 657.5, DTI > 19.71" with P(accept) = 0.116. CART's greedy split lands at
+19.7, not at the 25% cap, and pools eligible with ineligible applicants. So under r2, KILL is close to unreachable for
+coarse trees *even for a lender that follows its rule*. That makes it a gate the model class satisfies, which is not a
+test.
+
+**r3 (decided):** "compiling" the policy = gating each G member with the written rule (P(accept) := 0 where the rule
+declines). POLICY_MATTERS if gating improves the median member's validation log loss by more than ε·best (the policy
+moves models across the Rashomon boundary). KILL if it improves by less than 0.1·ε·best for ≥ 90% of members. Both
+thresholds are tied to ε, already fixed. Constructed tests must show **KILL is reachable** (a follower with trees fine
+enough to find the cap) and POLICY_MATTERS reachable (a follower with coarse trees, or a lender ignoring the
+conditional). Reason fidelity stays as a secondary metric. A power check on realistic synthetic data sets N_TREES.
