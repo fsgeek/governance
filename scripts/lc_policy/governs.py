@@ -25,7 +25,12 @@ KNOWN_CHANGES = [date(2011, 1, 6), date(2012, 4, 10), C1, date(2012, 11, 28), da
                  date(2017, 1, 1), date(2017, 3, 9)]
 
 # V18: the cap went back 35% -> 40% somewhere between these dates, undated (source table). No placebo inside it.
-UNDATED_INTERVALS = [(date(2017, 3, 9), date(2017, 5, 22))]
+UNDATED_INTERVALS = [(date(2017, 3, 9), date(2017, 5, 22)),
+                     # month-only tightenings: the whole month is excluded, not just the 1st (2nd review, finding 5)
+                     (date(2016, 4, 1), date(2016, 4, 30)), (date(2016, 10, 1), date(2016, 10, 31)),
+                     (date(2017, 1, 1), date(2017, 1, 31))]
+MIN_PLACEBO = 10     # fewer local placebo dates -> the R test is null (2nd review, finding 3)
+MAX_EXCL_SHIFT = 0.05  # excluded-DTI share moving more than this between pre and post -> the R test is null (finding 2)
 LOCAL = 365          # placebo dates within +/- a year of each change (adversary finding 2: drift x volume)
 MIN_MONTHS = 6       # an A window with fewer usable months fails (finding 9)
 CONSTRUCT_MAX = 0.02 # accepted loans at or above the written cap, per regime, above this -> CONSTRUCT_INVALID (finding 5)
@@ -90,7 +95,10 @@ def accepted_tests(acc: pd.DataFrame) -> dict:
     ge10 = lambda post, pre: ok(post, pre) and (post >= 10 * pre if pre > 0 else post > 0)
     cc = construct_check(acc)
     return {
-        "A1": bool(ok(a1_post) and a1_post >= A1_FLOOR and ge10(a1_post, a1_pre)), "A1_vals": [a1_pre, a1_post],
+        # A1 split (2nd review, finding 1): the ratio can decide DOES_NOT_GOVERN; the floor and missing data can't.
+        "A1_ratio": None if not ok(a1_post, a1_pre) else bool(ge10(a1_post, a1_pre)),
+        "A1_floor": bool(ok(a1_post) and a1_post >= A1_FLOOR),
+        "A1_vals": [a1_pre, a1_post],
         "A2": bool(ok(a2_pre, a2_post) and a2_pre > 0 and a2_post <= a2_pre / 3), "A2_vals": [a2_pre, a2_post],
         "A3": bool(ge10(a3_post, a3_pre)), "A3_vals": [a3_pre, a3_post],
         "construct": cc, "construct_ok": bool(all(not math.isnan(v) and v <= CONSTRUCT_MAX for v in cc.values())),
@@ -115,6 +123,15 @@ def effect(rej: pd.DataFrame, d: date, band) -> tuple[float, float]:
     e = math.log((b1 / a1) / (b0 / a0))
     se = math.sqrt(1 / b0 + 1 / a0 + 1 / b1 + 1 / a1)
     return e, e / se
+
+
+def excl_shift(rej: pd.DataFrame, d: date) -> float:
+    """|excluded share post - pre| in the R windows; rows with dti NaN are the excluded ('-1%', junk)."""
+    d = pd.Timestamp(d)
+    pre = rej[(rej["day"] >= d - pd.Timedelta(days=WIN)) & (rej["day"] <= d - pd.Timedelta(days=1))]
+    post = rej[(rej["day"] >= d) & (rej["day"] <= d + pd.Timedelta(days=WIN - 1))]
+    rate = lambda x: float(x["dti"].isna().mean()) if len(x) else 0.0
+    return abs(rate(post) - rate(pre))
 
 
 def placebo_dates(start=date(2011, 3, 1), end=date(2017, 12, 15), known=KNOWN_CHANGES, gap=45,
@@ -154,9 +171,15 @@ def rejects_tests(rej: pd.DataFrame, pdates=None) -> dict:
         e, z = effect(rej, d, band)
         pl = [effect(rej, p, band)[1] for p in local_placebo(d, pdates)]
         out[k + "_n_placebo"] = len(pl)
-        out[k] = r_test(z, pl, sign)
+        out[k + "_excl_shift"] = excl_shift(rej, d)
+        if len(pl) < MIN_PLACEBO:
+            out[k], out[k + "_why_null"] = "null", "too_few_placebos"
+        elif out[k + "_excl_shift"] > MAX_EXCL_SHIFT:
+            out[k], out[k + "_why_null"] = "null", "exclusion_shift"
+        else:
+            out[k] = r_test(z, pl, sign)
         out[k + "_e"], out[k + "_z"] = e, z
-        out[k + "_placebo_z_5_95"] = [float(np.percentile(pl, 5)), float(np.percentile(pl, 95))]
+        out[k + "_placebo_z_5_95"] = [float(np.percentile(pl, 5)), float(np.percentile(pl, 95))] if pl else None
     return out
 
 
@@ -175,9 +198,9 @@ def verdict(a: dict, r: dict) -> str:
     if not a.get("construct_ok", True):
         return "CONSTRUCT_INVALID"
     rs = [r["R1"], r["R2"], r["R3"]]
-    if not a["A1"] or "contradict" in rs:
+    if a["A1_ratio"] is False or "contradict" in rs:
         return "DOES_NOT_GOVERN"
-    if a["A1"] and a["A2"] and a["A3"] and rs.count("pass") >= 2:
+    if a["A1_ratio"] and a["A1_floor"] and a["A2"] and a["A3"] and rs.count("pass") >= 2:
         return "GOVERNS"
     return "MIXED"
 
@@ -215,7 +238,7 @@ def load_rejects(path: Path) -> tuple[pd.DataFrame, dict]:
         counts["excluded_dti"] += int(bad.sum())
         for m, n in day[bad].dt.to_period("M").value_counts().items():
             excl[str(m)] = excl.get(str(m), 0) + int(n)
-        parts.append(pd.DataFrame({"day": day, "dti": dti}).dropna())
+        parts.append(pd.DataFrame({"day": day, "dti": dti})[day.notna().values])   # dti NaN kept: excluded rows, counted per window
     counts["excluded_dti_by_month"] = dict(sorted(excl.items()))
     return pd.concat(parts, ignore_index=True), counts
 

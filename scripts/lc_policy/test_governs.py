@@ -39,28 +39,28 @@ written_cap = G.written_cap
 
 def test_accepted_follow_written_policy_passes_A1_A2_A3():
     a = G.accepted_tests(synth_accepted(written_cap))
-    assert a["A1"] and a["A2"] and a["A3"] and a["construct_ok"]
+    assert a["A1_ratio"] and a["A1_floor"] and a["A2"] and a["A3"] and a["construct_ok"]
 
 
 def test_accepted_ignoring_policy_is_construct_invalid_not_a_verdict():
     """A constant 40% boundary: no response to C2, and loans above the written cap. On the accepted file this is
     indistinguishable from a dti mismatch, so the verdict is CONSTRUCT_INVALID and R decides separately."""
     a = G.accepted_tests(synth_accepted(lambda d: 40))
-    assert not a["A1"] and not a["construct_ok"]
+    assert a["A1_ratio"] is False and not a["construct_ok"]
     assert G.verdict(a, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "CONSTRUCT_INVALID"
 
 
 def test_A2_failure_no_drop_at_C3_gives_mixed():
     cap = lambda d: 30 if d < G.C1 else 35 if d < G.C2 else 40          # never comes back down
     a = G.accepted_tests(synth_accepted(cap))
-    assert a["A1"] and not a["A2"]
+    assert a["A1_ratio"] and not a["A2"]
     assert G.verdict({**a, "construct_ok": True}, {"R1": "pass", "R2": "pass", "R3": "null"}) == "MIXED"
 
 
 def test_A3_failure_no_rise_at_C1_gives_mixed():
     cap = lambda d: 35 if d < G.C2 else 40 if d < G.C3 else 35          # already 35 before C1
     a = G.accepted_tests(synth_accepted(cap))
-    assert a["A1"] and not a["A3"]
+    assert a["A1_ratio"] and not a["A3"]
     assert G.verdict({**a, "construct_ok": True}, {"R1": "null", "R2": "pass", "R3": "pass"}) == "MIXED"
 
 
@@ -83,6 +83,45 @@ def test_accepted_loader_filters_programs(tmp_path):
     assert sorted(df["dti"].tolist()) == [22.0, 38.0] and counts["rows"] == 5 and counts["kept"] == 2
 
 
+def test_hump_shaped_dti_under_floor_is_mixed_not_does_not_govern():
+    """2nd review, finding 1: a governing lender whose DTI is hump-shaped can sit under the 2% floor in [35, 40)."""
+    rng = np.random.default_rng(5)
+    rows = []
+    for m in pd.period_range("2011-01", "2017-12", freq="M"):
+        cap = G.written_cap(m.to_timestamp().date())
+        x = rng.normal(15, 6, 4000)
+        rows.append(pd.DataFrame({"month": m, "dti": x[(x >= 0) & (x < cap)]}))
+    a = G.accepted_tests(pd.concat(rows, ignore_index=True))
+    assert a["A1_ratio"] and not a["A1_floor"]
+    assert G.verdict(a, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "MIXED"
+
+
+def test_missing_A1_window_is_mixed():
+    acc = synth_accepted(written_cap)
+    acc = acc[(acc["month"] < pd.Period("2012-08", "M")) | (acc["month"] > pd.Period("2014-06", "M"))]
+    a = G.accepted_tests(acc)
+    assert a["A1_ratio"] is None
+    assert G.verdict({**a, "construct_ok": True}, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "MIXED"
+
+
+def test_exclusion_shift_makes_r_test_null(pdates):
+    rej = synth_rejects(written_cap, per_day=300)
+    post = (rej["day"] >= pd.Timestamp(G.C2)) & (rej["day"] <= pd.Timestamp(G.C2) + pd.Timedelta(days=20))
+    junk = rej[post].sample(frac=0.3, random_state=0).assign(dti=np.nan)    # excluded rows jump after C2
+    r = G.rejects_tests(pd.concat([rej, junk], ignore_index=True), pdates)
+    assert r["R2"] == "null" and r["R2_why_null"] == "exclusion_shift"
+
+
+def test_too_few_placebos_makes_r_test_null():
+    r = G.rejects_tests(synth_rejects(written_cap, per_day=200), G.placebo_dates()[:3])
+    assert r["R2"] == "null" and r["R2_why_null"] == "too_few_placebos"
+
+
+def test_month_only_tightenings_exclude_the_whole_month():
+    ds = G.placebo_dates()
+    assert date(2016, 10, 15) not in ds and date(2017, 1, 15) not in ds
+
+
 def test_rejects_loader_keeps_policy_code_0_and_counts_exclusions(tmp_path):
     f = tmp_path / "rej.csv"
     f.write_text("Amount Requested,Application Date,Loan Title,Risk_Score,Debt-To-Income Ratio,Zip Code,State,Employment Length,Policy Code\n"
@@ -90,7 +129,7 @@ def test_rejects_loader_keeps_policy_code_0_and_counts_exclusions(tmp_path):
                  "1000,2014-07-21,a,700,-1%,1xx,NY,1 year,0\n"
                  "1000,2014-07-22,a,700,37%,1xx,NY,1 year,2\n")
     df, counts = G.load_rejects(f)
-    assert df["dti"].tolist() == [36.0]
+    assert df["dti"].dropna().tolist() == [36.0] and len(df) == 2       # the '-1%' row is kept as excluded (NaN)
     assert counts["policy_code_dropped"] == 1 and counts["excluded_dti"] == 1
     assert counts["excluded_dti_by_month"] == {"2014-07": 1}
 
@@ -109,7 +148,7 @@ def synth_rejects(boundary_fn, per_day=600, seed=1, start="2011-01-01", end="201
 
 @pytest.fixture(scope="module")
 def pdates():
-    return G.placebo_dates()[::4]   # thinned for speed; full list in the real run
+    return G.placebo_dates()        # full list: thinning would fall under MIN_PLACEBO
 
 
 def test_rejects_follow_written_policy_pass(pdates):
@@ -143,11 +182,14 @@ def test_wrong_way_below_band_is_null(pdates):
 
 
 def test_verdict_branches():
-    good_a = {"A1": True, "A2": True, "A3": True, "construct_ok": True}
+    good_a = {"A1_ratio": True, "A1_floor": True, "A2": True, "A3": True, "construct_ok": True}
     assert G.verdict(good_a, {"R1": "pass", "R2": "pass", "R3": "null"}) == "GOVERNS"
     assert G.verdict(good_a, {"R1": "pass", "R2": "null", "R3": "null"}) == "MIXED"
     assert G.verdict(good_a, {"R1": "pass", "R2": "pass", "R3": "contradict"}) == "DOES_NOT_GOVERN"
-    assert G.verdict({**good_a, "A1": False}, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "DOES_NOT_GOVERN"
+    assert G.verdict({**good_a, "A1_ratio": False}, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "DOES_NOT_GOVERN"
+    # the floor and missing data never decide DOES_NOT_GOVERN (2nd review, findings 1 and 9)
+    assert G.verdict({**good_a, "A1_floor": False}, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "MIXED"
+    assert G.verdict({**good_a, "A1_ratio": None}, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "MIXED"
     assert G.verdict({**good_a, "A2": False}, {"R1": "pass", "R2": "pass", "R3": "pass"}) == "MIXED"
 
 

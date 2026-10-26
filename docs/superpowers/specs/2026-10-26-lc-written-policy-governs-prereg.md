@@ -1,9 +1,14 @@
-# Pre-registration (DRAFT, not frozen): does LendingClub's written DTI policy govern its decisions?
+# Pre-registration (FROZEN): does LendingClub's written DTI policy govern its decisions?
 
-**Status: DRAFT.** It freezes together with its harness (`scripts/lc_policy/governs.py` and tests) in one stamped
-commit, after a blind adversary and after the harness passes on constructed violators. **No model is fit, and no
-DTI-by-date tabulation of real data is made, before that commit.** The owner has seen only the column names, the
-row counts and the format profile in `docs/research/lc-policy/2026-10-26-lc-credit-policy-history.md`.
+**Status: FROZEN** in this file's first commit (its OTS stamp is the freeze), together with the harness at:
+- `scripts/lc_policy/governs.py` sha256 `8451237b7f9f192a3d95ec887422aebbf3a76331e54615c87a9c251d11aca0b8`
+- `scripts/lc_policy/test_governs.py` sha256 `44a25f460a1240210a0da81a86cf527bfa5fcf52bad11a46ab5f97c0477ef5ba` (33 constructed tests, passing at freeze)
+
+Reviewed before freeze by two blind adversary passes (11 findings, then 9; all taken in, cited as "finding N"). No
+model has been fit and no DTI-by-date tabulation of real data has been made. The owner has seen only column names,
+row counts and the format profile in `docs/research/lc-policy/2026-10-26-lc-credit-policy-history.md`. The run is
+`uv run python scripts/lc_policy/governs.py`, unmodified, and its output is committed as the result. Any later change
+to the harness is an amendment, dated, and reported beside the frozen result, never instead of it.
 
 **Program context.** This is step 1 of the reopened experiment (closing-note addendum, 2026-10-26). Step 2 is P vs G:
 compiled written policy against generic monotone. Step 2 is designed and registered only if step 1 says GOVERNS.
@@ -35,7 +40,9 @@ quantified, which bears directly on the paper's record-versus-decision argument.
   (percent string), `Policy Code`. Kept: `Policy Code == 0` (code 2, about 88k rows from 2014, is non-public credit
   policies, finding 4). The "-1%" values (about 1.2M, meaning undocumented, share rising about 20× in 2014) and
   unparseable values are excluded and **counted per month**; the report gives the exclusion rate in every test window.
-- **Unknowns, stated:** the rejects-file DTI definition comes from a secondary dictionary, not LendingClub's own.
+- **Unknowns, stated:** the rejects-file DTI definition comes from a secondary dictionary, not LendingClub's own,
+  and may differ from the policy definition around C3. C3's "now also excluding the requested loan" wording is
+  probably not a definitional change: the earlier definition already counted only debts on the credit report.
   Rejects include declines for every reason and incomplete applications, which dilutes a DTI effect but can't reverse
   its sign. The 2013-11-05 FICO-to-Vantage switch doesn't touch DTI and needs no exclusion.
 
@@ -44,16 +51,20 @@ quantified, which bears directly on the paper's record-versus-decision argument.
 **A (accepted, monthly).** Share of issued loans with `dti` in a band, by month. Each window skips the change month **and the month after it**
 (application-to-issue lag, finding 7). A window with fewer than 6 usable months makes its test fail, never pass
 (finding 9).
-- **A1 (C2 up):** the share in [35, 40) averaged over 2014-09 to 2016-05 is ≥ 2%, and ≥ 10× its average over
-  2012-08 to 2014-06. (2%, not 0.5%: 0.5% was trivially easy, finding 6. A uniform-ish spread under a 40% cap puts
-  several percent in [35, 40).)
+- **A1 (C2 up), in two parts** (2nd review, finding 1):
+  - **A1-ratio:** the share in [35, 40) averaged over 2014-09 to 2016-05 is ≥ 10× its average over 2012-08 to 2014-06.
+    This part can decide DOES_NOT_GOVERN.
+  - **A1-floor:** that post-C2 share is ≥ 2%. It's required for GOVERNS, but failing it only gives MIXED: accepted
+    DTI is hump-shaped, so a lender that follows its policy can still sit near or under 2% in [35, 40). (2%, not 0.5%:
+    0.5% was trivially easy, 1st review finding 6.)
+  - A1-ratio with a missing window is "unknown" and gives MIXED, never DOES_NOT_GOVERN.
 - **A2 (C3 down):** the share in [35, 40) averaged over 2016-08 to 2017-02 is ≤ 1/3 of its average over 2015-07 to
   2016-03. **Confound, stated:** the undisclosed April 2016 tightening targeted "high indebtedness". A2 can't separate it
   from the June cap cut, so A2 tests "the [35, 40) band closed by mid-2016", not C3 alone. R3 is the test aimed at C3 (1/3, not ~0, because exception programs such as direct-pay at 50% (V13) may continue).
 - **A3 (C1 up):** the share in [30, 35) averaged over 2012-08 to 2013-06 is ≥ 10× its average over 2011-02 to 2012-04.
 - **Construct check (finding 5):** the share of accepted loans with `dti` at or above the written cap, per regime
-  (2012-08 to 2014-06 at 35%; 2014-09 to 2016-05 at 40%; 2016-08 to 2017-02 at 35%). If any regime is above 2%, the
-  accepted tests are uninformative. A lender ignoring its cap and an accepted `dti` that isn't the policy's DTI look the
+  (2012-08 to 2014-06 at 35%; 2014-09 to 2016-05 at 40%; 2016-08 to 2017-02 at 35%). If any regime is above 2%, or has no
+  usable rows, the accepted tests are uninformative. A lender ignoring its cap and an accepted `dti` that isn't the policy's DTI look the
   same on this file, so the verdict is CONSTRUCT_INVALID, never DOES_NOT_GOVERN, and the R tests are reported on their own.
 
 **R (rejects, daily).** For a change date d and an affected band b, with reference band [40, 50), above every cap ever written:
@@ -72,9 +83,15 @@ lets a boundary that moved the *wrong* way, but below the band, read as a pass.
 **Placebo.** The same z, for each b, at every 1st and 15th of the month from 2011-03-01 to 2017-12-15, excluding
 dates within 45 days of any dated policy change in the source table (V5–V18 effective dates, and the April 2016,
 October 2016 and January 2017 tightenings), and the whole undated V18 reversion interval 2017-03-09 to 2017-05-22
-plus 45 days each side (finding 3). **Each test uses only placebo dates within 365 days of its own change date.**
+plus 45 days each side (finding 3). The month-only tightenings (April 2016, October 2016, January 2017) exclude the
+whole month plus 45 days each side, not just the 1st (2nd review, finding 5). **Each test uses only placebo dates within 365 days of its own change date.**
 With daily drift in the DTI mix, the Poisson z grows with volume, so late high-volume dates would otherwise set the
-bar for the 2012 test (finding 2). An R test **passes** if its z is beyond the placebo distribution's
+bar for the 2012 test (finding 2). Local placebo counts as registered: **C1 32, C2 28, C3 13.** A test with fewer than
+10 local placebos reads null (2nd review, finding 3).
+
+**Exclusion shift.** For each R test, the excluded-DTI share ("-1%" or unparseable) is computed in the pre and post
+windows. If it moves by more than 5 percentage points, that test reads null, because the population being measured
+changed (2nd review, finding 2; the "-1%" share rises about 20× during 2014, near C2). An R test **passes** if its z is beyond the placebo distribution's
 5th percentile (for e < 0) or 95th percentile (for e > 0), on the predicted side. It **contradicts** only if |z| > 3 on the opposite side *and*
 it's beyond every placebo z. A contradict alone decides DOES_NOT_GOVERN, so it gets the stricter
 bar: with a 5% tail, a constructed no-break series read "contradict" by noise (pre-freeze test).
@@ -83,8 +100,8 @@ bar: with a 5% tail, a constructed no-break series read "contradict" by noise (p
 
 - **CONSTRUCT_INVALID:** the construct check fails. The R-only verdict is reported beside it (R_GOVERNS: at least 2
   pass and none contradicts; R_CONTRADICTS: any contradicts; else R_MIXED). Step 2 is not registered.
-- **GOVERNS:** A1, A2 and A3 all hold, at least 2 of R1–R3 pass, and none contradicts.
-- **DOES_NOT_GOVERN:** A1 fails, *or* any R test contradicts.
+- **GOVERNS:** A1-ratio, A1-floor, A2 and A3 all hold, at least 2 of R1–R3 pass, and none contradicts.
+- **DOES_NOT_GOVERN:** A1-ratio fails (with both windows present), *or* any R test contradicts.
 - **MIXED:** anything else. Reported as such; step 2 is not registered on a MIXED result.
 
 Documented behavior that would trigger each branch: GOVERNS, the filings enforced as written. DOES_NOT_GOVERN,
@@ -95,13 +112,14 @@ MIXED, exception programs or concurrent undisclosed tightenings (April 2016) dom
 
 | ID | p |
 |---|---|
-| A1 holds | 0.90 |
+| A1-ratio holds | 0.90 |
+| A1-floor holds | 0.55 |
 | A2 holds | 0.70 |
 | A3 holds | 0.80 |
 | R1 passes | 0.60 |
 | R2 passes | 0.70 |
 | R3 passes | 0.55 |
-| Verdict GOVERNS | 0.65 |
+| Verdict GOVERNS | 0.45 |
 | Verdict DOES_NOT_GOVERN | 0.10 |
 
 ## 6. Harness discipline
