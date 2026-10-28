@@ -42,7 +42,9 @@ WINDOW = ("2011-01-06", "2012-05-31")
 ACC_MONTHS = ("2011-03", "2012-05")   # r5: from 2011-03, so issue months can't predate the 2011-01-06 rule
 EPS_GRID = np.round(np.geomspace(1e-4, 0.05, 60), 6)
 EPS_STAR_KILL, EPS_STAR_MATTERS = 0.02, 0.005
-CONSTRUCT_MAX_SHARE = 0.0005      # accepts the rule declines (with tolerances), as a share of accepts in the window
+CONSTRUCT_MAX_SHARE = 0.005       # accepts inside the tolerant gate, as a share of accepts (adversary 3: 0.05% was ~17 loans)
+CAPACITY_DEPTHS = (5, 6)          # capacity check (adversary 3, finding 1)
+CAPACITY_SEEDS = 3
 MIN_LEAF_HELDOUT = 100
 
 
@@ -174,17 +176,18 @@ def sample_trees(Xtr, ytr, Xva, yva, seed: int, n: int = N_TREES) -> list[Member
     return out
 
 
-def gate_mask(X: np.ndarray) -> np.ndarray:
+def gate_mask(X: np.ndarray, rule=None) -> np.ndarray:
     """Where the compiled rule sets P(accept) to 0: the written rule with the diagnostic tolerances (0.5 DTI points,
     one score bucket at 720), so borderline accepts (DTI exactly 25.00, a 715 bucket) aren't forced to 0
     (adversary 2, finding 1)."""
-    return written_rule_declines(X[:, SCORE], X[:, DTI], DTI_TOL, SCORE_TOL)
+    rule = rule or written_rule_declines
+    return rule(X[:, SCORE], X[:, DTI], DTI_TOL, SCORE_TOL)
 
 
-def p_gated(m: Member, X: np.ndarray) -> np.ndarray:
+def p_gated(m: Member, X: np.ndarray, rule=None) -> np.ndarray:
     """The compiled model: the member's P(accept), set to 0 wherever the compiled rule declines. Log loss clips P to
     [1e-6, 1 - 1e-6], so an accepted row inside the gate costs 13.8 nats: that's why the construct check exists."""
-    return np.where(gate_mask(X), 0.0, p_accept(m, X))
+    return np.where(gate_mask(X, rule), 0.0, p_accept(m, X))
 
 
 def construct_share(X: np.ndarray, y: np.ndarray) -> float:
@@ -209,9 +212,13 @@ MAG_FLOOR = 0.001   # ...AND its size exceeds this fraction of best loss (r4 pow
 MAG_SENS = (0.0001, 0.003)
 
 
-def gating_z(m: Member, Xva: np.ndarray, yva: np.ndarray) -> tuple[float, float]:
-    """Paired test of the gating gain over validation rows: mean and z of per-row (loss - gated loss)."""
-    d = row_losses(yva, p_accept(m, Xva)) - row_losses(yva, p_gated(m, Xva))
+def gating_z(m: Member, Xva: np.ndarray, yva: np.ndarray, rule=None) -> tuple[float, float]:
+    """Paired test of the gating gain over validation rows: mean and z of per-row (loss - gated loss). Accepted rows
+    inside the gate are excluded (each would cost 13.8 nats and swamp the test; adversary 3, finding 2); the construct
+    check bounds how many there are."""
+    keep = ~((yva == 1) & gate_mask(Xva, rule))
+    Xva, yva = Xva[keep], yva[keep]
+    d = row_losses(yva, p_accept(m, Xva)) - row_losses(yva, p_gated(m, Xva, rule))
     m.gain_split = {"reject_row_savings": float(d[yva == 0].sum() / len(d)),
                     "accept_row_penalty": float(-d[yva == 1].sum() / len(d))}
     sd = float(d.std(ddof=1))
@@ -337,6 +344,15 @@ def material(gain: float, z: float, best: float) -> int:
     return 0
 
 
+def eps_star_of(excess, mat, dominance=0.5):
+    for e in EPS_GRID:
+        inband = excess <= e
+        n = int(inband.sum())
+        if n >= MIN_G and np.mean(mat[inband] == 1) > dominance:
+            return float(e)
+    return float("inf")
+
+
 def seed_metrics(members, Xva, yva, Xte, eps_list=EPSILONS, with_reasons=False) -> dict:
     mono = [m for m in members if not monotone_violation(m, Xva, yva)]
     if not mono:
@@ -345,53 +361,54 @@ def seed_metrics(members, Xva, yva, Xte, eps_list=EPSILONS, with_reasons=False) 
     rows = []
     for m in mono:
         g, z = gating_z(m, Xva, yva)
-        rows.append((m.val_loss / best - 1.0, g, z, material(g, z, best), m))
+        gf, zf = gating_z(m, Xva, yva, floors_declines)
+        rows.append((m.val_loss / best - 1.0, g, z, material(g, z, best), material(gf, zf, best), m))
     rows.sort(key=lambda r: r[0])
     excess = np.array([r[0] for r in rows])
     mat = np.array([r[3] for r in rows])
+    matf = np.array([r[4] for r in rows])
     curve = []
     for e in EPS_GRID:
         inband = excess <= e
         n = int(inband.sum())
         curve.append((float(e), n, float(np.mean(mat[inband] == 1)) if n else float("nan")))
-    # epsilon*: the smallest grid value where the band has >= MIN_G members and more than half are corrected
-    eps_star = next((e for e, n, c in curve if n >= MIN_G and c > 0.5), float("inf"))
-    best_row = rows[0]
     by_eps = {}
     for e in eps_list:
         G = [r for r in rows if r[0] <= e]
         by_eps[str(e)] = {"n_G": len(G), "share_corrected": float(np.mean([r[3] == 1 for r in G])) if G else float("nan"),
-                          "share_worsened": float(np.mean([r[3] == -1 for r in G])) if G else float("nan"),
                           "gain_median": float(np.median([r[1] for r in G])) if G else float("nan")}
+    best_row = rows[0]
     out = {"void": int(np.sum(excess <= 0.05)) < MIN_G, "n_sampled": len(members), "n_monotone": len(mono),
-           "best_loss": best, "eps_star": eps_star, "curve": curve, "by_eps": by_eps,
+           "best_loss": best, "eps_star": eps_star_of(excess, mat), "curve": curve, "by_eps": by_eps,
+           # sensitivity (adversary 3, findings 5 and 7): floors-only gate, and 25% / 75% dominance
+           "eps_star_floors_only": eps_star_of(excess, matf),
+           "eps_star_dominance_25": eps_star_of(excess, mat, 0.25), "eps_star_dominance_75": eps_star_of(excess, mat, 0.75),
+           "gated_accepts_in_validation": int(np.sum((yva == 1) & gate_mask(Xva))),
            "best_tree": {"gain": best_row[1], "z": best_row[2], "material": best_row[3],
-                         "gain_split": getattr(best_row[4], "gain_split", None)},
+                         "gain_split": getattr(best_row[5], "gain_split", None)},
            "pooling_gain_median": float(np.median([r[1] for r in rows if r[3] == 1])) if (mat == 1).any() else float("nan")}
     if with_reasons:
-        G = [r[4] for r in rows if r[0] <= PRIMARY_EPS]
-        out["reason_fidelity"] = reason_fidelity(G, Xte)
+        out["reason_fidelity"] = reason_fidelity([r[5] for r in rows if r[0] <= PRIMARY_EPS], Xte)
     return out
 
 
-def seed_verdict(s: dict) -> str:
-    """r5, regions fixed in the pre-reg: CONTRADICTS if the best tree is materially worsened by the gate; KILL if
-    epsilon* > 0.02; POLICY_MATTERS if epsilon* < 0.005; DEPENDS_ON_EPSILON otherwise."""
-    if s["void"]:
-        return "VOID"
-    if s["best_tree"]["material"] == -1:
-        return "CONTRADICTS"
-    if s["eps_star"] > EPS_STAR_KILL:
+def region(eps_star: float) -> str:
+    if eps_star > EPS_STAR_KILL:
         return "KILL"
-    if s["eps_star"] < EPS_STAR_MATTERS:
+    if eps_star < EPS_STAR_MATTERS:
         return "POLICY_MATTERS"
     return "DEPENDS_ON_EPSILON"
+
+
+def seed_verdict(s: dict) -> str:
+    """r5: by the region of epsilon*. (CONTRADICTS removed: it can't fire before CONSTRUCT_INVALID; adversary 3.)"""
+    return "VOID" if s["void"] else region(s["eps_star"])
 
 
 def overall_verdict(per_seed: list[str]) -> str:
     if sum(v == "VOID" for v in per_seed) > 1:
         return "INCONCLUSIVE"
-    for v in ("KILL", "POLICY_MATTERS", "CONTRADICTS", "DEPENDS_ON_EPSILON", "INCONCLUSIVE"):
+    for v in ("KILL", "POLICY_MATTERS", "DEPENDS_ON_EPSILON"):
         if sum(x == v for x in per_seed) >= 4:
             return v
     return "INCONCLUSIVE"
@@ -407,7 +424,7 @@ def split(X, y, seed=SEED):
     return {k: np.concatenate(v) for k, v in parts.items()}
 
 
-def run(X, y, seeds=SEEDS, n_trees=N_TREES, eps_list=EPSILONS, reasons=True) -> dict:
+def run(X, y, seeds=SEEDS, n_trees=N_TREES, eps_list=EPSILONS, reasons=True, capacity=True) -> dict:
     sp = split(X, y)
     Xtr, ytr, Xva, yva, Xte = X[sp["tr"]], y[sp["tr"]], X[sp["va"]], y[sp["va"]], X[sp["te"]]
     cs = construct_share(X, y)
@@ -422,6 +439,23 @@ def run(X, y, seeds=SEEDS, n_trees=N_TREES, eps_list=EPSILONS, reasons=True) -> 
     stars = [res["seeds"][s]["eps_star"] for s in seeds if not res["seeds"][s]["void"]]
     res["per_seed"], res["verdict"] = per, overall_verdict(per)
     res["eps_star_median"] = float(np.median(stars)) if stars else float("nan")
+    res["eps_star_range"] = [float(min(stars)), float(max(stars))] if stars else None
+    # capacity check: deeper trees must put epsilon* in the same region, or the verdict is about tree size
+    if capacity and res["verdict"] in ("KILL", "POLICY_MATTERS", "DEPENDS_ON_EPSILON"):
+        global DEPTHS
+        old = DEPTHS
+        DEPTHS = CAPACITY_DEPTHS
+        try:
+            cap = {}
+            for s in seeds[:CAPACITY_SEEDS]:
+                members = sample_trees(Xtr, ytr, Xva, yva, s + 1000, n_trees)
+                cap[s + 1000] = seed_metrics(members, Xva, yva, Xte, eps_list)["eps_star"]
+        finally:
+            DEPTHS = old
+        res["capacity_eps_star"] = cap
+        res["capacity_regions"] = [region(v) for v in cap.values()]
+        if any(r != res["verdict"] for r in res["capacity_regions"]):
+            res["primary_verdict"], res["verdict"] = res["verdict"], "CAPACITY_DEPENDENT"
     return res
 
 

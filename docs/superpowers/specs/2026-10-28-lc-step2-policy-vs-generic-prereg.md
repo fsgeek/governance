@@ -1,9 +1,13 @@
-# Pre-registration (DRAFT, not frozen): does compiling LendingClub's written policy change the set of good models? (step 2, P vs G)
+# Pre-registration (FROZEN): does compiling LendingClub's written policy change the set of good models? (step 2, P vs G)
 
-**Status: DRAFT.** It freezes as a new file, with its harness (`scripts/lc_policy/pvg.py` and tests), in one stamped
-commit, after a blind adversary and a widener, and after the harness passes on constructed violators. **No model is
-fit on real data before that commit.** Seen so far: column names; sample counts for the window (322,366 Policy-Code-0
-rejects, 1.3% missing risk score; 35,047 accepts); step 1's result.
+**Status: FROZEN (r5)** in this file's first commit (its OTS stamp is the freeze), together with the harness at:
+- `scripts/lc_policy/pvg.py` sha256 `7a5638a4882ffc7969f97e86ba0b0870287967494fbe57736af93866f9b2d18b`
+- `scripts/lc_policy/test_pvg.py` sha256 `70ad19bc70097a9062893e9d5f7fc498ab9b068620d3a5d959bc7e78d1817ef9` (23 constructed tests, passing at freeze)
+
+Three blind adversary passes were run before the freeze, and the stop rule was not triggered at pass 3. **No model has
+been fit on real data** before this commit. Seen so far: column names; window counts; step 1's result. The run is
+`uv run python scripts/lc_policy/pvg.py`, unmodified, and its output is committed as the result. Sections §3–§6 and §8
+are the operative r5 text. The sections at the end are the dated design history (r1–r5) and are kept as the record.
 
 **Program context.** This is the one experiment the closing note's 10-26 addendum reopened. Step 1 (GOVERNS) showed the
 written DTI cap is the operative one. The design note (`2026-10-26-lc-step2-design-note.md`, retraction section) records
@@ -23,8 +27,8 @@ The test is the only quantified policy content beyond sign constraints that the 
 ## 2. Data
 
 - **Applications, 2011-01-06 to 2012-05-31.** Rejects: `Policy Code == 0` by `Application Date`. Accepts:
-  `policy_code == 1`, Individual, Cash, `issue_d` 2011-02 to 2012-05 (issue month, so the first window month is
-  dropped for the lag). Label: accepted = 1.
+  `policy_code == 1`, Individual, Cash, `issue_d` 2011-03 to 2012-05. Starting at 2011-03 means issue months can't
+  predate applications made before the 2011-01-06 rule. Label: accepted = 1.
 - **Features, common to both files:**
   - score: rejects `Risk_Score`; accepts `fico_range_low`. Both are put in 5-point buckets. FICO throughout, since the
     Vantage switch is 2013-11-05.
@@ -32,7 +36,8 @@ The test is the only quantified policy content beyond sign constraints that the 
   - amount requested / `loan_amnt`;
   - employment length (both files use the same text categories, mapped to 0–10, "n/a" = −1).
   - No state, no date: the rule doesn't use them.
-- Rows missing score or DTI are excluded and counted.
+- Rows missing score, DTI or amount are excluded and counted. Employment coded −1 (n/a, missing, unmapped) is
+  reported as a share per file, since a coding difference between files would let `emp` mark the file of origin.
 - Split 55/22/23 train/validation/test, stratified by label, seed 20261027.
 
 ## 3. Arms (r5)
@@ -58,7 +63,7 @@ The test is the only quantified policy content beyond sign constraints that the 
   tree). Material if |z| > 3 **and** |gain| > 0.001 × best loss. The gain is reported split into reject-row savings and
   accept-row penalty.
 - Every verdict branch is shown reachable on constructed lenders: KILL, POLICY_MATTERS and CONSTRUCT_INVALID end to
-  end; DEPENDS_ON_EPSILON on the LendingClub-shaped follower (§6); CONTRADICTS by unit test.
+  end; DEPENDS_ON_EPSILON on the LendingClub-shaped follower (§6).
 
 ## 5. Primary quantity: ε\*
 
@@ -69,12 +74,21 @@ corrected) is reported, along with the median gain of corrected trees.
 
 ## 6. Verdict (per seed; 5 seeds; ≥ 4 of 5 non-VOID must agree)
 
-- **CONTRADICTS:** the best tree is materially *worsened* by the gate (the record disagrees with the decisions).
 - **KILL:** ε\* > 0.02. Rule-misstating models sit outside any reasonable band, so compiling adds nothing.
 - **POLICY_MATTERS:** ε\* < 0.005. Even tight bands are dominated by models the record corrects.
 - **DEPENDS_ON_EPSILON:** otherwise, reported with ε\*. Whether the record matters depends on how much fit an analyst
   will trade, and ε\* says exactly how much.
-- **VOID** if fewer than 200 monotone trees have excess ≤ 0.05. **CONSTRUCT_INVALID** before everything else, per §4.
+- **VOID** if fewer than 200 monotone trees have excess ≤ 0.05. **CONSTRUCT_INVALID** before everything else, per §4:
+  accepts inside the gate are above **0.5%** of accepts (0.05% was about 17 loans). This also carries "the record
+  disagrees with the decisions". CONTRADICTS is removed because it couldn't fire first (adversary 3).
+- **Capacity check (adversary 3, finding 1):** 3 more seeds sample trees of depth {5, 6}. If their ε\* falls in a
+  different region from the primary verdict, the verdict becomes **CAPACITY_DEPENDENT** and both are reported.
+  Every verdict sentence below is about **trees of depth ≤ 4**.
+- **Seeds share one train/validation/test split**, so they repeat the tree sampling only, and 4-of-5 agreement is
+  close to automatic. The ε\* range across seeds is reported.
+- **Sensitivity (reported):** ε\* under a floors-only gate (FICO 660 / DTI 30, so how much of ε\* comes from the 720
+  interaction itself), and at 25% and 75% dominance. Accepts inside the gate are excluded from the materiality test
+  and counted.
 
 **Synthetic expectation, recorded before any fit.** A LendingClub-shaped follower (357,000 rows, 10% accepts, 3 seeds)
 gave ε\* = 0.0103 in every seed. The curve is a step: share corrected 0 up to 0.83%, then 0.74 at 1.6%. The best tree is
@@ -83,11 +97,14 @@ Real decisions may put ε\* anywhere. ε\* is a measurement of the real model la
 r1–r4 failed on exactly that point.
 
 **What each verdict claims (widener's sentences, written before the result):**
-- **KILL:** the record adds no constraint on near-optimal models of this lender's decisions; its value is dating and
-  attesting the rule.
-- **POLICY_MATTERS:** models nearly as good as the best misstate the rule, so a model fit to the decisions isn't
-  evidence of what the rule was.
-- **DEPENDS:** the same claim, true beyond a stated fit cost ε\*.
+- **KILL:** the record adds no constraint on near-optimal depth-≤4 tree models of this lender's decisions; its value
+  is dating and attesting the rule.
+- **POLICY_MATTERS:** depth-≤4 tree models within 0.5% of the best are mostly corrected by the record, so a model fit
+  to the decisions isn't evidence of what the rule was.
+- **DEPENDS_ON_EPSILON:** the same claim, true beyond a stated fit cost ε\*.
+- **CAPACITY_DEPENDENT:** the answer depends on tree size, so no claim about the record.
+- **CONSTRUCT_INVALID:** the two public files disagree with the written rule (or with each other) too much for the
+  gate to measure models. This is reported as a data finding.
 
 All of these are N = 1: one lender, one rule.
 
@@ -110,15 +127,14 @@ carries information historical data lacks. It doesn't enter the verdict.
 | Verdict POLICY_MATTERS | 0.20 |
 | Verdict DEPENDS_ON_EPSILON | 0.45 |
 | Verdict CONSTRUCT_INVALID | 0.10 |
-| Verdict CONTRADICTS or INCONCLUSIVE | 0.05 |
+| Verdict CAPACITY_DEPENDENT or INCONCLUSIVE | 0.05 |
 | ε\* (median over seeds) in [0.005, 0.02] | 0.50 |
 | At least 4 of 5 seeds non-VOID | 0.70 |
 | Reason fidelity: outside-truth share ≥ 0.10 | 0.40 |
 
-(Revised at r3 and r4, before any fit. A LendingClub-shaped constructed follower gives POLICY_MATTERS at ε = 0.01:
-81% of the band is corrected by the record. So POLICY_MATTERS is the expected branch *if* real decisions look like the
-synthetic follower. Real reject composition may differ: if near-optimal trees on real data find the staircase, KILL.
-The constructed expectation is recorded so the real result can be read against it, not fitted to it.)
+(Revised at r5 before any fit. The synthetic follower gives DEPENDS_ON_EPSILON with ε\* ≈ 0.0103; real decisions
+with structure outside the rule, such as amount, push ε\* down, as the adversary showed with 0.0017. CONSTRUCT_INVALID
+is plausible on real data, because accepted DTI is post-verification and rejects' DTI is at application.)
 
 ## 9. What each verdict means for the program
 

@@ -183,7 +183,6 @@ def test_verdicts():
     assert V.seed_verdict({**b, "eps_star": 0.002}) == "POLICY_MATTERS"
     assert V.seed_verdict({**b, "eps_star": 0.008}) == "DEPENDS_ON_EPSILON"
     assert V.seed_verdict({**b, "eps_star": float("inf")}) == "KILL"           # no band is ever dominated
-    assert V.seed_verdict({**b, "best_tree": {"material": -1}}) == "CONTRADICTS"
     assert V.seed_verdict({**b, "void": True}) == "VOID"
     assert V.overall_verdict(["DEPENDS_ON_EPSILON"] * 4 + ["KILL"]) == "DEPENDS_ON_EPSILON"
     assert V.overall_verdict(["KILL"] * 3 + ["VOID"] * 2) == "INCONCLUSIVE"
@@ -194,6 +193,17 @@ def test_construct_share_and_tolerant_gate():
     assert V.gate_mask(X).tolist() == [False, False, True, False, True]    # 25.0 and the 715 bucket are tolerated
     y = np.array([1, 1, 1, 1, 0])
     assert V.construct_share(X, y) == 0.25
+
+
+def test_gated_accepts_are_excluded_from_the_materiality_test():
+    """Adversary 3, finding 2: a handful of accepts inside the gate (13.8 nats each) mustn't swamp a real gain."""
+    Xf, yf = realistic(150000, V.written_rule_declines, seed=1, p_other=0.9, sparse_cell=False)
+    coarse = fit(Xf, yf, depth=1, leaf=300)
+    Xv, yv = Xf[:50000].copy(), yf[:50000].copy()
+    g0, z0 = V.gating_z(coarse, Xv, yv)
+    Xv[:6] = [700.0, 27.0, 10000.0, 3.0]; yv[:6] = 1           # six accepted rows inside the gate
+    g1, z1 = V.gating_z(coarse, Xv, yv)
+    assert z0 > 3 and z1 > 3 and abs(g1 - g0) / g0 < 0.05
 
 
 def test_one_accepted_row_in_the_gate_costs_13_8_nats():
@@ -217,7 +227,21 @@ def test_end_to_end_branches_reachable(p_other, rule, depths, expect):
     old = (V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS)
     V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS = (150, 400), 10, 5, depths
     try:
-        res = V.run(X, y, seeds=V.SEEDS, n_trees=400, eps_list=[0.01], reasons=False)
+        res = V.run(X, y, seeds=V.SEEDS, n_trees=400, eps_list=[0.01], reasons=False, capacity=False)
     finally:
         V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS = old
     assert res["verdict"] == expect, (res.get("per_seed"), res.get("eps_star_median"), res.get("construct_share"))
+
+
+def test_capacity_check_downgrades_a_size_driven_verdict():
+    """Adversary 3, finding 1: a follower fit with depth-1 trees reads POLICY_MATTERS; deeper trees learn the rule, so
+    the frozen verdict must become CAPACITY_DEPENDENT rather than claim the record corrects models in general."""
+    X, y = realistic(80000, V.written_rule_declines, seed=7, p_other=0.9, sparse_cell=False)
+    old = (V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS, V.CAPACITY_SEEDS)
+    V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS, V.CAPACITY_SEEDS = (150, 400), 10, 5, (1,), 2
+    try:
+        res = V.run(X, y, seeds=V.SEEDS, n_trees=300, eps_list=[0.01], reasons=False, capacity=True)
+    finally:
+        V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS, V.CAPACITY_SEEDS = old
+    assert res["primary_verdict"] == "POLICY_MATTERS" and res["verdict"] == "CAPACITY_DEPENDENT", res.get("capacity_regions")
+    assert V.DEPTHS == old[3]                                   # the global depth list is restored
