@@ -30,11 +30,24 @@ def cap30(s, d, tol_dti=0.0, tol_score=0.0):
     return (np.asarray(s) < 660) | (np.asarray(d) >= 30 + tol_dti)
 
 
-def fit(X, y, cols=(0, 1), depth=4, leaf=200):
+def fit(X, y, cols=(0, 1), depth=4, leaf=200, mono_cst=False):
     cols = list(cols)
-    t = DecisionTreeClassifier(max_depth=depth, min_samples_leaf=leaf,
-                               monotonic_cst=[V.MONO[c] for c in cols], random_state=0).fit(X[:, cols], y)
+    t = DecisionTreeClassifier(max_depth=depth, min_samples_leaf=leaf, random_state=0,
+                               monotonic_cst=[V.MONO[c] for c in cols] if mono_cst else None).fit(X[:, cols], y)
     return V.Member(t, cols, depth, leaf)
+
+
+def test_sklearn_monotonic_cst_cannot_represent_the_rule_but_the_filter_admits_it():
+    """The r3 trap: sklearn's monotonic_cst midpoint bounds forbid the 720 interaction leaf. Built on it, G could
+    never embody the written rule and the verdict would be POLICY_MATTERS for any lender."""
+    X, y = realistic(150000, V.written_rule_declines, seed=1, p_other=0.9, sparse_cell=False)
+    ref = (X[:50000], y[:50000])
+    cst, free = fit(X, y, depth=4, leaf=300, mono_cst=True), fit(X, y, depth=4, leaf=300)
+    for m in (cst, free):
+        m.val_loss = V.logloss(ref[1], V.p_accept(m, ref[0]))
+    assert V.gating_gain(cst, *ref) > 0.01             # constrained: can't find the staircase
+    assert abs(V.gating_gain(free, *ref)) < 1e-3        # unconstrained: finds it exactly
+    assert not V.monotone_violation(free, X[50000:100000], y[50000:100000])   # and the exact filter admits it
 
 
 def test_rule_and_tolerances():
@@ -64,13 +77,28 @@ def test_leaf_boxes_match_sklearn_apply():
     assert np.allclose(leaf_p, V.p_accept(m, Z))                            # and it's sklearn's leaf
 
 
-def test_follower_respects_and_cap30_lender_violates():
-    Xf, yf = realistic(120000, V.written_rule_declines, seed=1, sparse_cell=False)
-    Xc, yc = realistic(120000, cap30, seed=1, sparse_cell=False)
-    follows, ignores = fit(Xf, yf, leaf=300), fit(Xc, yc, leaf=300)
-    assert not V.violates(follows, Xf[:40000])
+def test_gating_gain_zero_for_a_tree_that_found_the_rule_and_positive_for_one_that_pooled():
+    Xf, yf = realistic(150000, V.written_rule_declines, seed=1, p_other=0.9, sparse_cell=False)
+    sharp = fit(Xf, yf, depth=4, leaf=300)
+    sharp.val_loss = V.logloss(yf[:50000], V.p_accept(sharp, Xf[:50000]))
+    assert abs(V.gating_gain(sharp, Xf[:50000], yf[:50000])) < 1e-3
+    coarse = fit(Xf, yf, depth=1, leaf=300)                    # one split can't hold the staircase
+    coarse.val_loss = V.logloss(yf[:50000], V.p_accept(coarse, Xf[:50000]))
+    assert V.gating_gain(coarse, Xf[:50000], yf[:50000]) > 0.005
+
+
+def test_gating_hurts_when_the_lender_did_not_follow_the_rule():
+    Xc, yc = realistic(150000, cap30, seed=1, p_other=0.9, sparse_cell=False)
+    m = fit(Xc, yc, depth=4, leaf=300)
+    m.val_loss = V.logloss(yc[:50000], V.p_accept(m, Xc[:50000]))
+    assert V.gating_gain(m, Xc[:50000], yc[:50000]) < -0.005
+
+
+def test_cap30_lender_violates_but_respects_floors():
+    Xc, yc = realistic(120000, cap30, seed=1, p_other=0.9, sparse_cell=False)
+    ignores = fit(Xc, yc, leaf=300)
     assert V.violates(ignores, Xc[:40000])
-    assert not V.violates(ignores, Xc[:40000], V.floors_declines)       # it respects the floors alone
+    assert not V.violates(ignores, Xc[:40000], V.floors_declines)
 
 
 def test_violation_only_at_a_non_median_amount_is_caught():
@@ -95,13 +123,42 @@ def test_violation_needs_test_mass():
     assert V.violation_mass(m, X[:3][X[:3, 1] < 20]) < V.MIN_MASS          # no applicants in the region, no violation
 
 
-def test_monotone_constraint_holds_on_constructed_reversal():
-    """G is trained monotone: even on labels that reward low scores, P(accept) can't fall as score rises."""
+def test_monotone_filter_rejects_a_reversal_and_tolerates_small_noise():
     X, y = realistic(40000, V.written_rule_declines, seed=5)
-    m = fit(X, 1 - y)
-    grid = np.column_stack([np.arange(600, 820, 5.0), np.full(44, 15.0), np.full(44, 10000.0), np.zeros(44)])
-    p = V.p_accept(m, grid)
-    assert np.all(np.diff(p) >= -1e-12)
+    rev = fit(X[:30000], 1 - y[:30000])
+    assert V.monotone_violation(rev, X[30000:], 1 - y[30000:])   # rewards low scores / high DTI
+    rng = np.random.default_rng(9)
+    n = 60000
+    Xn = np.column_stack([V.bucket5(rng.uniform(640, 800, n)), rng.uniform(0, 20, n), np.zeros(n), np.zeros(n)])
+    yn = (rng.random(n) < 0.3).astype(int)                  # flat rate: leaf noise only, well under DELTA
+    noise = fit(Xn[:30000], yn[:30000], depth=3, leaf=3000)
+    assert not V.monotone_violation(noise, Xn[30000:], yn[30000:])   # held-out estimates don't
+
+
+def test_seed_metrics_uses_heldout_leaves_for_monotonicity():
+    """The pipeline path, not just the helper: a noise tree whose TRAINING leaves show a selection-inflated gap must
+    still count as monotone in seed_metrics, because seed_metrics estimates leaves on validation rows."""
+    rng = np.random.default_rng(9)
+    n = 60000
+    Xn = np.column_stack([V.bucket5(rng.uniform(640, 800, n)), rng.uniform(0, 20, n), np.zeros(n), np.zeros(n)])
+    yn = (rng.random(n) < 0.3).astype(int)
+    noise = fit(Xn, yn, depth=3, leaf=3000)
+    assert V.monotone_violation(noise)                      # training leaves: flagged (the trap)
+    r2 = np.random.default_rng(10)                          # an independent held-out draw of the same noise
+    Xh = np.column_stack([V.bucket5(r2.uniform(640, 800, n)), r2.uniform(0, 20, n), np.zeros(n), np.zeros(n)])
+    yh = (r2.random(n) < 0.3).astype(int)
+    noise.val_loss = V.logloss(yh, V.p_accept(noise, Xh))
+    out = V.seed_metrics([noise], Xh, yh, Xh, 0.01)
+    assert out["n_monotone"] == 1
+
+
+def test_leaf_box_order_matches_tree_node_order():
+    X, y = realistic(30000, V.written_rule_declines)
+    m = fit(X, y, cols=(0, 1, 2))
+    tr = m.tree.tree_
+    leaves = [j for j in range(tr.node_count) if tr.children_left[j] == -1]
+    boxes = V.leaf_boxes(m, with_n=True)
+    assert [n for _, _, n in boxes] == [int(tr.n_node_samples[j]) for j in leaves]
 
 
 def test_first_reason_and_fidelity():
@@ -120,25 +177,56 @@ def test_straddle32():
 
 
 def test_verdicts():
-    b = {"void": False, "retention": 0.95}
+    b = {"void": False, "share_corrected": 0.02, "share_worsened": 0.0}
     assert V.seed_verdict(b) == "KILL"
-    assert V.seed_verdict({**b, "retention": 0.4}) == "POLICY_MATTERS"
-    assert V.seed_verdict({**b, "retention": 0.7}) == "INCONCLUSIVE"
+    assert V.seed_verdict({**b, "share_corrected": 0.7}) == "POLICY_MATTERS"
+    assert V.seed_verdict({**b, "share_worsened": 0.7}) == "CONTRADICTS"
+    assert V.seed_verdict({**b, "share_corrected": 0.3}) == "INCONCLUSIVE"
     assert V.seed_verdict({**b, "void": True}) == "VOID"
     assert V.overall_verdict(["KILL"] * 4 + ["VOID"]) == "KILL"
     assert V.overall_verdict(["KILL"] * 3 + ["VOID"] * 2) == "INCONCLUSIVE"
     assert V.overall_verdict(["KILL"] * 3 + ["INCONCLUSIVE"] * 2) == "INCONCLUSIVE"
 
 
-@pytest.mark.parametrize("rule,expect", [(V.written_rule_declines, "KILL"), (cap30, "POLICY_MATTERS")])
-def test_end_to_end_realistic_lenders(rule, expect):
-    """Realistic imbalance and a sparse 720 cell, leaves scaled to the sample: a follower gives KILL, a lender that
-    ignores the conditional gives POLICY_MATTERS."""
-    X, y = realistic(80000, rule, seed=7)
-    old = (V.LEAVES, V.MIN_G, V.MIN_MASS)
-    V.LEAVES, V.MIN_G, V.MIN_MASS = (150, 400), 10, 5
+def test_significant_but_negligible_gains_are_not_material():
+    """r4 power check: with ~78k validation rows a gain of 2.5e-6 nats is 'significant'. It must not count."""
+    rng = np.random.default_rng(3)
+    n = 80000
+    X = np.column_stack([V.bucket5(rng.uniform(660, 800, n)), rng.uniform(0, 24, n), np.zeros(n), np.zeros(n)])
+    y = (rng.random(n) < 0.3).astype(int)            # everyone eligible under the rule: no gating effect at all
+    m = fit(X, y, depth=2, leaf=3000)
+    m.val_loss = V.logloss(y, V.p_accept(m, X))
+    # move a sliver of validation rows into the declined region with label 0: a tiny, significant gating gain
+    Xs = X.copy(); Xs[:200, 1] = 26.0
+    ys = y.copy(); ys[:200] = 0
+    m.val_loss = V.logloss(ys, V.p_accept(m, Xs))
+    g, z = V.gating_z(m, Xs, ys)
+    assert z > 3 and g < 0.001 * m.val_loss
+    out = V.seed_metrics([m], Xs, ys, Xs, 0.01)
+    assert out["share_significant_any_size"] == 1.0 and out["share_corrected"] == 0.0
+
+
+def test_gating_z_is_zero_for_a_rule_embodying_tree_and_large_for_a_pooling_one():
+    Xf, yf = realistic(150000, V.written_rule_declines, seed=1, p_other=0.9, sparse_cell=False)
+    sharp, coarse = fit(Xf, yf, depth=4, leaf=300), fit(Xf, yf, depth=1, leaf=300)
+    assert abs(V.gating_z(sharp, Xf[:50000], yf[:50000])[1]) < 3
+    assert V.gating_z(coarse, Xf[:50000], yf[:50000])[1] > 3
+
+
+@pytest.mark.parametrize("p_other,rule,depths,expect", [
+    (0.9, V.written_rule_declines, (2, 3, 4), "KILL"),           # follower; trees can find the staircase
+    (0.9, cap30, (2, 3, 4), "CONTRADICTS"),                      # lender ignored the 720 conditional
+    (0.9, V.written_rule_declines, (1,), "POLICY_MATTERS"),      # follower; models too coarse to hold the rule
+])
+def test_end_to_end_every_branch_reachable(p_other, rule, depths, expect):
+    """r3 must be able to say KILL, CONTRADICTS and POLICY_MATTERS on constructed lenders."""
+    X, y = realistic(80000, rule, seed=7, p_other=p_other, sparse_cell=False)
+    old = (V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS)
+    V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS = (150, 400), 10, 5, depths
     try:
-        res = V.run(X, y, seeds=V.SEEDS, n_trees=150, eps_list=[0.01], reasons=False)
+        res = V.run(X, y, seeds=V.SEEDS, n_trees=400, eps_list=[0.01], reasons=False)
     finally:
-        V.LEAVES, V.MIN_G, V.MIN_MASS = old
-    assert res["verdict"] == expect, res["per_seed_primary"]
+        V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS = old
+    assert res["verdict"] == expect, (res["per_seed_primary"],
+                                      [res["seeds"][k]["0.01"].get("gain_median") for k in res["seeds"]],
+                                      [res["seeds"][k]["0.01"].get("n_G") for k in res["seeds"]])

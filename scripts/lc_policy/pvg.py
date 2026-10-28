@@ -1,8 +1,10 @@
-"""Step 2 (r2): P (compiled written policy) vs G (generic monotone) on LendingClub decisions, 2011-01-06 to 2012-05-31.
+"""Step 2 (r3): P (compiled written policy) vs G (generic monotone) on LendingClub decisions, 2011-01-06 to 2012-05-31.
 
 Implements docs/superpowers/specs/2026-10-27-lc-step2-policy-vs-generic-prereg-DRAFT.md (r2). r2 rebuilt after the
 blind adversary's four blockers: G is trained monotone (not filtered), the policy check is exact on leaf boxes at the
 probability level (no decision threshold), the verdict rests on retention, and a reason-fidelity metric is added.
+r3: "compiling" the policy = gating each G member with the written rule (P(accept) := 0 where the rule declines). The
+verdict compares the validation log-loss gain from gating with the Rashomon band width eps*best (pre-reg §6 r3).
 `main()` reads the real files and must not run before the freeze commit.
 """
 from __future__ import annotations
@@ -32,7 +34,9 @@ EPSILONS = [0.005, 0.01, 0.02]
 PRIMARY_EPS = 0.01
 MIN_G = 200
 DEPTHS, LEAVES = (2, 3, 4), (1000, 3000)
-RHO = 0.01              # a leaf "accepts" if its P(accept) exceeds this
+RHO = 0.01              # a leaf "accepts" if its P(accept) exceeds this (diagnostic only)
+DELTA = 0.02            # monotonicity tolerance floor on leaf P(accept) (r1 adversary finding 2)
+Z_MONO = 3.0            # ...and at least this many standard errors of the leaf-pair difference (leaf noise)
 MIN_MASS = 10           # a violation needs at least this many test applicants inside it
 DTI_TOL, SCORE_TOL = 0.5, 5.0
 WINDOW = ("2011-01-06", "2012-05-31")
@@ -98,9 +102,9 @@ def p_accept(m: Member, X: np.ndarray) -> np.ndarray:
     return p[:, list(m.tree.classes_).index(1)] if 1 in m.tree.classes_ else np.zeros(len(X))
 
 
-def leaf_boxes(m: Member) -> list[tuple[dict, float]]:
-    """Every leaf as ({feature: (lo, hi)} on the FULL feature index, P(accept)). Intervals are (lo, hi]: sklearn
-    sends x <= t left."""
+def leaf_boxes(m: Member, with_n: bool = False) -> list:
+    """Every leaf as ({feature: (lo, hi)} on the FULL feature index, P(accept)[, n samples]). Intervals are (lo, hi]:
+    sklearn sends x <= t left."""
     tr = m.tree.tree_
     k1 = list(m.tree.classes_).index(1) if 1 in m.tree.classes_ else None
     out = []
@@ -109,7 +113,7 @@ def leaf_boxes(m: Member) -> list[tuple[dict, float]]:
         if tr.children_left[node] == -1:
             v = tr.value[node][0]
             p = float(v[k1] / v.sum()) if k1 is not None and v.sum() > 0 else 0.0
-            out.append((dict(box), p))
+            out.append((dict(box), p, int(tr.n_node_samples[node])) if with_n else (dict(box), p))
             return
         f, t = m.cols[tr.feature[node]], float(tr.threshold[node])
         lo, hi = box.get(f, (-np.inf, np.inf))
@@ -155,13 +159,90 @@ def sample_trees(Xtr, ytr, Xva, yva, seed: int, n: int = N_TREES) -> list[Member
         cols = SUBSETS[rng.randint(len(SUBSETS))]
         depth, leaf = int(rng.choice(DEPTHS)), int(rng.choice(LEAVES))
         rows = rng.randint(0, len(Xtr), min(BOOT, len(Xtr)))
-        t = DecisionTreeClassifier(max_depth=depth, min_samples_leaf=leaf, monotonic_cst=[MONO[c] for c in cols],
+        # Unconstrained, then filtered by the exact leaf-box monotonicity check. NOT sklearn's monotonic_cst: its
+        # midpoint bounds are sufficient but not necessary, and forbid the 720 interaction leaf the written rule needs
+        # (constructed follower: monotonic_cst gain 0.08, unconstrained 0.0).
+        t = DecisionTreeClassifier(max_depth=depth, min_samples_leaf=leaf,
                                    random_state=(seed * 10_000 + i) % 4_294_967_295)
         t.fit(Xtr[rows][:, cols], ytr[rows])
         m = Member(t, cols, depth, leaf)
         m.val_loss = logloss(yva, p_accept(m, Xva))
         out.append(m)
     return out
+
+
+def p_gated(m: Member, X: np.ndarray) -> np.ndarray:
+    """The compiled model: the member's P(accept), set to 0 wherever the written rule (as written) declines."""
+    return np.where(written_rule_declines(X[:, SCORE], X[:, DTI]), 0.0, p_accept(m, X))
+
+
+def row_losses(y, p):
+    p = np.clip(p, 1e-6, 1 - 1e-6)
+    return -(y * np.log(p) + (1 - y) * np.log(1 - p))
+
+
+def gating_gain(m: Member, Xva: np.ndarray, yva: np.ndarray) -> float:
+    """Validation log-loss improvement from compiling the policy into m (positive = the gate helps)."""
+    return m.val_loss - logloss(yva, p_gated(m, Xva))
+
+
+Z_GAIN = 3.0   # a gating gain is material if its paired z exceeds this (r3 power check: eps-relative bars knife-edged)
+MAG_FLOOR = 0.001   # ...AND its size exceeds this fraction of best loss (r4 power check: z alone flagged 2.5e-6 nats at n=78k)
+MAG_SENS = (0.0001, 0.003)
+
+
+def gating_z(m: Member, Xva: np.ndarray, yva: np.ndarray) -> tuple[float, float]:
+    """Paired test of the gating gain over validation rows: mean and z of per-row (loss - gated loss)."""
+    d = row_losses(yva, p_accept(m, Xva)) - row_losses(yva, p_gated(m, Xva))
+    sd = float(d.std(ddof=1))
+    mean = float(d.mean())
+    return mean, (mean / (sd / math.sqrt(len(d))) if sd > 0 else (math.inf if mean > 0 else (-math.inf if mean < 0 else 0.0)))
+
+
+def heldout_leaf_stats(m: Member, Xref: np.ndarray, yref: np.ndarray) -> dict:
+    """Leaf P(accept) and n estimated on held-out rows. CART chooses splits to maximise leaf differences, so training
+    leaf values are selection-biased: on pure noise a depth-3 tree showed a 3.8-SE gap between leaves."""
+    leaf_of = m.tree.apply(Xref[:, m.cols].astype(np.float32))
+    stats = {}
+    for leaf in np.unique(leaf_of):
+        yy = yref[leaf_of == leaf]
+        stats[int(leaf)] = (float(yy.mean()), int(len(yy)))
+    return stats
+
+
+def monotone_violation(m: Member, Xref: np.ndarray = None, yref: np.ndarray = None, delta: float = DELTA) -> bool:
+    """Exact over leaf boxes: a violation is a pair of leaves A, B where some point of B dominates some point of A
+    (score at least as high, DTI at least as low, every other feature overlapping) and p(A) - p(B) exceeds both delta
+    and Z_MONO standard errors of the difference. A fixed delta alone flags leaf noise: at min leaf 1000-3000 the SE of
+    a leaf-pair difference is about 0.012 (constructed rule and flat-noise trees failed with delta = 0.02 alone)."""
+    tr = m.tree.tree_
+    leaves = [j for j in range(tr.node_count) if tr.children_left[j] == -1]
+    boxes = leaf_boxes(m, with_n=True)          # same depth-first order as `leaves`
+    if Xref is not None:
+        st = heldout_leaf_stats(m, Xref, yref)
+        boxes = [(b, *st.get(j, (p, 0))) for (b, p, _), j in zip(boxes, leaves)]
+        boxes = [x for x in boxes if x[2] > 0]   # a leaf with no held-out rows says nothing
+    def iv(box, f):
+        return box.get(f, (-np.inf, np.inf))
+    for a, pa, na in boxes:
+        for b, pb, nb in boxes:
+            se = math.sqrt(pa * (1 - pa) / max(na, 1) + pb * (1 - pb) / max(nb, 1))
+            if pa - pb <= max(delta, Z_MONO * se):
+                continue
+            ok = True
+            for f in range(len(FEATURES)):
+                (alo, ahi), (blo, bhi) = iv(a, f), iv(b, f)
+                if f == SCORE:
+                    ok &= bhi > alo                 # some score in B >= some score in A
+                elif f == DTI:
+                    ok &= blo < ahi                 # some DTI in B <= some DTI in A
+                else:
+                    ok &= (blo < ahi) and (alo < bhi)   # overlap
+                if not ok:
+                    break
+            if ok:
+                return True
+    return False
 
 
 def band(members: list[Member], eps: float) -> list[Member]:
@@ -200,8 +281,9 @@ def straddle32(t: float) -> tuple[float, float]:
 
 
 def reason_fidelity(P: list[Member], Xte: np.ndarray, n_app: int = 300, seed: int = SEED) -> dict:
-    """Over test applicants the written rule declines (no tolerance) and each member of P declines (P <= RHO):
-    the share of (applicant, member) pairs whose first reason is outside the rule's own reasons."""
+    """Over test applicants the written rule declines (no tolerance), for each member: the share of (applicant,
+    member) pairs whose first reason (the single feature change that most raises P(accept)) is outside the rule's
+    own reasons."""
     d = written_rule_declines(Xte[:, SCORE], Xte[:, DTI])
     idx = np.where(d)[0]
     if not len(idx) or not P:
@@ -213,8 +295,6 @@ def reason_fidelity(P: list[Member], Xte: np.ndarray, n_app: int = 300, seed: in
         x = Xte[i]
         truth = true_reasons(x[SCORE], x[DTI])
         for m in P:
-            if p_accept(m, x[None, :])[0] > RHO:
-                continue
             r = first_reason(m, x)
             pairs += 1
             if r is None:
@@ -227,38 +307,71 @@ def reason_fidelity(P: list[Member], Xte: np.ndarray, n_app: int = 300, seed: in
 
 # ---------- verdict ----------
 
-def seed_metrics(members, Xte, eps, with_reasons=False) -> dict:
-    G = band(members, eps)
-    P = [m for m in G if not violates(m, Xte)]
-    P1 = [m for m in G if not violates(m, Xte, floors_declines)]
+def seed_metrics(members, Xva, yva, Xte, eps, with_reasons=False) -> dict:
+    mono = [m for m in members if not monotone_violation(m, Xva, yva)]
+    if not mono:
+        return {"n_G": 0, "void": True, "n_sampled": len(members), "n_monotone": 0}
+    G = band(mono, eps)
+    best = min(m.val_loss for m in mono)
+    E = eps * best
+    gz = [gating_z(m, Xva, yva) for m in G]
+    gains = np.array([g for g, _ in gz]) if G else np.array([])
+    zs = np.array([z for _, z in gz]) if G else np.array([])
+    best_mono = min(m.val_loss for m in mono)
+    def shares(frac):
+        floor = frac * best_mono
+        return (float(np.mean((zs > Z_GAIN) & (gains > floor))) if len(zs) else float("nan"),
+                float(np.mean((zs < -Z_GAIN) & (gains < -floor))) if len(zs) else float("nan"))
+    gated_in_band = sum(1 for m in mono if m.val_loss - gating_gain(m, Xva, yva) <= (1 + eps) * best)
     by = {}
-    for m in G:
-        k = f"d{m.depth}_l{m.leaf}"
-        b = by.setdefault(k, [0, 0]); b[0] += 1; b[1] += int(m in P)
-    out = {"n_G": len(G), "n_P": len(P), "n_P1_floors": len(P1), "void": len(G) < MIN_G,
-           "retention": (len(P) / len(G)) if G else float("nan"),
-           "retention_floors": (len(P1) / len(G)) if G else float("nan"),
-           "retention_interaction_given_floors": (sum(m in P for m in P1) / len(P1)) if P1 else float("nan"),
-           "retention_by_depth_leaf": {k: [v[0], v[1] / v[0]] for k, v in by.items()}}
+    for m, g in zip(G, gains):
+        by.setdefault(f"d{m.depth}_l{m.leaf}", []).append(g)
+    out = {"n_G": len(G), "void": len(G) < MIN_G, "n_sampled": len(members), "n_monotone": len(mono),
+           # r4 primary quantity: the share of the band the written record materially corrects (paired z > 3), and the
+           # share it materially worsens (z < -3, the record disagrees with the decisions)
+           "share_corrected": shares(MAG_FLOOR)[0], "share_worsened": shares(MAG_FLOOR)[1],
+           "magnitude_floor": MAG_FLOOR * best_mono,
+           "sensitivity_corrected_worsened": {str(f): shares(f) for f in MAG_SENS},
+           "share_significant_any_size": float(np.mean(zs > Z_GAIN)) if len(zs) else float("nan"),
+           "band_width_E": E, "best_loss": best,
+           "share_abs_gain_below_0.5E": float(np.mean(np.abs(gains) < 0.5 * E)) if len(gains) else float("nan"),
+           # sensitivity only: the KILL bar is 0.5E (a change under half the band can't move a mid-band model out)
+           "share_abs_gain_below_0.25E": float(np.mean(np.abs(gains) < 0.25 * E)) if len(gains) else float("nan"),
+           "share_abs_gain_below_0.1E": float(np.mean(np.abs(gains) < 0.1 * E)) if len(gains) else float("nan"),
+           "gain_median": float(np.median(gains)) if len(gains) else float("nan"),
+           "gain_p90": float(np.quantile(gains, 0.9)) if len(gains) else float("nan"),
+           "share_gain_below_0.1E": float(np.mean(gains < 0.1 * E)) if len(gains) else float("nan"),
+           "share_gain_above_E": float(np.mean(gains > E)) if len(gains) else float("nan"),
+           "n_in_band_after_gating": gated_in_band,
+           "gain_median_by_depth_leaf": {k: [len(v), float(np.median(v))] for k, v in by.items()},
+           # diagnostics carried from r2 (not in the verdict)
+           "share_violating_rho": float(np.mean([violates(m, Xte) for m in G])) if G else float("nan"),
+           "share_violating_floors_rho": float(np.mean([violates(m, Xte, floors_declines) for m in G])) if G else float("nan")}
     if with_reasons:
-        out["reason_fidelity"] = reason_fidelity(P, Xte)
+        out["reason_fidelity"] = reason_fidelity(G, Xte)
     return out
 
 
 def seed_verdict(s: dict) -> str:
+    """r4: on the share of G(eps) whose gating gain is material: paired |z| > 3 AND |gain| > MAG_FLOOR * best loss.
+    CONTRADICTS if more than half are materially worsened; POLICY_MATTERS if more than half are materially corrected;
+    KILL if fewer than 10% are materially changed in either direction; else INCONCLUSIVE.
+    (r3's eps-relative bars flipped KILL/INCONCLUSIVE/KILL across eps on a constructed follower.)"""
     if s["void"]:
         return "VOID"
-    if s["retention"] >= 0.90:
-        return "KILL"
-    if s["retention"] <= 0.50:
+    if s["share_worsened"] > 0.5:
+        return "CONTRADICTS"
+    if s["share_corrected"] > 0.5:
         return "POLICY_MATTERS"
+    if s["share_corrected"] + s["share_worsened"] < 0.10:
+        return "KILL"
     return "INCONCLUSIVE"
 
 
 def overall_verdict(per_seed: list[str]) -> str:
     if sum(v == "VOID" for v in per_seed) > 1:
         return "INCONCLUSIVE"
-    for v in ("KILL", "POLICY_MATTERS", "INCONCLUSIVE"):
+    for v in ("KILL", "POLICY_MATTERS", "CONTRADICTS", "INCONCLUSIVE"):
         if sum(x == v for x in per_seed) >= 4:
             return v
     return "INCONCLUSIVE"
@@ -280,8 +393,8 @@ def run(X, y, seeds=SEEDS, n_trees=N_TREES, eps_list=EPSILONS, reasons=True) -> 
     res = {"n": int(len(y)), "accept_share": float(y.mean()), "seeds": {}}
     for s in seeds:
         members = sample_trees(Xtr, ytr, Xva, yva, s, n_trees)
-        res["seeds"][s] = {str(e): seed_metrics(members, Xte, e, with_reasons=(reasons and e == PRIMARY_EPS))
-                           for e in eps_list}
+        res["seeds"][s] = {str(e): seed_metrics(members, Xva, yva, Xte, e,
+                                                with_reasons=(reasons and e == PRIMARY_EPS)) for e in eps_list}
     per = [seed_verdict(res["seeds"][s][str(PRIMARY_EPS)]) for s in seeds]
     res["per_seed_primary"], res["verdict"] = per, overall_verdict(per)
     return res
