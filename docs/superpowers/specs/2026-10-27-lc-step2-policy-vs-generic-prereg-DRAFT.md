@@ -185,3 +185,38 @@ moves models across the Rashomon boundary). KILL if it improves by less than 0.1
 thresholds are tied to ε, already fixed. Constructed tests must show **KILL is reachable** (a follower with trees fine
 enough to find the cap) and POLICY_MATTERS reachable (a follower with coarse trees, or a lender ignoring the
 conditional). Reason fidelity stays as a secondary metric. A power check on realistic synthetic data sets N_TREES.
+
+## r4 → r5 (2026-10-28): r4 not freezable; one more design, under a written stop rule
+
+**The second blind adversary pass found r4 not freezable** (two blockers, both accepted in full).
+1. **Accept-row penalty.** The gate sets P to 0, clipped to 1e-6, so a single accepted validation row the rule declines
+   costs 13.8 nats. About 2 such rows push a rule-embodying tree into "worsened", and about 9 cancel a pooling tree's
+   gain. Step 1 never checked accepts in the 2011–12 interaction cells: its construct check began 2012-08, and A3 only
+   measured [30, 35). So §6's "step 1 found no accepted loan the rule declines" was unsupported for this window. It is
+   withdrawn.
+2. **POLICY_MATTERS is what a follower produces.** On the LendingClub-shaped follower, the best trees embody the rule
+   (ε = 0.005: corrected ≈ 0), and at ε = 0.01 "material" means a gain between 0.1·E and E. That is r3's ε-relative bar
+   under another name. So r4's verdict can't distinguish a follower.
+
+**What r1–r4 were circling.** For a lender that follows a threshold rule, the best trees embody it, and models that
+misstate it cost a roughly fixed amount of fit, g. They are "near-optimal" exactly when ε > g/best. A verdict at a
+fixed ε is decided by that inequality. **The ε-free quantity is ε\* = g / best loss**: how much worse than the best a
+tree model must be before it misstates the written rule.
+
+**r5 (to build):** estimate ε\* per seed (the smallest relative log-loss excess, over sampled monotone trees, at which a
+tree's gating gain is material), with a CI across seeds. Verdict regions, fixed now:
+- **KILL** if ε\* > 0.02. Rule-misstating models sit outside any reasonable band, so compiling adds nothing.
+- **POLICY_MATTERS** if ε\* < 0.005. Even tight bands contain them.
+- **DEPENDS_ON_EPSILON** otherwise, reported with the value.
+- **CONTRADICTS** if the best trees themselves are worsened by gating.
+- **CONSTRUCT_INVALID** if accepts that the rule declines exceed 0.05% of accepts in the window. This is a frozen
+  construct check, adversary 2 finding 1.
+
+Also: gate with the diagnostic tolerances; accepts from 2011-03; report gain split into reject-row savings and
+accept-row penalty; state the 1e-6 clip; (k+0.5)/(n+1) leaf estimates with n ≥ 100; node-id lookup for held-out stats;
+report unmapped employment values per file; time reason fidelity before freeze; fix the stale text.
+
+**Stop rule (written before building r5):** if r5's blind adversary finds another blocker of the same kind (a verdict
+fixed by construction or by an ε-relative bar), **step 2 closes as "not decidable on this substrate"** and the program
+records that as its result. There is no r6. Bugs and text fixes don't count against the rule; a design that can't
+discriminate does.
