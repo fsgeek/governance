@@ -148,7 +148,7 @@ def test_seed_metrics_uses_heldout_leaves_for_monotonicity():
     Xh = np.column_stack([V.bucket5(r2.uniform(640, 800, n)), r2.uniform(0, 20, n), np.zeros(n), np.zeros(n)])
     yh = (r2.random(n) < 0.3).astype(int)
     noise.val_loss = V.logloss(yh, V.p_accept(noise, Xh))
-    out = V.seed_metrics([noise], Xh, yh, Xh, 0.01)
+    out = V.seed_metrics([noise], Xh, yh, Xh, [0.01])
     assert out["n_monotone"] == 1
 
 
@@ -158,7 +158,8 @@ def test_leaf_box_order_matches_tree_node_order():
     tr = m.tree.tree_
     leaves = [j for j in range(tr.node_count) if tr.children_left[j] == -1]
     boxes = V.leaf_boxes(m, with_n=True)
-    assert [n for _, _, n in boxes] == [int(tr.n_node_samples[j]) for j in leaves]
+    assert [j for *_, j in boxes] == leaves                     # node ids recorded, not inferred from order
+    assert [n for _, _, n, _ in boxes] == [int(tr.n_node_samples[j]) for j in leaves]
 
 
 def test_first_reason_and_fidelity():
@@ -177,33 +178,26 @@ def test_straddle32():
 
 
 def test_verdicts():
-    b = {"void": False, "share_corrected": 0.02, "share_worsened": 0.0}
+    b = {"void": False, "best_tree": {"material": 0}, "eps_star": 0.03}
     assert V.seed_verdict(b) == "KILL"
-    assert V.seed_verdict({**b, "share_corrected": 0.7}) == "POLICY_MATTERS"
-    assert V.seed_verdict({**b, "share_worsened": 0.7}) == "CONTRADICTS"
-    assert V.seed_verdict({**b, "share_corrected": 0.3}) == "INCONCLUSIVE"
+    assert V.seed_verdict({**b, "eps_star": 0.002}) == "POLICY_MATTERS"
+    assert V.seed_verdict({**b, "eps_star": 0.008}) == "DEPENDS_ON_EPSILON"
+    assert V.seed_verdict({**b, "eps_star": float("inf")}) == "KILL"           # no band is ever dominated
+    assert V.seed_verdict({**b, "best_tree": {"material": -1}}) == "CONTRADICTS"
     assert V.seed_verdict({**b, "void": True}) == "VOID"
-    assert V.overall_verdict(["KILL"] * 4 + ["VOID"]) == "KILL"
+    assert V.overall_verdict(["DEPENDS_ON_EPSILON"] * 4 + ["KILL"]) == "DEPENDS_ON_EPSILON"
     assert V.overall_verdict(["KILL"] * 3 + ["VOID"] * 2) == "INCONCLUSIVE"
-    assert V.overall_verdict(["KILL"] * 3 + ["INCONCLUSIVE"] * 2) == "INCONCLUSIVE"
 
 
-def test_significant_but_negligible_gains_are_not_material():
-    """r4 power check: with ~78k validation rows a gain of 2.5e-6 nats is 'significant'. It must not count."""
-    rng = np.random.default_rng(3)
-    n = 80000
-    X = np.column_stack([V.bucket5(rng.uniform(660, 800, n)), rng.uniform(0, 24, n), np.zeros(n), np.zeros(n)])
-    y = (rng.random(n) < 0.3).astype(int)            # everyone eligible under the rule: no gating effect at all
-    m = fit(X, y, depth=2, leaf=3000)
-    m.val_loss = V.logloss(y, V.p_accept(m, X))
-    # move a sliver of validation rows into the declined region with label 0: a tiny, significant gating gain
-    Xs = X.copy(); Xs[:200, 1] = 26.0
-    ys = y.copy(); ys[:200] = 0
-    m.val_loss = V.logloss(ys, V.p_accept(m, Xs))
-    g, z = V.gating_z(m, Xs, ys)
-    assert z > 3 and g < 0.001 * m.val_loss
-    out = V.seed_metrics([m], Xs, ys, Xs, 0.01)
-    assert out["share_significant_any_size"] == 1.0 and out["share_corrected"] == 0.0
+def test_construct_share_and_tolerant_gate():
+    X = np.array([[700, 24.9, 0, 0], [700, 25.0, 0, 0], [700, 25.6, 0, 0], [715, 27.0, 0, 0], [650, 10, 0, 0]], float)
+    assert V.gate_mask(X).tolist() == [False, False, True, False, True]    # 25.0 and the 715 bucket are tolerated
+    y = np.array([1, 1, 1, 1, 0])
+    assert V.construct_share(X, y) == 0.25
+
+
+def test_one_accepted_row_in_the_gate_costs_13_8_nats():
+    assert abs(V.row_losses(np.array([1]), np.array([0.0]))[0] - (-math.log(1e-6))) < 1e-9
 
 
 def test_gating_z_is_zero_for_a_rule_embodying_tree_and_large_for_a_pooling_one():
@@ -214,12 +208,11 @@ def test_gating_z_is_zero_for_a_rule_embodying_tree_and_large_for_a_pooling_one(
 
 
 @pytest.mark.parametrize("p_other,rule,depths,expect", [
-    (0.9, V.written_rule_declines, (2, 3, 4), "KILL"),           # follower; trees can find the staircase
-    (0.9, cap30, (2, 3, 4), "CONTRADICTS"),                      # lender ignored the 720 conditional
-    (0.9, V.written_rule_declines, (1,), "POLICY_MATTERS"),      # follower; models too coarse to hold the rule
+    (0.9, V.written_rule_declines, (2, 3, 4), "KILL"),             # follower whose misstating trees cost a lot of fit
+    (0.9, V.written_rule_declines, (1,), "POLICY_MATTERS"),        # even the best model can't hold the rule
+    (0.9, cap30, (2, 3, 4), "CONSTRUCT_INVALID"),                  # accepts the rule declines: the gate would measure mismatch
 ])
-def test_end_to_end_every_branch_reachable(p_other, rule, depths, expect):
-    """r3 must be able to say KILL, CONTRADICTS and POLICY_MATTERS on constructed lenders."""
+def test_end_to_end_branches_reachable(p_other, rule, depths, expect):
     X, y = realistic(80000, rule, seed=7, p_other=p_other, sparse_cell=False)
     old = (V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS)
     V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS = (150, 400), 10, 5, depths
@@ -227,6 +220,4 @@ def test_end_to_end_every_branch_reachable(p_other, rule, depths, expect):
         res = V.run(X, y, seeds=V.SEEDS, n_trees=400, eps_list=[0.01], reasons=False)
     finally:
         V.LEAVES, V.MIN_G, V.MIN_MASS, V.DEPTHS = old
-    assert res["verdict"] == expect, (res["per_seed_primary"],
-                                      [res["seeds"][k]["0.01"].get("gain_median") for k in res["seeds"]],
-                                      [res["seeds"][k]["0.01"].get("n_G") for k in res["seeds"]])
+    assert res["verdict"] == expect, (res.get("per_seed"), res.get("eps_star_median"), res.get("construct_share"))
