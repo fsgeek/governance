@@ -35,102 +35,64 @@ The test is the only quantified policy content beyond sign constraints that the 
 - Rows missing score or DTI are excluded and counted.
 - Split 55/22/23 train/validation/test, stratified by label, seed 20261027.
 
-## 3. Arms (r3)
+## 3. Arms (r5)
 
-- **G (generic monotone):** unconstrained CART classifiers predicting acceptance that **pass an exact monotonicity
-  check on their leaf boxes**: accept probability non-decreasing in score and non-increasing in DTI, to within
-  δ = 0.02. **Not sklearn's `monotonic_cst`.** Its midpoint bounds are sufficient for monotonicity but not necessary,
-  and they forbid the 720 interaction leaf the written rule needs, even though the rule is monotone. On a constructed
-  follower, a `monotonic_cst` tree gains 0.08 from gating and an unconstrained one gains 0.0. Built on it, the verdict
-  would be POLICY_MATTERS for any lender. This is guarded by a test. Every tree uses score and DTI, the standard credit priors, with no policy numbers; amount and
-  employment length are added at random. Depth ∈ {2, 3, 4}; min leaf ∈ {1000, 3000}; a 100,000-row bootstrap per tree.
-  G(ε) = trees with validation log loss ≤ (1+ε)·best, ε ∈ {0.005, **0.01 (primary)**, 0.02}.
-- **P (compiled policy) = each G member gated by the written rule:** P(accept) := 0 wherever the rule, as written,
-  declines. "Compiling the policy" means exactly this. The question is whether the gate changes near-optimal models
-  materially.
+- **G (generic monotone):** unconstrained CART classifiers predicting acceptance that pass an **exact leaf-box
+  monotonicity check** (accept non-decreasing in score, non-increasing in DTI). The check uses held-out validation
+  leaf estimates (k+0.5)/(n+1), ignores leaves with fewer than 100 held-out rows, and tolerates max(0.02, 3 SE) per
+  leaf pair.
+  - Every tree uses score and DTI; amount and employment length are added at random.
+  - Depth ∈ {2, 3, 4}; min leaf ∈ {1000, 3000}; a 100,000-row bootstrap per tree; 4,000 trees per seed.
+  - Not sklearn's `monotonic_cst`: its midpoint bounds can't represent the 720 interaction, which is monotone.
+  - No policy numbers are used.
+- **P (compiled policy) = each G member gated:** P(accept) := 0 wherever the written rule declines, with tolerances of
+  0.5 DTI points and one score bucket at 720. So DTI exactly at 25.00, or a 715 bucket, isn't gated. Log loss clips P
+  to [10⁻⁶, 1 − 10⁻⁶], so an accepted row inside the gate costs 13.8 nats; the construct check guards against that.
 
-The owner has read the policy, so G can't be fixed *before* reading it. Instead, G uses no policy threshold: it is
-sign constraints only.
+## 4. Checks
 
-## 4. Checks (policy-kill lessons, and the r1/r2 adversary findings)
+- **Construct check (frozen, decides CONSTRUCT_INVALID):** accepts inside the gate, as a share of accepts in the
+  window. Above 0.05%, the gate would measure mismatch between the files, not model misstatement. Step 1 never
+  checked these cells for 2011–12, so this can't be assumed.
+- **Material change:** for a tree, a paired test over validation rows of the per-row loss difference (tree − gated
+  tree). Material if |z| > 3 **and** |gain| > 0.001 × best loss. The gain is reported split into reject-row savings and
+  accept-row penalty.
+- Every verdict branch is shown reachable on constructed lenders: KILL, POLICY_MATTERS and CONSTRUCT_INVALID end to
+  end; DEPENDS_ON_EPSILON on the LendingClub-shaped follower (§6); CONTRADICTS by unit test.
 
-- **Monotonicity: exact leaf-box check at the probability level, with leaf probabilities estimated on the held-out
-  validation rows.** A violation is a pair of leaves A, B where some point of B dominates some point of A (score ≥,
-  DTI ≤, other features overlapping) and p(A) − p(B) > max(δ = 0.02, 3 standard errors of the difference). Held-out,
-  because CART chooses splits to maximise leaf differences: on pure noise a depth-3 tree showed a 3.8-SE gap in its
-  training leaves. Scaled by SE, because at min leaf 1000–3000 a fixed δ alone flags leaf noise. The r1 filter checked decisions at a plateau threshold, so leaf noise at the 717.5 split failed it
-  (r1 finding 2). Probabilities with δ don't have that problem. Tested: a reversed tree fails; a flat-rate noise tree
-  passes; the rule's own staircase passes.
-- **No decision threshold:** the verdict works on probabilities and log loss, so there's no plateau cut to land on (r1
-  finding 1).
-- **Diagnostics (not in the verdict):** the share of G members with an exact leaf-box violation (a leaf with
-  P(accept) > 0.01 intersecting the declined region, with 0.5-point DTI and one-score-bucket tolerance, holding ≥ 10
-  test applicants), for the full rule and for the floors alone; the gain by depth and min leaf.
-- `straddle32` (float32 probes at split thresholds) is used for reason fidelity, where thresholds are crossed.
-- Every branch is shown reachable on constructed lenders (§6).
+## 5. Primary quantity: ε\*
 
-## 5. Metrics
+The band excess of a tree is val_loss / best − 1. For each grid value e (60 log-spaced values from 10⁻⁴ to 0.05), the
+band is the trees with excess ≤ e. **ε\* = the smallest e at which the band has ≥ 200 members and more than half of
+them are materially corrected by the gate.** ε\* is infinite if that never happens. The full curve (e, n, share
+corrected) is reported, along with the median gain of corrected trees.
 
-- **gain(m)** = validation log loss of m − validation log loss of gated m. Positive means the policy helps.
-- **E = ε · best**, the Rashomon band width.
-- Per seed: median gain over G(ε), the share of members with gain < 0.1·E, the share with gain > E, and how many
-  sampled trees fall inside the band after gating.
-- **Reason fidelity (secondary, pre-registered):** for up to 300 test applicants the written rule declines, and each
-  member of G(ε), the *first reason* is the single feature whose change across one of the tree's split thresholds
-  most raises P(accept). Reported: the share of (applicant, member) pairs whose first reason is outside the rule's
-  own reasons. The rule's own reasons are DTI when DTI ≥ 30; DTI *or* score when FICO < 720 and DTI is in [25, 30),
-  since reaching 720 makes the applicant eligible; and score when FICO < 660. This is the Reg B adverse-action
-  question with a known true reason (widener).
-- **Stability:** 5 sampler seeds. The train/validation/test split is fixed (seed 20261027), so the seeds test sampler
-  stability only, not split stability (r1 finding 9). A seed is VOID if |G(ε)| < 200. n_G is reported at every ε,
-  because the band width is near the log-loss standard error (r1 finding 10).
+## 6. Verdict (per seed; 5 seeds; ≥ 4 of 5 non-VOID must agree)
 
-## 6. Verdict (r4; primary ε = 0.01; each seed, then across seeds)
+- **CONTRADICTS:** the best tree is materially *worsened* by the gate (the record disagrees with the decisions).
+- **KILL:** ε\* > 0.02. Rule-misstating models sit outside any reasonable band, so compiling adds nothing.
+- **POLICY_MATTERS:** ε\* < 0.005. Even tight bands are dominated by models the record corrects.
+- **DEPENDS_ON_EPSILON:** otherwise, reported with ε\*. Whether the record matters depends on how much fit an analyst
+  will trade, and ε\* says exactly how much.
+- **VOID** if fewer than 200 monotone trees have excess ≤ 0.05. **CONSTRUCT_INVALID** before everything else, per §4.
 
-**Primary quantity: the share of G(ε) that the written record materially changes.** For each member, a paired test
-over validation rows of the per-row log-loss difference (member − gated member). The change is **material if |z| > 3
-and |gain| > 0.001 × best loss**, both required. The magnitude floor is there because with about 78,000 validation
-rows the paired test found 2.5 × 10⁻⁶ nats "significant": 40% of the ε = 0.005 band was counted as corrected with a
-median gain of 0.0000025. On the constructed follower the two populations sit about three orders of magnitude apart
-(0.0000025 vs 0.0016 nats), so any floor between about 10⁻⁵ and 10⁻³ classifies them the same way. Sensitivity is
-reported at floors of 0.0001 × and 0.003 × best, together with the share significant at any size.
-- **share_corrected** = the share with z > 3 (gating materially improves the fit).
-- **share_worsened** = the share with z < −3 (gating materially worsens it).
+**Synthetic expectation, recorded before any fit.** A LendingClub-shaped follower (357,000 rows, 10% accepts, 3 seeds)
+gave ε\* = 0.0103 in every seed. The curve is a step: share corrected 0 up to 0.83%, then 0.74 at 1.6%. The best tree is
+never changed by the gate, and the construct share is 0. So a follower like the synthetic one reads DEPENDS_ON_EPSILON.
+Real decisions may put ε\* anywhere. ε\* is a measurement of the real model landscape, not a consequence of the design:
+r1–r4 failed on exactly that point.
 
-Verdicts:
-- **CONTRADICTS:** share_worsened > 0.5. The record disagrees with the decisions.
-- **POLICY_MATTERS:** share_corrected > 0.5. Most near-optimal models misstate the rule, and the record corrects them.
-- **KILL:** share_corrected + share_worsened < 0.10. The near-optimal models already embody the rule.
-- **INCONCLUSIVE:** otherwise.
-- **Across seeds:** at least 4 of 5 non-VOID seeds must agree; more than 1 VOID gives INCONCLUSIVE.
-- **Reported at every ε** as a curve (share_corrected against ε), since the band's composition changes with ε.
+**What each verdict claims (widener's sentences, written before the result):**
+- **KILL:** the record adds no constraint on near-optimal models of this lender's decisions; its value is dating and
+  attesting the rule.
+- **POLICY_MATTERS:** models nearly as good as the best misstate the rule, so a model fit to the decisions isn't
+  evidence of what the rule was.
+- **DEPENDS:** the same claim, true beyond a stated fit cost ε\*.
 
-**Why r3's ε-relative bars were dropped.** On a LendingClub-shaped constructed follower (357,000 rows, 10% accepts),
-the band holds two populations: the best trees embody the rule (gain ≈ 0.0000025), and slightly worse trees pool
-across the cap (gain ≈ 0.0016 nats). Because E = ε·best scales with ε and the pooling gain doesn't, the r3 verdict went
-KILL (ε = 0.005) → INCONCLUSIVE (0.01) → KILL (0.02). That's a knife-edge produced by comparing a fixed quantity with an
-ε-relative bar. r4's paired test asks of each model whether the record changes it beyond its own noise, which doesn't
-scale with ε. The r3 power-check output is kept in the run directory with the result.
+All of these are N = 1: one lender, one rule.
 
-**This is the last redesign before freeze.** Each revision so far (r1–r4) was driven by constructed lenders the owner
-built, before any real fit. That's legitimate, and it's also how a design drifts toward what synthetic data rewards.
-r4 goes to a second blind adversary with the power curve attached. Whatever survives is frozen, INCONCLUSIVE
-included.
-
-**Both branches are reachable, shown on constructed lenders before freeze:**
-- a follower whose trees can find the staircase gives KILL;
-- a lender that ignores the 720 conditional gives CONTRADICTS;
-- a follower with models too coarse to hold the rule (depth 1) gives POLICY_MATTERS.
-
-(All three were re-verified under r4.)
-
-So the verdict on real data depends on what LendingClub's decisions look like to near-optimal monotone trees. That
-is the empirical question.
-
-**What POLICY_MATTERS would mean, stated honestly (r1 finding 4):** step 1 found no accepted loan the rule declines.
-So POLICY_MATTERS can't mean the data lacks the rule. It means **near-optimal coarse models of a lender that followed
-its rule misstate that rule**, and the written record corrects them by more than the models differ among themselves.
-That is a property of the models, and it is the record-versus-model claim. N = 1.
+**Secondary, reported, not in the verdict:** reason fidelity over the ε = 0.01 band (about 0.7 hours at full scale), and
+by-ε shares at 0.005, 0.01 and 0.02.
 
 ## 7. Demonstration, not a test: out-of-time across 2014-07-25
 
@@ -144,10 +106,12 @@ carries information historical data lacks. It doesn't enter the verdict.
 
 | ID | p |
 |---|---|
-| Verdict KILL | 0.25 |
-| Verdict POLICY_MATTERS | 0.55 |
-| Verdict INCONCLUSIVE | 0.15 |
-| Verdict CONTRADICTS | 0.05 |
+| Verdict KILL | 0.20 |
+| Verdict POLICY_MATTERS | 0.20 |
+| Verdict DEPENDS_ON_EPSILON | 0.45 |
+| Verdict CONSTRUCT_INVALID | 0.10 |
+| Verdict CONTRADICTS or INCONCLUSIVE | 0.05 |
+| ε\* (median over seeds) in [0.005, 0.02] | 0.50 |
 | At least 4 of 5 seeds non-VOID | 0.70 |
 | Reason fidelity: outside-truth share ≥ 0.10 | 0.40 |
 
