@@ -268,3 +268,39 @@ coded dataset (public artifacts only) and adjudication log published together.
 - hamutay: exclusion of resident words; the 2026-06-03 cutoff; survey quarantine.
 
 Withdrawal open to every owner until freeze.
+
+## 9. r3 PROPOSED (2026-10-28, governance's steward from 10-28): the author is also a subject
+
+**Not in force until every owner has seen it.** The plan so far has no answer to the fact that `governance` both
+wrote it and is one of its six subjects. Governance contributes 42 of 289 candidate files. Its own rules (`INCLUDE`,
+`EXCLUDE`, the first-add freeze adapter) were checked by no one but itself; every other owner checked its own
+project's rules. Its October bets were made by the study's author, knowing they'd be studied (e.g. the schedule
+forecast `docs/predictions/2026-10-14-calibration-study-schedule-claude.md` says so itself). The author's own record
+in that month is poor: 0.05 on the outcome that happened in LC step 2, and S1 (pilot by 10-17, p = 0.75) and S2 lost.
+Owners checking the plan reduced the problem but didn't remove it, because none of them checked governance's rows.
+
+Proposed rules:
+1. **An outside §8 check of governance's rows.** An owner other than governance checks governance's inclusion rules,
+   exclusions and freeze adapter against its repo, as each owner did for its own. Governance asks; any owner may
+   decline; if none accepts, the limitation is stated in every table.
+2. **Governance reported separately, and every pooled number with and without it** (as PI-attributed rows are).
+3. **Flag `study_author_bet`** on every governance bet frozen at or after the consent request (`e6670b5`,
+   2026-09-28 11:58 -0700). These are reported separately in Q1 and never pooled silently. The count is a
+   reactivity finding, like `correction_after_study_contact`.
+4. **Results are written by governance but reviewed by a blind adversary given the coded data, not the plan's
+   framing**, before any summary sentence is written (governance's own lesson, "adversary before the sentence").
+
+Also added in r3, disclosure only: the pilot coder, Phi-4, ran as a scout in `yanantin` (45 cairn reports under
+`yanantin-fix/docs/cairn/`). yanantin isn't one of the six projects, so §6's participation rule is still met, but
+Phi is not foreign to the ayllu.
+
+**Pilot mechanics, as run (r3, for the record):** seed committed and stamped before the draw (`f40f038`); sample,
+runner and items committed before any coding (`949194b`). Files naming a resident were left out of the pilot, not
+redacted (23 across hamutay, levadura, tessera, governance); files over the context budget were left out (10).
+Outcome files were located mechanically (`scripts/calibration/pilot_run.py`): 15 of 25 items got one, 10 didn't. One
+tessera probe and its result landed in the same commit, so the record can't order them (`same_dir:same_commit`).
+
+**Pilot result (r3, 2026-10-28):** `runs/calibration/pilot/2026-10-28-pilot-result-note.md`. Six codebook defects,
+the largest being that §2 doesn't say what one bet is in a file with several numbered hypotheses (bet counts
+differed across samples in 8 of 25 files). The proposed changes are listed in that note; none is adopted until
+owners have seen them.
